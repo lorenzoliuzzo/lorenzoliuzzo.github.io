@@ -1,0 +1,21 @@
+main:
+  - title: "Posts"
+    url: /year-archive/
+    permalink: 
+  - title: "GitHub projects"
+    url: https://github.com/lorenzoliuzzo/
+    
+  - title: "CV it"
+    url: "assets/docs/cv_it.pdf"
+    permalink: "/cv/it"
+
+  - title: "CV en"
+    url: "assets/docs/cv_en.pdf"
+    permalink: "/cv/en"
+
+  # - title: "Tags"
+  #   url: /tags/
+  # - title: "Pages"
+  #   url: /page-archive/
+  # - title: "Collections"
+  #   url: /collection-archive/
