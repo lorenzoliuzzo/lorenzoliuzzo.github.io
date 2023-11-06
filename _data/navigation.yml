@@ -1,10 +1,10 @@
 main:
-  - title: "Posts"
-    url: /year-archive/
-    permalink: 
+  - title: "Notes"
+    url: "/notes/"
+
   - title: "GitHub projects"
     url: https://github.com/lorenzoliuzzo/
-    
+
   - title: "CV it"
     url: "assets/docs/cv_it.pdf"
     permalink: "/cv/it"
