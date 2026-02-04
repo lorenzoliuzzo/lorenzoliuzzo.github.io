@@ -1,8 +1,8 @@
 ---
-layout: collection
-title: Lecture Notes
+title: Notes
 permalink: /notes/
+layout: collection
 collection: notes
 ---
 
-Welcome to my lecture notes archive. Here, you can find my notes from various lectures.
+Welcome to my notes archive. Here, you can find my notes from various lectures.

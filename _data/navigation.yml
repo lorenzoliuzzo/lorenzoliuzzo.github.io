@@ -1,17 +1,20 @@
 main:
+  - title: "About Me"
+    url: /about/
+
+  - title: "Projects"
+    url: /projects/
+
   - title: "Notes"
     url: "/notes/"
 
-  - title: "GitHub projects"
-    url: https://github.com/lorenzoliuzzo/
+  # - title: "CV it"
+  #   url: "assets/docs/cv_it.pdf"
+  #   permalink: "/cv/it"
 
-  - title: "CV it"
-    url: "assets/docs/cv_it.pdf"
-    permalink: "/cv/it"
-
-  - title: "CV en"
-    url: "assets/docs/cv_en.pdf"
-    permalink: "/cv/en"
+  # - title: "CV en"
+  #   url: "assets/docs/cv_en.pdf"
+  #   permalink: "/cv/en"
 
   # - title: "Tags"
   #   url: /tags/
