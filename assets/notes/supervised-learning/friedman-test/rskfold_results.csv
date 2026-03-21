@@ -1,0 +1,5 @@
+,RBF SVM,Nearest Neighbors,Decision Tree
+Dataset 1,1.000,1.000,0.995
+Dataset 2,0.860,0.849,0.827
+Dataset 3,0.929,0.911,0.835
+Dataset 4,0.976,0.970,0.959
