@@ -1,0 +1,212 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+body {
+  counter-reset: figure-counter table-counter eq-counter;
+}
+
+p {
+  text-align: justify;
+  hyphens: auto;
+}
+
+
+@mixin academic-label {
+  display: block;
+  text-align: center;
+  font-size: 0.9rem;
+  font-family: "Times New Roman", Times, serif;
+  line-height: 1.5;
+  margin-top: 12px;
+  color: #333;
+}
+
+
+.latex-like-table {
+  display: block;
+  margin: 2.5rem auto;
+  text-align: center;
+  counter-increment: table-counter;
+
+  .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+  }
+
+  table {
+    margin: 0 auto;
+    border-collapse: separate; 
+    border-spacing: 0; 
+    font-family: "Times New Roman", Times, serif;
+    font-size: 0.95rem;
+    width: auto;
+    min-width: 65%;
+    /* 1. TABLE NO LONGER PROVIDES THE OUTER BORDERS */
+    border-left: none;
+    border-top: none; 
+  }
+
+  th, td {
+    padding: 12px 25px;
+    vertical-align: middle;
+    /* 2. ALL CELLS DRAW BOTTOM AND RIGHT BY DEFAULT */
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+  }
+
+  /* 3. DRAW THE LEFT BORDER FOR THE FIRST COLUMN ELEMENTS */
+  th:first-child, 
+  td:first-child {
+    border-left: 1px solid #ddd;
+  }
+
+  // --- HEADER ROW LOGIC ---
+  thead tr th {
+    background-color: #f8f8f8;
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+
+    /* ONLY NON-EMPTY HEADERS GET THE TOP BORDER */
+    &:not(:empty) {
+      border-top: 1px solid #ddd;
+    }
+
+    // --- THE EMPTY CORNER FIX ---
+    &:first-child:empty {
+      background: white !important;
+      border-top: none !important;
+      /* 4. SKIP THE LEFT BORDER HERE */
+      border-left: none !important; 
+      
+      // Keeps the bottom and right to maintain the grid structure
+      border-bottom: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+    }
+  }
+
+  // --- BODY ROW LOGIC ---
+  tbody tr td {
+    text-align: center;
+
+    &:first-child {
+      font-weight: bold;
+      text-align: left;
+      background-color: #fafafa;
+      padding-right: 35px;
+      white-space: nowrap;
+      min-width: 140px;
+    }
+  }
+
+  figcaption {
+    @include academic-label;
+    margin-top: 0.75rem;
+    &::before {
+      content: "Table " counter(table-counter) ": ";
+      font-weight: bold;
+    }
+  }
+}
+
+
+.latex-like-figure {
+  display: block;
+  margin: 2rem auto;
+  text-align: center;
+  counter-increment: figure-counter;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  figcaption {
+    @include academic-label;
+    
+    &::before {
+      content: "Figure " counter(figure-counter) ": ";
+      font-weight: bold;
+    }
+  }
+}
+
+
+.latex-like-equation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.5rem 0;
+  padding: 0 3rem;      
+  position: relative;
+  overflow-x: auto;      
+}
+
+.numbered-equation {
+  counter-increment: eq-counter;
+
+  &::after {
+    content: "(" counter(eq-counter) ")";
+    position: absolute;
+    right: 2rem;         
+    top: 50%;            
+    transform: translateY(-50%); 
+    font-weight: normal; 
+    font-family: "Times New Roman", Times, serif;
+  }
+}
+
+
+.taxonomy__index {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  gap: 10px;
+}
+
+.taxonomy__index li a {
+  display: flex;
+  align-items: center;
+  padding: 5px 12px;
+  background: #f2f3f5;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #333;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.taxonomy__index li a:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+.tag-count {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.tag-section {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.back-to-top {
+  font-size: 0.8rem;
+  color: #888;
+  text-decoration: none;
+}

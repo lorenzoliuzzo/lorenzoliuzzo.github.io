@@ -6,19 +6,45 @@ main:
     url: /projects/
 
   - title: "Notes"
-    url: "/notes/"
+    url: /notes/
 
-  # - title: "CV it"
-  #   url: "assets/docs/cv_it.pdf"
-  #   permalink: "/cv/it"
 
-  # - title: "CV en"
-  #   url: "assets/docs/cv_en.pdf"
-  #   permalink: "/cv/en"
+money-ball-ai-docs:
+  - title: "← Back to All Projects"
+    url: /projects/
+    
+  - title: "Overview"
+    url: /projects/money-ball-ai/
 
-  # - title: "Tags"
-  #   url: /tags/
-  # - title: "Pages"
-  #   url: /page-archive/
-  # - title: "Collections"
-  #   url: /collection-archive/
+  - title: "Understanding NBA Data"
+    children: 
+      - title: "Play-by-Play Data"
+        url: /projects/money-ball-ai/data/pbp
+      - title: "Substitutions"
+        url: /projects/money-ball-ai/data/pbp/subs
+
+
+  - title: "The NBA As One Big Graph"
+    children:
+      - title: "Heterogeneous Graphs"
+        url: /projects/money-ball-ai/modelling/hetero
+      - title: "The Stint Mechanism"
+        url: /projects/money-ball-ai/modelling/stints
+      - title: "The Game State Engine"
+        url: /projects/money-ball-ai/modelling/game-state
+      - title: ""
+        url: /
+      - title: ""
+        url: /
+
+  - title: "Predictions"
+
+
+mc-raytracing-toc:
+  - title: "← Back to All Projects"
+    url: /projects/
+
+  - title: "Overview"
+    url: /projects/mc-raytracing/
+
+

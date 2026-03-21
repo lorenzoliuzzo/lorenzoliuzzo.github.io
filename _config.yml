@@ -1,3 +1,5 @@
+# _config.yml
+
 plugins:
   - jekyll-remote-theme
   - jekyll-include-cache
@@ -6,6 +8,16 @@ plugins:
 
 remote_theme: "mmistakes/minimal-mistakes@4.27.0"
 minimal_mistakes_skin: "default"
+
+markdown: kramdown
+mathjax: true
+
+sass:
+  style: compressed
+
+search: true
+words_per_minute: 150
+
 
 title: "Lorenzo Liuzzo"
 email: lorenzoliuzzo@outlook.com
@@ -29,14 +41,67 @@ author:
 time_zone: Europe/Rome
 date_format: "%Y-%m-%d"
 
-back_to_top: true
-back_to_top_text: "Back to top"
+include:
+  - _pages
 
-words_per_minute: 250
+collections: 
+  projects: 
+    output: true
+    path: "_projects"
+    permalink: /:collection/:path/
 
-search: true
-lunr:
-  search_within_pages: true
+  notes: 
+    output: true
+    path: "_notes"
+    permalink: /:collection/:path/
+
+
+defaults:
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+      show_date: true
+      back_to_top: true
+
+  - scope:
+      path: "_notes"
+      type: notes
+    values:
+      layout: single
+      author_profile: false
+      show_date: true
+      read_time: true
+      back_to_top: true
+      show_taxonomy: true  
+      related: true
+
+  # - scope:
+  #     path: "_projects/money-ball-ai"
+  #     type: projects
+  #   values:
+  #     read_time: true
+  #     back_to_top: true
+  #     sidebar:
+  #       nav: "money-ball-ai-docs"
+
+
+  # - scope:
+  #     path: "_projects/mc-raytracing"
+  #     type: projects
+  #   values:
+  #     read_time: true
+  #     back_to_top: true
+  #     sidebar:
+  #       nav: "mc-raytracing-toc"
+
+
+tag_archive:
+  type: liquid
+  path: /tags/
+
 
 footer:
   links:
@@ -48,56 +113,3 @@ footer:
       url: "https://github.com/lorenzoliuzzo"
 
 footer_content: "Copyright &copy; 2026 Lorenzo Liuzzo"
-
-# atom_feed:
-  # hide: true
-  
-
-collections: 
-  notes: 
-    output: true
-    permalink: /:collection/:path/
-
-  projects: 
-    output: true
-    permalink: /:collection/:path/
-
-
-defaults:
-  - scope:
-      path: ""
-      type: pages
-    values:
-      layout: single
-      author_profile: true
-      back_to_top: true
-
-  - scope:
-      path: ""
-      type: posts
-    values:
-      layout: single
-      author_profile: true
-      show_date: true
-      read_time: true
-      back_to_top: true
-
-  - scope:
-      path: ""
-      type: notes
-    values:
-      layout: single
-      author_profile: false
-      show_date: true
-      read_time: true
-      back_to_top: true
-
-  - scope:
-      path: ""
-      type: projects
-    values:
-      layout: single
-      author_profile: false
-      show_date: true
-      read_time: true
-      back_to_top: true

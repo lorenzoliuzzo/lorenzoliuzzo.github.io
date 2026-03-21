@@ -1,0 +1,27 @@
+<figure class="latex-like-figure" id="{{ include.id }}">
+  <img src="{{ include.url | relative_url }}" alt="{{ include.caption }}">
+  <figcaption>
+    <span class="caption-label"></span> {{ include.caption }}
+  </figcaption>
+</figure>
+
+<!-- <script>
+	if (typeof figureAutoRefLoaded === 'undefined') {
+		window.figureAutoRefLoaded = true;
+		document.addEventListener("DOMContentLoaded", function() {
+			const allFigures = Array.from(document.querySelectorAll('.latex-like-figure'));
+			const links = document.querySelectorAll('a[href^="#"]');
+			
+			links.forEach(link => {
+				if (link.textContent.trim() === "") {
+					const targetId = link.getAttribute("href").slice(1);
+					const targetFigure = document.getElementById(targetId);
+					if (targetFigure && targetFigure.classList.contains('latex-like-figure')) {
+						const index = allFigures.indexOf(targetFigure) + 1;
+						link.textContent = "Figure " + index;
+					}
+				}
+			});
+		});
+	}
+</script> -->

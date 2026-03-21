@@ -1,0 +1,52 @@
+<section class="latex-like-bibliography" id="bibliography">
+  <hr>
+  <h2>References</h2>
+  <div id="bib-container" data-src="{{ include.url | relative_url }}">
+    <p class="loading-bib">Loading bibliography...</p>
+  </div>
+</section>
+
+<style>
+  .latex-like-bibliography {
+    margin-top: 3rem;
+    text-align: left;
+    font-family: "Times New Roman", Times, serif;
+  }
+  
+  .bib-entry {
+    display: flex;
+    margin-bottom: 1rem;
+    padding-left: 1.5rem; /* Pushes the entire list to the right */
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
+  .bib-number {
+    flex: 0 0 3rem; /* Gives the number a fixed width of 3rem */
+    font-weight: normal; /* Removes the bold */
+  }
+  
+  .bib-text {
+    flex: 1; /* Allows the text to fill the remaining space cleanly */
+    text-align: justify; /* <-- Adds the full justification */
+    hyphens: auto;
+  }
+  
+  .cite-link {
+    color: #0056b3;
+    text-decoration: none;
+    cursor: help;
+  }
+
+  .bib-link {
+    color: #0056b3;
+    text-decoration: none;
+    font-size: 0.9em;
+    margin-left: 5px;
+  }
+  
+  .bib-link:hover {
+    text-decoration: underline;
+  }
+  
+  </style>

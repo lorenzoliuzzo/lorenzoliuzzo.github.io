@@ -1,16 +1,18 @@
 ---
 title: "Hello, World!"
-layout: single
-permalink: /
-author_profile: true
-classes: wide
 excerpt: "Welcome to my personal site, a knowledge base where I publish notes and project updates."
+permalink: /
+
+layout: single
+classes: wide
+
 header:
-  overlay_color: "#193155ff"
-  overlay_filter: "0.65"
+  overlay_color: "#12223aff"
+  overlay_filter: "0.5"
   overlay_image: /assets/images/Planck_CMB.jpg  
+
   actions:
-    - label: "More About Me"
+    - label: "About Me"
       url: "/about/"
     - label: "View Projects"
       url: "/projects/"
@@ -18,11 +20,10 @@ header:
       url: "/notes/"
 ---
 
-
-## What I'm Working On
-- 
-- 
-- 
+<script
+  data-goatcounter="https://lorenzoliuzzo.goatcounter.com/count" 
+  async src="//gc.zgo.at/count.js"
+></script>
 
 
 ## Recent Projects
