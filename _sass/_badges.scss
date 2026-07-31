@@ -1,11 +1,20 @@
 // Note provenance badges (see _includes/note-status.html).
+//
+// Two tiers on purpose. `.note-badge` carries the verification claim and is
+// allowed to hold colour; `.note-provenance` records how the draft was written
+// and stays plain text, because on this site "AI-drafted" is the norm and a
+// second coloured pill next to it would read as an alarm rather than a note.
 
 .note-status {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  margin: 0.6em 0 1.2em;
+  gap: 8px 14px;
+  margin: 0.7em 0 1.4em;
+  // The theme floats .page__meta across the full column, which leaves a
+  // following block with zero available width and pushes the badges off the
+  // right edge of the content. Clearing it puts them back under the meta line.
+  clear: both;
 }
 
 .note-badge {
@@ -28,19 +37,10 @@
   }
 }
 
-.note-badge--ai {
-  background: var(--badge-ai-bg);
-  color: var(--badge-ai-fg);
-}
-
-.note-badge--written {
-  background: var(--badge-neutral-bg);
-  color: var(--badge-neutral-fg);
-}
-
 .note-badge--verified {
   background: var(--badge-ok-bg);
   color: var(--badge-ok-fg);
+  border-color: var(--badge-ok-border);
 }
 
 // Deliberately loud: a stale badge means the page is making a claim it can no
@@ -48,20 +48,46 @@
 .note-badge--stale {
   background: var(--badge-warn-bg);
   color: var(--badge-warn-fg);
+  border-color: var(--badge-warn-border);
 }
 
+// Outline rather than fill — the common case shouldn't shout.
 .note-badge--unverified {
-  background: var(--badge-neutral-bg);
+  background: transparent;
   color: var(--text-muted);
+  border-color: var(--border-strong);
+  font-weight: 500;
+}
+
+.note-provenance {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-faint);
+  white-space: nowrap;
+  cursor: help;
+
+  i {
+    font-size: 0.85em;
+  }
 }
 
 .note-status--compact {
   margin: 6px 0 0;
+  gap: 6px 10px;
 
   .note-badge {
     padding: 2px 9px;
     font-size: 0.68rem;
     font-weight: 500;
+  }
+
+  .note-provenance {
+    font-size: 0.66rem;
   }
 }
 

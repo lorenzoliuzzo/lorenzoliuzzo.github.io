@@ -91,11 +91,19 @@ defaults:
       read_time: true
       back_to_top: true
       show_taxonomy: true
-      related: true
-      # Provenance defaults: an unmarked note reads as "not yet human-verified"
-      # rather than making no claim at all. Overridden per note by the
-      # MyThingsLab drawer (tools/mythingslab).
-      ai_generated: false
+      # The theme's "related" block only ever draws from site.posts, and this site
+      # has none — it rendered as a "You may also enjoy" heading over nothing.
+      related: false
+      breadcrumbs: true
+      # Every note gets the on-this-page rail; the stub notes that have no
+      # headings yet collapse it away in CSS rather than showing an empty box.
+      toc: true
+      toc_sticky: true
+      # Provenance defaults. Most notes here start as an AI draft, so that is the
+      # honest default; what the reader needs to know is whether a human has since
+      # read it end to end, which is `human_verified` and is never assumed.
+      # Overridden per note by the MyThingsLab drawer (tools/mythingslab).
+      ai_generated: true
       human_verified: false
 
   - scope:
@@ -107,6 +115,7 @@ defaults:
       show_date: true
       read_time: false
       back_to_top: true
+      breadcrumbs: true
 
 
 tag_archive:

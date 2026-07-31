@@ -1,17 +1,14 @@
+{% comment %}
+  Provenance strip for notes.
+
+  Verification leads, because it is the claim that carries weight: a human read
+  this and vouches for it. How the first draft got written is secondary context,
+  so it trails behind as a quiet chip rather than competing for attention.
+{% endcomment %}
 {% assign doc = include.document | default: page %}
 {% if doc.collection == "notes" %}
   {% assign state = doc.verification_state | default: "unverified" %}
   <div class="note-status{% if include.compact %} note-status--compact{% endif %}">
-
-    {% if doc.ai_generated %}
-      <span class="note-badge note-badge--ai" title="An AI assistant helped draft or edit this note.">
-        <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> AI-assisted
-      </span>
-    {% else %}
-      <span class="note-badge note-badge--written" title="Written without AI assistance.">
-        <i class="fas fa-pen-nib" aria-hidden="true"></i> Human-written
-      </span>
-    {% endif %}
 
     {% case state %}
       {% when "verified" %}
@@ -32,10 +29,20 @@
         </span>
 
       {% else %}
-        <span class="note-badge note-badge--unverified" title="No human has signed off on this note yet.">
-          <i class="fas fa-hourglass-half" aria-hidden="true"></i> Not yet human-verified
+        <span class="note-badge note-badge--unverified" title="No human has read this note end to end yet. Read it with that in mind.">
+          <i class="far fa-circle" aria-hidden="true"></i> Awaiting human review
         </span>
     {% endcase %}
+
+    {% if doc.ai_generated %}
+      <span class="note-provenance" title="An AI assistant drafted or edited this note. The verification badge above is what says whether a human stands behind it.">
+        <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> AI-drafted
+      </span>
+    {% else %}
+      <span class="note-provenance" title="Written without AI assistance.">
+        <i class="fas fa-pen-nib" aria-hidden="true"></i> Written by hand
+      </span>
+    {% endif %}
 
   </div>
 {% endif %}

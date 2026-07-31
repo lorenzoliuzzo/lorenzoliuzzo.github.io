@@ -43,7 +43,7 @@ Select a topic below to jump straight to that section.
 
     {% for sub_tag in sub_tags %}
       {% assign in_sub = in_main | where_exp: "n", "n.tags[1] == sub_tag" | sort: "date" | reverse %}
-      <div class="tag-subsection">
+      <div class="tag-subsection" id="{{ main_tag | slugify }}-{{ sub_tag | slugify }}">
         <h3 class="tag-subsection__title">{{ sub_tag }}</h3>
         {% include entry-list.html entries=in_sub date=true status=true %}
       </div>
