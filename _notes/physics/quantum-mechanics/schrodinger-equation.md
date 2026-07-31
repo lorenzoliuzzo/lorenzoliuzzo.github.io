@@ -1,5 +1,6 @@
 ---
 title: "Schrodinger's Equation"
+date: 2026-07-31
 collection: notes
 read_time: true
 tags:

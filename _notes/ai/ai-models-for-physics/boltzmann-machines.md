@@ -1,5 +1,6 @@
 ---
 title: "Botzmann's Machines"
+date: 2026-07-31
 collection: notes
 permalink: /notes/ai/ai-models-for-physics/boltzmann-machines
 

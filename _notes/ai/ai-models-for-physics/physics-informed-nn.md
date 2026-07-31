@@ -1,6 +1,7 @@
 ---
 collection: notes
 title: "Physics-Informed Neural Networks"
+date: 2026-07-31
 excerpt: "PINNs represent a paradigm shift in scientific computing, seamlessly bridging the gap between data-driven machine learning and classical physics-based numerical solvers."
 
 read_time: true

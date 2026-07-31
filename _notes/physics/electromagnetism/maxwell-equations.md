@@ -1,6 +1,7 @@
 ---
 collection: notes
 title: "Maxwell's Equations"
+date: 2026-07-31
 read_time: true
 toc: true
 toc_sticky: true

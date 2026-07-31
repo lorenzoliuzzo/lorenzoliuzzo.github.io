@@ -1,5 +1,6 @@
 ---
 title: "Standard Model"
+date: 2026-07-31
 collection: notes
 permalink: /notes/physics/particles/standard-model
 

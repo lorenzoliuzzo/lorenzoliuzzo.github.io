@@ -1,6 +1,7 @@
 ---
 collection: notes
 title: "Learning Vector Quantization"
+date: 2026-07-31
 read_time: true
 tags: 
   - Artificial Intelligence

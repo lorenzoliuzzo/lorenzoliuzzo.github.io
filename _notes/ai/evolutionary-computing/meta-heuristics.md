@@ -1,6 +1,7 @@
 ---
 collection: notes
 title: "Meta-Heuristics"
+date: 2026-07-31
 excerpt: >
   Local search, simulated annealing, tabu search, memetic algorithms, differential evolution, PBIL, PSO, ACO.
 order: 3

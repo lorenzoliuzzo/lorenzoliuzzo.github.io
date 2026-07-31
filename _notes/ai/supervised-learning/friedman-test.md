@@ -1,6 +1,7 @@
 ---
 collection: notes
 title: "Robust Statistical Comparison of Classifiers Using the Friedman Test"
+date: 2026-03-21
 excerpt: "Applying the non-parametric Friedman-Nemenyi pipeline to rigorously evaluate machine learning models across multiple datasets."
 
 tags: 

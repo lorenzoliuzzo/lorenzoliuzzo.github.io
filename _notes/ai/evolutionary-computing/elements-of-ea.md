@@ -1,6 +1,7 @@
 ---
 collection: notes
 title: "Elements of Evolutionary Algorithms"
+date: 2026-07-31
 excerpt: "A survey of the core components of evolutionary algorithms: encoding strategies and their pitfalls, fitness scaling and selective pressure, selection methods and genetic operators."
 order: 2
 tags: 
