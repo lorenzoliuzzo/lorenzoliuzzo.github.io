@@ -1,0 +1,32 @@
+{% comment %}
+  Renders a list of collection documents as cards.
+
+  entries  — the documents to render (required)
+  empty    — text shown when there are none; omit to render nothing at all
+  date     — truthy to show the document date
+  status   — truthy to show the note provenance badges
+{% endcomment %}
+{% if include.entries and include.entries != empty %}
+  <div class="entry-list">
+    {% for entry in include.entries %}
+      <article class="entry-card">
+        <h3 class="entry-card__title">
+          <a href="{{ entry.url | relative_url }}">{{ entry.title | default: "Untitled" }}</a>
+        </h3>
+        {% if include.date and entry.date %}
+          <p class="entry-card__meta">
+            <time datetime="{{ entry.date | date_to_xmlschema }}">{{ entry.date | date: site.date_format }}</time>
+          </p>
+        {% endif %}
+        {% if include.status %}
+          {% include note-status.html document=entry compact=true %}
+        {% endif %}
+        {% if entry.excerpt %}
+          <p class="entry-card__excerpt">{{ entry.excerpt | strip_html | truncate: 160 }}</p>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </div>
+{% elsif include.empty %}
+  <p class="entry-list__empty">{{ include.empty }}</p>
+{% endif %}

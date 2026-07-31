@@ -1,0 +1,124 @@
+// Reading typography.
+//
+// Split brief: serif for anything you read at length, sans for anything you
+// operate (nav, metadata, badges, buttons). The theme ships sans everywhere and
+// a heading scale that lands h2 only ~11% above body text, so both are reset here.
+
+body {
+  counter-reset: figure-counter table-counter eq-counter;
+  font-family: var(--font-sans);
+}
+
+.page__title,
+.archive__item-title,
+.page__content {
+  font-family: var(--font-serif);
+}
+
+.page__title {
+  line-height: var(--leading-tight);
+  letter-spacing: -0.01em;
+}
+
+.page__content {
+  line-height: var(--leading-body);
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.01em;
+  }
+
+  // A scale with actual steps in it. Sizes are em so they track the content
+  // font-size the theme sets per breakpoint.
+  h1 {
+    font-size: 2em;
+    margin: 2.2rem 0 1rem;
+  }
+
+  h2 {
+    font-size: 1.55em;
+    margin: 2.6rem 0 0.9rem;
+    padding-bottom: 0.3rem;
+  }
+
+  h3 {
+    font-size: 1.25em;
+    margin: 2rem 0 0.7rem;
+  }
+
+  h4 {
+    font-size: 1.08em;
+    margin: 1.6rem 0 0.5rem;
+  }
+
+  h5,
+  h6 {
+    font-size: 1em;
+    font-family: var(--font-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin: 1.4rem 0 0.4rem;
+  }
+
+  p {
+    margin-bottom: 1.2em;
+  }
+
+  // Justification is scoped to body copy on purpose. Applied globally it also
+  // stretches captions, excerpts and metadata, which is where it looks broken.
+  > p,
+  > ul li,
+  > ol li {
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  // Cap the reading measure without boxing in figures, tables or code, which
+  // are free to use the full column. Cheaper and steadier than a breakout hack.
+  > p,
+  > ul,
+  > ol,
+  > dl,
+  > blockquote,
+  > h1,
+  > h2,
+  > h3,
+  > h4,
+  > h5,
+  > h6 {
+    max-width: var(--measure);
+  }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+
+  blockquote {
+    font-style: italic;
+  }
+}
+
+// Chrome stays sans regardless of what the content column is doing.
+.masthead,
+.page__meta,
+.page__footer,
+.author__urls,
+.toc,
+.btn,
+.page__taxonomy,
+.breadcrumbs,
+.pagination {
+  font-family: var(--font-sans);
+}
+
+.page__meta {
+  letter-spacing: 0.01em;
+}

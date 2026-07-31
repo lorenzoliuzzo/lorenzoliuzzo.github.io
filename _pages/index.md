@@ -28,33 +28,11 @@ header:
 
 ## Recent Projects
 {% assign projects = site.projects | sort: 'date' | reverse | limit: 2 %}
-{% for project in projects %}
-  <article class="archive__item" style="margin-bottom: 1.5em;">
-    <h3 class="archive__item-title">
-      <a href="{{ project.url | relative_url }}">{{ project.title }}</a>
-    </h3>
-    <p class="archive__item-excerpt">
-      {{ project.excerpt | strip_html | truncate: 160 }}
-    </p>
-  </article>
-{% endfor %}
-
-<p><a href="/projects/" class="btn btn--primary">All Projects →</a></p>
+{% include entry-list.html entries=projects empty="Nothing published here yet." %}
+{% if projects.size > 0 %}<p><a href="/projects/" class="btn btn--primary">All Projects →</a></p>{% endif %}
 
 
 ## Recent Notes
 {% assign notes = site.notes | sort: 'date' | reverse | limit: 3 %}
-{% for note in notes %}
-  <article class="archive__item" style="margin-bottom: 1.5em;">
-    <h3 class="archive__item-title">
-      <a href="{{ note.url | relative_url }}">{{ note.title }}</a>
-    </h3>
-    <p class="archive__item-excerpt">
-      {{ note.excerpt | strip_html | truncate: 160 }}
-    </p>
-  </article>
-{% endfor %}
-
-<p><a href="/notes/" class="btn btn--primary">All Notes →</a></p>
-
----
+{% include entry-list.html entries=notes date=true status=true empty="Nothing published here yet." %}
+{% if notes.size > 0 %}<p><a href="/notes/" class="btn btn--primary">All Notes →</a></p>{% endif %}

@@ -126,13 +126,13 @@
   let busy = false;
 
   const launch = el("button", { id: "mtl-launch", title: "Talk to this note" });
-  launch.innerHTML = '<span class="mtl-dot"></span> MyThingsLab';
+  launch.innerHTML = '<span class="mtl-dot"></span> Chat with this note';
   document.body.appendChild(launch);
 
   const drawer = el("div", { id: "mtl-drawer" });
   drawer.innerHTML = [
     '<div class="mtl-head">',
-    '  <div><h3>MyThingsLab</h3><p>' + escapeHtml(root.dataset.noteTitle || NOTE) + "</p></div>",
+    '  <div><h3>Chat with this note</h3><p>' + escapeHtml(root.dataset.noteTitle || NOTE) + "</p></div>",
     '  <button class="mtl-x" title="Close">&times;</button>',
     "</div>",
     '<div class="mtl-log"></div>',
@@ -205,7 +205,7 @@
   function push(role, text, cls) {
     const node = el("div", { className: "mtl-msg " + (cls || ("mtl-" + role)) });
     node.innerHTML =
-      '<span class="mtl-who">' + (role === "user" ? "You" : role === "err" ? "Error" : "MyThingsLab") +
+      '<span class="mtl-who">' + (role === "user" ? "You" : role === "err" ? "Error" : "Assistant") +
       '</span><div class="mtl-body"></div>';
     node.querySelector(".mtl-body").textContent = text;
     log.appendChild(node);

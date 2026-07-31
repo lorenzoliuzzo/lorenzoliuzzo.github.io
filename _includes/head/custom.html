@@ -1,0 +1,26 @@
+<!-- start custom head snippets -->
+
+{% comment %}
+  Theme resolution runs here, synchronously in <head>, so data-theme is set before
+  the first paint. Moving it to a deferred script or the footer reintroduces a
+  flash of the wrong theme on every load. The toggle that writes the stored value
+  lives in _includes/masthead.html.
+{% endcomment %}
+<script>
+  (function () {
+    var stored = null;
+    try {
+      stored = localStorage.getItem("theme");
+    } catch (e) {
+      /* private mode / storage disabled: fall back to the OS preference */
+    }
+    var theme =
+      stored ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+
+<!-- end custom head snippets -->
