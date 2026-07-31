@@ -1,5 +1,17 @@
 <!-- start custom head snippets -->
 
+<link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/images/monogram-32.png' | relative_url }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/images/monogram-16.png' | relative_url }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/images/monogram-180.png' | relative_url }}">
+
+{% comment %}
+  Two theme-colours so the mobile browser chrome tracks the page instead of
+  sitting as a light bar above a dark site. Values mirror --surface in _tokens.scss.
+{% endcomment %}
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#fdfcfa">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#14171a">
+
 {% comment %}
   Theme resolution runs here, synchronously in <head>, so data-theme is set before
   the first paint. Moving it to a deferred script or the footer reintroduces a

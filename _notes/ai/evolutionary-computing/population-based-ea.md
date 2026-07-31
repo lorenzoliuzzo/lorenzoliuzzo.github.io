@@ -1,6 +1,7 @@
 ---
 collection: notes
 title: "Swarm and Population-Based Optimization"
+date: 2026-07-31
 excerpt: "PBIL, PSO, ACO."
 order: 5
 tags:

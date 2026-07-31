@@ -1,0 +1,43 @@
+{% comment %}
+  Overrides minimal-mistakes 4.28.x _includes/post_pagination.html.
+
+  Two changes over the theme: the pagers show the neighbouring title rather than
+  a bare "Previous"/"Next", and a link back to the collection archive sits between
+  them. Landing at the bottom of a note with no way back to the index was the main
+  dead end in the old layout.
+{% endcomment %}
+{% assign locale = include.locale | default: site.locale %}
+
+{% case page.collection %}
+  {% when "notes" %}{% assign archive_label = "All notes" %}{% assign archive_url = "/notes/" %}
+  {% when "projects" %}{% assign archive_label = "All projects" %}{% assign archive_url = "/projects/" %}
+  {% else %}{% assign archive_url = nil %}
+{% endcase %}
+
+{% if page.previous or page.next or archive_url %}
+  <nav class="pagination pagination--pager-nav" aria-label="{{ page.collection | default: 'Post' }} pagination">
+    {% if page.previous %}
+      <a href="{{ page.previous.url | relative_url }}" class="pagination--pager pagination--pager-prev" rel="prev">
+        <span class="pager__direction"><i class="fas fa-arrow-left" aria-hidden="true"></i> {{ site.data.ui-text[locale].pagination_previous | default: "Previous" }}</span>
+        <span class="pager__title">{{ page.previous.title | markdownify | strip_html | strip }}</span>
+      </a>
+    {% else %}
+      <span class="pagination--pager disabled" aria-hidden="true"></span>
+    {% endif %}
+
+    {% if archive_url %}
+      <a href="{{ archive_url | relative_url }}" class="pager__archive">
+        <i class="fas fa-layer-group" aria-hidden="true"></i> {{ archive_label }}
+      </a>
+    {% endif %}
+
+    {% if page.next %}
+      <a href="{{ page.next.url | relative_url }}" class="pagination--pager pagination--pager-next" rel="next">
+        <span class="pager__direction">{{ site.data.ui-text[locale].pagination_next | default: "Next" }} <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+        <span class="pager__title">{{ page.next.title | markdownify | strip_html | strip }}</span>
+      </a>
+    {% else %}
+      <span class="pagination--pager disabled" aria-hidden="true"></span>
+    {% endif %}
+  </nav>
+{% endif %}

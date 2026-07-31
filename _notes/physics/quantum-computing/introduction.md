@@ -2,6 +2,7 @@
 collection: notes
 order: 1
 title: "Introduction to Quantum Computing"
+date: 2026-07-31
 tags: 
   - Physics
   - Quantum Computing

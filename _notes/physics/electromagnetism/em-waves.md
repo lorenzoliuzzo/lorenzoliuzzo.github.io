@@ -1,5 +1,6 @@
 ---
 title: "Electromagnetic Waves"
+date: 2026-07-31
 collection: notes
 
 layout: single

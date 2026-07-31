@@ -1,5 +1,6 @@
 ---
 title: "Evolutionary Algorithms"
+date: 2026-07-31
 excerpt: "A comprehensive guide from biological inspiration to computational intelligence"
 collection: notes
 

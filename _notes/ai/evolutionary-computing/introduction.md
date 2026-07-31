@@ -1,6 +1,7 @@
 ---
 collection: notes
 title: "Introduction to Evolutionary Computing"
+date: 2026-07-31
 order: 1
 tags: 
   - Artificial Intelligence

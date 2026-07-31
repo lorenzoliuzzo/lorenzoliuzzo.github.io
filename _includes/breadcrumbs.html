@@ -1,0 +1,52 @@
+{% comment %}
+  Overrides minimal-mistakes 4.28.x _includes/breadcrumbs.html.
+
+  The theme builds each crumb's href from a single URL segment, which only works
+  for flat, top-level pages: on a note at /notes/physics/optics/ it emits links to
+  /physics and /optics, neither of which exists. Notes here are filed by tag, not
+  by folder, so the crumbs are built from the tags instead and point at the
+  matching section of the archive. Anything else falls back to a plain trail.
+{% endcomment %}
+{% assign locale = include.locale | default: site.locale %}
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a href="{{ '/' | relative_url }}" itemprop="item"><span itemprop="name">{{ site.data.ui-text[locale].breadcrumb_home_label | default: "Home" }}</span></a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <span class="sep">{{ site.data.ui-text[locale].breadcrumb_separator | default: "/" }}</span>
+
+    {% case page.collection %}
+      {% when "notes" %}{% assign root_label = "Notes" %}{% assign root_url = "/notes/" %}
+      {% when "projects" %}{% assign root_label = "Projects" %}{% assign root_url = "/projects/" %}
+      {% else %}{% assign root_label = nil %}
+    {% endcase %}
+
+    {% if root_label %}
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="{{ root_url | relative_url }}" itemprop="item"><span itemprop="name">{{ root_label }}</span></a>
+        <meta itemprop="position" content="2" />
+      </li>
+      <span class="sep">{{ site.data.ui-text[locale].breadcrumb_separator | default: "/" }}</span>
+
+      {% assign position = 2 %}
+      {% assign anchor = "" %}
+      {% for tag in page.tags limit: 2 %}
+        {% assign position = position | plus: 1 %}
+        {% if anchor == "" %}
+          {% assign anchor = tag | slugify %}
+        {% else %}
+          {% assign anchor = anchor | append: "-" | append: tag | slugify %}
+        {% endif %}
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="{{ root_url | relative_url }}#{{ anchor }}" itemprop="item"><span itemprop="name">{{ tag }}</span></a>
+          <meta itemprop="position" content="{{ position }}" />
+        </li>
+        <span class="sep">{{ site.data.ui-text[locale].breadcrumb_separator | default: "/" }}</span>
+      {% endfor %}
+    {% endif %}
+
+    <li class="current"{% if page.locale %} lang="{{ page.locale }}"{% endif %}>{{ page.title }}</li>
+  </ol>
+</nav>

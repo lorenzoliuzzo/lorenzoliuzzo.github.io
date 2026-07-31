@@ -1,6 +1,7 @@
 ---
 collection: notes
 title: "Ensemble Learning: Stacking"
+date: 2026-07-31
 excerpt: "Stacking Classifiers"
 tags: 
   - Artificial Intelligence

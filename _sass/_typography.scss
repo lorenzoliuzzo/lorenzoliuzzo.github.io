@@ -106,6 +106,20 @@ body {
   }
 }
 
+// Opening paragraph of a page: one step up from body copy, set ragged-right so
+// it doesn't inherit the justified rivers that a short block shows badly.
+.page__content .lead {
+  // Narrower than --measure, not wider: the type is a step up, so the line has
+  // to be shorter to land at the same comfortable character count.
+  max-width: 34rem;
+  margin-bottom: 2.5rem;
+  font-size: 1.15em;
+  line-height: 1.6;
+  color: var(--text-muted);
+  text-align: left;
+  hyphens: none;
+}
+
 // Chrome stays sans regardless of what the content column is doing.
 .masthead,
 .page__meta,
