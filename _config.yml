@@ -18,6 +18,16 @@ sass:
 search: true
 words_per_minute: 150
 
+# Where the "From Friends" form on /about/ posts (a Formspree form URL, or any service
+# that takes a multipart POST and answers JSON). Left empty the form is replaced by a
+# mailto line, so the section stays usable until this is filled in.
+friends_form_endpoint: ""
+
+# reCAPTCHA v2 site key for that form. The same key has to be set on Formspree under
+# Settings → CAPTCHA → Custom reCAPTCHA, which is where the token is actually checked;
+# an empty value here just means no challenge is rendered.
+recaptcha_site_key: ""
+
 
 title: "Lorenzo Liuzzo"
 email: lorenzoliuzzo@outlook.com

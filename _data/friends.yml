@@ -1,0 +1,17 @@
+# Comments friends have written about me, shown in the "From Friends" section of
+# /about/. Submissions arrive through the form on that page; nothing is published
+# until it is copied in here, so this file is the moderation queue's output rather
+# than its input.
+#
+# Each entry:
+#   name     required — how the person wants to be credited
+#   comment  required — 140 characters or fewer, enforced by _plugins/friend_comments.rb
+#   relation optional — one short line of context ("flatmate since 2019")
+#   url      optional — links the name
+#
+# - name: "Jane Doe"
+#   relation: "lab partner, BSc Physics"
+#   url: "https://example.com"
+#   comment: "Will spend an hour making the plot axes right and call it the fun part."
+
+comments: []
