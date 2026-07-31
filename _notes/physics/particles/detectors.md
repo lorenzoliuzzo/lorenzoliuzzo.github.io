@@ -1,7 +1,6 @@
 ---
 title: "Particle Detectors"
 collection: notes
-permalink: /notes/physics/particles/detectors
 
 layout: single
 
@@ -13,5 +12,3 @@ tags:
   - Physics
   - Particles
 ---
-
-Hello!

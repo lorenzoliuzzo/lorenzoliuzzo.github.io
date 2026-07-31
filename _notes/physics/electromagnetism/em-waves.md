@@ -1,7 +1,6 @@
 ---
 title: "Electromagnetic Waves"
 collection: notes
-permalink: /notes/physics/electromagnetism/em-waves
 
 layout: single
 
@@ -13,5 +12,3 @@ tags:
   - Physics
   - Electromagnetism
 ---
-
-Hello!

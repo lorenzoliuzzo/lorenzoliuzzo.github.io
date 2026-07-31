@@ -11,5 +11,3 @@ tags:
   - Physics
   - Quantum Mechanics
 ---
-
-Hello!

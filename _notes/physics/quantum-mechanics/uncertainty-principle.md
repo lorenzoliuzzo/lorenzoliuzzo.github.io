@@ -1,7 +1,6 @@
 ---
 title: "Uncertainty Principle"
 collection: notes
-permalink: /notes/physics/quantum-mechanics/uncertainty-principle
 
 layout: single
 
@@ -13,5 +12,3 @@ tags:
   - Physics
   - Quantum Mechanics
 ---
-
-Hello!

@@ -1,7 +1,6 @@
 ---
 title: "Standard Model"
 collection: notes
-permalink: /notes/physics/particles/standard-model
 
 layout: single
 
@@ -13,5 +12,3 @@ tags:
   - Physics
   - Particles
 ---
-
-Hello!

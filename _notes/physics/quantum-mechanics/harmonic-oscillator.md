@@ -1,7 +1,6 @@
 ---
 title: "Harmonic Oscillator"
 collection: notes
-permalink: /notes/physics/quantum-mechanics/harmonic-oscillator
 
 layout: single
 
@@ -13,5 +12,3 @@ tags:
   - Physics
   - Quantum Mechanics
 ---
-
-Hello!

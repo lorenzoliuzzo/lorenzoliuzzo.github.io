@@ -14,6 +14,9 @@ read_time: true
 
 toc: true
 toc_sticky: true
+tags:
+  - Artificial Intelligence
+  - Evolutionary Computing
 ---
 
 
