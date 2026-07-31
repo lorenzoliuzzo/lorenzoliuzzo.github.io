@@ -46,6 +46,7 @@ Select a tag below to jump straight to that topic.
               <small style="color: #666;">
                 {{ note.date | date: "%B %d, %Y" }}
               </small>
+              {% include note-status.html document=note compact=true %}
               {% if note.excerpt %}
                 <p style="margin: 5px 0 0 0; font-size: 0.95rem; color: #444;">
                   {{ note.excerpt | strip_html | truncate: 150 }}
