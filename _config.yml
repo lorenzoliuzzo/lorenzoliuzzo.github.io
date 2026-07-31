@@ -44,7 +44,22 @@ date_format: "%Y-%m-%d"
 include:
   - _pages
 
-collections: 
+# Setting `exclude` replaces Jekyll's defaults rather than adding to them, so the
+# default entries are repeated here — without them vendor/bundle would be published.
+exclude:
+  - .sass-cache
+  - .jekyll-cache
+  - gemfiles
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - LICENSE
+  # Local authoring tool: holds the Anthropic API key and can write to _notes/.
+  # It must never be served.
+  - tools
+
+collections:
   projects: 
     output: true
     path: "_projects"
@@ -75,8 +90,13 @@ defaults:
       show_date: true
       read_time: true
       back_to_top: true
-      show_taxonomy: true  
+      show_taxonomy: true
       related: true
+      # Provenance defaults: an unmarked note reads as "not yet human-verified"
+      # rather than making no claim at all. Overridden per note by the
+      # MyThingsLab drawer (tools/mythingslab).
+      ai_generated: false
+      human_verified: false
 
   # - scope:
   #     path: "_projects/money-ball-ai"

@@ -1,0 +1,429 @@
+{% comment %}
+  MyThingsLab authoring drawer — LOCAL ONLY.
+
+  Included from _includes/footer/custom.html behind a jekyll.environment guard, so it
+  is absent from any production build rather than merely hidden. It talks to
+  tools/mythingslab/server.mjs on 127.0.0.1:4001, which holds the API key and does
+  the disk writes. Nothing here ever ships.
+{% endcomment %}
+
+<div id="mtl-root"
+     data-note-path="{{ page.path | remove_first: '_notes/' }}"
+     data-note-title="{{ page.title | escape }}"
+     data-api="http://127.0.0.1:4001"></div>
+
+<style>
+  #mtl-launch {
+    position: fixed; right: 24px; bottom: 24px; z-index: 9000;
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 16px; border: none; border-radius: 24px;
+    background: #1f2937; color: #fff; font-size: 0.82rem; font-weight: 600;
+    font-family: inherit; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.25);
+  }
+  #mtl-launch:hover { background: #111827; }
+  #mtl-launch .mtl-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #34d399;
+  }
+
+  #mtl-drawer {
+    position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100vw);
+    z-index: 9001; display: none; flex-direction: column;
+    background: #fff; border-left: 1px solid #e5e7eb;
+    box-shadow: -8px 0 28px rgba(0,0,0,.12);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  #mtl-drawer.mtl-open { display: flex; }
+
+  .mtl-head {
+    padding: 14px 16px; border-bottom: 1px solid #e5e7eb;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  .mtl-head h3 { margin: 0; font-size: 0.9rem; font-weight: 700; color: #111827; }
+  .mtl-head p { margin: 2px 0 0; font-size: 0.7rem; color: #6b7280; text-align: left; }
+  .mtl-x {
+    border: none; background: none; font-size: 1.3rem; line-height: 1;
+    color: #9ca3af; cursor: pointer; padding: 0 4px;
+  }
+
+  .mtl-sel {
+    margin: 10px 16px 0; padding: 8px 10px; border-radius: 6px;
+    background: #fefce8; border: 1px solid #fef08a;
+    font-size: 0.72rem; color: #713f12; max-height: 88px; overflow-y: auto;
+  }
+  .mtl-sel strong { display: block; margin-bottom: 3px; font-size: 0.65rem; text-transform: uppercase; letter-spacing: .04em; }
+
+  .mtl-log { flex: 1; overflow-y: auto; padding: 14px 16px; }
+  .mtl-msg { margin-bottom: 14px; font-size: 0.8rem; line-height: 1.55; }
+  .mtl-msg .mtl-who {
+    display: block; font-size: 0.62rem; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: #9ca3af; margin-bottom: 4px;
+  }
+  .mtl-msg .mtl-body { white-space: pre-wrap; color: #1f2937; text-align: left; }
+  .mtl-msg.mtl-user .mtl-body {
+    background: #f3f4f6; padding: 8px 10px; border-radius: 8px;
+  }
+  .mtl-msg.mtl-err .mtl-body { color: #b91c1c; }
+  .mtl-empty { color: #9ca3af; font-size: 0.76rem; line-height: 1.6; }
+
+  .mtl-patch {
+    margin-top: 10px; border: 1px solid #bbf7d0; border-radius: 8px;
+    background: #f0fdf4; overflow: hidden;
+  }
+  .mtl-patch pre {
+    margin: 0; padding: 9px 10px; font-size: 0.68rem; line-height: 1.45;
+    white-space: pre-wrap; word-break: break-word; max-height: 190px; overflow-y: auto;
+    background: none; border: none;
+  }
+  .mtl-patch pre .mtl-del { background: #fee2e2; text-decoration: line-through; color: #991b1b; }
+  .mtl-patch pre .mtl-ins { background: #dcfce7; color: #166534; }
+  .mtl-patch-act {
+    display: flex; gap: 8px; padding: 8px 10px; border-top: 1px solid #bbf7d0;
+  }
+
+  .mtl-btn {
+    padding: 5px 12px; border-radius: 6px; border: 1px solid transparent;
+    font-size: 0.72rem; font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+  .mtl-btn-go { background: #16a34a; color: #fff; }
+  .mtl-btn-go:hover { background: #15803d; }
+  .mtl-btn-off { background: #fff; color: #4b5563; border-color: #d1d5db; }
+  .mtl-btn:disabled { opacity: .5; cursor: default; }
+
+  .mtl-foot { border-top: 1px solid #e5e7eb; padding: 10px 16px 12px; }
+  .mtl-foot textarea {
+    width: 100%; box-sizing: border-box; resize: vertical; min-height: 62px;
+    padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 8px;
+    font-family: inherit; font-size: 0.78rem; line-height: 1.5;
+  }
+  .mtl-foot-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px;
+  }
+  .mtl-send {
+    padding: 7px 16px; border: none; border-radius: 8px;
+    background: #1f2937; color: #fff; font-size: 0.76rem; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .mtl-send:disabled { opacity: .5; cursor: default; }
+  .mtl-verify {
+    padding: 7px 12px; border-radius: 8px; border: 1px solid #d1d5db;
+    background: #fff; color: #374151; font-size: 0.72rem; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .mtl-verify:hover { background: #f9fafb; }
+  .mtl-note { margin: 6px 0 0; font-size: 0.66rem; color: #9ca3af; text-align: left; }
+</style>
+
+{% raw %}
+<script>
+(function () {
+  const root = document.getElementById("mtl-root");
+  if (!root) return;
+
+  const API = root.dataset.api;
+  const NOTE = root.dataset.notePath;
+  const history = [];
+  let selection = "";
+  let busy = false;
+
+  const launch = el("button", { id: "mtl-launch", title: "Talk to this note" });
+  launch.innerHTML = '<span class="mtl-dot"></span> MyThingsLab';
+  document.body.appendChild(launch);
+
+  const drawer = el("div", { id: "mtl-drawer" });
+  drawer.innerHTML = [
+    '<div class="mtl-head">',
+    '  <div><h3>MyThingsLab</h3><p>' + escapeHtml(root.dataset.noteTitle || NOTE) + "</p></div>",
+    '  <button class="mtl-x" title="Close">&times;</button>',
+    "</div>",
+    '<div class="mtl-log"></div>',
+    '<div class="mtl-foot">',
+    '  <textarea placeholder="Ask about this note, or say how a passage should read&hellip;"></textarea>',
+    '  <div class="mtl-foot-row">',
+    '    <button class="mtl-verify">Mark human-verified</button>',
+    '    <button class="mtl-send">Send</button>',
+    "  </div>",
+    '  <p class="mtl-note">Edits write straight to the Markdown source. Review with <code>git diff</code>.</p>',
+    "</div>",
+  ].join("");
+  document.body.appendChild(drawer);
+
+  const log = drawer.querySelector(".mtl-log");
+  const input = drawer.querySelector("textarea");
+  const sendBtn = drawer.querySelector(".mtl-send");
+  const verifyBtn = drawer.querySelector(".mtl-verify");
+
+  resetLog();
+
+  launch.addEventListener("click", () => toggle(true));
+  drawer.querySelector(".mtl-x").addEventListener("click", () => toggle(false));
+  sendBtn.addEventListener("click", send);
+  verifyBtn.addEventListener("click", verify);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) send();
+  });
+
+  // Selecting text in the article is the main entry point: it opens the drawer with
+  // that passage as the subject, so the loop is select -> ask -> apply.
+  document.addEventListener("mouseup", () => {
+    const text = String(window.getSelection());
+    const article = document.querySelector(".page__content");
+    if (!text.trim() || text.trim().length < 12) return;
+    if (!article || !article.contains(window.getSelection().anchorNode)) return;
+    selection = text;
+    renderSelection();
+    toggle(true);
+    input.focus();
+  });
+
+  function toggle(open) {
+    drawer.classList.toggle("mtl-open", open);
+    launch.style.display = open ? "none" : "flex";
+  }
+
+  function resetLog() {
+    log.innerHTML =
+      '<p class="mtl-empty">Select a passage in the note to bring it in here, or just ask a ' +
+      "question about the page.<br><br>Applied edits go straight into the Markdown source and " +
+      "Jekyll reloads the page.</p>";
+    renderSelection();
+  }
+
+  function renderSelection() {
+    let box = drawer.querySelector(".mtl-sel");
+    if (!selection) {
+      if (box) box.remove();
+      return;
+    }
+    if (!box) {
+      box = el("div", { className: "mtl-sel" });
+      drawer.querySelector(".mtl-head").insertAdjacentElement("afterend", box);
+    }
+    box.innerHTML =
+      "<strong>Selected passage</strong>" + escapeHtml(trim(selection, 400));
+  }
+
+  function push(role, text, cls) {
+    const node = el("div", { className: "mtl-msg " + (cls || ("mtl-" + role)) });
+    node.innerHTML =
+      '<span class="mtl-who">' + (role === "user" ? "You" : role === "err" ? "Error" : "MyThingsLab") +
+      '</span><div class="mtl-body"></div>';
+    node.querySelector(".mtl-body").textContent = text;
+    log.appendChild(node);
+    log.scrollTop = log.scrollHeight;
+    return node.querySelector(".mtl-body");
+  }
+
+  async function send() {
+    const text = input.value.trim();
+    if (!text || busy) return;
+
+    if (log.querySelector(".mtl-empty")) log.innerHTML = "";
+    push("user", text);
+    history.push({ role: "user", content: text });
+    input.value = "";
+    setBusy(true);
+
+    const body = push("assistant", "thinking…");
+    let answer = "";
+
+    try {
+      const res = await fetch(API + "/api/chat", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ path: NOTE, messages: history, selection: selection }),
+      });
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || res.statusText);
+
+      await readEvents(res.body, (event, data) => {
+        if (event === "text") {
+          answer += data.text;
+          body.textContent = stripPatch(answer);
+          log.scrollTop = log.scrollHeight;
+        } else if (event === "error") {
+          throw new Error(data.message);
+        }
+      });
+
+      if (!answer.trim()) throw new Error("empty response from the model");
+      history.push({ role: "assistant", content: answer });
+      body.textContent = stripPatch(answer);
+
+      const patch = parsePatch(answer);
+      if (patch) body.parentNode.appendChild(patchCard(patch));
+    } catch (err) {
+      body.parentNode.classList.add("mtl-err");
+      body.textContent = err.message;
+      // Drop the unanswered turn so a retry does not resend a dangling user message.
+      history.pop();
+    } finally {
+      setBusy(false);
+      log.scrollTop = log.scrollHeight;
+    }
+  }
+
+  function patchCard(patch) {
+    const card = el("div", { className: "mtl-patch" });
+    const pre = el("pre");
+    pre.appendChild(span(patch.old_string, "mtl-del"));
+    pre.appendChild(document.createTextNode("\n"));
+    pre.appendChild(span(patch.new_string, "mtl-ins"));
+
+    const actions = el("div", { className: "mtl-patch-act" });
+    const apply = el("button", { className: "mtl-btn mtl-btn-go", textContent: "Apply to source" });
+    const skip = el("button", { className: "mtl-btn mtl-btn-off", textContent: "Dismiss" });
+
+    apply.addEventListener("click", async () => {
+      apply.disabled = skip.disabled = true;
+      apply.textContent = "Applying…";
+      try {
+        const res = await fetch(API + "/api/apply", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            path: NOTE,
+            old_string: patch.old_string,
+            new_string: patch.new_string,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || res.statusText);
+        apply.textContent = "Applied ✓";
+        push("assistant", "Applied to " + NOTE + ". Verification is now stale until you re-read it.");
+      } catch (err) {
+        apply.disabled = skip.disabled = false;
+        apply.textContent = "Apply to source";
+        push("err", err.message, "mtl-err");
+      }
+    });
+    skip.addEventListener("click", () => card.remove());
+
+    actions.appendChild(apply);
+    actions.appendChild(skip);
+    card.appendChild(pre);
+    card.appendChild(actions);
+    return card;
+  }
+
+  // Signing off is the one irreversible-ish claim this tool makes, so the choice is
+  // explicit rather than a confirm() where Cancel would silently mean "yes, human-written".
+  function verify() {
+    if (busy || drawer.querySelector(".mtl-confirm")) return;
+    if (log.querySelector(".mtl-empty")) log.innerHTML = "";
+
+    const card = el("div", { className: "mtl-patch mtl-confirm" });
+    const blurb = el("pre");
+    blurb.textContent =
+      "Mark this note human-verified?\n\n" +
+      "This records that you have read it in full and stand behind it. The badge is " +
+      "locked to a checksum of the current text, so it clears itself if the note changes.\n\n" +
+      "How was it written?";
+
+    const actions = el("div", { className: "mtl-patch-act" });
+    const ai = el("button", { className: "mtl-btn mtl-btn-go", textContent: "AI-assisted" });
+    const mine = el("button", { className: "mtl-btn mtl-btn-go", textContent: "I wrote it" });
+    const nope = el("button", { className: "mtl-btn mtl-btn-off", textContent: "Cancel" });
+
+    ai.addEventListener("click", () => { card.remove(); doVerify(true); });
+    mine.addEventListener("click", () => { card.remove(); doVerify(false); });
+    nope.addEventListener("click", () => card.remove());
+
+    actions.appendChild(ai);
+    actions.appendChild(mine);
+    actions.appendChild(nope);
+    card.appendChild(blurb);
+    card.appendChild(actions);
+    log.appendChild(card);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  async function doVerify(aiAssisted) {
+    setBusy(true);
+    try {
+      const res = await fetch(API + "/api/verify", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ path: NOTE, ai_generated: aiAssisted }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || res.statusText);
+      push(
+        "assistant",
+        "Verified on " + data.verified_at + " as " +
+          (aiAssisted ? "AI-assisted" : "human-written") +
+          ". Reload to see the badge. Editing the note from here on clears it again.",
+      );
+    } catch (err) {
+      push("err", err.message, "mtl-err");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function setBusy(state) {
+    busy = state;
+    sendBtn.disabled = state;
+    verifyBtn.disabled = state;
+    sendBtn.textContent = state ? "…" : "Send";
+  }
+
+  async function readEvents(stream, onEvent) {
+    const reader = stream.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      let split;
+      while ((split = buffer.indexOf("\n\n")) !== -1) {
+        const frame = buffer.slice(0, split);
+        buffer = buffer.slice(split + 2);
+        const name = (frame.match(/^event: (.*)$/m) || [])[1];
+        const payload = (frame.match(/^data: (.*)$/m) || [])[1];
+        if (name && payload) onEvent(name, JSON.parse(payload));
+      }
+    }
+  }
+
+  const PATCH_RE = /```mythingslab-patch\s*([\s\S]*?)```/;
+
+  function parsePatch(text) {
+    const match = PATCH_RE.exec(text);
+    if (!match) return null;
+    try {
+      const parsed = JSON.parse(match[1].trim());
+      if (typeof parsed.old_string !== "string" || typeof parsed.new_string !== "string") {
+        return null;
+      }
+      return parsed;
+    } catch {
+      return null;
+    }
+  }
+
+  function stripPatch(text) {
+    return text.replace(PATCH_RE, "").trimEnd();
+  }
+
+  function span(text, className) {
+    const node = el("span", { className: className });
+    node.textContent = text;
+    return node;
+  }
+
+  function el(tag, props) {
+    return Object.assign(document.createElement(tag), props || {});
+  }
+
+  function trim(text, max) {
+    return text.length > max ? text.slice(0, max) + "…" : text;
+  }
+
+  function escapeHtml(text) {
+    const node = document.createElement("div");
+    node.textContent = text;
+    return node.innerHTML;
+  }
+})();
+</script>
+{% endraw %}

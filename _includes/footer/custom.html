@@ -160,3 +160,12 @@
   // wrapper so a dynamically inserted table cannot start a mutation loop.
   window.updateReferences = refreshReferences;
 </script>
+{% comment %}
+  MyThingsLab authoring drawer. The environment guard is what keeps it off the public
+  site: the deploy workflow builds with JEKYLL_ENV=production, so this include is never
+  evaluated there. Verify with:
+    JEKYLL_ENV=production bundle exec jekyll build && grep -ri mythingslab _site/
+{% endcomment %}
+{% if jekyll.environment != "production" and page.collection == "notes" %}
+  {% include mythingslab.html %}
+{% endif %}
