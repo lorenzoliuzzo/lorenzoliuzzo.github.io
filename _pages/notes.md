@@ -6,7 +6,12 @@ classes: wide
 author_profile: true
 ---
 
-Select a topic below to jump straight to that section.
+Select a topic below to jump straight to that section, or filter by title.
+
+<div class="archive-filter">
+  <input type="search" id="archive-filter" placeholder="Filter notes by title&hellip;" autocomplete="off" aria-label="Filter notes by title">
+</div>
+<p class="archive-filter__empty" id="archive-filter-empty" hidden>No notes match that filter.</p>
 
 {% assign notes = site.notes | sort: "title" %}
 
@@ -45,7 +50,7 @@ Select a topic below to jump straight to that section.
       {% assign in_sub = in_main | where_exp: "n", "n.tags[1] == sub_tag" | sort: "date" | reverse %}
       <div class="tag-subsection" id="{{ main_tag | slugify }}-{{ sub_tag | slugify }}">
         <h3 class="tag-subsection__title">{{ sub_tag }}</h3>
-        {% include entry-list.html entries=in_sub date=true status=true %}
+        {% include entry-list.html entries=in_sub date=true status=true dense=true %}
       </div>
     {% endfor %}
 
@@ -53,10 +58,12 @@ Select a topic below to jump straight to that section.
     {% if uncategorized.size > 0 %}
       <div class="tag-subsection">
         {% if sub_tags.size > 0 %}<h3 class="tag-subsection__title">General</h3>{% endif %}
-        {% include entry-list.html entries=uncategorized date=true status=true %}
+        {% include entry-list.html entries=uncategorized date=true status=true dense=true %}
       </div>
     {% endif %}
 
     <a href="#page-title" class="back-to-top">&uarr; Back to top</a>
   </section>
 {% endfor %}
+
+{% include archive-filter.html %}
