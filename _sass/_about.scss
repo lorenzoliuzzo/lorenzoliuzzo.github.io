@@ -1,0 +1,158 @@
+// Components for the About page: the call-to-action row, the interests list, the
+// education timeline and the skill chips. Kept generic enough to reuse elsewhere.
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0 0 2.5rem;
+
+  .btn {
+    margin: 0;
+  }
+}
+
+/* Interests
+   ========================================================================== */
+
+.definition-list {
+  max-width: var(--measure);
+  margin: 0 0 2rem;
+
+  dt {
+    margin-top: 1.25rem;
+    font-family: var(--font-serif);
+    font-size: 1.05em;
+    font-weight: 700;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  dd {
+    margin: 0.2rem 0 0;
+    color: var(--text-muted);
+    line-height: var(--leading-body);
+  }
+}
+
+/* Education timeline
+   ========================================================================== */
+
+.timeline {
+  max-width: var(--measure);
+  margin: 0 0 2.5rem;
+  padding: 0 0 0 1.5rem;
+  // The rule is the spine; each item hangs a dot on it. Border rather than a
+  // pseudo-element so it stretches with the list without measuring anything.
+  border-left: 2px solid var(--border);
+  list-style: none;
+  counter-reset: none;
+}
+
+.timeline__item {
+  position: relative;
+  margin: 0 0 1.75rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  // Centred on the 2px spine: half the dot's outer width (14px) plus the
+  // list's padding and half the border.
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0.45em;
+    left: calc(-1.5rem - 8px);
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--surface);
+    border-radius: 50%;
+    background: var(--accent);
+  }
+}
+
+// The theme's `.page__content p` beats a bare class on specificity, so these
+// have to be qualified or every line here keeps its 1.2em body-copy margin.
+.page__content .timeline__period {
+  margin: 0;
+  color: var(--text-faint);
+  font-family: var(--font-sans);
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+// Qualified for the same reason as .timeline__period: `.page__content h3` sets a
+// 2rem heading rhythm that would tear the timeline entries apart.
+.page__content .timeline__title {
+  margin: 0.15rem 0 0.1rem;
+  font-family: var(--font-serif);
+  font-size: 1.1em;
+  line-height: var(--leading-tight);
+}
+
+.page__content .timeline__place {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.92em;
+  line-height: 1.5;
+}
+
+.timeline__note {
+  display: inline-block;
+  margin-left: 0.4em;
+  padding: 1px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  color: var(--text-faint);
+  font-family: var(--font-sans);
+  font-size: 0.78em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Skills
+   ========================================================================== */
+
+.skill-groups {
+  display: grid;
+  gap: 1.5rem;
+  margin: 0 0 2rem;
+
+  @media (min-width: 48em) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.page__content .skill-group__title {
+  margin: 0 0 0.6rem;
+  color: var(--text-faint);
+  font-family: var(--font-sans);
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 3px 11px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: var(--surface-sunken);
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    font-size: 0.8em;
+    line-height: 1.5;
+  }
+}
