@@ -9,7 +9,7 @@ classes: wide
 header:
   overlay_color: "#3c7fe4ff"
   overlay_filter: "0.4"
-  overlay_image: /assets/images/photo.png  
+  overlay_image: /assets/images/photo.jpg
   actions:
     - label: "CV EN"
       url: "/assets/cv/cv_liuzzo_en.pdf"
