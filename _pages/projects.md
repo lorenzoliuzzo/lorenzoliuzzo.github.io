@@ -1,11 +1,12 @@
 ---
 title: Projects Archive
-collection: projects
 permalink: /projects/
-
-layout: collection
+layout: single
 classes: wide
-entries_layout: grid
+author_profile: true
 ---
 
 Some of my recent work at the intersection of physics, AI, and software engineering.
+
+{% assign projects = site.projects | sort: 'date' | reverse %}
+{% include entry-list.html entries=projects date=true empty="Nothing published here yet." %}

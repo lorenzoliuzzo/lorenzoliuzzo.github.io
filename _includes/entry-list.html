@@ -11,11 +11,17 @@
     {% for entry in include.entries %}
       <article class="entry-card">
         <h3 class="entry-card__title">
-          <a href="{{ entry.url | relative_url }}">{{ entry.title | default: "Untitled" }}</a>
+          {% if entry.github_url %}
+            <a href="{{ entry.github_url }}" target="_blank" rel="noopener noreferrer">{{ entry.title | default: "Untitled" }}</a>
+          {% else %}
+            <a href="{{ entry.url | relative_url }}">{{ entry.title | default: "Untitled" }}</a>
+          {% endif %}
         </h3>
-        {% if include.date and entry.date %}
+        {% if include.date and entry.date or entry.language %}
           <p class="entry-card__meta">
-            <time datetime="{{ entry.date | date_to_xmlschema }}">{{ entry.date | date: site.date_format }}</time>
+            {% if include.date and entry.date %}<time datetime="{{ entry.date | date_to_xmlschema }}">{{ entry.date | date: site.date_format }}</time>{% endif %}
+            {% if include.date and entry.date and entry.language %}&nbsp;&middot;&nbsp;{% endif %}
+            {% if entry.language %}{{ entry.language }}{% endif %}
           </p>
         {% endif %}
         {% if include.status %}

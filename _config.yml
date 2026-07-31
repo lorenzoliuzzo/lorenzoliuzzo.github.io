@@ -98,24 +98,15 @@ defaults:
       ai_generated: false
       human_verified: false
 
-  # - scope:
-  #     path: "_projects/money-ball-ai"
-  #     type: projects
-  #   values:
-  #     read_time: true
-  #     back_to_top: true
-  #     sidebar:
-  #       nav: "money-ball-ai-docs"
-
-
-  # - scope:
-  #     path: "_projects/mc-raytracing"
-  #     type: projects
-  #   values:
-  #     read_time: true
-  #     back_to_top: true
-  #     sidebar:
-  #       nav: "mc-raytracing-toc"
+  - scope:
+      path: "_projects"
+      type: projects
+    values:
+      layout: single
+      author_profile: false
+      show_date: true
+      read_time: false
+      back_to_top: true
 
 
 tag_archive:
