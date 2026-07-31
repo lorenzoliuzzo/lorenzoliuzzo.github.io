@@ -6,6 +6,7 @@
   date     — truthy to show the document date
   status   — truthy to show the note provenance badges
   books    — truthy to show the author and reading strip for library entries
+  trips    — truthy to show the type, dates and stops strip for travel entries
   dense    — truthy for the index variant: one scannable row per entry, no
              excerpt. Used by the archives, where excerpts turn the page into a
              wall of preview text you have to read past to scan.
@@ -25,6 +26,9 @@
         <div class="entry-card__aside">
           {% if include.books %}
             {% include book-meta.html document=entry compact=true %}
+          {% endif %}
+          {% if include.trips %}
+            {% include trip-meta.html document=entry compact=true %}
           {% endif %}
           {% if include.status %}
             {% include note-status.html document=entry compact=true %}

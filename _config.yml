@@ -81,6 +81,11 @@ collections:
     path: "_library"
     permalink: /:collection/:path/
 
+  travel:
+    output: true
+    path: "_travel"
+    permalink: /:collection/:path/
+
 
 defaults:
   - scope:
@@ -145,6 +150,25 @@ defaults:
       read_time: false
       back_to_top: true
       breadcrumbs: true
+
+  - scope:
+      path: "_travel"
+      type: travel
+    values:
+      # The travel layout draws the trip's own map above the prose; it wraps
+      # `single`, so everything else here is the same deal the other collections get.
+      layout: travel
+      author_profile: false
+      # The dates are rendered by trip-meta.html as a labelled start–end span, so
+      # the theme's bare calendar line would only repeat half of it. Same call the
+      # library makes for the same reason.
+      show_date: false
+      read_time: false
+      back_to_top: true
+      breadcrumbs: true
+      # Loads Leaflet from the CDN. Set on the layout's pages rather than
+      # site-wide so no other page pays for a map library it never uses.
+      travel_map: true
 
 
 # Collections the local MyThingsLab drawer can chat about and write to, and so also

@@ -1,0 +1,15 @@
+---
+layout: single
+---
+
+{% comment %}
+  A trip page: its own stops on a map, then whatever prose the document carries.
+  `where` is how a single document is turned into the one-element array the
+  include wants — Liquid has no literal for that.
+{% endcomment %}
+{% if page.stops %}
+  {% assign this_trip = site.travel | where: "url", page.url %}
+  {% include travel-map.html trips=this_trip id="trip-map" %}
+{% endif %}
+
+{{ content }}

@@ -1,0 +1,365 @@
+// The OpenStreetMap on /travel/ and on each trip page, plus the list of places
+// that have no page behind them. Leaflet ships its own stylesheet from the CDN;
+// everything here either sits outside it or deliberately overrides it.
+
+.travel-map {
+  margin: 0 0 2rem;
+}
+
+.travel-map__canvas {
+  height: 26rem;
+  max-height: 70vh;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  // Leaflet paints tiles and controls over the corners otherwise.
+  overflow: hidden;
+  // Shown while the tiles are still in flight, and behind the gaps at low zoom.
+  background: var(--surface-sunken);
+
+  @media (max-width: 37.5em) {
+    height: 20rem;
+  }
+}
+
+// OSM only publishes light raster tiles, so dark mode is a filter rather than a
+// real dark style: invert lifts the paper to near-black, the hue rotation puts
+// the greens and blues back the right way round, and the last two stops keep it
+// from glaring against --surface. Scoped to the tiles so the markers, popups and
+// controls below are not inverted along with them.
+[data-theme="dark"] .travel-map__canvas .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9);
+}
+
+/* Pins and routes
+   ========================================================================== */
+
+// Leaflet writes fill and stroke as SVG presentation attributes, which sit below
+// author CSS in the cascade — so these win without !important, and the pins
+// follow the theme toggle for free.
+.travel-pin {
+  cursor: pointer;
+  transition: fill-opacity 0.15s ease;
+
+  &:hover {
+    fill-opacity: 1;
+  }
+}
+
+.travel-pin--trip {
+  fill: var(--accent);
+  fill-opacity: 0.75;
+  stroke: var(--surface-raised);
+}
+
+.travel-pin--place {
+  fill: var(--text-faint);
+  fill-opacity: 0.65;
+  stroke: var(--surface-raised);
+}
+
+// Shared by the real polylines and by the <svg> swatches in the legend, so a
+// pattern only ever has to be changed in one place. stroke-width is set here
+// rather than left to Leaflet's `weight` option so the legend lines match.
+.travel-route {
+  fill: none;
+  stroke: var(--accent);
+  stroke-opacity: 0.55;
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+}
+
+// One dash pattern per trip type, keyed off _data/trip_types.yml. The patterns
+// are meant to read as the thing they describe — a road unrolling, the dot-dash
+// of a railway, footprints — so a glance at the map says how the trip was made
+// before you reach the legend. A type with no rule here keeps the default dash.
+.travel-route--roadtrip {
+  stroke-dasharray: 10 5;
+}
+
+.travel-route--train {
+  stroke-dasharray: 12 4 2 4;
+}
+
+.travel-route--bike {
+  stroke-dasharray: 6 4;
+}
+
+.travel-route--hiking,
+.travel-route--walk {
+  stroke-dasharray: 1 5;
+  stroke-linecap: round;
+}
+
+.travel-route--boat {
+  stroke-dasharray: 2 6;
+  stroke-linecap: round;
+}
+
+// Faintest of the set: a flight path is the one line that says nothing about the
+// ground under it, so it should not draw the eye the way a walked route does.
+.travel-route--flight {
+  stroke-dasharray: 14 8;
+  stroke-opacity: 0.4;
+}
+
+/* Legend
+   ========================================================================== */
+
+.travel-map__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.6rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.travel-map__key {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: var(--radius-pill);
+
+  // The swatch pairs with the label after it, so only the gap before it grows.
+  & + & {
+    margin-left: 0.75rem;
+  }
+}
+
+.travel-map__key--trip {
+  background: var(--accent);
+}
+
+.travel-map__key--place {
+  background: var(--text-faint);
+}
+
+// The route swatches carry .travel-route themselves, so they inherit stroke and
+// dash pattern from the rules above; all this has to do is give them a box.
+.travel-map__route-key {
+  width: 30px;
+  height: 8px;
+  flex: none;
+  margin-left: 0.75rem;
+  overflow: visible;
+}
+
+.travel-map__hint {
+  margin-left: auto;
+  color: var(--text-faint);
+
+  // It explains a desktop-only interaction; there is no wheel to trap on touch.
+  @media (max-width: 48em) {
+    display: none;
+  }
+}
+
+.travel-map__empty {
+  padding: 1rem 1.15rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+}
+
+/* Popups
+   ========================================================================== */
+
+// Leaflet's popup and control chrome is hard-coded white, which reads as a
+// light-mode artefact stuck on a dark page.
+//
+// Specificity matters more than usual here. leaflet.css is a separate <link> in
+// head/custom.html, which the theme emits *after* main.css, so on any tie
+// Leaflet wins on source order. Where its own selector is already two classes
+// deep, the override has to go three: `&.leaflet-container` is the canvas
+// element itself — Leaflet adds that class to the div it is handed — not a
+// descendant of it.
+.travel-map__canvas {
+  .leaflet-popup-content-wrapper,
+  .leaflet-popup-tip {
+    background: var(--surface-raised);
+    color: var(--text);
+    box-shadow: var(--shadow-raised);
+  }
+
+  .leaflet-popup-content-wrapper {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .leaflet-popup-content {
+    margin: 0.7rem 0.9rem;
+    font-family: var(--font-sans);
+    line-height: var(--leading-tight);
+  }
+
+  // Leaflet: `.leaflet-container a.leaflet-popup-close-button`.
+  &.leaflet-container a.leaflet-popup-close-button {
+    color: var(--text-faint);
+
+    &:hover {
+      color: var(--text);
+    }
+  }
+
+  // Leaflet: `.leaflet-container .leaflet-control-attribution`.
+  &.leaflet-container .leaflet-control-attribution {
+    background: var(--surface-raised);
+    color: var(--text-muted);
+
+    a {
+      color: var(--accent);
+    }
+  }
+
+  .leaflet-bar a {
+    background: var(--surface-raised);
+    border-bottom-color: var(--border);
+    color: var(--text);
+
+    &:hover {
+      background: var(--surface-sunken);
+      color: var(--text);
+    }
+  }
+}
+
+.travel-popup__name {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.travel-popup__meta {
+  margin: 0.15rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.travel-popup__note {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+}
+
+.travel-popup__link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+/* Trip summary strip
+   ========================================================================== */
+
+// Same two-tier logic as the library's book-meta: how the trip was made is the
+// one fact worth a pill, and the dates, countries and stop count stay quiet text
+// beside it. A page of trips should read as a list, not as rows of competing
+// labels.
+.trip-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  margin: 0.5em 0 0.9em;
+  // .page__meta is floated by the theme; without clearing it the strip is pushed
+  // off the right edge of the column. Same fix as .book-meta and .note-status.
+  clear: both;
+}
+
+.trip-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 11px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+
+  i {
+    font-size: 0.85em;
+  }
+}
+
+.trip-dates,
+.trip-where,
+.trip-stops {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+
+  i {
+    color: var(--text-faint);
+    font-size: 0.9em;
+  }
+}
+
+.trip-stops {
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.trip-meta--compact {
+  margin: 6px 0 0;
+  gap: 4px 10px;
+
+  .trip-chip {
+    padding: 2px 9px;
+    font-size: 0.68rem;
+  }
+
+  .trip-dates,
+  .trip-where,
+  .trip-stops {
+    font-size: 0.72rem;
+  }
+}
+
+@media print {
+  .trip-chip {
+    border: 1px solid #999;
+    background: none !important;
+    color: #000 !important;
+  }
+}
+
+/* "Also been" list
+   ========================================================================== */
+
+.place-list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+
+  @media (min-width: 48em) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.place-list__item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.place-list__where {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+// Pushed to the right so the years line up into a column you can read down.
+.place-list__year {
+  margin-left: auto;
+  color: var(--text-faint);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}

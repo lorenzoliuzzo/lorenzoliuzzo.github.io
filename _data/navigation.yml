@@ -11,6 +11,9 @@ main:
   - title: "Library"
     url: /library/
 
+  - title: "Travel"
+    url: /travel/
+
 
 money-ball-ai-docs:
   - title: "← Back to All Projects"

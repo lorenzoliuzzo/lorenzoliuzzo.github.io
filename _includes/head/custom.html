@@ -35,4 +35,19 @@
   })();
 </script>
 
+{% comment %}
+  Leaflet, for the OpenStreetMap on the travel pages. Both halves are guarded on
+  `travel_map`, which is set by the _travel collection defaults and by
+  _pages/travel.md — no other page should be fetching a map library. The
+  stylesheet is here and the script is in _includes/footer/custom.html.
+  Integrity hashes are for leaflet@1.9.4 on unpkg; regenerate them if the pin moves.
+{% endcomment %}
+{% if page.travel_map %}
+  <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="anonymous">
+{% endif %}
+
 <!-- end custom head snippets -->

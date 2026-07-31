@@ -1,0 +1,39 @@
+# How a trip was made. Set `type: <key>` in a _travel document and it picks up the
+# label, the icon on its chip, and the dash pattern its route is drawn with.
+#
+# Adding a type is this file plus one rule in _sass/_travel.scss: a
+# `.travel-route--<key>` block giving it a stroke-dasharray. A type with no rule
+# still works — the route just falls back to the default dash.
+#
+# `icon` is a Font Awesome solid name. The theme loads the free set from a
+# `@latest` CDN URL, so the version floats — these are all FA6-era names, which
+# FA7 still ships. Check a name against the current release before adding it.
+# A trip with no `type` renders without a chip rather than being guessed at.
+
+roadtrip:
+  label: "Road trip"
+  icon: "fa-car-side"
+
+train:
+  label: "Train trip"
+  icon: "fa-train"
+
+hiking:
+  label: "Hiking trip"
+  icon: "fa-person-hiking"
+
+bike:
+  label: "Bike trip"
+  icon: "fa-person-biking"
+
+walk:
+  label: "On foot"
+  icon: "fa-person-walking"
+
+boat:
+  label: "Boat trip"
+  icon: "fa-sailboat"
+
+flight:
+  label: "Flight"
+  icon: "fa-plane"

@@ -1,0 +1,15 @@
+# Places visited that don't have a trip page behind them. Each one is a pin on
+# the map at /travel/ and a row in the "Also been" list; anything you want to
+# write more than a line about belongs in _travel/ instead.
+#
+# Fields — `name` and `coords` are required, the rest are optional:
+#
+#   - name: "Lisbon"
+#     country: "Portugal"        # shown next to the name, and in the pin popup
+#     coords: [38.7223, -9.1393] # [latitude, longitude], decimal degrees
+#     year: 2023                 # when you were there
+#     note: "Three days in Alfama."
+#
+# Coordinates: open openstreetmap.org, right-click the spot, "Show address" —
+# the lat/lon pair in the URL is already in this order. A stop with no `coords`
+# is silently left off the map, so double-check that line if a pin is missing.
