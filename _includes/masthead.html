@@ -1,7 +1,12 @@
 {% comment %}
-  Overrides minimal-mistakes 4.27.x _includes/masthead.html. The only local change
-  is the theme toggle button and its handler, marked below. Re-sync this file from
-  the theme when bumping remote_theme in _config.yml.
+  Overrides minimal-mistakes 4.27.x _includes/masthead.html. Local changes: the
+  theme toggle button and its handler (marked below), and hiding the site-title
+  text so the monogram logo stands alone (see .site-title in _theme-bridge.scss).
+  The site-title node has to stay in the DOM, just hidden —
+  the theme's greedy-nav.js does `$title.outerWidth(true)` unconditionally, and an
+  absent .site-title turns that into NaN, which silently breaks the nav's overflow
+  collapse into the hamburger menu at every width. Re-sync this file from the
+  theme when bumping remote_theme in _config.yml.
 {% endcomment %}
 {% capture logo_path %}{{ site.logo }}{% endcapture %}
 
