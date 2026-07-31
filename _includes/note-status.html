@@ -1,24 +1,29 @@
 {% comment %}
-  Provenance strip for notes.
+  Provenance strip for the collections MyThingsLab can write to.
 
   Verification leads, because it is the claim that carries weight: a human read
   this and vouches for it. How the first draft got written is secondary context,
   so it trails behind as a quiet chip rather than competing for attention.
+
+  Which collections those are is `mythingslab_collections` in _config.yml: the badge
+  promises a sign-off that only the drawer records, so a collection the drawer cannot
+  reach has no business showing one.
 {% endcomment %}
 {% assign doc = include.document | default: page %}
-{% if doc.collection == "notes" %}
+{% if site.mythingslab_collections contains doc.collection %}
   {% assign state = doc.verification_state | default: "unverified" %}
+  {% if doc.collection == "library" %}{% assign noun = "write-up" %}{% else %}{% assign noun = "note" %}{% endif %}
   <div class="note-status{% if include.compact %} note-status--compact{% endif %}">
 
     {% case state %}
       {% when "verified" %}
-        <span class="note-badge note-badge--verified" title="{{ site.author.name }} has read this note in full and vouches for it. The badge is locked to a checksum of the text below, so it clears itself if the note is edited.">
+        <span class="note-badge note-badge--verified" title="{{ site.author.name }} has read this {{ noun }} in full and vouches for it. The badge is locked to a checksum of the text below, so it clears itself if the text is edited.">
           <i class="fas fa-circle-check" aria-hidden="true"></i>
           Human-verified{% if doc.verified_at %} &middot; {{ doc.verified_at | date: "%Y-%m-%d" }}{% endif %}
         </span>
 
       {% when "stale" %}
-        <span class="note-badge note-badge--stale" title="This note was verified on {{ doc.verified_at | date: '%Y-%m-%d' }}, but the text has changed since. Treat it as unreviewed until it is read again.">
+        <span class="note-badge note-badge--stale" title="This {{ noun }} was verified on {{ doc.verified_at | date: '%Y-%m-%d' }}, but the text has changed since. Treat it as unreviewed until it is read again.">
           <i class="fas fa-triangle-exclamation" aria-hidden="true"></i>
           Verification stale &mdash; edited since review
         </span>
@@ -29,13 +34,13 @@
         </span>
 
       {% else %}
-        <span class="note-badge note-badge--unverified" title="No human has read this note end to end yet. Read it with that in mind.">
+        <span class="note-badge note-badge--unverified" title="No human has read this {{ noun }} end to end yet. Read it with that in mind.">
           <i class="far fa-circle" aria-hidden="true"></i> Awaiting human review
         </span>
     {% endcase %}
 
     {% if doc.ai_generated %}
-      <span class="note-provenance" title="An AI assistant drafted or edited this note. The verification badge above is what says whether a human stands behind it.">
+      <span class="note-provenance" title="An AI assistant drafted or edited this {{ noun }}. The verification badge above is what says whether a human stands behind it.">
         <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i> AI-drafted
       </span>
     {% else %}

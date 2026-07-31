@@ -90,28 +90,41 @@ export function touchesVerificationKeys(text) {
   return VERIFICATION_KEYS.some((key) => new RegExp(`^${key}\\s*:`, "m").test(String(text ?? "")));
 }
 
-export function resolveNotePath(repoRoot, relPath) {
+// The collections the drawer may read and write, and the whole of what it may
+// touch on disk. A page outside them — a _pages page, _config.yml, this tool's own
+// source — is not addressable through the API at all, whatever path is requested.
+// Kept in step with `mythingslab_collections` in _config.yml, which is what decides
+// where the drawer is served and which pages show a provenance badge.
+export const EDITABLE_COLLECTIONS = ["notes", "library"];
+
+export function resolveDocPath(repoRoot, collection, relPath) {
+  if (!EDITABLE_COLLECTIONS.includes(collection)) {
+    throw new Error(
+      `collection must be one of ${EDITABLE_COLLECTIONS.join(", ")}, got ${JSON.stringify(collection)}`,
+    );
+  }
   if (typeof relPath !== "string" || relPath.length === 0) {
-    throw new Error("missing note path");
+    throw new Error("missing document path");
   }
   if (relPath.includes("\0")) {
-    throw new Error("invalid note path");
+    throw new Error("invalid document path");
   }
 
-  const notesDir = path.resolve(repoRoot, "_notes");
-  // An absolute relPath makes resolve() ignore notesDir, so the containment
+  const dirName = `_${collection}`;
+  const rootDir = path.resolve(repoRoot, dirName);
+  // An absolute relPath makes resolve() ignore rootDir, so the containment
   // check below is what actually enforces the boundary.
-  const abs = path.resolve(notesDir, relPath.replace(/^\/+/, ""));
+  const abs = path.resolve(rootDir, relPath.replace(/^\/+/, ""));
 
   if (path.extname(abs) !== ".md") {
-    throw new Error("note path must end in .md");
+    throw new Error("document path must end in .md");
   }
-  if (!isInside(notesDir, abs)) {
-    throw new Error("note path escapes _notes/");
+  if (!isInside(rootDir, abs)) {
+    throw new Error(`document path escapes ${dirName}/`);
   }
-  // Re-check after symlink resolution so a link inside _notes can't point out of it.
-  if (fs.existsSync(abs) && !isInside(fs.realpathSync(notesDir), fs.realpathSync(abs))) {
-    throw new Error("note path escapes _notes/ via symlink");
+  // Re-check after symlink resolution so a link inside the collection can't point out of it.
+  if (fs.existsSync(abs) && !isInside(fs.realpathSync(rootDir), fs.realpathSync(abs))) {
+    throw new Error(`document path escapes ${dirName}/ via symlink`);
   }
 
   return abs;

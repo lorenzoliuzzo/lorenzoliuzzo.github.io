@@ -1,0 +1,93 @@
+// Library entries (see _includes/book-meta.html).
+//
+// Same two-tier logic as the provenance badges: the reading status is the one
+// fact worth a coloured pill, and everything around it — author, year, stars —
+// stays quiet text. A shelf of thirty books should read as a list, not as thirty
+// competing labels.
+
+.book-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  margin: 0.5em 0 0.9em;
+  // .page__meta is floated by the theme; without clearing it the strip is pushed
+  // off the right edge of the column. Same fix as .note-status.
+  clear: both;
+}
+
+.book-byline {
+  font-family: var(--font-serif);
+  font-size: 0.95em;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.book-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 11px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  color: var(--text-muted);
+
+  i {
+    font-size: 0.85em;
+  }
+}
+
+// A book still open is the one thing on the page that changes week to week, so
+// it is the only state that gets colour. Finished books keep the plain outline.
+.book-chip--reading {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent-hover);
+  font-weight: 600;
+}
+
+.book-rating {
+  display: inline-flex;
+  gap: 2px;
+  color: var(--text-faint);
+  font-size: 0.72rem;
+  cursor: help;
+
+  // Filled stars carry the rating; the empty ones are only there to show the
+  // scale, so they stay at the faint colour inherited above.
+  .fas {
+    color: var(--accent);
+  }
+}
+
+.book-meta--compact {
+  margin: 6px 0 0;
+  gap: 4px 10px;
+
+  .book-byline {
+    font-size: 0.85em;
+  }
+
+  .book-chip {
+    padding: 2px 9px;
+    font-size: 0.68rem;
+  }
+
+  .book-rating {
+    font-size: 0.68rem;
+  }
+}
+
+@media print {
+  .book-chip {
+    border: 1px solid #999;
+    background: none !important;
+    color: #000 !important;
+  }
+}

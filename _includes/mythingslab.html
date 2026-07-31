@@ -5,11 +5,20 @@
   is absent from any production build rather than merely hidden. It talks to
   tools/mythingslab/server.mjs on 127.0.0.1:4001, which holds the API key and does
   the disk writes. Nothing here ever ships.
+
+  The server addresses a file by collection plus a path relative to that
+  collection's directory, so the drawer works on any collection listed in
+  EDITABLE_COLLECTIONS (tools/mythingslab/core.mjs) without changes here.
 {% endcomment %}
 
+{% capture collection_dir %}_{{ page.collection }}/{% endcapture %}
+{% if page.collection == "library" %}{% assign mtl_noun = "book" %}{% else %}{% assign mtl_noun = "note" %}{% endif %}
+
 <div id="mtl-root"
-     data-note-path="{{ page.path | remove_first: '_notes/' }}"
+     data-collection="{{ page.collection }}"
+     data-note-path="{{ page.path | remove_first: collection_dir }}"
      data-note-title="{{ page.title | escape }}"
+     data-noun="{{ mtl_noun }}"
      data-api="http://127.0.0.1:4001"></div>
 
 <style>
@@ -120,24 +129,26 @@
   if (!root) return;
 
   const API = root.dataset.api;
-  const NOTE = root.dataset.notePath;
+  const COLLECTION = root.dataset.collection;
+  const DOC = root.dataset.notePath;
+  const NOUN = root.dataset.noun || "note";
   const history = [];
   let selection = "";
   let busy = false;
 
-  const launch = el("button", { id: "mtl-launch", title: "Talk to this note" });
-  launch.innerHTML = '<span class="mtl-dot"></span> Chat with this note';
+  const launch = el("button", { id: "mtl-launch", title: "Talk to this " + NOUN });
+  launch.innerHTML = '<span class="mtl-dot"></span> Chat with this ' + NOUN;
   document.body.appendChild(launch);
 
   const drawer = el("div", { id: "mtl-drawer" });
   drawer.innerHTML = [
     '<div class="mtl-head">',
-    '  <div><h3>Chat with this note</h3><p>' + escapeHtml(root.dataset.noteTitle || NOTE) + "</p></div>",
+    '  <div><h3>Chat with this ' + NOUN + "</h3><p>" + escapeHtml(root.dataset.noteTitle || DOC) + "</p></div>",
     '  <button class="mtl-x" title="Close">&times;</button>',
     "</div>",
     '<div class="mtl-log"></div>',
     '<div class="mtl-foot">',
-    '  <textarea placeholder="Ask about this note, or say how a passage should read&hellip;"></textarea>',
+    '  <textarea placeholder="Ask about this page, or say how a passage should read&hellip;"></textarea>',
     '  <div class="mtl-foot-row">',
     '    <button class="mtl-verify">Mark human-verified</button>',
     '    <button class="mtl-send">Send</button>',
@@ -182,7 +193,7 @@
 
   function resetLog() {
     log.innerHTML =
-      '<p class="mtl-empty">Select a passage in the note to bring it in here, or just ask a ' +
+      '<p class="mtl-empty">Select a passage in the ' + NOUN + " to bring it in here, or just ask a " +
       "question about the page.<br><br>Applied edits go straight into the Markdown source and " +
       "Jekyll reloads the page.</p>";
     renderSelection();
@@ -230,7 +241,12 @@
       const res = await fetch(API + "/api/chat", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ path: NOTE, messages: history, selection: selection }),
+        body: JSON.stringify({
+          collection: COLLECTION,
+          path: DOC,
+          messages: history,
+          selection: selection,
+        }),
       });
       if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || res.statusText);
 
@@ -280,7 +296,8 @@
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({
-            path: NOTE,
+            collection: COLLECTION,
+            path: DOC,
             old_string: patch.old_string,
             new_string: patch.new_string,
           }),
@@ -288,7 +305,11 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || res.statusText);
         apply.textContent = "Applied ✓";
-        push("assistant", "Applied to " + NOTE + ". Verification is now stale until you re-read it.");
+        push(
+          "assistant",
+          "Applied to _" + COLLECTION + "/" + DOC +
+            ". Verification is now stale until you re-read it.",
+        );
       } catch (err) {
         apply.disabled = skip.disabled = false;
         apply.textContent = "Apply to source";
@@ -313,9 +334,9 @@
     const card = el("div", { className: "mtl-patch mtl-confirm" });
     const blurb = el("pre");
     blurb.textContent =
-      "Mark this note human-verified?\n\n" +
+      "Mark this " + NOUN + " human-verified?\n\n" +
       "This records that you have read it in full and stand behind it. The badge is " +
-      "locked to a checksum of the current text, so it clears itself if the note changes.\n\n" +
+      "locked to a checksum of the current text, so it clears itself if the text changes.\n\n" +
       "How was it written?";
 
     const actions = el("div", { className: "mtl-patch-act" });
@@ -342,7 +363,7 @@
       const res = await fetch(API + "/api/verify", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ path: NOTE, ai_generated: aiAssisted }),
+        body: JSON.stringify({ collection: COLLECTION, path: DOC, ai_generated: aiAssisted }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || res.statusText);
@@ -350,7 +371,7 @@
         "assistant",
         "Verified on " + data.verified_at + " as " +
           (aiAssisted ? "AI-assisted" : "human-written") +
-          ". Reload to see the badge. Editing the note from here on clears it again.",
+          ". Reload to see the badge. Editing it from here on clears it again.",
       );
     } catch (err) {
       push("err", err.message, "mtl-err");
