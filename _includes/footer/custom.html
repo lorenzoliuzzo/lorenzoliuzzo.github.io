@@ -169,3 +169,17 @@
 {% if jekyll.environment != "production" and page.collection == "notes" %}
   {% include mythingslab.html %}
 {% endif %}
+
+{% comment %}
+  Leaflet and the map renderer. Both are deferred, and `defer` preserves order,
+  so travel-map.js is guaranteed to find L already defined. See
+  _includes/head/custom.html for the matching stylesheet and for what
+  `travel_map` gates.
+{% endcomment %}
+{% if page.travel_map %}
+  <script defer
+          src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossorigin="anonymous"></script>
+  <script defer src="{{ '/assets/js/travel-map.js' | relative_url }}"></script>
+{% endif %}
