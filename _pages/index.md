@@ -27,12 +27,12 @@ header:
 
 
 ## Recent Projects
-{% assign projects = site.projects | sort: 'date' | reverse | limit: 2 %}
+{% assign projects = site.projects | sort: 'date' | reverse | slice: 0, 2 %}
 {% include entry-list.html entries=projects empty="Nothing published here yet." %}
 {% if projects.size > 0 %}<p><a href="/projects/" class="btn btn--primary">All Projects →</a></p>{% endif %}
 
 
 ## Recent Notes
-{% assign notes = site.notes | sort: 'date' | reverse | limit: 3 %}
+{% assign notes = site.notes | where_exp: "n", "n.title and n.title != empty" | sort: 'date' | reverse | slice: 0, 3 %}
 {% include entry-list.html entries=notes date=true status=true empty="Nothing published here yet." %}
 {% if notes.size > 0 %}<p><a href="/notes/" class="btn btn--primary">All Notes →</a></p>{% endif %}

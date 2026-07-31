@@ -125,6 +125,24 @@
   }
 }
 
+.tag-subsection {
+  margin: 0 0 1.75rem 1rem;
+
+  .tag-subsection__title {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.95em;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+}
+
+.notes-nav {
+  margin: 1.25rem 0 2.5rem;
+}
+
 .back-to-top {
   font-family: var(--font-sans);
   font-size: 0.78em;
