@@ -1,7 +1,9 @@
 {% comment %}
   Overrides minimal-mistakes 4.27.x _includes/page__meta.html. Everything below the
-  theme block is local: it appends the note provenance badges. Re-sync this file from
-  the theme when bumping remote_theme in _config.yml.
+  theme block is local: it appends the book strip and the note provenance badges. Both
+  includes no-op outside their own collection, so this stays a single tail regardless
+  of what is being rendered. Re-sync this file from the theme when bumping remote_theme
+  in _config.yml.
 {% endcomment %}
 {% assign document = post | default: page %}
 {% if document.read_time or document.show_date %}
@@ -35,4 +37,5 @@
   </p>
 {% endif %}
 
+{% include book-meta.html document=document compact=include.type %}
 {% include note-status.html document=document compact=include.type %}

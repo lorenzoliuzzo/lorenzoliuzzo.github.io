@@ -5,10 +5,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
+  EDITABLE_COLLECTIONS,
   applyPatch,
   hashBody,
   normalizeBody,
-  resolveNotePath,
+  resolveDocPath,
   splitFrontMatter,
   touchesVerificationKeys,
   updateFrontMatter,
@@ -122,21 +123,47 @@ test("verification keys are recognised so the model cannot self-certify", () => 
   assert.ok(!touchesVerificationKeys("The results were verified by hand."));
 });
 
-test("note paths are confined to _notes/", () => {
-  const ok = resolveNotePath(REPO_ROOT, "supervised-learning/friedman-test.md");
-  assert.equal(ok, path.join(REPO_ROOT, "_notes/supervised-learning/friedman-test.md"));
+test("document paths are confined to their own collection directory", () => {
+  assert.equal(
+    resolveDocPath(REPO_ROOT, "notes", "supervised-learning/friedman-test.md"),
+    path.join(REPO_ROOT, "_notes/supervised-learning/friedman-test.md"),
+  );
+  assert.equal(
+    resolveDocPath(REPO_ROOT, "library", "example-bare-entry.md"),
+    path.join(REPO_ROOT, "_library/example-bare-entry.md"),
+  );
 
-  for (const bad of [
-    "../../etc/passwd",
-    "../_config.yml",
-    "/etc/passwd",
-    "../../../../../../etc/hosts.md",
-    "notes.txt",
-    "",
-  ]) {
-    assert.throws(() => resolveNotePath(REPO_ROOT, bad), `should reject ${JSON.stringify(bad)}`);
+  for (const collection of EDITABLE_COLLECTIONS) {
+    for (const bad of [
+      "../../etc/passwd",
+      "../_config.yml",
+      "/etc/passwd",
+      "../../../../../../etc/hosts.md",
+      "notes.txt",
+      "",
+    ]) {
+      assert.throws(
+        () => resolveDocPath(REPO_ROOT, collection, bad),
+        `${collection} should reject ${JSON.stringify(bad)}`,
+      );
+    }
+
+    // A path that escapes and comes back is fine; one that ends outside is not.
+    assert.throws(() => resolveDocPath(REPO_ROOT, collection, "sub/../../_pages/about.md"), /escapes/);
   }
 
-  // A path that escapes and comes back is fine; one that ends outside is not.
-  assert.throws(() => resolveNotePath(REPO_ROOT, "sub/../../_pages/about.md"), /escapes/);
+  // One collection must not be a way into another, nor into an arbitrary directory.
+  assert.throws(() => resolveDocPath(REPO_ROOT, "library", "../_notes/logic/fuzzy.md"), /escapes/);
+});
+
+test("only the declared collections are addressable", () => {
+  assert.deepEqual(EDITABLE_COLLECTIONS, ["notes", "library"]);
+
+  for (const bad of ["projects", "pages", "plugins", "", null, undefined, "_notes", "../tools"]) {
+    assert.throws(
+      () => resolveDocPath(REPO_ROOT, bad, "anything.md"),
+      /collection must be one of/,
+      `should reject collection ${JSON.stringify(bad)}`,
+    );
+  }
 });

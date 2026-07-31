@@ -18,6 +18,8 @@ header:
       url: "/projects/"
     - label: "Browse Notes"
       url: "/notes/"
+    - label: "Library"
+      url: "/library/"
 ---
 
 <script

@@ -5,6 +5,7 @@
   empty    — text shown when there are none; omit to render nothing at all
   date     — truthy to show the document date
   status   — truthy to show the note provenance badges
+  books    — truthy to show the author and reading strip for library entries
 {% endcomment %}
 {% if include.entries and include.entries != empty %}
   <div class="entry-list">
@@ -23,6 +24,9 @@
             {% if include.date and entry.date and entry.language %}&nbsp;&middot;&nbsp;{% endif %}
             {% if entry.language %}{{ entry.language }}{% endif %}
           </p>
+        {% endif %}
+        {% if include.books %}
+          {% include book-meta.html document=entry compact=true %}
         {% endif %}
         {% if include.status %}
           {% include note-status.html document=entry compact=true %}
