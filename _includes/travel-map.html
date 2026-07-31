@@ -44,6 +44,11 @@
         "title":{{ trip.title | default: "Untitled" | jsonify }},
         "url":{{ trip.url | relative_url | jsonify }},
         "route":{% if trip.route %}true{% else %}false{% endif %},
+        {%- comment -%}
+          Slugified here, not in JS: this string is concatenated into a class name,
+          so it is sanitised on the way out rather than trusted on the way in.
+        {%- endcomment -%}
+        "type":{{ trip.type | slugify | jsonify }},
         "stops":[
         {%- assign stop_sep = "" -%}
         {%- for stop in trip.stops -%}
@@ -87,14 +92,36 @@
          role="application" aria-label="Map of places visited"></div>
     <script type="application/json" id="{{ map_id }}-data">{{ payload }}</script>
     {%- comment -%}
-      A key for a pin style that isn't on this map is just noise — a single trip's
-      page has no standalone places on it, so it gets no "visited" swatch.
+      A key for something that isn't on this map is just noise, so the legend is
+      built from what actually got drawn: the pin swatches only when both kinds are
+      present, and one route swatch per trip type that has a line on the map.
+
+      The swatches are <svg> lines carrying the same classes as the real routes, so
+      the dash patterns in _sass/_travel.scss are the single source of truth — a
+      legend drawn with CSS borders would drift the moment a pattern changed.
     {%- endcomment -%}
+    {%- assign route_types_str = "" -%}
+    {%- for trip in include.trips -%}
+      {%- if trip.route and trip.type and trip.stops.size > 1 -%}
+        {%- assign route_types_str = route_types_str | append: trip.type | append: "|" -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- assign route_types = route_types_str | split: "|" | uniq | sort -%}
+
     <p class="travel-map__legend">
       {% if stop_count > 0 and place_count > 0 %}
         <span class="travel-map__key travel-map__key--trip"></span> trip stop
         <span class="travel-map__key travel-map__key--place"></span> visited
       {% endif %}
+
+      {% for route_type in route_types %}
+        {% assign kind = site.data.trip_types[route_type] %}
+        <svg class="travel-map__route-key" viewBox="0 0 30 8" aria-hidden="true">
+          <line class="travel-route travel-route--{{ route_type | slugify }}" x1="1" y1="4" x2="29" y2="4" />
+        </svg>
+        {{ kind.label | default: route_type }}
+      {% endfor %}
+
       <span class="travel-map__hint">Scroll zooms the page; click the map first to zoom it.</span>
     </p>
   </div>

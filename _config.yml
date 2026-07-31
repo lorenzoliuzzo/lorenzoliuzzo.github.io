@@ -159,7 +159,10 @@ defaults:
       # `single`, so everything else here is the same deal the other collections get.
       layout: travel
       author_profile: false
-      show_date: true
+      # The dates are rendered by trip-meta.html as a labelled start–end span, so
+      # the theme's bare calendar line would only repeat half of it. Same call the
+      # library makes for the same reason.
+      show_date: false
       read_time: false
       back_to_top: true
       breadcrumbs: true

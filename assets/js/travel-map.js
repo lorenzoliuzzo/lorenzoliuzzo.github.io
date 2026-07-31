@@ -99,10 +99,12 @@
       });
 
       if (trip.route && line.length > 1) {
-        L.polyline(line, {
-          weight: 2,
-          className: "travel-route"
-        }).addTo(map);
+        // `type` is slugified server-side (see travel-map.html), so it is safe to
+        // concatenate into a class. Each trip type gets its own dash pattern.
+        var routeClass = "travel-route";
+        if (trip.type) routeClass += " travel-route--" + trip.type;
+
+        L.polyline(line, { weight: 2, className: routeClass }).addTo(map);
       }
     });
 

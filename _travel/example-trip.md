@@ -8,6 +8,18 @@ published: false
 title: "Iceland, the ring road"
 date: 2024-07-14 # sorts the trip list; use the day you got back
 
+# How the trip was made. One of the keys in _data/trip_types.yml — roadtrip,
+# train, hiking, bike, walk, boat, flight — which decides the chip's label and
+# icon and the dash pattern the route is drawn with. Add a key there to add a
+# type. Leave this out and the trip simply renders without a chip.
+type: roadtrip
+
+# Shown as a labelled span, e.g. "1 Jul – 14 Jul 2024". Optional, but prefer them
+# over relying on `date`: Jekyll invents a `date` for any document that lacks one,
+# so a range built from it would be a guess presented as a fact.
+start: 2024-07-01
+end: 2024-07-14
+
 # --- the map ----------------------------------------------------------------
 # Every stop with `coords` becomes a pin. `route: true` also draws a line through
 # them in the order written, which is what you want for a road trip and not what

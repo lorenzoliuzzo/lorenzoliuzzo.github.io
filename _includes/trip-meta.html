@@ -1,0 +1,60 @@
+{% comment %}
+  Summary strip for a travel entry: how the trip was made, when, and how far it got.
+
+  Rendered both under a trip's own title (from page__meta.html) and inside its card
+  on the archive, so the two never drift apart — the same contract book-meta.html
+  has with the library. Every part is optional: a trip with nothing but a title and
+  one stop still renders cleanly.
+
+  The countries line is derived from the stops rather than being a second field to
+  keep in sync. Liquid has no set type, so it goes via append/split/uniq.
+
+  document — the travel document; defaults to the current page
+  compact  — truthy inside a card, where the strip sits under the title
+{% endcomment %}
+{% assign trip = include.document | default: page %}
+{% if trip.collection == "travel" %}
+  {% assign kind = site.data.trip_types[trip.type] %}
+
+  {% assign countries_str = "" %}
+  {% for stop in trip.stops %}
+    {% if stop.country %}{% assign countries_str = countries_str | append: stop.country | append: "|" %}{% endif %}
+  {% endfor %}
+  {% assign countries = countries_str | split: "|" | uniq %}
+
+  <div class="trip-meta{% if include.compact %} trip-meta--compact{% endif %}">
+
+    {% if kind %}
+      <span class="trip-chip trip-chip--{{ trip.type | slugify }}">
+        <i class="fas {{ kind.icon }}" aria-hidden="true"></i>
+        {{ kind.label }}
+      </span>
+    {% endif %}
+
+    {%- comment -%}
+      `start`/`end` rather than `date`: Jekyll gives every document a `date`, falling
+      back to the file's mtime when the front matter has none, so keying the span off
+      it would print a confident date range under a trip that never recorded one.
+    {%- endcomment -%}
+    {% if trip.start %}
+      <span class="trip-dates">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        <time datetime="{{ trip.start | date_to_xmlschema }}">{{ trip.start | date: "%-d %b" }}</time>
+        {%- if trip.end %} &ndash; <time datetime="{{ trip.end | date_to_xmlschema }}">{{ trip.end | date: "%-d %b %Y" }}</time>
+        {%- else %} {{ trip.start | date: "%Y" }}{% endif %}
+      </span>
+    {% endif %}
+
+    {% if countries.size > 0 %}
+      <span class="trip-where">
+        <i class="fas fa-location-dot" aria-hidden="true"></i>
+        {{ countries | join: ", " }}
+      </span>
+    {% endif %}
+
+    {% if trip.stops.size > 1 %}
+      <span class="trip-stops">{{ trip.stops.size }} stops</span>
+    {% endif %}
+
+  </div>
+{% endif %}

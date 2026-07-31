@@ -57,11 +57,49 @@
   stroke: var(--surface-raised);
 }
 
+// Shared by the real polylines and by the <svg> swatches in the legend, so a
+// pattern only ever has to be changed in one place. stroke-width is set here
+// rather than left to Leaflet's `weight` option so the legend lines match.
 .travel-route {
   fill: none;
   stroke: var(--accent);
   stroke-opacity: 0.55;
+  stroke-width: 2;
   stroke-dasharray: 5 4;
+}
+
+// One dash pattern per trip type, keyed off _data/trip_types.yml. The patterns
+// are meant to read as the thing they describe — a road unrolling, the dot-dash
+// of a railway, footprints — so a glance at the map says how the trip was made
+// before you reach the legend. A type with no rule here keeps the default dash.
+.travel-route--roadtrip {
+  stroke-dasharray: 10 5;
+}
+
+.travel-route--train {
+  stroke-dasharray: 12 4 2 4;
+}
+
+.travel-route--bike {
+  stroke-dasharray: 6 4;
+}
+
+.travel-route--hiking,
+.travel-route--walk {
+  stroke-dasharray: 1 5;
+  stroke-linecap: round;
+}
+
+.travel-route--boat {
+  stroke-dasharray: 2 6;
+  stroke-linecap: round;
+}
+
+// Faintest of the set: a flight path is the one line that says nothing about the
+// ground under it, so it should not draw the eye the way a walked route does.
+.travel-route--flight {
+  stroke-dasharray: 14 8;
+  stroke-opacity: 0.4;
 }
 
 /* Legend
@@ -94,6 +132,16 @@
 
 .travel-map__key--place {
   background: var(--text-faint);
+}
+
+// The route swatches carry .travel-route themselves, so they inherit stroke and
+// dash pattern from the rules above; all this has to do is give them a box.
+.travel-map__route-key {
+  width: 30px;
+  height: 8px;
+  flex: none;
+  margin-left: 0.75rem;
+  overflow: visible;
 }
 
 .travel-map__hint {
@@ -195,6 +243,89 @@
   display: inline-block;
   margin-top: 0.5rem;
   font-size: 0.8rem;
+}
+
+/* Trip summary strip
+   ========================================================================== */
+
+// Same two-tier logic as the library's book-meta: how the trip was made is the
+// one fact worth a pill, and the dates, countries and stop count stay quiet text
+// beside it. A page of trips should read as a list, not as rows of competing
+// labels.
+.trip-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  margin: 0.5em 0 0.9em;
+  // .page__meta is floated by the theme; without clearing it the strip is pushed
+  // off the right edge of the column. Same fix as .book-meta and .note-status.
+  clear: both;
+}
+
+.trip-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 11px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+
+  i {
+    font-size: 0.85em;
+  }
+}
+
+.trip-dates,
+.trip-where,
+.trip-stops {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+
+  i {
+    color: var(--text-faint);
+    font-size: 0.9em;
+  }
+}
+
+.trip-stops {
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.trip-meta--compact {
+  margin: 6px 0 0;
+  gap: 4px 10px;
+
+  .trip-chip {
+    padding: 2px 9px;
+    font-size: 0.68rem;
+  }
+
+  .trip-dates,
+  .trip-where,
+  .trip-stops {
+    font-size: 0.72rem;
+  }
+}
+
+@media print {
+  .trip-chip {
+    border: 1px solid #999;
+    background: none !important;
+    color: #000 !important;
+  }
 }
 
 /* "Also been" list
