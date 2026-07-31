@@ -3,9 +3,10 @@
 
   The theme builds each crumb's href from a single URL segment, which only works
   for flat, top-level pages: on a note at /notes/physics/optics/ it emits links to
-  /physics and /optics, neither of which exists. Notes here are filed by tag, not
-  by folder, so the crumbs are built from the tags instead and point at the
-  matching section of the archive. Anything else falls back to a plain trail.
+  /physics and /optics, neither of which exists. Notes here are filed by tag and
+  library entries by shelf, not by folder, so the crumbs are built from whichever
+  of those the collection uses and point at the matching section of the archive.
+  Anything else falls back to a plain trail.
 {% endcomment %}
 {% assign locale = include.locale | default: site.locale %}
 
@@ -17,9 +18,15 @@
     </li>
     <span class="sep">{{ site.data.ui-text[locale].breadcrumb_separator | default: "/" }}</span>
 
+    {% comment %}
+      `crumbs` is the middle of the trail. Notes and projects are filed by tag, so it
+      is the tag list; a library entry has a single shelf string, and splitting it
+      yields an array of one — or an empty array for a book with no shelf.
+    {% endcomment %}
     {% case page.collection %}
-      {% when "notes" %}{% assign root_label = "Notes" %}{% assign root_url = "/notes/" %}
-      {% when "projects" %}{% assign root_label = "Projects" %}{% assign root_url = "/projects/" %}
+      {% when "notes" %}{% assign root_label = "Notes" %}{% assign root_url = "/notes/" %}{% assign crumbs = page.tags %}
+      {% when "projects" %}{% assign root_label = "Projects" %}{% assign root_url = "/projects/" %}{% assign crumbs = page.tags %}
+      {% when "library" %}{% assign root_label = "Library" %}{% assign root_url = "/library/" %}{% assign crumbs = page.shelf | split: "|" %}
       {% else %}{% assign root_label = nil %}
     {% endcase %}
 
@@ -32,7 +39,7 @@
 
       {% assign position = 2 %}
       {% assign anchor = "" %}
-      {% for tag in page.tags limit: 2 %}
+      {% for tag in crumbs limit: 2 %}
         {% assign position = position | plus: 1 %}
         {% if anchor == "" %}
           {% assign anchor = tag | slugify %}

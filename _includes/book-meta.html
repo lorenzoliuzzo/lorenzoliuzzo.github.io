@@ -1,0 +1,44 @@
+{% comment %}
+  Bibliographic strip for a library entry.
+
+  Rendered both under a book's own title (from page__meta.html) and inside its card
+  on the archive, so the two never drift apart. Everything after the author is
+  optional: a book with nothing but a title and an author still renders cleanly,
+  which is what a shelf half-filled in one sitting actually looks like.
+
+  Dates come from `started`/`finished`, never from `date`. Jekyll gives every
+  document a `date` — falling back to the build time when the front matter has
+  none — so keying off it would print today under a book whose date is simply
+  not recorded.
+
+  document — the library document; defaults to the current page
+  compact  — truthy inside a card, where the strip sits under the title
+{% endcomment %}
+{% assign book = include.document | default: page %}
+{% if book.collection == "library" %}
+  <div class="book-meta{% if include.compact %} book-meta--compact{% endif %}">
+
+    <span class="book-byline">
+      {{ book.author | default: "Unknown author" }}{% if book.published %} &middot; {{ book.published }}{% endif %}
+    </span>
+
+    {% if book.status == "reading" %}
+      <span class="book-chip book-chip--reading">
+        <i class="fas fa-book-open" aria-hidden="true"></i>
+        Reading{% if book.started %} since {{ book.started | date: site.date_format }}{% endif %}
+      </span>
+    {% else %}
+      <span class="book-chip book-chip--read">
+        <i class="fas fa-check" aria-hidden="true"></i>
+        Read{% if book.finished %} &middot; {{ book.finished | date: site.date_format }}{% endif %}
+      </span>
+    {% endif %}
+
+    {% if book.rating %}
+      <span class="book-rating" aria-label="Rated {{ book.rating }} out of 5" title="{{ book.rating }}/5">
+        {% for star in (1..5) %}<i class="{% if star <= book.rating %}fas{% else %}far{% endif %} fa-star" aria-hidden="true"></i>{% endfor %}
+      </span>
+    {% endif %}
+
+  </div>
+{% endif %}

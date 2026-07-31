@@ -76,6 +76,11 @@ collections:
     path: "_notes"
     permalink: /:collection/:path/
 
+  library:
+    output: true
+    path: "_library"
+    permalink: /:collection/:path/
+
   travel:
     output: true
     path: "_travel"
@@ -118,6 +123,24 @@ defaults:
       human_verified: false
 
   - scope:
+      path: "_library"
+      type: library
+    values:
+      layout: single
+      author_profile: false
+      # The date is rendered by book-meta.html, labelled by reading status, so the
+      # theme's bare calendar line would only repeat it without saying what it means.
+      show_date: false
+      read_time: false
+      back_to_top: true
+      breadcrumbs: true
+      related: false
+      # Same provenance contract as notes: the write-up under a book is a draft
+      # until it has been read back and signed off from the MyThingsLab drawer.
+      ai_generated: true
+      human_verified: false
+
+  - scope:
       path: "_projects"
       type: projects
     values:
@@ -143,6 +166,14 @@ defaults:
       # Loads Leaflet from the CDN. Set on the layout's pages rather than
       # site-wide so no other page pays for a map library it never uses.
       travel_map: true
+
+
+# Collections the local MyThingsLab drawer can chat about and write to, and so also
+# the collections that carry a provenance badge — the badge records a sign-off that
+# only the drawer can make. Must match EDITABLE_COLLECTIONS in tools/mythingslab/core.mjs.
+mythingslab_collections:
+  - notes
+  - library
 
 
 tag_archive:

@@ -58,9 +58,14 @@ hr {
     }
   }
 
+  // Hidden rather than removed from the DOM: greedy-nav.js reads
+  // $title.outerWidth(true) unconditionally on every resize, and a missing
+  // .site-title turns that into NaN, which silently breaks the nav's overflow
+  // collapse into the hamburger menu at every width (see masthead.html).
+  // display: none reports as a numeric 0 to that calc, which is what we want
+  // anyway now that the logo is the only thing on the left.
   .site-title {
-    font-family: var(--font-serif);
-    font-weight: 600;
+    display: none;
   }
 
   .visible-links a:before {
@@ -208,8 +213,15 @@ blockquote {
 /* Sidebar / author profile
    ========================================================================== */
 
-.author__avatar img {
-  border: 1px solid var(--border);
+.author__avatar {
+  text-align: center;
+
+  img {
+    max-width: 150px;
+    padding: 6px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-raised);
+  }
 }
 
 .author__content a {
@@ -217,12 +229,48 @@ blockquote {
 }
 
 .author__urls {
+  padding: 0.85rem 1rem;
   background: var(--surface-raised);
   border: 1px solid var(--border);
+  border-radius: var(--radius);
   box-shadow: var(--shadow-raised);
 
+  // The location line isn't a link — set it off from the actionable ones below
+  // instead of letting every row look the same weight.
+  > li:first-child {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+  }
+
   a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.25rem 0.35rem;
+    margin-inline-start: -0.35rem;
+    border-radius: var(--radius);
     color: inherit;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background: var(--accent-soft);
+      color: var(--accent-hover);
+      text-decoration: none;
+    }
+  }
+
+  i {
+    width: 1.1em;
+    color: var(--text-faint);
+    text-align: center;
   }
 
   &::before {

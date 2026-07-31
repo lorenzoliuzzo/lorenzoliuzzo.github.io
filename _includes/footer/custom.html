@@ -166,7 +166,7 @@
   evaluated there. Verify with:
     JEKYLL_ENV=production bundle exec jekyll build && grep -ri mythingslab _site/
 {% endcomment %}
-{% if jekyll.environment != "production" and page.collection == "notes" %}
+{% if jekyll.environment != "production" and site.mythingslab_collections contains page.collection %}
   {% include mythingslab.html %}
 {% endif %}
 

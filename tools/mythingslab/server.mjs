@@ -4,14 +4,15 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
+  EDITABLE_COLLECTIONS,
   applyPatch,
   hashBody,
-  resolveNotePath,
+  resolveDocPath,
   splitFrontMatter,
   touchesVerificationKeys,
   updateFrontMatter,
 } from "./core.mjs";
-import { SYSTEM_PROMPT, loadApiKey, streamMessage } from "./anthropic.mjs";
+import { loadApiKey, streamMessage, systemPrompt } from "./anthropic.mjs";
 
 const TOOL_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(TOOL_DIR, "..", "..");
@@ -22,7 +23,7 @@ const PORT = Number(process.env.MYTHINGSLAB_PORT ?? 4001);
 // origin and is rejected.
 const LOOPBACK_ORIGIN = /^http:\/\/(?:localhost|127\.0\.0\.1|\[::1\]):\d+$/;
 
-// Resolved lazily: reading, applying, and verifying notes are pure disk work, so the
+// Resolved lazily: reading, applying, and verifying are pure disk work, so the
 // server stays useful without a key and only /api/chat requires one.
 let cachedKey = null;
 function apiKey() {
@@ -48,7 +49,7 @@ const server = http.createServer(async (req, res) => {
 
   try {
     if (req.method === "GET" && url.pathname === "/api/note") {
-      return handleReadNote(res, url.searchParams.get("path"));
+      return handleReadNote(res, url.searchParams.get("collection"), url.searchParams.get("path"));
     }
     if (req.method === "POST" && url.pathname === "/api/chat") {
       return await handleChat(req, res);
@@ -69,19 +70,19 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-function handleReadNote(res, relPath) {
-  const file = resolveNotePath(REPO_ROOT, relPath);
-  if (!fs.existsSync(file)) return send(res, 404, { error: "note not found" });
+function handleReadNote(res, collection, relPath) {
+  const file = resolveDocPath(REPO_ROOT, collection, relPath);
+  if (!fs.existsSync(file)) return send(res, 404, { error: "document not found" });
 
   const source = fs.readFileSync(file, "utf8");
   const { body } = splitFrontMatter(source);
-  send(res, 200, { path: relPath, source, content_hash: hashBody(body) });
+  send(res, 200, { collection, path: relPath, source, content_hash: hashBody(body) });
 }
 
 async function handleChat(req, res) {
-  const { path: relPath, messages, selection } = await readJson(req);
-  const file = resolveNotePath(REPO_ROOT, relPath);
-  if (!fs.existsSync(file)) return send(res, 404, { error: "note not found" });
+  const { collection, path: relPath, messages, selection } = await readJson(req);
+  const file = resolveDocPath(REPO_ROOT, collection, relPath);
+  if (!fs.existsSync(file)) return send(res, 404, { error: "document not found" });
   if (!Array.isArray(messages) || messages.length === 0) {
     return send(res, 400, { error: "messages required" });
   }
@@ -97,9 +98,9 @@ async function handleChat(req, res) {
 
   const source = fs.readFileSync(file, "utf8");
 
-  // The note is re-read and re-sent on every turn, so the model always reasons over
+  // The file is re-read and re-sent on every turn, so the model always reasons over
   // what is on disk right now rather than a copy from before the last applied patch.
-  let context = `Note file: ${relPath}\n\n<note_source>\n${source}\n</note_source>`;
+  let context = `File: _${collection}/${relPath}\n\n<source>\n${source}\n</source>`;
   if (selection && selection.trim()) {
     context +=
       `\n\nThe reader has selected this passage in the rendered page. It is the rendered ` +
@@ -124,7 +125,7 @@ async function handleChat(req, res) {
   try {
     const { stopReason } = await streamMessage({
       apiKey: key,
-      system: SYSTEM_PROMPT,
+      system: systemPrompt(collection),
       messages: conversation,
       signal: abort.signal,
       onText: (text) => sendEvent(res, "text", { text }),
@@ -137,13 +138,13 @@ async function handleChat(req, res) {
   res.end();
 }
 
-function handleApply(res, { path: relPath, old_string, new_string }) {
-  const file = resolveNotePath(REPO_ROOT, relPath);
-  if (!fs.existsSync(file)) return send(res, 404, { error: "note not found" });
+function handleApply(res, { collection, path: relPath, old_string, new_string }) {
+  const file = resolveDocPath(REPO_ROOT, collection, relPath);
+  if (!fs.existsSync(file)) return send(res, 404, { error: "document not found" });
 
   if (touchesVerificationKeys(new_string)) {
     return send(res, 400, {
-      error: "patch would write verification front matter; only you can sign off on a note",
+      error: "patch would write verification front matter; only you can sign off on a page",
     });
   }
 
@@ -152,7 +153,7 @@ function handleApply(res, { path: relPath, old_string, new_string }) {
   if (!result.ok) {
     return send(res, 409, {
       error: {
-        not_found: "That exact text is not in the note — it may have changed since.",
+        not_found: "That exact text is not in the source — it may have changed since.",
         ambiguous: "That text appears more than once; more surrounding context is needed.",
         empty_old_string: "The patch had no target text.",
         no_change: "The patch would not change anything.",
@@ -166,9 +167,9 @@ function handleApply(res, { path: relPath, old_string, new_string }) {
   send(res, 200, { ok: true, content_hash: hashBody(body) });
 }
 
-function handleVerify(res, { path: relPath, ai_generated }) {
-  const file = resolveNotePath(REPO_ROOT, relPath);
-  if (!fs.existsSync(file)) return send(res, 404, { error: "note not found" });
+function handleVerify(res, { collection, path: relPath, ai_generated }) {
+  const file = resolveDocPath(REPO_ROOT, collection, relPath);
+  if (!fs.existsSync(file)) return send(res, 404, { error: "document not found" });
 
   const source = fs.readFileSync(file, "utf8");
   const { body } = splitFrontMatter(source);
@@ -212,8 +213,10 @@ function sendEvent(res, event, payload) {
   res.write(`event: ${event}\ndata: ${JSON.stringify(payload)}\n\n`);
 }
 
-// Loopback only: this process can write to _notes/ and holds an API key.
+// Loopback only: this process can write to the collections below and holds an API key.
 server.listen(PORT, "127.0.0.1", () => {
   console.log(`MyThingsLab listening on http://127.0.0.1:${PORT}`);
-  console.log(`Notes root: ${path.join(REPO_ROOT, "_notes")}`);
+  for (const collection of EDITABLE_COLLECTIONS) {
+    console.log(`  writable: ${path.join(REPO_ROOT, `_${collection}`)}`);
+  }
 });
