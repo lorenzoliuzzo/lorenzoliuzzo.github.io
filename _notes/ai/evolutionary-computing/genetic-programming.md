@@ -1,6 +1,7 @@
 ---
 collection: notes
 title: "Genetic Programming"
+date: 2026-07-31
 excerpt: ""
 order: 4
 tags:

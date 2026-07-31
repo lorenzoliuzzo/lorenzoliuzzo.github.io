@@ -5,21 +5,7 @@ permalink: /
 
 layout: single
 classes: wide
-
-header:
-  overlay_color: "#12223aff"
-  overlay_filter: "0.5"
-  overlay_image: /assets/images/Planck_CMB.jpg  
-
-  actions:
-    - label: "About Me"
-      url: "/about/"
-    - label: "View Projects"
-      url: "/projects/"
-    - label: "Browse Notes"
-      url: "/notes/"
-    - label: "Library"
-      url: "/library/"
+author_profile: true
 ---
 
 <script
@@ -27,6 +13,11 @@ header:
   async src="//gc.zgo.at/count.js"
 ></script>
 
+<p class="lead">
+  Physicist and developer, currently reading for an MSc in Artificial Intelligence
+  for Science and Technology in Milan. This site is my working knowledge base:
+  the notes I take while learning something, and the projects that come out of them.
+</p>
 
 ## Recent Projects
 {% assign projects = site.projects | sort: 'date' | reverse | slice: 0, 2 %}

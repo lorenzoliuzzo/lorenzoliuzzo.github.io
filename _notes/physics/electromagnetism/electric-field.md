@@ -1,6 +1,7 @@
 ---
 collection: notes
 title: "Electric Field"
+date: 2026-07-31
 tags:
   - Physics
   - Electromagnetism

@@ -1,7 +1,7 @@
 ---
-title: "Botzmann's Machines"
+title: "Boltzmann's Machines"
+date: 2026-07-31
 collection: notes
-permalink: /notes/ai/ai-models-for-physics/boltzmann-machines
 
 layout: single
 
@@ -13,5 +13,3 @@ tags:
   - Artificial Intelligence
   - AI Models For Physics
 ---
-
-Hello!

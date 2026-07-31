@@ -1,6 +1,7 @@
 ---
 collection: notes
 title: "Theoretical Foundations"
+date: 2026-07-31
 excerpt: ""
 order: 6
 tags:

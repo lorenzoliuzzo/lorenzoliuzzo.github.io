@@ -6,11 +6,14 @@
   date     — truthy to show the document date
   status   — truthy to show the note provenance badges
   books    — truthy to show the author and reading strip for library entries
+  dense    — truthy for the index variant: one scannable row per entry, no
+             excerpt. Used by the archives, where excerpts turn the page into a
+             wall of preview text you have to read past to scan.
 {% endcomment %}
 {% if include.entries and include.entries != empty %}
-  <div class="entry-list">
+  <div class="entry-list{% if include.dense %} entry-list--dense{% endif %}">
     {% for entry in include.entries %}
-      <article class="entry-card">
+      <article class="entry-card{% if include.dense %} entry-card--dense{% endif %}">
         <h3 class="entry-card__title">
           {% if entry.github_url %}
             <a href="{{ entry.github_url }}" target="_blank" rel="noopener noreferrer">{{ entry.title | default: "Untitled" }}</a>
@@ -18,22 +21,28 @@
             <a href="{{ entry.url | relative_url }}">{{ entry.title | default: "Untitled" }}</a>
           {% endif %}
         </h3>
-        {% if include.date and entry.date or entry.language %}
-          <p class="entry-card__meta">
-            {% if include.date and entry.date %}<time datetime="{{ entry.date | date_to_xmlschema }}">{{ entry.date | date: site.date_format }}</time>{% endif %}
-            {% if include.date and entry.date and entry.language %}&nbsp;&middot;&nbsp;{% endif %}
-            {% if entry.language %}{{ entry.language }}{% endif %}
-          </p>
-        {% endif %}
-        {% if include.books %}
-          {% include book-meta.html document=entry compact=true %}
-        {% endif %}
-        {% if include.status %}
-          {% include note-status.html document=entry compact=true %}
-        {% endif %}
-        {% if entry.excerpt %}
-          <p class="entry-card__excerpt">{{ entry.excerpt | strip_html | truncate: 160 }}</p>
-        {% endif %}
+
+        <div class="entry-card__aside">
+          {% if include.books %}
+            {% include book-meta.html document=entry compact=true %}
+          {% endif %}
+          {% if include.status %}
+            {% include note-status.html document=entry compact=true %}
+          {% endif %}
+          {% if include.date and entry.date or entry.language %}
+            <p class="entry-card__meta">
+              {% if include.date and entry.date %}<time datetime="{{ entry.date | date_to_xmlschema }}">{{ entry.date | date: site.date_format }}</time>{% endif %}
+              {% if include.date and entry.date and entry.language %}&nbsp;&middot;&nbsp;{% endif %}
+              {% if entry.language %}{{ entry.language }}{% endif %}
+            </p>
+          {% endif %}
+        </div>
+
+        {% unless include.dense %}
+          {% if entry.excerpt %}
+            <p class="entry-card__excerpt">{{ entry.excerpt | strip_html | truncate: 160 }}</p>
+          {% endif %}
+        {% endunless %}
       </article>
     {% endfor %}
   </div>

@@ -1,0 +1,60 @@
+# URLs that were published before the placeholder notes were retired
+# (commit "Retire empty notes to a derived planned state"). Each one now
+# points at the archive section where that topic is listed as planned.
+#
+# The 14 /notes/**.md URLs from the same cleanup are deliberately absent:
+# GitHub Pages serves them as text/markdown, so a browser never parses an
+# HTML redirect in them. They were an accidental leak of empty files and
+# are left to 404.
+- from: /notes/ai/ai-models-for-physics/boltzmann-machines.html
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/ai-models-for-physics/ising/
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/neural-networks/autoencoder/
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/neural-networks/convolutional-nn/
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/neural-networks/hopfield-network/
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/neural-networks/introduction/
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/neural-networks/learning-vector-quantization/
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/neural-networks/multi-layer-perceptron/
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/neural-networks/radial-basis-function-network/
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/neural-networks/recurrent-nn/
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/neural-networks/self-organizing-map/
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/unsupervised-learning/anomaly-detection/introduction/
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/unsupervised-learning/cluster-analysis/introduction/
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/unsupervised-learning/cluster-analysis/validation/
+  to: /notes/#artificial-intelligence
+- from: /notes/ai/unsupervised-learning/proximity-measures/
+  to: /notes/#artificial-intelligence
+- from: /notes/physics/electromagnetism/em-waves.html
+  to: /notes/#physics
+- from: /notes/physics/particles/detectors.html
+  to: /notes/#physics
+- from: /notes/physics/particles/rutherford-experiment.html
+  to: /notes/#physics
+- from: /notes/physics/particles/standard-model.html
+  to: /notes/#physics
+- from: /notes/physics/quantum-computing/algorithms/
+  to: /notes/#physics
+- from: /notes/physics/quantum-computing/circuits/
+  to: /notes/#physics
+- from: /notes/physics/quantum-mechanics/bohr-model/
+  to: /notes/#physics
+- from: /notes/physics/quantum-mechanics/harmonic-oscillator.html
+  to: /notes/#physics
+- from: /notes/physics/quantum-mechanics/hydrogen-atom.html
+  to: /notes/#physics
+- from: /notes/physics/quantum-mechanics/uncertainty-principle.html
+  to: /notes/#physics
+- from: /notes/statistics/distributions/
+  to: /notes/#statistics

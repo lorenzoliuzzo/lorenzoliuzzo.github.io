@@ -1,6 +1,7 @@
 ---
 collection: notes 
 title: "Special Relativity"
+date: 2026-07-31
 excerpt: "A comprehensive guide on the theory of Special Relativity"
 read_time: true
 toc: true
