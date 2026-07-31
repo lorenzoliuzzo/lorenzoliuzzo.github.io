@@ -1,0 +1,137 @@
+// Listings: entry cards on the home page, tag index and grouped sections on the
+// notes archive. These classes replace the inline style attributes that used to
+// live in _pages/notes.md and _pages/index.md.
+
+/* Entry cards
+   ========================================================================== */
+
+.entry-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.entry-card {
+  display: block;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease,
+    transform 0.15s ease;
+
+  &:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-raised);
+    transform: translateY(-1px);
+  }
+
+  .entry-card__title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1.1em;
+    line-height: var(--leading-tight);
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  .entry-card__meta {
+    margin: 0.3rem 0 0;
+    font-family: var(--font-sans);
+    font-size: 0.75em;
+    color: var(--text-muted);
+  }
+
+  .entry-card__excerpt {
+    margin: 0.45rem 0 0;
+    font-size: 0.92em;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+}
+
+.entry-list__empty {
+  margin: 0 0 1.5rem;
+  padding: 1rem 1.15rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-size: 0.92em;
+}
+
+/* Tag index
+   ========================================================================== */
+
+.tag-cloud {
+  margin: 1.25rem 0 2.5rem;
+}
+
+.taxonomy__index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: var(--surface-sunken);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 0.85em;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease,
+      border-color 0.15s ease;
+
+    &:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--surface);
+    }
+  }
+}
+
+.tag-count {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+
+  .taxonomy__index li a:hover & {
+    color: inherit;
+  }
+}
+
+/* Grouped archive sections
+   ========================================================================== */
+
+.tag-section {
+  margin-bottom: 3rem;
+
+  .tag-section__title {
+    margin: 0 0 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-serif);
+    font-size: 1.4em;
+  }
+}
+
+.back-to-top {
+  font-family: var(--font-sans);
+  font-size: 0.78em;
+  color: var(--text-faint);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--accent);
+  }
+}

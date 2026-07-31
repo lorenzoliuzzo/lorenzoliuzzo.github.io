@@ -1,0 +1,174 @@
+// Numbered figures, tables and equations (see _includes/figure|table|equation.html).
+// Numbering is pure CSS counters, reset per page in _typography.scss.
+
+@mixin academic-label {
+  display: block;
+  text-align: center;
+  font-size: 0.85em;
+  font-family: var(--font-serif);
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+
+  &::before {
+    font-weight: 700;
+    color: var(--text);
+  }
+}
+
+.latex-like-table {
+  display: block;
+  margin: 2.5rem auto;
+  text-align: center;
+  counter-increment: table-counter;
+
+  .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+  }
+
+  table {
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-family: var(--font-serif);
+    font-size: 0.9em;
+    width: auto;
+    min-width: 65%;
+    // Outer borders come from the cells, not the table, so the empty top-left
+    // corner can opt out of them below.
+    border-left: none;
+    border-top: none;
+  }
+
+  th,
+  td {
+    padding: 10px 22px;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+
+  th:first-child,
+  td:first-child {
+    border-left: 1px solid var(--border);
+  }
+
+  thead tr th {
+    background-color: var(--surface-sunken);
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--border);
+
+    &:not(:empty) {
+      border-top: 1px solid var(--border);
+    }
+
+    // The stub corner of a two-way table has no header, so it drops its outer
+    // edges and keeps only the rules that continue the grid.
+    &:first-child:empty {
+      background: var(--surface);
+      border-top: none;
+      border-left: none;
+    }
+  }
+
+  tbody tr td {
+    text-align: center;
+
+    &:first-child {
+      font-weight: 700;
+      text-align: left;
+      background-color: var(--surface-sunken);
+      padding-right: 32px;
+      white-space: nowrap;
+      min-width: 140px;
+    }
+  }
+
+  figcaption {
+    @include academic-label;
+
+    &::before {
+      content: "Table " counter(table-counter) ": ";
+    }
+  }
+}
+
+.latex-like-figure {
+  display: block;
+  margin: 2.5rem auto;
+  text-align: center;
+  counter-increment: figure-counter;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border-radius: var(--radius);
+  }
+
+  figcaption {
+    @include academic-label;
+
+    &::before {
+      content: "Figure " counter(figure-counter) ": ";
+    }
+  }
+}
+
+// Plot exports carry a baked-in white background, so on the dark theme they'd
+// glare as bare white rectangles. Matting them turns that into a deliberate
+// plate rather than an accident. Inverting instead would wreck the plot colours.
+[data-theme="dark"] .latex-like-figure img {
+  background: #fff;
+  padding: 0.6rem;
+}
+
+.latex-like-equation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.75rem 0;
+  padding: 0 3rem;
+  position: relative;
+  overflow-x: auto;
+}
+
+.numbered-equation {
+  counter-increment: eq-counter;
+
+  &::after {
+    content: "(" counter(eq-counter) ")";
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-serif);
+    color: var(--text-muted);
+  }
+}
+
+/* Bibliography (rendered by _includes/footer/custom.html)
+   ========================================================================== */
+
+.bib-entry {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.9em;
+  line-height: 1.55;
+}
+
+.bib-number {
+  flex: 0 0 2.25rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.cite-link {
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+}

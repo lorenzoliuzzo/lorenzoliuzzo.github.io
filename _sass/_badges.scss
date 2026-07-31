@@ -1,0 +1,74 @@
+// Note provenance badges (see _includes/note-status.html).
+
+.note-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0.6em 0 1.2em;
+}
+
+.note-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  cursor: help;
+
+  i {
+    font-size: 0.8em;
+  }
+}
+
+.note-badge--ai {
+  background: var(--badge-ai-bg);
+  color: var(--badge-ai-fg);
+}
+
+.note-badge--written {
+  background: var(--badge-neutral-bg);
+  color: var(--badge-neutral-fg);
+}
+
+.note-badge--verified {
+  background: var(--badge-ok-bg);
+  color: var(--badge-ok-fg);
+}
+
+// Deliberately loud: a stale badge means the page is making a claim it can no
+// longer back up, and that should be uncomfortable to leave in place.
+.note-badge--stale {
+  background: var(--badge-warn-bg);
+  color: var(--badge-warn-fg);
+}
+
+.note-badge--unverified {
+  background: var(--badge-neutral-bg);
+  color: var(--text-muted);
+}
+
+.note-status--compact {
+  margin: 6px 0 0;
+
+  .note-badge {
+    padding: 2px 9px;
+    font-size: 0.68rem;
+    font-weight: 500;
+  }
+}
+
+@media print {
+  .note-badge {
+    border: 1px solid #999;
+    background: none !important;
+    color: #000 !important;
+  }
+}

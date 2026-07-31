@@ -1,0 +1,362 @@
+// Repaints minimal-mistakes' chrome from the token layer.
+//
+// The theme bakes its palette in at compile time (its own variables run through
+// mix(), so they can't just be handed a var()). This file is imported after the
+// theme and re-declares only the rules that carry colour, sourcing each one from
+// a token. That indirection is what lets [data-theme="dark"] work at runtime.
+//
+// Selectors here mirror the theme's own — when bumping remote_theme, diff the
+// theme's _sass against this file to catch anything newly painted.
+
+html {
+  background-color: var(--surface);
+}
+
+body {
+  color: var(--text);
+  background-color: var(--surface);
+}
+
+::selection {
+  color: var(--surface);
+  background: var(--text);
+}
+
+a {
+  color: var(--accent);
+
+  &:visited {
+    color: var(--accent);
+  }
+
+  &:hover,
+  &:focus {
+    color: var(--accent-hover);
+  }
+}
+
+hr {
+  border-top: 1px solid var(--border);
+}
+
+/* Masthead
+   ========================================================================== */
+
+.masthead {
+  border-bottom: 1px solid var(--border);
+  background-color: var(--surface);
+}
+
+.greedy-nav {
+  background: var(--surface);
+
+  a {
+    color: var(--text);
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+
+  .site-title {
+    font-family: var(--font-serif);
+    font-weight: 600;
+  }
+
+  .visible-links a:before {
+    background: var(--accent);
+  }
+
+  .hidden-links {
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-raised);
+
+    a:hover {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    li {
+      border-bottom: 1px solid var(--border);
+    }
+
+    &::before {
+      border-bottom-color: var(--border);
+    }
+
+    &::after {
+      border-bottom-color: var(--surface-raised);
+    }
+  }
+}
+
+.search__toggle,
+.theme-toggle {
+  color: var(--text);
+
+  &:hover {
+    color: var(--accent);
+  }
+}
+
+.navicon,
+.navicon::before,
+.navicon::after {
+  background: var(--text);
+}
+
+.greedy-nav__toggle:hover .navicon,
+.greedy-nav__toggle:hover .navicon:before,
+.greedy-nav__toggle:hover .navicon:after {
+  background: var(--accent);
+}
+
+.greedy-nav__toggle:before {
+  background-color: var(--surface);
+}
+
+/* Theme toggle
+   ========================================================================== */
+
+.theme-toggle {
+  display: block;
+  margin-left: 0.5rem;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  font-size: 1rem;
+  cursor: pointer;
+
+  // Only the icon for the theme you can switch *to* is shown, so the button
+  // always reads as an action rather than a status.
+  .theme-toggle__dark {
+    display: none;
+  }
+}
+
+[data-theme="dark"] .theme-toggle {
+  .theme-toggle__light {
+    display: none;
+  }
+
+  .theme-toggle__dark {
+    display: inline;
+  }
+}
+
+/* Page furniture
+   ========================================================================== */
+
+.page__title,
+.page__title a {
+  color: var(--text);
+}
+
+.page__meta,
+.page__meta a,
+.comment__date {
+  color: var(--text-muted);
+}
+
+.page__content {
+  h2 {
+    border-bottom: 1px solid var(--border);
+  }
+
+  :not(pre) > code {
+    background: var(--code-bg);
+    color: var(--text);
+  }
+}
+
+blockquote {
+  border-left: 3px solid var(--border-strong);
+  color: var(--text-muted);
+}
+
+.page__share,
+.page__related,
+.page__comments-title {
+  border-top: 1px solid var(--border);
+}
+
+.page__footer {
+  color: var(--text-muted);
+  background-color: var(--surface-sunken);
+  border-top: 1px solid var(--border);
+
+  a {
+    color: inherit;
+  }
+
+  .fas,
+  .fab,
+  .far,
+  .fal {
+    color: var(--text-muted);
+  }
+}
+
+.page__footer-follow .social-icons .fas,
+.page__footer-follow .social-icons .fab,
+.page__footer-follow .social-icons .far,
+.page__footer-follow .social-icons .fal {
+  color: var(--text-muted);
+}
+
+/* Sidebar / author profile
+   ========================================================================== */
+
+.author__avatar img {
+  border: 1px solid var(--border);
+}
+
+.author__content a {
+  color: inherit;
+}
+
+.author__urls {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-raised);
+
+  a {
+    color: inherit;
+  }
+
+  &::before {
+    border-bottom-color: var(--border);
+  }
+
+  &::after {
+    border-bottom-color: var(--surface-raised);
+  }
+}
+
+/* Table of contents
+   ========================================================================== */
+
+.toc {
+  color: var(--text);
+  background-color: var(--surface-raised);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-raised);
+
+  .nav__title {
+    color: var(--surface);
+    background: var(--text);
+    font-family: var(--font-sans);
+  }
+
+  .active a {
+    background-color: var(--accent-soft);
+    color: var(--accent-hover);
+  }
+}
+
+.toc__menu {
+  font-family: var(--font-sans);
+
+  a {
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+}
+
+/* Tables (theme default, not the academic variant)
+   ========================================================================== */
+
+thead {
+  background-color: var(--surface-sunken);
+  border-bottom: 2px solid var(--border-strong);
+}
+
+td,
+th {
+  border-bottom: 1px solid var(--border);
+}
+
+/* Buttons
+   ========================================================================== */
+
+.btn--primary {
+  background-color: var(--accent);
+  color: var(--surface);
+
+  &:visited {
+    background-color: var(--accent);
+    color: var(--surface);
+  }
+
+  &:hover {
+    background-color: var(--accent-hover);
+    color: var(--surface);
+  }
+}
+
+.btn--inverse {
+  background-color: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+
+  &:visited {
+    background-color: var(--surface);
+    color: var(--text);
+  }
+
+  &:hover {
+    background-color: var(--surface-sunken);
+    color: var(--text);
+  }
+}
+
+/* Notices
+   ========================================================================== */
+
+.notice,
+.notice--primary,
+.notice--info,
+.notice--warning,
+.notice--success,
+.notice--danger {
+  color: var(--text);
+  border-radius: var(--radius);
+}
+
+.notice {
+  background-color: var(--surface-sunken);
+}
+
+/* Search
+   ========================================================================== */
+
+.search-content {
+  background-color: var(--surface);
+}
+
+.search-content .search-input {
+  color: var(--text);
+  background-color: transparent;
+  font-family: var(--font-serif);
+}
+
+.search-content .archive__item-title a {
+  color: var(--text);
+}
+
+/* Footnotes
+   ========================================================================== */
+
+.footnote,
+.footnotes {
+  color: var(--text-muted);
+}
+
+a.reversefootnote {
+  color: var(--text-faint);
+}
