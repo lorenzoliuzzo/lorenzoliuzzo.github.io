@@ -2,7 +2,6 @@
 title: "Particle Detectors"
 date: 2026-07-31
 collection: notes
-permalink: /notes/physics/particles/detectors
 
 layout: single
 
@@ -14,5 +13,3 @@ tags:
   - Physics
   - Particles
 ---
-
-Hello!

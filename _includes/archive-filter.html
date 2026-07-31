@@ -1,7 +1,12 @@
 {% comment %}
-  Title filter for a grouped archive. Hides non-matching cards, then folds away
+  Title filter for a grouped archive. Hides non-matching rows, then folds away
   any subsection or section left with nothing in it, so the page never shows an
   empty heading. Progressive enhancement: without JS the full index is there.
+
+  Written notes and planned ones are both filterable rows. Matching on
+  .entry-card alone would fold away every subsection holding only planned
+  topics — Optics, Particles, and the whole Logic and Statistics sections — on
+  page load, with no filter typed.
 
   This lives in an include rather than inline in _pages/notes.md because kramdown
   rewrites the script body when it sits in a Markdown file — with mathjax on it
@@ -13,23 +18,31 @@
     var empty = document.getElementById("archive-filter-empty");
     if (!input) return;
 
-    var cards = Array.prototype.slice.call(document.querySelectorAll(".entry-card"));
-    var groups = Array.prototype.slice.call(document.querySelectorAll(".tag-subsection, .tag-section"));
+    var ROW = ".entry-card, .planned-list__item";
+    var VISIBLE_ROW = ".entry-card:not([hidden]), .planned-list__item:not([hidden])";
+    var TITLE = ".entry-card__title, .planned-list__title";
+
+    var rows = Array.prototype.slice.call(document.querySelectorAll(ROW));
+    // .planned-list is in here so a list whose rows are all hidden collapses
+    // instead of leaving its own margin behind.
+    var groups = Array.prototype.slice.call(
+      document.querySelectorAll(".planned-list, .tag-subsection, .tag-section")
+    );
     var nav = document.querySelector(".notes-nav");
 
     function apply() {
       var q = input.value.trim().toLowerCase();
       var matches = 0;
 
-      cards.forEach(function (card) {
-        var heading = card.querySelector(".entry-card__title") || card;
+      rows.forEach(function (row) {
+        var heading = row.querySelector(TITLE) || row;
         var hit = !q || heading.textContent.toLowerCase().indexOf(q) !== -1;
-        card.hidden = !hit;
+        row.hidden = !hit;
         if (hit) matches++;
       });
 
       groups.forEach(function (group) {
-        group.hidden = !group.querySelector(".entry-card:not([hidden])");
+        group.hidden = !group.querySelector(VISIBLE_ROW);
       });
 
       if (nav) nav.hidden = q.length > 0;
