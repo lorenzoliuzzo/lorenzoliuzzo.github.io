@@ -1,0 +1,11 @@
+Model,Accuracy
+Nearest Neighbors,0.973
+QDA,0.990
+RBF SVM,0.980
+Decision Tree,0.952
+Random Forest,0.957
+Gradient Boosting,0.972
+AdaBoost,0.978
+Neural Network,0.985
+Hard Meta-Classifier,0.982
+Soft Meta-Classifier,0.995
