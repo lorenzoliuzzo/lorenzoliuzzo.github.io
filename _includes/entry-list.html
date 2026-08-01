@@ -18,14 +18,16 @@
         <h3 class="entry-card__title">
           {% if entry.github_url %}
             <a href="{{ entry.github_url }}" target="_blank" rel="noopener noreferrer">{{ entry.title | default: "Untitled" }}</a>
-          {% else %}
+          {% elsif entry.url %}
             <a href="{{ entry.url | relative_url }}">{{ entry.title | default: "Untitled" }}</a>
+          {% else %}
+            {{ entry.title | default: "Untitled" }}
           {% endif %}
         </h3>
 
         <div class="entry-card__aside">
           {% if include.books %}
-            {% include book-meta.html document=entry compact=true %}
+            {% include book-meta.html document=entry compact=true force=true %}
           {% endif %}
           {% if include.trips %}
             {% include trip-meta.html document=entry compact=true %}

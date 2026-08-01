@@ -6,7 +6,13 @@ classes: wide
 author_profile: true
 ---
 
-{% assign books = site.library %}
+{% comment %}
+  site.library is a page per book (the write-ups). site.data.library is the
+  quick log: same fields, no page. Concatenated, they file onto the same
+  shelves and sort together — a card just doesn't link anywhere if the book
+  behind it has no page of its own.
+{% endcomment %}
+{% assign books = site.library | concat: site.data.library %}
 {% assign reading = books | where: "status", "reading" %}
 {% assign finished = books | where_exp: "b", "b.status != 'reading'" %}
 
@@ -86,6 +92,7 @@ Every book I've read, shelf by shelf, with what I made of it. {{ finished.size }
   The same filter the notes archive uses: it keys off .entry-card rows and folds
   away shelves left empty, both of which this page already builds. Books have no
   planned state — a book with no write-up yet is still a book that was read, so
-  it stays a real, linkable page rather than an inert row.
+  it stays a row on the shelf, linked if it has a page and plain text if it's
+  only a quick-log entry.
 {% endcomment %}
 {% include archive-filter.html %}

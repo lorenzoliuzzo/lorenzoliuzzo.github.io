@@ -13,9 +13,11 @@
 
   document — the library document; defaults to the current page
   compact  — truthy inside a card, where the strip sits under the title
+  force    — truthy to render for a quick-log entry (site.data.library), which
+             has no `collection` of its own to key off
 {% endcomment %}
 {% assign book = include.document | default: page %}
-{% if book.collection == "library" %}
+{% if book.collection == "library" or include.force %}
   <div class="book-meta{% if include.compact %} book-meta--compact{% endif %}">
 
     <span class="book-byline">
