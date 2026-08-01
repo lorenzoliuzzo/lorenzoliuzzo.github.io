@@ -12,6 +12,9 @@ excerpt: "Placeholder entry. Replace it with a real book, or delete the file."
 This is a scaffold entry, not something Lorenzo has read — swap the front matter and
 this text for a real book, or delete the file.
 
+Only worth a file here if you want to write it up. For a quick log entry with no
+write-up, add it to `_data/library.yml` instead — same fields, no page.
+
 The front matter above is the whole schema:
 
 | Key | Meaning |

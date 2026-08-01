@@ -1,0 +1,26 @@
+# Quick-logged books — title, author, shelf, dates, rating, no write-up.
+#
+# Use this for a book you don't want a full page for: copy an entry below, fill
+# it in, done. If you later decide it's worth writing up, delete the entry here
+# and create a real file in _library/ instead (copy _library/example-finished-book.md)
+# — a quick entry never grows into a page on its own.
+#
+# Same keys as a _library/*.md book, minus the write-up:
+#   title      the book. required.
+#   author     shown under the title on the card and the page.
+#   published  year of original publication. optional.
+#   shelf      which section of /library/ it files under. no shelf -> Unshelved.
+#   status     read or reading. defaults to read.
+#   finished   date you finished it. omit it and the card just says "Read".
+#   started    date you picked it up. only shown while status: reading.
+#   rating     1-5, drawn as stars. omit it to show none.
+#   excerpt    one line, shown on the archive card.
+
+- title: "Example — a quick-logged book"
+  author: "Author Name"
+  published: 1998
+  shelf: "Physics"
+  status: read
+  finished: 2026-05-18
+  rating: 4
+  excerpt: "Placeholder entry. Replace it with a real book, or delete it."
