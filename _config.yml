@@ -60,6 +60,7 @@ exclude:
   - Gemfile.lock
   - node_modules
   - vendor
+  - .venv
   - LICENSE
   # Local authoring tool: holds the Anthropic API key and can write to _notes/.
   # It must never be served.
