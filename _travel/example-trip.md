@@ -38,6 +38,19 @@ stops:
 
 # --- optional ---------------------------------------------------------------
 excerpt: "Two weeks and 1,332 km, anticlockwise." # the blurb on /travel/
+
+# By default the route line is straight between stops. To have it trace the
+# actual roads driven, add `route_geometry`: a flat, ordered list of [lat, lng]
+# points. Generate it with OSRM's public router — one request per leg between
+# consecutive stops, concatenating the results in order:
+#
+#   curl "https://router.project-osrm.org/route/v1/driving/{lon1},{lat1};{lon2},{lat2}?overview=simplified&geometries=geojson"
+#
+# The response's `routes[0].geometry.coordinates` are [lng, lat] pairs — flip
+# each one before pasting it in here. For a leg that isn't actually a road (a
+# ferry crossing, a flight), skip OSRM and just add the two endpoints as a
+# straight segment.
+# route_geometry: [[64.1466, -21.9426], [64.14, -21.94], [63.4194, -19.0060]]
 ---
 
 Prose goes here — the map is drawn above it automatically by `_layouts/travel.html`,

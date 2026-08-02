@@ -13,3 +13,20 @@
 # Coordinates: open openstreetmap.org, right-click the spot, "Show address" —
 # the lat/lon pair in the URL is already in this order. A stop with no `coords`
 # is silently left off the map, so double-check that line if a pin is missing.
+
+- name: "Cayo Largo del Sur"
+  country: "Cuba"
+  coords: [21.6167, -81.5667]
+  # year: # placeholder — fill in
+- name: "Fuerteventura"
+  country: "Spain"
+  coords: [28.3587, -14.0537]
+  # year: # placeholder — fill in
+- name: "Lanzarote"
+  country: "Spain"
+  coords: [29.0469, -13.5899]
+  # year: # placeholder — fill in
+- name: "Praia"
+  country: "Cabo Verde"
+  coords: [14.9330, -23.5133]
+  # year: # placeholder — fill in
