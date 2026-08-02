@@ -74,6 +74,13 @@ toc: true
   </div>
 </div>
 
+## From Friends
+
+Everything above is my own account of myself. This part isn't: it's what the people
+who actually know me have to say, in 140 characters or fewer.
+
+{% include friend-comments.html %}
+
 ## Contacts
 
 The best way to reach me is [email](mailto:lorenzoliuzzo@outlook.com). I'm also on

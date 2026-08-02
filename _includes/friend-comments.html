@@ -1,0 +1,179 @@
+{% comment %}
+  The "From Friends" section of /about/: a wall of published one-liners plus the
+  form that collects new ones. Submissions go to the form service configured as
+  `friends_form_endpoint` in _config.yml and are published by hand into
+  _data/friends.yml, so nothing reaches the page unread. Both halves are optional —
+  the wall is skipped while the data file is empty, the form while the endpoint is
+  unset — which means this include renders sensibly at every stage of setup.
+{% endcomment %}
+
+{% assign friend_comments = site.data.friends.comments %}
+
+{% if friend_comments and friend_comments.size > 0 %}
+  <ul class="comment-wall">
+    {% for entry in friend_comments %}
+      <li class="comment-card">
+        {% comment %}
+          Every field here is written by a stranger through the form and only
+          hand-copied in, so it is escaped on the way out — a moderator reading for
+          tone will not reliably catch an injected tag, and Liquid does not escape
+          `{{ }}` on its own.
+        {% endcomment %}
+        <p class="comment-card__text">{{ entry.comment | escape }}</p>
+        <p class="comment-card__by">
+          {% if entry.url %}
+            <a href="{{ entry.url | escape }}" rel="nofollow noopener">{{ entry.name | escape }}</a>
+          {% else %}
+            {{ entry.name | escape }}
+          {% endif %}
+          {% if entry.relation %}<span class="comment-card__relation">{{ entry.relation | escape }}</span>{% endif %}
+        </p>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{% if site.friends_form_endpoint and site.friends_form_endpoint != "" %}
+  <form class="comment-form" id="friend-comment-form" action="{{ site.friends_form_endpoint }}" method="POST">
+    <p class="comment-form__intro">
+      Know me? Leave a line. I read everything before it goes up, so give it a day
+      or two to appear.
+    </p>
+
+    <div class="comment-form__row">
+      <label class="comment-form__field">
+        <span class="comment-form__label">Your name</span>
+        <input type="text" name="name" maxlength="60" required>
+      </label>
+      <label class="comment-form__field">
+        <span class="comment-form__label">How we know each other <em>(optional)</em></span>
+        <input type="text" name="relation" maxlength="60" placeholder="flatmate since 2019">
+      </label>
+    </div>
+
+    <label class="comment-form__field">
+      <span class="comment-form__label">Email <em>(optional, so I can reply)</em></span>
+      <input type="email" name="email" maxlength="120">
+    </label>
+
+    <label class="comment-form__field">
+      <span class="comment-form__label">Your comment</span>
+      <textarea name="comment" rows="3" maxlength="140" required
+                aria-describedby="comment-form-count"></textarea>
+    </label>
+
+    {% comment %}
+      Mirrors the 140-character limit that _plugins/friend_comments.rb enforces at
+      build time. Empty until the script below takes over, so a browser without JS
+      shows no stale count — maxlength still holds the line there.
+    {% endcomment %}
+    <p class="comment-form__count" id="comment-form-count" aria-live="polite"></p>
+
+    {% comment %} Honeypot: bots fill every field they find, people never see this one. {% endcomment %}
+    <div class="comment-form__gotcha" aria-hidden="true">
+      <label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
+    </div>
+
+    {% comment %}
+      Custom reCAPTCHA v2. This is the public SITE key — it is meant to be visible in
+      the page. Formspree verifies the token server-side with the matching SECRET key,
+      which is pasted into the form's own settings on Formspree and never lives in this
+      repo. The widget writes a `g-recaptcha-response` field into the form, so FormData
+      picks the token up with everything else — the name has to stay as Google sets it
+      or Formspree won't find it.
+    {% endcomment %}
+    {% if site.recaptcha_site_key and site.recaptcha_site_key != "" %}
+      <div class="comment-form__captcha g-recaptcha" data-sitekey="{{ site.recaptcha_site_key }}"></div>
+    {% endif %}
+
+    <button type="submit" class="btn btn--primary">Send it</button>
+    <p class="comment-form__status" role="status"></p>
+  </form>
+
+  {% comment %}
+    Kept flush with the script below: this include is rendered inside a markdown
+    page, and a tag indented four spaces past the surrounding block reaches kramdown
+    as an indented code block — it ships as escaped text on the page instead of
+    loading.
+  {% endcomment %}
+  {% if site.recaptcha_site_key and site.recaptcha_site_key != "" %}
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  {% endif %}
+
+  <script>
+    (function () {
+      var form = document.getElementById("friend-comment-form");
+      var textarea = form.querySelector('textarea[name="comment"]');
+      var count = form.querySelector(".comment-form__count");
+      var status = form.querySelector(".comment-form__status");
+      var button = form.querySelector('button[type="submit"]');
+      var captcha = form.querySelector(".g-recaptcha");
+      var limit = parseInt(textarea.getAttribute("maxlength"), 10);
+
+      // api.js is async, so grecaptcha can still be missing when someone submits
+      // early; an unticked box and an unloaded script both come back empty here and
+      // are stopped by the same check.
+      function captchaSolved() {
+        return !captcha || (window.grecaptcha && grecaptcha.getResponse() !== "");
+      }
+
+      function render() {
+        // Clamped because maxlength only governs what the user types — a value
+        // arriving any other way (autofill, a restored session) can overshoot it.
+        var left = Math.max(0, limit - textarea.value.length);
+        count.textContent = left + " characters left";
+        count.classList.toggle("is-spent", left === 0);
+      }
+
+      textarea.addEventListener("input", render);
+      render();
+
+      // Submitting in place keeps the reader on the page; without this the browser
+      // navigates to the form service's own thank-you screen.
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        if (!captchaSolved()) {
+          status.className = "comment-form__status is-error";
+          status.textContent = "Tick the “I'm not a robot” box first.";
+          return;
+        }
+
+        button.disabled = true;
+        status.className = "comment-form__status";
+        status.textContent = "Sending…";
+
+        fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" }
+        })
+          .then(function (response) {
+            if (!response.ok) throw new Error("rejected");
+            form.reset();
+            render();
+            status.className = "comment-form__status is-ok";
+            status.textContent = "Got it — thank you. It'll show up here once I've read it.";
+          })
+          .catch(function () {
+            status.className = "comment-form__status is-error";
+            status.textContent =
+              "That didn't go through. Send it to {{ site.email }} instead?";
+          })
+          .then(function () {
+            button.disabled = false;
+            // form.reset() leaves the widget ticked, and the token is spent either
+            // way once Formspree has looked at it, so a second comment starts from
+            // a fresh challenge.
+            if (captcha && window.grecaptcha) grecaptcha.reset();
+          });
+      });
+    })();
+  </script>
+{% else %}
+  <p>
+    Want to add one? Send me a line of 140 characters or fewer by
+    <a href="mailto:{{ site.email }}?subject=A%20comment%20for%20your%20about%20page">email</a>
+    and I'll put it up here.
+  </p>
+{% endif %}
