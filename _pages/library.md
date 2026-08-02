@@ -23,12 +23,20 @@ Every book I've read, shelf by shelf, with what I made of it. {{ finished.size }
 </div>
 <p class="archive-filter__empty" id="archive-filter-empty" hidden>No books match that filter.</p>
 
+{% comment %}
+  Blank counts as no shelf too, not just an absent key — an empty string is
+  truthy in Liquid, and a YAML `shelf: ""` is an easy typo for "no shelf" when
+  hand-editing the quick log. Left unguarded, a run of blank shelves at the end
+  of `books` used to vanish outright: Ruby's String#split drops trailing empty
+  fields, so they never made it into `shelves` and `== nil` didn't catch them
+  as unshelved either.
+{% endcomment %}
 {% assign shelves_str = "" %}
 {% for book in books %}
-  {% if book.shelf %}{% assign shelves_str = shelves_str | append: book.shelf | append: "|" %}{% endif %}
+  {% if book.shelf and book.shelf != empty %}{% assign shelves_str = shelves_str | append: book.shelf | append: "|" %}{% endif %}
 {% endfor %}
 {% assign shelves = shelves_str | split: "|" | uniq | sort %}
-{% assign unshelved = books | where_exp: "b", "b.shelf == nil" %}
+{% assign unshelved = books | where_exp: "b", "b.shelf == nil or b.shelf == empty" %}
 
 <nav class="notes-nav">
   <ul class="taxonomy__index">

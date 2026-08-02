@@ -16,11 +16,36 @@
 #   rating     1-5, drawn as stars. omit it to show none.
 #   excerpt    one line, shown on the archive card.
 
-- title: "Example — a quick-logged book"
-  author: "Author Name"
-  published: 1998
-  shelf: "Physics"
+# - title: "Example — a quick-logged book"
+#   author: "Author Name"
+#   published: 1998
+#   shelf: "Physics"
+#   status: read
+#   finished: 2026-05-18
+#   rating: 4
+#   excerpt: "Placeholder entry. Replace it with a real book, or delete it."
+
+- title: "Pappagalli verdi: cronache di un chirurgo di guerra"
+  author: "Gino Strada"
+  published: 1999
   status: read
-  finished: 2026-05-18
+  rating: 5
+
+- title: "Scrivo poesie solo per portarmi a letto le ragazze"
+  author: "Charles Bukowski"
+  status: read
+  rating: 3
+
+- title: "De Otio & De Tranquillitate Animi"
+  author: "Seneca"
+  status: reading
+
+- title: "Discorso sulla servitù volontaria"
+  author: "Étienne de La Boitè"
+  published: 1577
+  status: read
   rating: 4
-  excerpt: "Placeholder entry. Replace it with a real book, or delete it."
+
+- title: "La città del sole"
+  author: "Tommaso Campanella"
+  status: reading

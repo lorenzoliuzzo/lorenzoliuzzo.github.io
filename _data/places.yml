@@ -30,3 +30,11 @@
   country: "Cabo Verde"
   coords: [14.9330, -23.5133]
   # year: # placeholder — fill in
+- name: "Lisbon"
+  country: "Portugal"
+  coords: [38.7223, -9.1393]
+  year: 2023
+- name: "Porto"
+  country: "Portugal"
+  # coords: [38.7223, -9.1393]
+  year: 2023
