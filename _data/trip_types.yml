@@ -9,31 +9,43 @@
 # `@latest` CDN URL, so the version floats — these are all FA6-era names, which
 # FA7 still ships. Check a name against the current release before adding it.
 # A trip with no `type` renders without a chip rather than being guessed at.
+#
+# `emoji` marks the trip's own route line on the map at /travel/, so two routes
+# with a similar dash pattern are still easy to tell apart at a glance. A trip
+# with no `emoji` just gets the plain line, same as a missing `icon` skips the
+# chip.
 
 roadtrip:
   label: "Road trip"
   icon: "fa-car-side"
+  emoji: "🚗"
 
 train:
   label: "Train trip"
   icon: "fa-train"
+  emoji: "🚆"
 
 hiking:
   label: "Hiking trip"
   icon: "fa-person-hiking"
+  emoji: "🥾"
 
 bike:
   label: "Bike trip"
   icon: "fa-person-biking"
+  emoji: "🚲"
 
 walk:
   label: "On foot"
   icon: "fa-person-walking"
+  emoji: "🚶"
 
 boat:
   label: "Boat trip"
   icon: "fa-sailboat"
+  emoji: "⛵"
 
 flight:
   label: "Flight"
   icon: "fa-plane"
+  emoji: "✈️"

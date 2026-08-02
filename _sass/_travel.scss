@@ -102,6 +102,19 @@
   stroke-opacity: 0.4;
 }
 
+// The divIcon Leaflet wraps the emoji in; sized and centred on its `iconSize`
+// box (which Leaflet itself centres on the marker's latlng) so it sits on the
+// route without a background or border fighting the tile underneath it.
+.travel-route-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  line-height: 1;
+  text-align: center;
+  pointer-events: none;
+}
+
 /* Legend
    ========================================================================== */
 

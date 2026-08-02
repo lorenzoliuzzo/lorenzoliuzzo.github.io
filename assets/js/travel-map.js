@@ -56,6 +56,21 @@
     });
   }
 
+  // A dash pattern alone is hard to tell apart at a glance, especially between
+  // similar ones (bike vs. hiking). Dropped at the route's midpoint rather than
+  // an endpoint, which is already busy with a stop pin and its popup.
+  function emojiMarker(latlng, emoji) {
+    return L.marker(latlng, {
+      icon: L.divIcon({
+        className: "travel-route-emoji",
+        html: emoji,
+        iconSize: [24, 24]
+      }),
+      keyboard: false,
+      interactive: false
+    });
+  }
+
   function render(container) {
     var payloadEl = document.getElementById(container.id + "-data");
     if (!payloadEl) return;
@@ -104,7 +119,16 @@
         var routeClass = "travel-route";
         if (trip.type) routeClass += " travel-route--" + trip.type;
 
-        L.polyline(line, { weight: 2, className: routeClass }).addTo(map);
+        // `geometry` traces the actual roads driven, precomputed with OSRM. Fall
+        // back to straight lines between stops when a trip doesn't have one.
+        var routeLine = trip.geometry && trip.geometry.length > 1 ? trip.geometry : line;
+
+        L.polyline(routeLine, { weight: 2, className: routeClass }).addTo(map);
+
+        if (trip.emoji) {
+          var midpoint = routeLine[Math.floor(routeLine.length / 2)];
+          emojiMarker(midpoint, trip.emoji).addTo(map);
+        }
       }
     });
 

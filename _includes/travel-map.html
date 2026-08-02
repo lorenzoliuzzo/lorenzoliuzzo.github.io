@@ -49,6 +49,25 @@
           so it is sanitised on the way out rather than trusted on the way in.
         {%- endcomment -%}
         "type":{{ trip.type | slugify | jsonify }},
+        {%- comment -%}
+          Looked up here rather than left to JS: _data/trip_types.yml is the one
+          place a trip's emoji is defined, same as `icon` for its chip.
+        {%- endcomment -%}
+        "emoji":{{ site.data.trip_types[trip.type].emoji | jsonify }},
+        {%- comment -%}
+          Optional: points tracing the actual roads driven, in order, in place of
+          the straight lines the JS falls back to between stops. See
+          _travel/example-trip.md for how to generate this with OSRM.
+        {%- endcomment -%}
+        "geometry":[
+        {%- assign geo_sep = "" -%}
+        {%- for point in trip.route_geometry -%}
+          {%- if point.size == 2 -%}
+            {{ geo_sep }}[{{ point[0] }},{{ point[1] }}]
+            {%- assign geo_sep = "," -%}
+          {%- endif -%}
+        {%- endfor -%}
+        ],
         "stops":[
         {%- assign stop_sep = "" -%}
         {%- for stop in trip.stops -%}
