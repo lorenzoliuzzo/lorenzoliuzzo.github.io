@@ -4,6 +4,19 @@
 
 .travel-map {
   margin: 0 0 2rem;
+
+  // A dedicated colour rather than reusing --accent: --accent is the muted
+  // sitewide teal used for links and chips, and read as too pale once it had
+  // to compete with the map tiles underneath it. This one only has to work
+  // here, so it can be as bold as the pins and route lines need.
+  --travel-trip-color: #e8562e;
+}
+
+[data-theme="dark"] .travel-map {
+  // The tile filter below inverts the map to near-black, so the trip colour
+  // needs to be lighter and more saturated to read at the same weight against
+  // it, not just theme-swapped like --accent is.
+  --travel-trip-color: #ff8a65;
 }
 
 .travel-map__canvas {
@@ -46,9 +59,10 @@
 }
 
 .travel-pin--trip {
-  fill: var(--accent);
-  fill-opacity: 0.75;
+  fill: var(--travel-trip-color);
+  fill-opacity: 1;
   stroke: var(--surface-raised);
+  stroke-width: 2.5;
 }
 
 .travel-pin--place {
@@ -62,9 +76,9 @@
 // rather than left to Leaflet's `weight` option so the legend lines match.
 .travel-route {
   fill: none;
-  stroke: var(--accent);
-  stroke-opacity: 0.55;
-  stroke-width: 2;
+  stroke: var(--travel-trip-color);
+  stroke-opacity: 0.85;
+  stroke-width: 2.5;
   stroke-dasharray: 5 4;
 }
 
@@ -140,7 +154,7 @@
 }
 
 .travel-map__key--trip {
-  background: var(--accent);
+  background: var(--travel-trip-color);
 }
 
 .travel-map__key--place {
