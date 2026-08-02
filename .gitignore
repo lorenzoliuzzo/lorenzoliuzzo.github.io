@@ -12,3 +12,6 @@ tools/mythingslab/.env
 
 # Local Claude Code state; .claude/worktrees/ in particular would nest the repo in itself
 .claude/
+
+# CV build fonts, fetched by cv/fetch-fonts.sh
+cv/fonts/
