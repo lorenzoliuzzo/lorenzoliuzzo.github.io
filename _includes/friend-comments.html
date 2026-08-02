@@ -149,13 +149,23 @@
           headers: { Accept: "application/json" }
         })
           .then(function (response) {
-            if (!response.ok) throw new Error("rejected");
-            form.reset();
-            render();
-            status.className = "comment-form__status is-ok";
-            status.textContent = "Got it — thank you. It'll show up here once I've read it.";
+            if (response.ok) {
+              form.reset();
+              render();
+              status.className = "comment-form__status is-ok";
+              status.textContent = "Got it — thank you. It'll show up here once I've read it.";
+              return;
+            }
+            // Visitors keep the friendly line below, but the service's real reason —
+            // a Formspree misconfiguration, a rejected token — is read off the
+            // response and thrown so it reaches the console instead of being
+            // swallowed. This is what a blank "didn't go through" was hiding.
+            return response.text().then(function (body) {
+              throw new Error("Formspree " + response.status + ": " + body);
+            });
           })
-          .catch(function () {
+          .catch(function (error) {
+            console.error("Comment submission failed:", error);
             status.className = "comment-form__status is-error";
             status.textContent =
               "That didn't go through. Send it to {{ site.email }} instead?";
