@@ -68,9 +68,8 @@
 #resume-entry(
   title: "Qiskit Fall Fest",
   location: "Milano, Italia",
-  // TODO: confermare edizione/date — vedi la nota in cv_en.typ.
-  date: "Autunno 2025",
-  description: "IBM Quantum",
+  date: "31 Ottobre - 7 Novembre 2025",
+  description: "IBM Quantum · Dipartimento di Fisica, Università degli Studi di Milano",
 )
 
 = Esperienze

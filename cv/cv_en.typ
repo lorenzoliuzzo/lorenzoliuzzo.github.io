@@ -67,10 +67,8 @@
 #resume-entry(
   title: "Qiskit Fall Fest",
   location: "Milan, Italy",
-  // TODO: confirm the edition/dates — Fall Fest runs in the autumn, so this is
-  // presumably the 2025 edition, but I have no record of it to check against.
-  date: "Autumn 2025",
-  description: "IBM Quantum",
+  date: "31 October - 7 November 2025",
+  description: "IBM Quantum · Department of Physics, University of Milan",
 )
 
 = Experiences
