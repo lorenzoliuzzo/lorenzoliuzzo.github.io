@@ -13,14 +13,20 @@
   <ul class="comment-wall">
     {% for entry in friend_comments %}
       <li class="comment-card">
-        <p class="comment-card__text">{{ entry.comment }}</p>
+        {% comment %}
+          Every field here is written by a stranger through the form and only
+          hand-copied in, so it is escaped on the way out — a moderator reading for
+          tone will not reliably catch an injected tag, and Liquid does not escape
+          `{{ }}` on its own.
+        {% endcomment %}
+        <p class="comment-card__text">{{ entry.comment | escape }}</p>
         <p class="comment-card__by">
           {% if entry.url %}
-            <a href="{{ entry.url }}" rel="nofollow noopener">{{ entry.name }}</a>
+            <a href="{{ entry.url | escape }}" rel="nofollow noopener">{{ entry.name | escape }}</a>
           {% else %}
-            {{ entry.name }}
+            {{ entry.name | escape }}
           {% endif %}
-          {% if entry.relation %}<span class="comment-card__relation">{{ entry.relation }}</span>{% endif %}
+          {% if entry.relation %}<span class="comment-card__relation">{{ entry.relation | escape }}</span>{% endif %}
         </p>
       </li>
     {% endfor %}
@@ -69,11 +75,12 @@
     </div>
 
     {% comment %}
-      Custom reCAPTCHA v2: the same site key goes here and into the form's settings
-      on Formspree, which is what verifies the token server-side (the secret key
-      never leaves Google). The widget writes a `g-recaptcha-response` field into
-      the form, so FormData picks the token up with everything else — the name has
-      to stay as Google sets it or Formspree won't find it.
+      Custom reCAPTCHA v2. This is the public SITE key — it is meant to be visible in
+      the page. Formspree verifies the token server-side with the matching SECRET key,
+      which is pasted into the form's own settings on Formspree and never lives in this
+      repo. The widget writes a `g-recaptcha-response` field into the form, so FormData
+      picks the token up with everything else — the name has to stay as Google sets it
+      or Formspree won't find it.
     {% endcomment %}
     {% if site.recaptcha_site_key and site.recaptcha_site_key != "" %}
       <div class="comment-form__captcha g-recaptcha" data-sitekey="{{ site.recaptcha_site_key }}"></div>
