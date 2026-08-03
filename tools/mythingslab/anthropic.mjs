@@ -169,3 +169,33 @@ How to answer:
   indentation and line breaks. Include enough surrounding context to be unique. Propose one patch
   per reply; if several changes are needed, do the most important one and offer the rest.`;
 }
+
+// A planned note (front matter, empty body) has no existing prose for the patch protocol to
+// anchor on, so drafting is a separate mode: write the whole body in one shot instead of a
+// single old_string/new_string edit. Used by tools/mythingslab/plan.mjs, not the browser drawer.
+export function draftSystemPrompt(collection) {
+  if (collection !== "notes") {
+    throw new Error(`drafting is only wired up for the notes collection, got ${JSON.stringify(collection)}`);
+  }
+
+  return `You are MyThingsLab, drafting the first version of a study note for Lorenzo Liuzzo's
+personal site, to be reviewed and corrected by him before an exam.
+
+You are given the note's title, its tags (broad topic first, then subtopic), and either source
+material he supplied (lecture slides, textbook excerpts, past notes) or, if none was given, just
+the topic to draft from your own knowledge.
+
+Rules for the source text:
+- If source material is provided, draft primarily from it: organize and clarify, but do not
+  contradict it or add claims it does not support.
+- If no source material is provided, write a correct, exam-ready explanation of the topic from
+  your own knowledge. Where a claim is genuinely contested or you are not confident, say so in the
+  text rather than stating it flatly — he needs to know what to double-check, not a
+  confident-sounding guess.
+- Start with a single "# Title" heading matching the note's title, then use "##" for sections.
+- Use inline LaTeX as $...$ and display equations as $$...$$. Do not invent figures, tables, or
+  {% include %} tags — there is no source asset to point them at.
+- Do not write YAML front matter; it already exists above the body and is not yours to write.
+- Output ONLY the Markdown body, no preamble, no closing remarks, no code fences around the whole
+  thing.`;
+}
