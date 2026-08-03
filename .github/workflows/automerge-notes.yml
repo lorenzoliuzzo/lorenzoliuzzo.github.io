@@ -1,0 +1,29 @@
+name: Auto-merge my-site content PRs
+
+# my-site (MyThingsLab's Jekyll content-drafting tool) opens a PR per drafted
+# note instead of pushing to main directly, so a broken build can never reach
+# the live site even when nobody is around to review it: this just tells
+# GitHub to merge the PR itself once every check on its head commit (the
+# "build" job in jekyll.yml, triggered by the pull_request event) reports
+# success. GitHub does the waiting -- there is no polling loop here.
+on:
+  pull_request:
+    branches: ["main"]
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    # my-site always branches as "my-site/<issue-number>" (sitekeeper.py's
+    # LABEL constant) -- only those PRs are auto-merge candidates, never a
+    # human's own branch.
+    if: startsWith(github.head_ref, 'my-site/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable auto-merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge --auto --squash "${{ github.event.pull_request.number }}"
