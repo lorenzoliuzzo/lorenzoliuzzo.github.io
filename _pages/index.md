@@ -8,11 +8,6 @@ classes: wide
 author_profile: true
 ---
 
-<script
-  data-goatcounter="https://lorenzoliuzzo.goatcounter.com/count" 
-  async src="//gc.zgo.at/count.js"
-></script>
-
 <p class="lead">
   Physicist and developer, currently reading for an MSc in Artificial Intelligence
   for Science and Technology in Milan. This site is my working knowledge base:
