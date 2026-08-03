@@ -49,3 +49,150 @@
 - title: "La città del sole"
   author: "Tommaso Campanella"
   status: reading
+
+- title: "Hunger Games"
+  author: "Suzanne Collins"
+  published: 2008
+  status: read
+
+- title: "La ragazza di fuoco"
+  author: "Suzanne Collins"
+  published: 2009
+  status: read
+
+- title: "Il canto della rivolta"
+  author: "Suzanne Collins"
+  published: 2010
+  status: read
+
+- title: "Harry Potter e la pietra filosofale"
+  author: "J.K. Rowling"
+  published: 1997
+  status: read
+
+- title: "Harry Potter e la camera dei segreti"
+  author: "J.K. Rowling"
+  published: 1998
+  status: read
+
+- title: "Harry Potter e il prigioniero di Azkaban"
+  author: "J.K. Rowling"
+  published: 1999
+  status: read
+
+- title: "Harry Potter e il calice di fuoco"
+  author: "J.K. Rowling"
+  published: 2000
+  status: read
+
+- title: "Harry Potter e l'ordine della fenice"
+  author: "J.K. Rowling"
+  published: 2003
+  status: read
+
+- title: "Harry Potter e il principe mezzosangue"
+  author: "J.K. Rowling"
+  published: 2005
+  status: read
+
+- title: "Harry Potter e i doni della morte"
+  author: "J.K. Rowling"
+  published: 2007
+  status: read
+
+- title: "Lo Hobbit"
+  author: "J.R.R. Tolkien"
+  published: 1937
+  status: read
+
+- title: "La fattoria degli animali"
+  author: "George Orwell"
+  published: 1945
+  status: read
+
+- title: "Piccole donne"
+  author: "Louisa May Alcott"
+  published: 1868
+  status: read
+
+- title: "Divergent"
+  author: "Veronica Roth"
+  published: 2011
+  status: read
+
+- title: "Insurgent"
+  author: "Veronica Roth"
+  published: 2012
+  status: read
+
+- title: "Allegiant"
+  author: "Veronica Roth"
+  published: 2013
+  status: read
+
+- title: "Frankenstein"
+  author: "Mary Shelley"
+  published: 1818
+  status: read
+
+- title: "Il labirinto"
+  author: "James Dashner"
+  published: 2009
+  status: read
+
+- title: "La fuga"
+  author: "James Dashner"
+  published: 2010
+  status: read
+
+- title: "La rivelazione"
+  author: "James Dashner"
+  published: 2011
+  status: read
+
+- title: "Odissea"
+  author: "Omero"
+  status: read
+
+- title: "Iliade"
+  author: "Omero"
+  status: read
+
+- title: "Eneide"
+  author: "Virgilio"
+  status: read
+
+- title: "Fahrenheit 451"
+  author: "Ray Bradbury"
+  published: 1953
+  status: read
+
+- title: "Il ladro di fulmini"
+  author: "Rick Riordan"
+  published: 2005
+  status: read
+
+- title: "Il mare dei mostri"
+  author: "Rick Riordan"
+  published: 2006
+  status: read
+
+- title: "La maledizione del Titano"
+  author: "Rick Riordan"
+  published: 2007
+  status: read
+
+- title: "La battaglia del labirinto"
+  author: "Rick Riordan"
+  published: 2008
+  status: read
+
+- title: "Lo scontro finale"
+  author: "Rick Riordan"
+  published: 2009
+  status: read
+
+- title: "Dune"
+  author: "Frank Herbert"
+  published: 1965
+  status: reading
