@@ -24,13 +24,13 @@ toc: true
 
 <dl class="definition-list">
   <dt><a href="https://github.com/MyThingsLab">MyThingsLab</a></dt>
-  <dd>A personal lab for AI-assisted development, started in July 2026: 56 composable
-  Python tools on one dependency-free SDK, covering design, implementation, testing and
-  documentation. Headless workers do the deterministic work themselves and call the model
-  only where judgement is needed, then open a pull request — never a merge, so the last
-  word stays mine. It is an experiment in control, not a product.</dd>
+  <dd>A personal lab for AI-assisted development, started in July 2026: more than 50 small
+  Python tools on one dependency-free SDK, covering research, design, implementation,
+  testing and documentation. Headless workers do the deterministic work themselves and call
+  the model only where judgement is needed, then open a pull request — never a merge, so the
+  last word stays mine. It is an experiment in control, not a product.</dd>
 
-  <dt><a href="https://github.com/MoneyBallingAI">Money Ball AI</a></dt>
+  <dt><a href="https://github.com/MoneyBallingAI">Money Balling AI</a></dt>
   <dd>A team of four building one model that predicts the exact box score of an NBA game —
   every player and team line — with calibrated uncertainty. A graph encoder over lineup
   stints, a Monte Carlo possession simulator, and calibration scored against the real box
@@ -74,9 +74,9 @@ toc: true
 
 <div class="skill-groups">
   <div class="skill-group">
-    <h3 class="skill-group__title">Languages</h3>
+    <h3 class="skill-group__title">Programming languages</h3>
     <ul class="chip-list">
-      <li>C++</li><li>Python</li><li>Julia</li><li>C</li><li>Nim</li>
+      <li>Python</li><li>C++</li><li>Julia</li><li>C</li><li>Nim</li>
     </ul>
   </div>
   <div class="skill-group">
@@ -86,21 +86,45 @@ toc: true
     </ul>
   </div>
   <div class="skill-group">
-    <h3 class="skill-group__title">ML &amp; Data</h3>
+    <h3 class="skill-group__title">Machine learning</h3>
     <ul class="chip-list">
-      <li>PyTorch</li><li>PyTorch Geometric</li><li>Scikit-learn</li><li>Pandas</li><li>NumPy</li><li>SciPy</li>
+      <li>PyTorch</li><li>PyTorch Geometric</li><li>Scikit-learn</li>
     </ul>
   </div>
   <div class="skill-group">
-    <h3 class="skill-group__title">Databases &amp; quantum</h3>
+    <h3 class="skill-group__title">Scientific computing</h3>
     <ul class="chip-list">
-      <li>Neo4j</li><li>Cypher</li><li>PennyLane</li><li>Qiskit</li>
+      <li>NumPy</li><li>SciPy</li><li>Pandas</li><li>Matplotlib</li><li>Jupyter</li>
     </ul>
   </div>
   <div class="skill-group">
-    <h3 class="skill-group__title">Tools</h3>
+    <h3 class="skill-group__title">Quantum computing</h3>
     <ul class="chip-list">
-      <li>Git</li><li>GitHub</li><li>GitHub Actions</li><li>pytest</li><li>ruff</li><li>Jupyter</li><li>LaTeX</li><li>Typst</li>
+      <li>PennyLane</li><li>Qiskit</li>
+    </ul>
+  </div>
+  <div class="skill-group">
+    <h3 class="skill-group__title">Databases</h3>
+    <ul class="chip-list">
+      <li>Neo4j</li><li>Cypher</li>
+    </ul>
+  </div>
+  <div class="skill-group">
+    <h3 class="skill-group__title">Practices</h3>
+    <ul class="chip-list">
+      <li>Test-driven development</li><li>Code review</li><li>CI/CD</li><li>Static typing</li>
+    </ul>
+  </div>
+  <div class="skill-group">
+    <h3 class="skill-group__title">Dev tools</h3>
+    <ul class="chip-list">
+      <li>Git</li><li>GitHub</li><li>GitHub Actions</li><li>pytest</li><li>ruff</li>
+    </ul>
+  </div>
+  <div class="skill-group">
+    <h3 class="skill-group__title">Typesetting</h3>
+    <ul class="chip-list">
+      <li>LaTeX</li><li>Typst</li><li>Markdown</li><li>Jekyll</li>
     </ul>
   </div>
 </div>

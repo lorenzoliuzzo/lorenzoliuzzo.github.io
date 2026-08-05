@@ -1,4 +1,5 @@
 #import "@preview/modern-cv:0.10.0": *
+#import "@preview/fontawesome:0.6.0": fa-icon
 
 #show: resume.with(
   author: (
@@ -21,13 +22,32 @@
   keywords: ("Physicist", "Developer"),
 )
 
+// Three signals, each doing one job, so nothing has to be shouted:
+//   `lead` — the document's own accent colour, on the phrase a bullet is about;
+//   `tech` — a heavier weight on a technology, so the stack can be scanned;
+//   `xlink` — a small mark after clickable text, the only thing a link gets.
+// Bold stays rare on purpose: one claim per entry, and only the strongest skills.
+#let lead(body) = text(fill: default-accent-color, weight: "semibold")[#body]
+#let tech(body) = text(weight: "medium")[#body]
+#let link-mark = box(
+  baseline: -0.3em,
+  text(size: 0.5em, fill: rgb("#8d93b5"))[#fa-icon("arrow-up-right-from-square")],
+)
+#let xlink(url, body) = link(url)[#body#h(1.2pt)#link-mark]
+
+// The template's github-link stops at the icon; giving it the same mark the inline links
+// carry keeps one convention for "this is clickable" across the whole page.
+#let github-link(path) = align(right + horizon)[
+  #box(height: 11pt, fa-icon("github", fill: color-darkgray))#h(2pt)#xlink("https://github.com/" + path)[#path]
+]
+
 // resume-item hard-codes `set par(leading: 0.65em)` inside the function, and neither a
 // set rule nor a show-set rule out here can reach past it. Setting the leading inside
 // the body does win, so the item is wrapped once and every call site picks it up.
 // The value spends the space left at the bottom of the last page on line spacing.
 #let template-item = resume-item
 #let resume-item(body) = template-item[
-  #set par(leading: 0.80em)
+  #set par(leading: 0.78em)
   #body
 ]
 
@@ -51,41 +71,41 @@
   title: "MyThingsLab",
   location: github-link("MyThingsLab"),
   date: "July 2026 - Present",
-  description: "Founder, Architect and Developer",
+  description: "Personal project",
 )
 #resume-item[
-  - A personal lab for AI-assisted development, started in July 2026: #strong[more than 50
-    composable Python tools] in the first month, all on one SDK — #emph[my-things-core] —
-    exposing five contracts (ledger, policy, engine, GitHub, isolation) that every tool
-    imports and no tool reimplements.
-  - What I am testing is control, not autonomy: headless workers pick an issue, do the
-    deterministic pre-work with no model call, invoke the LLM once for the step needing
-    judgement, and close it as a pull request — never a merge, so I keep the last word.
-  - The SDK is dependency-free and calls no model itself: it shells out to #emph[gh] and
-    #emph[git], and the LLM lives behind one #emph[Engine] protocol whose deterministic
-    default lets the whole fleet be exercised and tested without spending a token.
+  - Somewhere to find out how far AI-assisted development can be taken, and where it should
+    stop: #strong[more than 50 small Python tools] in the first month, all on one SDK —
+    #xlink("https://github.com/MyThingsLab/my-things-core")[#tech[my-things-core]] —
+    exposing five contracts (ledger, policy, engine, GitHub,
+    isolation) that every tool imports and no tool reimplements.
+  - #lead[Control, not autonomy.] Headless workers pick up an issue, do the deterministic
+    pre-work with no model call, ask the LLM once for the step that needs judgement, and
+    close it as a pull request — never a merge, so the last word stays with a person.
+  - #lead[No model inside the core.] The SDK is dependency-free and shells out to #tech[gh]
+    and #tech[git], and the LLM sits behind a single #tech[Engine] protocol whose
+    deterministic default lets the whole fleet be exercised and tested without a token spent.
 ]
 
 #resume-entry(
-  title: "Money Ball AI",
+  title: "Money Balling AI",
   location: github-link("MoneyBallingAI"),
   date: "September 2025 - Present",
-  description: "Founder, Technical Lead and Developer",
+  description: "Founder and Technical Lead",
 )
 #resume-item[
-  - Founded and lead a team of four building one model that predicts the #strong[exact box
-    score] of an NBA game — every player and team line — with calibrated uncertainty. I own
-    the architecture, from raw play-by-play to a calibrated prediction:
-  - #strong[Data] — play-by-play parsed into periods, lineup stints and possessions,
-    aggregated into cumulative stat windows and modelled as heterogeneous stint graphs with
-    stable global identities for players and teams across seasons.
-  - #strong[Encoder] — a heterogeneous GNN over those graphs with per-entity cross-game and
+  - A team of four building one model that predicts the #strong[exact box score] of an NBA
+    game — every player and team line — with calibrated uncertainty. I am responsible for the
+    architecture, from raw play-by-play to a calibrated prediction:
+  - #lead[Data] — play-by-play parsed into periods, lineup stints and possessions, aggregated
+    into cumulative stat windows and modelled as heterogeneous stint graphs, with stable
+    global identities for players and teams across seasons.
+  - #lead[Encoder] — a heterogeneous GNN over those graphs with per-entity cross-game and
     hierarchical season/game/stint memory, pretrained on a box-score delta task for stable
     player and team strength embeddings.
-  - #strong[Simulator] — a vectorized Monte Carlo possession engine whose policies are
-    behavior-cloned on real possessions; #strong[calibration] scores per-stat distributions
-    against the actual box score with MAE, CRPS, PIT and coverage, under CI with a 134-test
-    #emph[pytest] suite.
+  - #lead[Simulator] — a vectorized Monte Carlo possession engine whose policies are
+    behavior-cloned on real possessions; #lead[calibration] scores per-stat distributions
+    against the actual box score with MAE, CRPS, PIT and coverage, test-first and under CI.
 ]
 
 #resume-entry(
@@ -164,14 +184,19 @@
 
 = Schools & Workshops
 
-#resume-item[
-  #block(breakable: false)[
-    - #strong[School on Quantum Simulation] — Department of Physics, University of Milan
-      (9 - 11 September 2026).
-    - #strong[Qiskit Fall Fest] — IBM Quantum · Department of Physics, University of Milan
-      (31 October - 7 November 2025).
-  ]
-]
+#resume-entry(
+  title: "School on Quantum Simulation",
+  location: "Milan, Italy",
+  date: "September 2026",
+  description: "Department of Physics, University of Milan",
+)
+
+#resume-entry(
+  title: "Qiskit Fall Fest",
+  location: "Milan, Italy",
+  date: "October - November 2025",
+  description: "IBM Quantum · Department of Physics, University of Milan",
+)
 
 = Projects
 
@@ -183,7 +208,7 @@
 )
 #resume-item[
   Lattice Standard Model field theory simulated with gauge-equivariant GNNs in
-  #emph[PyTorch Geometric]: SU(3)×SU(2)×U(1) gauge groups, Wilson-Dirac fermions and
+  #tech[PyTorch Geometric]: SU(3)×SU(2)×U(1) gauge groups, Wilson-Dirac fermions and
   Higgs spontaneous symmetry breaking.
 ]
 
@@ -194,9 +219,9 @@
   description: "Designer/Developer",
 )
 #resume-item[
-  - #link("https://github.com/lorenzoliuzzo/supervised-learning-on-food-images")[#strong[Supervised Learning on Food Images]] — a convolutional neural network under 10M parameters classifying the 251 classes of the FoodX-251 dataset.
-  - #link("https://github.com/lorenzoliuzzo/TFIM")[#strong[Transverse Field Ising Model]] — quantum phase transitions explored on #emph[PennyLane].
-  - #link("https://github.com/lorenzoliuzzo/unsupervised-learning-on-country-data")[#strong[Unsupervised Learning on Country Data]] — clustering and dimensionality reduction on socio-economic country-level data.
+  - #xlink("https://github.com/lorenzoliuzzo/supervised-learning-on-food-images")[#strong[Supervised Learning on Food Images]] — a #tech[CNN] under 10M parameters classifying the 251 classes of the FoodX-251 dataset.
+  - #xlink("https://github.com/lorenzoliuzzo/TFIM")[#strong[Transverse Field Ising Model]] — quantum phase transitions explored on #tech[PennyLane].
+  - #xlink("https://github.com/lorenzoliuzzo/unsupervised-learning-on-country-data")[#strong[Unsupervised Learning on Country Data]] — clustering and dimensionality reduction on socio-economic country-level data.
 ]
 
 #resume-entry(
@@ -206,7 +231,7 @@
   description: "Designer/Developer",
 )
 #resume-item[
-  #emph[Julia] model of a telescope's reflective system, propagating mirror defects to
+  #tech[Julia] model of a telescope's reflective system, propagating mirror defects to
   the pointing direction via #emph[ray tracing] and #emph[Monte Carlo] simulation.
 ]
 
@@ -217,27 +242,28 @@
   description: "Designer/Developer",
 )
 #resume-item[
-  - #link("https://github.com/lorenzoliuzzo/PhotoNim")[#strong[Ray Tracing Engine]] — pair project at UNIMI: a physical model turned into structured, tested and documented numerical code, while rapidly learning a new language (#emph[Nim]).
-  - #link("https://github.com/lorenzoliuzzo/ctda-cpp")[#strong[Dimensional Analysis Library]] — “CTDA: Compile Time Dimensional Analysis”, C++ numeric types carrying units of measurement in the type system.
+  - #xlink("https://github.com/lorenzoliuzzo/PhotoNim")[#strong[Ray Tracing Engine]] — pair project at UNIMI: a physical model turned into structured, tested and documented numerical code, while rapidly learning a new language (#tech[Nim]).
+  - #xlink("https://github.com/lorenzoliuzzo/ctda-cpp")[#strong[Dimensional Analysis Library]] — “CTDA: Compile Time Dimensional Analysis”, C++ numeric types carrying units of measurement in the type system.
 ]
 
 = How I Build Software
 
 #resume-item[
-  - #strong[AI across the whole workflow, not just the coding step.] Composable tools cover
-    design, implementation, testing and documentation — which is how one person can cover
-    more than 50 of them in a month, with pytest, coverage and ruff on every push.
-  - #strong[Deterministic first, models only where judgement is needed.] The LLM sits behind
-    a single #emph[Engine] seam, so a tool's entire skeleton runs and is tested at zero
+  - #lead[AI across the whole workflow, not only the coding step.] Composable tools cover
+    research, design, implementation, testing and documentation, so the model is used
+    wherever it earns its place rather than at a single step.
+  - #lead[Deterministic first, models only where judgement is needed.] The LLM sits behind
+    a single #tech[Engine] seam, so a tool's entire skeleton runs and is tested at zero
     token cost.
-  - #strong[Cut complexity before it accrues.] The shared core stays dependency-free —
-    shelling out to #emph[gh] and #emph[git] rather than pulling SDKs — and builds no
-    abstraction for a need that does not exist yet.
-  - #strong[Every side effect passes a gate.] A policy engine rules each action
+  - #lead[Test-driven, and always through a pull request.] Tests are written with the code
+    and often before it; #tech[pytest], coverage and #tech[ruff] run on every push, and work
+    lands by review rather than by pushing to a main branch.
+  - #lead[Every side effect passes a gate.] A policy engine rules each action
     allow/ask/deny, tools open pull requests rather than merging, and every #emph[ask]
     reaches me over Telegram before anything happens.
-  - #strong[Derive the model, then write the code.] Physics first, then typed and documented
-    numerical code — as in the telescope pointing thesis.
+  - #lead[Understand the problem before writing the code.] A habit kept from physics: work
+    out the model first, decide what the code actually has to compute, then write it — typed,
+    documented, and with no abstraction built for a need that does not exist yet.
 ]
 
 = Skills
@@ -245,15 +271,15 @@
 #resume-skill-item("Languages", (strong("Italian"), strong("English C1")))
 #resume-skill-item(
   "Programming Languages",
-  (strong("C++"), strong("Python"), strong("Julia"), "C", "Nim"),
+  (strong("Python"), strong("C++"), strong("Julia"), "C", "Nim"),
 )
 #resume-skill-item(
   "AI Engineering",
   (
     strong("Claude"),
     strong("Claude Code"),
-    strong("Agentic workflows"),
-    strong("Prompt & context engineering"),
+    "Agentic workflows",
+    "Prompt & context engineering",
   ),
 )
 #resume-skill-item(
@@ -261,29 +287,27 @@
   (
     strong("PyTorch"),
     strong("PyTorch Geometric"),
-    strong("Scikit-learn"),
-    strong("Pandas"),
-    strong("NumPy"),
-    strong("SciPy"),
+    "Scikit-learn",
+    "Pandas",
+    "NumPy",
+    "SciPy",
   ),
 )
 #resume-skill-item(
   "Databases & Quantum",
-  (strong("Neo4j"), strong("Cypher"), strong("PennyLane"), strong("Qiskit")),
+  ("Neo4j", "Cypher", strong("PennyLane"), "Qiskit"),
+)
+#resume-skill-item(
+  "Practices",
+  (strong("Test-driven development"), strong("Code review"), "CI/CD", "Static typing"),
 )
 #resume-skill-item(
   "Development Tools",
-  (
-    strong("Git"),
-    strong("GitHub"),
-    strong("GitHub Actions"),
-    strong("pytest"),
-    strong("ruff"),
-    strong("Jupyter"),
-    strong("LaTeX"),
-    strong("Typst"),
-    strong("Markdown"),
-  ),
+  (strong("Git"), strong("GitHub"), "GitHub Actions", "pytest", "ruff", "Jupyter"),
+)
+#resume-skill-item(
+  "Typesetting",
+  (strong("LaTeX"), strong("Typst"), strong("Markdown"), "Jekyll"),
 )
 
 #v(1fr)
