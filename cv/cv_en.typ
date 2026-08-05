@@ -47,7 +47,7 @@
 // The value spends the space left at the bottom of the last page on line spacing.
 #let template-item = resume-item
 #let resume-item(body) = template-item[
-  #set par(leading: 0.78em)
+  #set par(leading: 0.76em)
   #body
 ]
 
@@ -74,11 +74,12 @@
   description: "Personal project",
 )
 #resume-item[
-  - Somewhere to find out how far AI-assisted development can be taken, and where it should
-    stop: #strong[more than 50 small Python tools] in the first month, all on one SDK —
-    #xlink("https://github.com/MyThingsLab/my-things-core")[#tech[my-things-core]] —
-    exposing five contracts (ledger, policy, engine, GitHub,
-    isolation) that every tool imports and no tool reimplements.
+  - #lead[A harness, not a single tool.] Started in July 2026 to see how far AI-assisted
+    development can go, and where it should stop: #strong[more than 50 small Python tools]
+    in the first month, each one independent, all sharing one SDK —
+    #xlink("https://github.com/MyThingsLab/my-things-core")[#tech[my-things-core]] — and its
+    five contracts (ledger, policy, engine, GitHub, isolation), so nothing gets reimplemented
+    twice.
   - #lead[Control, not autonomy.] Headless workers pick up an issue, do the deterministic
     pre-work with no model call, ask the LLM once for the step that needs judgement, and
     close it as a pull request — never a merge, so the last word stays with a person.
@@ -214,12 +215,12 @@
 
 #resume-entry(
   title: "MSc Coursework Projects",
-  location: github-link("lorenzoliuzzo"),
+  location: "",
   date: "May - July 2026",
   description: "Designer/Developer",
 )
 #resume-item[
-  - #xlink("https://github.com/lorenzoliuzzo/supervised-learning-on-food-images")[#strong[Supervised Learning on Food Images]] — a #tech[CNN] under 10M parameters classifying the 251 classes of the FoodX-251 dataset.
+  - #xlink("https://github.com/lorenzoliuzzo/supervised-learning-on-food-images")[#strong[Supervised Learning on Food Images]] — a #tech[PyTorch] #tech[CNN] under 10M parameters classifying the 251 classes of the FoodX-251 dataset.
   - #xlink("https://github.com/lorenzoliuzzo/TFIM")[#strong[Transverse Field Ising Model]] — quantum phase transitions explored on #tech[PennyLane].
   - #xlink("https://github.com/lorenzoliuzzo/unsupervised-learning-on-country-data")[#strong[Unsupervised Learning on Country Data]] — clustering and dimensionality reduction on socio-economic country-level data.
 ]
@@ -237,7 +238,7 @@
 
 #resume-entry(
   title: "Systems & Numerical Programming",
-  location: "C++ · Nim",
+  location: "",
   date: "2023 - 2024",
   description: "Designer/Developer",
 )
@@ -249,24 +250,24 @@
 = How I Build Software
 
 #resume-item[
-  - #lead[AI across the whole workflow, not only the coding step.] Composable tools cover
+  - #strong[AI across the whole workflow, not only the coding step.] Composable tools cover
     research, design, implementation, testing and documentation, so the model is used
     wherever it earns its place rather than at a single step.
-  - #lead[Deterministic first, models only where judgement is needed.] The LLM sits behind
-    a single #tech[Engine] seam, so a tool's entire skeleton runs and is tested at zero
+  - #strong[Deterministic first, models only where judgement is needed.] The LLM sits behind
+    a single #lead[Engine] seam, so a tool's entire skeleton runs and is tested at zero
     token cost.
-  - #lead[Test-driven, and always through a pull request.] Tests are written with the code
-    and often before it; #tech[pytest], coverage and #tech[ruff] run on every push, and work
+  - #strong[Test-driven, and always through a pull request.] Tests are written with the code
+    and often before it; #lead[pytest], coverage and #lead[ruff] run on every push, and work
     lands by review rather than by pushing to a main branch.
-  - #lead[Every side effect passes a gate.] A policy engine rules each action
-    allow/ask/deny, tools open pull requests rather than merging, and every #emph[ask]
+  - #strong[Every side effect passes a gate.] A policy engine rules each action
+    allow/ask/deny, tools open pull requests rather than merging, and every #lead[ask]
     reaches me over Telegram before anything happens.
-  - #lead[Understand the problem before writing the code.] A habit kept from physics: work
+  - #strong[Understand the problem before writing the code.] A habit kept from physics: work
     out the model first, decide what the code actually has to compute, then write it — typed,
     documented, and with no abstraction built for a need that does not exist yet.
 ]
 
-= Skills
+= Technical Skills
 
 #resume-skill-item("Languages", (strong("Italian"), strong("English C1")))
 #resume-skill-item(
@@ -291,6 +292,7 @@
     "Pandas",
     "NumPy",
     "SciPy",
+    "Jupyter",
   ),
 )
 #resume-skill-item(
@@ -299,11 +301,11 @@
 )
 #resume-skill-item(
   "Practices",
-  (strong("Test-driven development"), strong("Code review"), "CI/CD", "Static typing"),
+  (strong("Test-driven development"), strong("Pull request workflow"), "CI/CD", "Static typing"),
 )
 #resume-skill-item(
   "Development Tools",
-  (strong("Git"), strong("GitHub"), "GitHub Actions", "pytest", "ruff", "Jupyter"),
+  (strong("Git"), strong("GitHub"), "GitHub Actions", "pytest", "ruff"),
 )
 #resume-skill-item(
   "Typesetting",

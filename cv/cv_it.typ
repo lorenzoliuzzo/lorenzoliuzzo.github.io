@@ -75,11 +75,12 @@
   description: "Progetto personale",
 )
 #resume-item[
-  - Un posto per capire fin dove si possa spingere lo sviluppo assistito dall'AI, e dove
-    debba fermarsi: #strong[più di 50 piccoli tool Python] nel primo mese, tutti su un solo
-    SDK — #xlink("https://github.com/MyThingsLab/my-things-core")[#tech[my-things-core]] —
-    che espone cinque contratti (ledger, policy, engine,
-    GitHub, isolation) importati da ogni tool e reimplementati da nessuno.
+  - #lead[Un harness, non un singolo tool.] Avviato a luglio 2026 per capire fin dove si
+    possa spingere lo sviluppo assistito dall'AI, e dove debba fermarsi: #strong[più di 50
+    piccoli tool Python] nel primo mese, ognuno indipendente, tutti su un solo SDK —
+    #xlink("https://github.com/MyThingsLab/my-things-core")[#tech[my-things-core]] — e i
+    suoi cinque contratti (ledger, policy, engine, GitHub, isolation), così niente viene
+    ricostruito due volte.
   - #lead[Controllo, non autonomia.] Worker headless prendono una issue, fanno il lavoro
     deterministico senza chiamare il modello, invocano l'LLM solo per il passo che richiede
     giudizio e chiudono con una pull request — mai un merge, così l'ultima parola resta a
@@ -225,7 +226,7 @@
   description: "Designer/Developer",
 )
 #resume-item[
-  - #xlink("https://github.com/lorenzoliuzzo/supervised-learning-on-food-images")[#strong[Supervised Learning on Food Images]] — una #tech[CNN] sotto i 10M di parametri sulle 251 classi del dataset FoodX-251.
+  - #xlink("https://github.com/lorenzoliuzzo/supervised-learning-on-food-images")[#strong[Supervised Learning on Food Images]] — una #tech[CNN] in #tech[PyTorch] sotto i 10M di parametri sulle 251 classi del dataset FoodX-251.
   - #xlink("https://github.com/lorenzoliuzzo/TFIM")[#strong[Transverse Field Ising Model]] — transizioni di fase quantistiche esplorate su #tech[PennyLane].
   - #xlink("https://github.com/lorenzoliuzzo/unsupervised-learning-on-country-data")[#strong[Unsupervised Learning on Country Data]] — clustering e riduzione della dimensionalità su dati socio-economici nazionali.
 ]
@@ -272,7 +273,7 @@
     scriverlo — tipizzato, documentato e senza astrazioni per bisogni che non esistono.
 ]
 
-= Competenze
+= Competenze Tecniche
 
 #resume-skill-item("Lingue", (strong("Italiano"), strong("Inglese C1")))
 #resume-skill-item(
@@ -305,7 +306,7 @@
 )
 #resume-skill-item(
   "Pratiche",
-  (strong("Sviluppo test-driven"), strong("Code review"), "CI/CD", "Tipizzazione statica"),
+  (strong("Sviluppo test-driven"), strong("Workflow a pull request"), "CI/CD", "Tipizzazione statica"),
 )
 #resume-skill-item(
   "Strumenti di sviluppo",
