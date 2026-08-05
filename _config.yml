@@ -30,6 +30,10 @@ friends_form_endpoint: "https://formspree.io/f/xaqrrwnp"
 # Empty renders no challenge.
 recaptcha_site_key: "6LfJ7nEtAAAAAPxCXiQfqWOxr2QEBlso10a2-pdG"
 
+# Banner shown under the masthead on every page (_includes/masthead.html).
+# Delete this key to take it off the whole site at once.
+site_notice: "This site is under heavy development — pages move, break and get rewritten without warning."
+
 
 title: "Lorenzo Liuzzo"
 email: lorenzoliuzzo@outlook.com
