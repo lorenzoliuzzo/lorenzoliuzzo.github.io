@@ -1,6 +1,6 @@
 ---
 title: "About Me"
-excerpt: "Physicist and developer specialized in Artificial Intelligence, combining Machine Learning expertise with robust Software Engineering in order to solve complex problems."
+excerpt: "Physicist and software engineer specialized in AI. I build systems that keep a human in the loop, and I use AI to build them."
 permalink: /about/
 
 layout: single
@@ -9,8 +9,10 @@ toc: true
 ---
 
 <p class="lead">
-  Physicist and developer working on Artificial Intelligence, combining machine
-  learning with software engineering to solve problems in the physical sciences.
+  Physicist and software engineer specialized in AI. I came to software through
+  physics — derive the model first, then write the code — and I now spend most of
+  my time on how much of that writing can be delegated to a model, and where a
+  person still has to sign off.
 </p>
 
 <p class="cta-row">
@@ -18,17 +20,34 @@ toc: true
   <a href="/assets/cv/cv_liuzzo_it.pdf" class="btn btn--inverse">Versione italiana</a>
 </p>
 
+## What I'm building
+
+<dl class="definition-list">
+  <dt><a href="https://github.com/MyThingsLab">MyThingsLab</a></dt>
+  <dd>A personal lab for AI-assisted development, started in July 2026: 56 composable
+  Python tools on one dependency-free SDK, covering design, implementation, testing and
+  documentation. Headless workers do the deterministic work themselves and call the model
+  only where judgement is needed, then open a pull request — never a merge, so the last
+  word stays mine. It is an experiment in control, not a product.</dd>
+
+  <dt><a href="https://github.com/MoneyBallingAI">Money Ball AI</a></dt>
+  <dd>A team of four building one model that predicts the exact box score of an NBA game —
+  every player and team line — with calibrated uncertainty. A graph encoder over lineup
+  stints, a Monte Carlo possession simulator, and calibration scored against the real box
+  score. I own the architecture.</dd>
+</dl>
+
 ## Interests
 
 <dl class="definition-list">
-  <dt>Scientific Machine Learning</dt>
+  <dt>AI-assisted software engineering</dt>
+  <dd>Where a model earns its place in the loop, and what has to stay deterministic, tested and gated around it.</dd>
+
+  <dt>Scientific machine learning</dt>
   <dd>Applying ML to problems in physics and astronomy, where the model has to respect the physics rather than just fit the data.</dd>
 
-  <dt>Computational Physics &amp; Simulation</dt>
+  <dt>Computational physics &amp; simulation</dt>
   <dd>Ray tracing, Monte Carlo methods and optical systems modelling.</dd>
-
-  <dt>Software Architecture</dt>
-  <dd>Building robust, scalable systems for data-intensive scientific work.</dd>
 </dl>
 
 ## Education
@@ -61,15 +80,27 @@ toc: true
     </ul>
   </div>
   <div class="skill-group">
+    <h3 class="skill-group__title">AI engineering</h3>
+    <ul class="chip-list">
+      <li>Claude</li><li>Claude Code</li><li>Agentic workflows</li><li>Prompt &amp; context engineering</li>
+    </ul>
+  </div>
+  <div class="skill-group">
     <h3 class="skill-group__title">ML &amp; Data</h3>
     <ul class="chip-list">
-      <li>PyTorch</li><li>Scikit-learn</li><li>Pandas</li><li>NumPy</li><li>SciPy</li>
+      <li>PyTorch</li><li>PyTorch Geometric</li><li>Scikit-learn</li><li>Pandas</li><li>NumPy</li><li>SciPy</li>
+    </ul>
+  </div>
+  <div class="skill-group">
+    <h3 class="skill-group__title">Databases &amp; quantum</h3>
+    <ul class="chip-list">
+      <li>Neo4j</li><li>Cypher</li><li>PennyLane</li><li>Qiskit</li>
     </ul>
   </div>
   <div class="skill-group">
     <h3 class="skill-group__title">Tools</h3>
     <ul class="chip-list">
-      <li>Git</li><li>GitHub</li><li>Jupyter</li><li>LaTeX</li><li>Typst</li>
+      <li>Git</li><li>GitHub</li><li>GitHub Actions</li><li>pytest</li><li>ruff</li><li>Jupyter</li><li>LaTeX</li><li>Typst</li>
     </ul>
   </div>
 </div>
