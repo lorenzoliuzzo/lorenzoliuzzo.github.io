@@ -1,21 +1,24 @@
 import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
+import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 import {
   EDITABLE_COLLECTIONS,
   applyPatch,
+  frontMatterValue,
   hashBody,
+  isVerified,
   resolveDocPath,
   splitFrontMatter,
   touchesVerificationKeys,
   updateFrontMatter,
 } from "./core.mjs";
-import { loadApiKey, streamMessage, systemPrompt } from "./anthropic.mjs";
 
 const TOOL_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(TOOL_DIR, "..", "..");
+const SHIM_PATH = path.join(TOOL_DIR, "shim.py");
 const PORT = Number(process.env.MYTHINGSLAB_PORT ?? 4001);
 // Any loopback origin, not just :4000 — `jekyll serve` gets moved to another port often
 // enough (a second worktree, an occupied 4000) that pinning one port just breaks the
@@ -23,11 +26,25 @@ const PORT = Number(process.env.MYTHINGSLAB_PORT ?? 4001);
 // origin and is rejected.
 const LOOPBACK_ORIGIN = /^http:\/\/(?:localhost|127\.0\.0\.1|\[::1\]):\d+$/;
 
-// Resolved lazily: reading, applying, and verifying are pure disk work, so the
-// server stays useful without a key and only /api/chat requires one.
-let cachedKey = null;
-function apiKey() {
-  return (cachedKey ??= loadApiKey(TOOL_DIR));
+// The drawer's one LLM call site is a Python subprocess (tools/mythingslab/shim.py)
+// rather than a direct Anthropic fetch, so it goes through the same mythings.engine
+// seam every other MyThingsLab tool does -- spend lands in the shared Ledger, and
+// MYTHINGSLAB_ENGINE=noop gets the whole drawer testable at zero token cost. The
+// trade is this repo now depends on that fleet checkout being at MYTHINGS_PYTHON;
+// resolved lazily so read/apply/verify stay usable without it, same as the old key.
+const DEFAULT_MYTHINGS_PYTHON = "/home/lollinux/Desktop/MyThingsLab/.venv/bin/python";
+let cachedPython = null;
+function mythingsPython() {
+  if (cachedPython) return cachedPython;
+  const bin = process.env.MYTHINGS_PYTHON || DEFAULT_MYTHINGS_PYTHON;
+  if (!fs.existsSync(bin)) {
+    throw new Error(
+      `No Python interpreter at ${bin}. Set MYTHINGS_PYTHON to the MyThingsLab fleet's ` +
+        `venv interpreter (e.g. /path/to/MyThingsLab/.venv/bin/python), or MYTHINGSLAB_ENGINE=noop ` +
+        `to test the drawer without it.`,
+    );
+  }
+  return (cachedPython = bin);
 }
 
 const server = http.createServer(async (req, res) => {
@@ -53,6 +70,9 @@ const server = http.createServer(async (req, res) => {
     }
     if (req.method === "POST" && url.pathname === "/api/chat") {
       return await handleChat(req, res);
+    }
+    if (req.method === "POST" && url.pathname === "/api/quiz") {
+      return await handleQuiz(req, res);
     }
     if (req.method === "POST" && url.pathname === "/api/apply") {
       return handleApply(res, await readJson(req));
@@ -87,11 +107,11 @@ async function handleChat(req, res) {
     return send(res, 400, { error: "messages required" });
   }
 
-  // Resolve the key before switching to SSE, so a missing key surfaces as a normal
-  // JSON error the drawer can display rather than an error inside an event stream.
-  let key;
+  // Resolve the interpreter before switching to SSE, so a missing venv surfaces as a
+  // normal JSON error the drawer can display rather than an error inside an event stream.
+  let python;
   try {
-    key = apiKey();
+    python = mythingsPython();
   } catch (err) {
     return send(res, 400, { error: err.message });
   }
@@ -113,29 +133,87 @@ async function handleChat(req, res) {
     content: i === 0 ? `${context}\n\n---\n\n${m.content}` : m.content,
   }));
 
+  // The raw latest question, unprefixed by file source/selection — shim.py uses this
+  // (not the flattened transcript, which would be dominated by the current note's own
+  // text) as the query for shortlisting related passages from the rest of the collection.
+  const latestQuery = messages[messages.length - 1].content;
+
+  runShim(python, { collection, messages: conversation, query: latestQuery, doc_path: file }, res, req);
+}
+
+async function handleQuiz(req, res) {
+  const { collection, path: relPath } = await readJson(req);
+  const file = resolveDocPath(REPO_ROOT, collection, relPath);
+  if (!fs.existsSync(file)) return send(res, 404, { error: "document not found" });
+  // Server-side, not just a hidden button: quizzing yourself on an unreviewed
+  // AI-drafted note teaches whatever the model got wrong, so this checks the same
+  // claim the badge renders rather than trusting whatever the client last painted.
+  if (collection !== "notes") {
+    return send(res, 400, { error: "quizzing is only wired up for the notes collection" });
+  }
+
+  let python;
+  try {
+    python = mythingsPython();
+  } catch (err) {
+    return send(res, 400, { error: err.message });
+  }
+
+  const source = fs.readFileSync(file, "utf8");
+  if (!isVerified(source)) {
+    return send(res, 400, {
+      error: "this note is not human-verified yet — read it through and mark it verified first",
+    });
+  }
+
+  const topic = frontMatterValue(source, "title") || path.basename(relPath, ".md");
+  runShim(python, { mode: "quiz", doc_path: file, topic, questions: 3 }, res, req);
+}
+
+// Shared by /api/chat and /api/quiz: spawn shim.py, keep the SSE connection alive
+// with a "thinking" heartbeat while it runs (ClaudeCLIEngine is a blocking one-shot
+// call, not a stream, so there is nothing incremental to relay), then forward
+// exactly one "text" event with its reply.
+function runShim(python, payload, res, req) {
   res.writeHead(200, {
     "content-type": "text/event-stream",
     "cache-control": "no-cache",
     connection: "keep-alive",
   });
 
-  const abort = new AbortController();
-  req.on("close", () => abort.abort());
+  const child = spawn(python, [SHIM_PATH]);
+  let stdout = "";
+  let stderr = "";
+  child.stdout.on("data", (chunk) => (stdout += chunk));
+  child.stderr.on("data", (chunk) => (stderr += chunk));
+  child.stdin.end(JSON.stringify(payload));
 
-  try {
-    const { stopReason } = await streamMessage({
-      apiKey: key,
-      system: systemPrompt(collection),
-      messages: conversation,
-      signal: abort.signal,
-      onText: (text) => sendEvent(res, "text", { text }),
-      onThinking: () => sendEvent(res, "thinking", {}),
-    });
-    sendEvent(res, "done", { stop_reason: stopReason });
-  } catch (err) {
-    if (!abort.signal.aborted) sendEvent(res, "error", { message: err.message });
-  }
-  res.end();
+  const heartbeat = setInterval(() => sendEvent(res, "thinking", {}), 1500);
+  req.on("close", () => {
+    clearInterval(heartbeat);
+    child.kill();
+  });
+
+  child.on("close", (code) => {
+    clearInterval(heartbeat);
+    try {
+      const reply = JSON.parse(stdout);
+      if (reply.error) throw new Error(reply.error);
+      sendEvent(res, "text", { text: reply.text });
+      sendEvent(res, "done", { stop_reason: code === 0 ? "end_turn" : "error" });
+    } catch (err) {
+      const message = stdout.trim() ? err.message : stderr.trim() || `shim exited ${code}`;
+      sendEvent(res, "error", { message });
+    }
+    res.end();
+  });
+  child.on("error", (err) => {
+    // spawn() itself failing (bad interpreter path, no exec permission) rather
+    // than the shim running and failing -- distinct from the "close" handler above.
+    clearInterval(heartbeat);
+    sendEvent(res, "error", { message: err.message });
+    res.end();
+  });
 }
 
 function handleApply(res, { collection, path: relPath, old_string, new_string }) {
@@ -162,8 +240,23 @@ function handleApply(res, { collection, path: relPath, old_string, new_string })
     });
   }
 
-  fs.writeFileSync(file, result.content);
-  const { body } = splitFrontMatter(result.content);
+  // _config.yml already defaults ai_generated to true for both collections, so
+  // the case this catches is the inverted one: a page that overrode the default
+  // with `ai_generated: false` to claim it was written by hand, and is now having
+  // a model's words patched into it. Without this it would keep rendering "Written
+  // by hand" over prose a model wrote. Recording it at apply time rather than at
+  // sign-off matters because a page can be edited from this drawer many times and
+  // never verified at all.
+  //
+  // Written by the server, never taken from the reply — the model's own patch is
+  // still barred from front matter by touchesVerificationKeys above. Safe against
+  // the badge because hashBody() digests the body alone, so adding a front-matter
+  // key can neither forge a verification nor clear one; the body edit on the line
+  // above is what legitimately staled it.
+  const stamped = updateFrontMatter(result.content, { ai_generated: true });
+
+  fs.writeFileSync(file, stamped);
+  const { body } = splitFrontMatter(stamped);
   send(res, 200, { ok: true, content_hash: hashBody(body) });
 }
 

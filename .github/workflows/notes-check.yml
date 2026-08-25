@@ -1,0 +1,49 @@
+name: Notes check
+
+# The provenance and verification badges are a promise the site makes to a
+# reader, and until now nothing checked that the promise held — the only
+# workflow here builds and deploys. A badge nobody enforces decays into
+# decoration, so this runs the tool's own suite on every PR, including the
+# check that no page claims a human review it cannot substantiate.
+#
+# Deliberately cheap: note_verification.rb and the checks in core.test.mjs use
+# only Ruby and Node stdlib, so there is no bundle install and no Jekyll build
+# here. Buildability is jekyll.yml's job; this job is about truthfulness.
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "notes-check-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Same 3.1 as the deploy build: the cross-language hash test asserts this
+      # Ruby and Node agree byte for byte, so it has to be the Ruby that
+      # actually renders the site.
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run the MyThingsLab suite
+        run: node --test tools/mythingslab/core.test.mjs
