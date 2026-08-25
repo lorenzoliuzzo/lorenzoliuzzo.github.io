@@ -270,13 +270,110 @@
   margin: 0 0 1.75rem 1rem;
 
   .tag-subsection__title {
-    margin: 0 0 0.75rem;
+    margin: 0;
     font-family: var(--font-sans);
     font-size: 0.95em;
     font-weight: 600;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.03em;
+  }
+}
+
+// The whole summary row is the fold control, so it gets the hover and focus
+// affordance rather than the heading text alone.
+.tag-subsection__summary {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 0.75rem -0.4rem;
+  padding: 0.25rem 0.4rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  list-style: none;
+  transition: background 0.15s ease;
+
+  // Suppress the native disclosure marker; the chevron below replaces it.
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:hover {
+    background: var(--surface-sunken);
+
+    .tag-subsection__title {
+      color: var(--text);
+    }
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  // Drawn rather than a glyph, so it sits on the row's optical centre instead
+  // of the text baseline and stays crisp at any zoom.
+  &::before {
+    content: "";
+    flex: none;
+    width: 0.4em;
+    height: 0.4em;
+    border-right: 2px solid var(--text-faint);
+    border-bottom: 2px solid var(--text-faint);
+    transform: rotate(-45deg);
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+
+  &:hover::before {
+    border-color: var(--accent);
+  }
+
+  [open] > &::before {
+    transform: rotate(45deg);
+  }
+
+  // Counts describe the whole subtopic, so they would contradict a filtered
+  // view. The nav hides itself while filtering for the same reason.
+  .notes-filtering & .tag-count {
+    display: none;
+  }
+}
+
+.archive-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 0 0 1.5rem;
+
+  .archive-filter {
+    flex: 1 1 16rem;
+    margin: 0;
+  }
+}
+
+.fold-toggle {
+  flex: none;
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--surface);
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
   }
 }
 

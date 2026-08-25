@@ -1,12 +1,22 @@
 {% comment %}
-  Title filter for a grouped archive. Hides non-matching rows, then folds away
-  any subsection or section left with nothing in it, so the page never shows an
-  empty heading. Progressive enhancement: without JS the full index is there.
+  Title filter and subtopic folding for a grouped archive.
+
+  The filter hides non-matching rows, then folds away any subsection or section
+  left with nothing in it, so the page never shows an empty heading.
+  Progressive enhancement: without JS the full index is there and every
+  <details> ships open.
 
   Written notes and planned ones are both filterable rows. Matching on
   .entry-card alone would fold away every subsection holding only planned
   topics — Optics, Particles, and the whole Logic and Statistics sections — on
   page load, with no filter typed.
+
+  Filtering and folding live in one script because they fight over the same
+  bit: a match inside a collapsed subtopic has to win, so the filter overrides
+  the reader's folds for as long as it is active and hands them back after.
+
+  The library includes this too, and groups without foldable subtopics; every
+  fold branch below is inert when the page has no <details>.
 
   This lives in an include rather than inline in _pages/notes.md because kramdown
   rewrites the script body when it sits in a Markdown file — with mathjax on it
@@ -21,6 +31,7 @@
     var ROW = ".entry-card, .planned-list__item";
     var VISIBLE_ROW = ".entry-card:not([hidden]), .planned-list__item:not([hidden])";
     var TITLE = ".entry-card__title, .planned-list__title";
+    var STORE = "notes-collapsed";
 
     var rows = Array.prototype.slice.call(document.querySelectorAll(ROW));
     // .planned-list is in here so a list whose rows are all hidden collapses
@@ -28,7 +39,112 @@
     var groups = Array.prototype.slice.call(
       document.querySelectorAll(".planned-list, .tag-subsection, .tag-section")
     );
+    var folds = Array.prototype.slice.call(
+      document.querySelectorAll("details.tag-subsection")
+    );
     var nav = document.querySelector(".notes-nav");
+    var foldToggle = document.getElementById("fold-toggle");
+
+    /* Folds ---------------------------------------------------------------- */
+
+    // Only the ids the reader collapsed are stored, so the default stays
+    // "everything open" and subtopics added later show up expanded instead of
+    // inheriting a stale snapshot.
+    var collapsed = [];
+    try {
+      collapsed = JSON.parse(localStorage.getItem(STORE)) || [];
+    } catch (e) {
+      /* unreadable or absent: fall back to everything open */
+    }
+
+    function isCollapsed(fold) {
+      return collapsed.indexOf(fold.id) !== -1;
+    }
+
+    // Records a fold's state without writing it out; returns whether anything
+    // moved, so a batch can save once.
+    function mark(id, shut) {
+      var at = collapsed.indexOf(id);
+      if (shut && at === -1) collapsed.push(id);
+      else if (!shut && at !== -1) collapsed.splice(at, 1);
+      else return false;
+      return true;
+    }
+
+    function save() {
+      try {
+        localStorage.setItem(STORE, JSON.stringify(collapsed));
+      } catch (e) {
+        /* choice just won't persist */
+      }
+    }
+
+    // <details> fires "toggle" asynchronously, so by the time a handler runs
+    // the page can no longer tell a reader's click from one of this script's
+    // own writes — the filter box it would consult may already be cleared.
+    // Count the writes instead and let the handler skip exactly that many
+    // events. A change that was never counted is a real fold.
+    var forced = {};
+
+    function setOpen(fold, open) {
+      if (fold.open === open) return;
+      forced[fold.id] = (forced[fold.id] || 0) + 1;
+      fold.open = open;
+    }
+
+    function anyOpen() {
+      return folds.some(function (fold) {
+        return fold.open;
+      });
+    }
+
+    function syncFoldToggle() {
+      if (foldToggle) foldToggle.textContent = anyOpen() ? "Collapse all" : "Expand all";
+    }
+
+    folds.forEach(function (fold) {
+      fold.addEventListener("toggle", function () {
+        if (forced[fold.id]) {
+          forced[fold.id]--;
+          return;
+        }
+        if (mark(fold.id, !fold.open)) save();
+        syncFoldToggle();
+      });
+    });
+
+    if (foldToggle) {
+      foldToggle.addEventListener("click", function () {
+        var shut = anyOpen();
+        var moved = false;
+        folds.forEach(function (fold) {
+          setOpen(fold, !shut);
+          if (mark(fold.id, shut)) moved = true;
+        });
+        if (moved) save();
+        syncFoldToggle();
+      });
+    }
+
+    // A collapsed fold must not swallow the anchor someone linked to. The
+    // browser has already tried to scroll by the time this runs, so opening
+    // the fold means scrolling again.
+    function revealHash() {
+      var target;
+      try {
+        target = window.location.hash && document.querySelector(window.location.hash);
+      } catch (e) {
+        return; /* not a valid selector */
+      }
+      var fold = target && target.closest("details.tag-subsection");
+      if (!fold || fold.open) return;
+      setOpen(fold, true);
+      if (mark(fold.id, false)) save();
+      syncFoldToggle();
+      target.scrollIntoView();
+    }
+
+    /* Filter --------------------------------------------------------------- */
 
     function apply() {
       var q = input.value.trim().toLowerCase();
@@ -45,11 +161,23 @@
         group.hidden = !group.querySelector(VISIBLE_ROW);
       });
 
+      // Force every surviving fold open while filtering, then hand the folds
+      // back to the reader once the box is empty again. Neither move is the
+      // reader's, so neither is written out.
+      folds.forEach(function (fold) {
+        setOpen(fold, q ? !fold.hidden : !isCollapsed(fold));
+      });
+
+      document.body.classList.toggle("notes-filtering", q.length > 0);
       if (nav) nav.hidden = q.length > 0;
+      if (foldToggle) foldToggle.hidden = q.length > 0 || folds.length === 0;
       empty.hidden = matches !== 0;
+      syncFoldToggle();
     }
 
     input.addEventListener("input", apply);
+    window.addEventListener("hashchange", revealHash);
     apply();
+    revealHash();
   })();
 </script>
