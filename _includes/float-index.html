@@ -1,0 +1,81 @@
+{% comment %}
+  A list of the page's figures and tables, in document order, numbered to match
+  the CSS counters in _sass/_academic.scss.
+
+  Built from the DOM rather than from Liquid: the floats come from
+  {% include figure.html %} / {% include table.html %} calls scattered through
+  a note's Markdown body, which this include has no way to enumerate.
+
+  Drop it anywhere in a note — usually just under the intro. It renders nothing
+  at all on a page with no floats, so it is safe to leave in place while a note
+  is still being written. Each group is omitted on its own, so a note with
+  figures and no tables gets just the one heading.
+{% endcomment %}
+<nav class="float-index" id="float-index" hidden></nav>
+<script>
+  (function () {
+    var host = document.getElementById("float-index");
+    if (!host) return;
+
+    var GROUPS = [
+      { heading: "Figures", selector: ".latex-like-figure", word: "Figure" },
+      { heading: "Tables", selector: ".latex-like-table", word: "Table" }
+    ];
+
+    function row(float, word, number) {
+      var link = document.createElement("a");
+      link.href = "#" + float.id;
+
+      var label = document.createElement("span");
+      label.className = "float-index__label";
+      label.textContent = word + " " + number;
+
+      var caption = float.querySelector("figcaption");
+      var text = document.createElement("span");
+      text.className = "float-index__caption";
+      // textContent skips the ::before counter, so the number is not repeated.
+      text.textContent = caption ? caption.textContent.trim() : "";
+
+      link.appendChild(label);
+      link.appendChild(text);
+
+      var item = document.createElement("li");
+      item.appendChild(link);
+      return item;
+    }
+
+    function build() {
+      GROUPS.forEach(function (group) {
+        var floats = document.querySelectorAll(group.selector);
+        if (!floats.length) return;
+
+        var list = document.createElement("ol");
+        list.className = "float-index__list";
+
+        Array.prototype.forEach.call(floats, function (float, i) {
+          // A float the author gave no id to still belongs in the list, so it
+          // gets an anchor to link to.
+          if (!float.id) float.id = group.word.toLowerCase() + "-" + (i + 1);
+          list.appendChild(row(float, group.word, i + 1));
+        });
+
+        var heading = document.createElement("h2");
+        heading.className = "float-index__heading";
+        heading.textContent = group.heading;
+
+        host.appendChild(heading);
+        host.appendChild(list);
+      });
+
+      host.hidden = !host.firstChild;
+    }
+
+    // The floats usually sit below this include, so they do not exist yet while
+    // the parser is still working through the page.
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", build);
+    } else {
+      build();
+    }
+  })();
+</script>

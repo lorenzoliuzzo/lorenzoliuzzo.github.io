@@ -113,7 +113,11 @@
       }
     }
 
-    .active a {
+    // The highlight sits on the anchor, not on its <li>. A top-level <li>
+    // wraps the nested list too, so `.active a` would light up every child
+    // heading along with the section the reader is actually in.
+    // assets/js/academic.js moves the class.
+    a.active {
       color: var(--accent-hover);
       background: transparent;
       font-weight: 600;
@@ -151,6 +155,68 @@
 // Sticky needs a scroll offset or the first entry hides under the masthead.
 .sidebar__right.sticky {
   top: 3.5em;
+}
+
+/* Section numbering
+   ========================================================================== */
+
+// Numbers come from CSS counters, like the figures and tables in _academic.scss,
+// so a note never carries a number in its source and reordering sections cannot
+// leave the text disagreeing with itself.
+//
+// [data-note] is set in _includes/head/custom.html. Projects and the standalone
+// pages share this layout but not the collection, so their headings stay plain.
+[data-note] {
+  .page__content {
+    counter-reset: section-counter;
+  }
+
+  // Direct children only. The bibliography's "References" and the float index's
+  // headings are nested inside their own sections, and neither is part of the
+  // argument being numbered.
+  .page__content > h1 {
+    counter-increment: section-counter;
+    counter-reset: subsection-counter;
+
+    &::before {
+      content: counter(section-counter) "\00a0\00a0";
+      color: var(--text-faint);
+    }
+  }
+
+  .page__content > h2 {
+    counter-increment: subsection-counter;
+
+    &::before {
+      content: counter(section-counter) "." counter(subsection-counter) "\00a0\00a0";
+      color: var(--text-faint);
+    }
+  }
+
+  // The contents list mirrors the heading levels, so counting its items
+  // reproduces the same numbers without the two having to be kept in step.
+  .toc__menu {
+    counter-reset: toc-section;
+
+    > li {
+      counter-increment: toc-section;
+      counter-reset: toc-subsection;
+
+      > a::before {
+        content: counter(toc-section) "\00a0\00a0";
+        color: var(--text-faint);
+      }
+
+      ul > li {
+        counter-increment: toc-subsection;
+
+        > a::before {
+          content: counter(toc-section) "." counter(toc-subsection) "\00a0\00a0";
+          color: var(--text-faint);
+        }
+      }
+    }
+  }
 }
 
 /* Footer meta
