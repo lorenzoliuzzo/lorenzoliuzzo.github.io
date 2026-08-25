@@ -12,6 +12,8 @@ tags:
 # Introduction
 The objective of this assignment is to perform a robust statistical comparison of multiple machine learning classifiers across several independent datasets. When evaluating more than two models over multiple datasets, traditional parametric tests such as the Analysis of Variance (*ANOVA*) are often unsuitable. This is because the assumptions of a normal distribution and homogeneity of variance are frequently violated by classification accuracy scores. To address this, we employ the Friedman test, a non-parametric (distribution-free) alternative, which rather than analyzing raw performance scores, operates on the relative ranks of the algorithms. 
 
+{% include float-index.html %}
+
 ## The Friedman Test Statistic
 Let $N$ denote the total number of datasets and $k$ the number of classifiers being compared. 
 The procedure begins by ranking the $k$ classifiers on each individual dataset based on their performance metric (assigning average ranks in the case of ties). 

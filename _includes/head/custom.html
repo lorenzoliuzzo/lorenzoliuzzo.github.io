@@ -36,6 +36,17 @@
 </script>
 
 {% comment %}
+  Marks a note so _sass/_note.scss can number its sections and its table of
+  contents with CSS counters. It rides in <head> for the same reason data-theme
+  does: numbers appearing after the first paint would reflow every heading.
+  Projects, essays and the standalone pages share the `single` layout, so the
+  collection is the only thing that separates them.
+{% endcomment %}
+{% if page.collection == "notes" %}
+  <script>document.documentElement.setAttribute("data-note", "");</script>
+{% endif %}
+
+{% comment %}
   Leaflet, for the OpenStreetMap on the travel pages. Both halves are guarded on
   `travel_map`, which is set by the _travel collection defaults and by
   _pages/travel.md — no other page should be fetching a map library. The

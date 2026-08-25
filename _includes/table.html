@@ -1,63 +1,54 @@
+{% comment %}
+  A numbered table built from a CSV.
+
+  url     — site-absolute path to the .csv (required)
+  caption — text under the table (required; the number is prepended by CSS)
+  id      — anchor, so [](#id) elsewhere renders as "Table N"
+  cols    — keep only the first N columns (default: all)
+
+  The rows are parsed at build time by _plugins/csv_tables.rb; styling lives in
+  _sass/_academic.scss and the number comes from a CSS counter.
+{% endcomment %}
+{% assign rows = site.data.csv[include.url] %}
 <figure class="latex-like-table" id="{{ include.id }}">
-  <div class="table-wrapper" 
-       data-url="{{ include.url | relative_url }}" 
-       data-cols="{{ include.columns | default: 99 }}">
-    <div class="loading-spinner">Loading table...</div>
+  <div class="table-wrapper">
+    {% if rows %}
+      {% assign limit = include.cols | default: rows[0].size %}
+      <table>
+        <thead>
+          <tr>
+            {% for cell in rows[0] limit: limit %}
+              {% assign heading = cell | strip %}
+              {% comment %}
+                A two-way table's stub corner is either blank or labelled "index"
+                by whatever exported it; both mean "no header here", and
+                _academic.scss drops the outer borders on the empty cell.
+              {% endcomment %}
+              {% assign stub = false %}
+              {% if forloop.first %}
+                {% assign lowered = heading | downcase %}
+                {% if lowered == "" %}{% assign stub = true %}{% endif %}
+                {% if lowered == "index" %}{% assign stub = true %}{% endif %}
+              {% endif %}
+              {% if stub %}
+                <th></th>
+              {% else %}
+                <th><strong>{{ heading }}</strong></th>
+              {% endif %}
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows offset: 1 %}
+            <tr>
+              {% for cell in row limit: limit %}<td>{{ cell | strip }}</td>{% endfor %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="bib-error">No CSV at {{ include.url }} — check the path and that it sits under /assets.</p>
+    {% endif %}
   </div>
   <figcaption>{{ include.caption }}</figcaption>
 </figure>
-
-<script>
-  (function() {
-    // Target ONLY the wrapper immediately preceding this specific script
-    const currentScript = document.currentScript;
-    const wrapper = currentScript.previousElementSibling.querySelector('.table-wrapper');
-    
-    if (!wrapper) return;
-
-    const url = wrapper.getAttribute('data-url');
-    const maxCols = parseInt(wrapper.getAttribute('data-cols'));
-    
-    fetch(url)
-      .then(response => response.text())
-      .then(data => {
-        const rows = data.trim().split('\n').map(row => row.split(','));
-        let html = '<table><thead><tr>';
-                  
-        const headerRow = rows[0].slice(0, maxCols);
-        headerRow.forEach((cell, i) => {
-          const val = cell.trim();
-          if (i === 0 && (val === "" || val.toLowerCase() === "index")) {
-            html += '<th></th>'; 
-          } else {
-            html += `<th><strong>${val}</strong></th>`;
-          }
-        });
-        
-        html += '</tr></thead><tbody>';
-        
-        for (let i = 1; i < rows.length; i++) {
-          const cells = rows[i].slice(0, maxCols);
-          if (cells.length === 0 || (cells.length === 1 && cells[0] === "")) continue;
-          
-          html += '<tr>';
-          cells.forEach(cell => {
-            html += `<td>${cell.trim()}</td>`;
-          });
-          html += '</tr>';
-        }
-        
-        html += '</tbody></table>';
-        wrapper.innerHTML = html;
-        
-        // Trigger the reference update now that THIS table exists in the DOM
-        if (window.updateReferences) {
-          window.updateReferences();
-        }
-      })
-      .catch(err => {
-        wrapper.innerHTML = `<p style="color:red;">Error loading table: ${err.message}</p>`;
-      });
-
-  })();
-</script>
