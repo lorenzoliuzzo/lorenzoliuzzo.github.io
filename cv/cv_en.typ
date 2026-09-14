@@ -75,17 +75,21 @@
 )
 #resume-item[
   - #lead[A harness, not a single tool.] Started in July 2026 to see how far AI-assisted
-    development can go, and where it should stop: #strong[more than 50 small Python tools]
-    in the first month, each one independent, all sharing one SDK —
+    development can go, and where it should stop: a fast-growing line of small Python tools,
+    each one independent, all sharing one SDK —
     #xlink("https://github.com/MyThingsLab/my-things-core")[#tech[my-things-core]] — and its
     five contracts (ledger, policy, engine, GitHub, isolation), so nothing gets reimplemented
     twice.
   - #lead[Control, not autonomy.] Headless workers pick up an issue, do the deterministic
     pre-work with no model call, ask the LLM once for the step that needs judgement, and
-    close it as a pull request — never a merge, so the last word stays with a person.
+    close it as a pull request — never a merge, so the last word always stays with a person.
   - #lead[No model inside the core.] The SDK is dependency-free and shells out to #tech[gh]
     and #tech[git], and the LLM sits behind a single #tech[Engine] protocol whose
-    deterministic default lets the whole fleet be exercised and tested without a token spent.
+    deterministic default lets the whole fleet be exercised and tested without a token spent,
+    under a test suite kept roughly line-for-line with the source it covers.
+  - #lead[No advisory rule ships without a mechanical gate.] Branch protection makes "never
+    merge" enforced rather than a convention; CI runs #tech[ruff], the test suite and a secret
+    scan over every pull request's added lines before the merge button unlocks.
 ]
 
 #resume-entry(
@@ -95,7 +99,7 @@
   description: "Founder and Technical Lead",
 )
 #resume-item[
-  - A team of four building one model that predicts the #strong[exact box score] of an NBA
+  - A team of three building one model that predicts the #strong[exact box score] of an NBA
     game — every player and team line — with calibrated uncertainty. I am responsible for the
     architecture, from raw play-by-play to a calibrated prediction:
   - #lead[Data] — play-by-play parsed into periods, lineup stints and possessions, aggregated
@@ -106,7 +110,8 @@
     player and team strength embeddings.
   - #lead[Simulator] — a vectorized Monte Carlo possession engine whose policies are
     behavior-cloned on real possessions; #lead[calibration] scores per-stat distributions
-    against the actual box score with MAE, CRPS, PIT and coverage, test-first and under CI.
+    against the actual box score with MAE, CRPS, PIT and coverage, test-first and under CI
+    with a #lead[pytest] suite.
 ]
 
 #resume-entry(
@@ -119,20 +124,6 @@
   Continuous support for 20+ students: exam preparation, remedial tutoring and periodic
   reports to families.
 ]
-
-#resume-entry(
-  title: "Barista",
-  location: "Milan, Italy",
-  date: "September - October 2024",
-  description: "Don Salvatore - Pizzaiuolo e Oste",
-)
-
-#resume-entry(
-  title: "Waiter",
-  location: "Milan, Italy",
-  date: "May - July 2022",
-  description: "Bar Terrazza Clér",
-)
 
 #resume-entry(
   title: "Scout Leader",
@@ -182,22 +173,6 @@
 // resume-entry is sticky: without a neutral block here the whole Education tail is
 // dragged onto the next page instead of breaking after this entry.
 #block(height: 0pt, above: 0pt, below: 0pt, width: 100%)[#box()]
-
-= Schools & Workshops
-
-#resume-entry(
-  title: "School on Quantum Simulation",
-  location: "Milan, Italy",
-  date: "September 2026",
-  description: "Department of Physics, University of Milan",
-)
-
-#resume-entry(
-  title: "Qiskit Fall Fest",
-  location: "Milan, Italy",
-  date: "October - November 2025",
-  description: "IBM Quantum · Department of Physics, University of Milan",
-)
 
 = Projects
 
@@ -272,7 +247,7 @@
 #resume-skill-item("Languages", (strong("Italian"), strong("English C1")))
 #resume-skill-item(
   "Programming Languages",
-  (strong("Python"), strong("C++"), strong("Julia"), "C", "Nim"),
+  (strong("Python"), strong("C++"), strong("Julia"), "C", "Nim", "TypeScript"),
 )
 #resume-skill-item(
   "AI Engineering",
