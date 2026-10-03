@@ -5,8 +5,8 @@
 # The order lives here and only here: to move or insert a note, edit this file. A
 # note listed in a course is paged in this order (see _includes/post_pagination.html)
 # and is left out of the tag-based groups below the courses on the archive.
-- title: "Statistics"
-  summary: "Probability, statistical inference, regression, classification, model assessment and multivariate methods, in reading order."
+- title: "Statistics and Statistical Learning"
+  summary: "Probability and statistical inference, then regression, classification, model assessment and multivariate methods, in reading order."
   reference: /assets/notes/statistics/statistics-reference/statistics-reference.pdf
   parts:
     - title: "Probability"

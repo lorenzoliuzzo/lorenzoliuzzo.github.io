@@ -1,9 +1,9 @@
-// Technical reference for the statistics notes in `_notes/statistics/`.
+// Technical reference for the Statistics and Statistical Learning course (`_notes/statistics/`).
 // One document covers all of them: the site pages explain and are kept short,
 // this reference states the results precisely and proves the ones an exam is
 // likely to ask for.
 
-#set document(title: "Statistics: technical reference", author: "Lorenzo Liuzzo")
+#set document(title: "Statistics and Statistical Learning: technical reference", author: "Lorenzo Liuzzo")
 #set page(paper: "a4", margin: (x: 2.2cm, y: 2.4cm), numbering: "1")
 #set text(size: 10.5pt, lang: "en")
 #set par(justify: true, leading: 0.62em)
@@ -41,11 +41,11 @@
 #let remark(body) = block(inset: (left: 10pt), breakable: true)[#emph[Remark.] #body]
 
 #align(center)[
-  #text(size: 19pt, weight: "bold")[Statistics] \
+  #text(size: 19pt, weight: "bold")[Statistics and Statistical Learning] \
   #v(2pt)
   #text(size: 12pt)[Technical reference] \
   #v(2pt)
-  #text(size: 9.5pt, fill: gray)[Companion to the statistics notes on lorenzoliuzzo.github.io. Probability, standard random variables, sampling distributions, estimation, intervals and tests, with proofs.]
+  #text(size: 9.5pt, fill: gray)[Companion to the Statistics and Statistical Learning notes on lorenzoliuzzo.github.io. Probability, standard random variables, sampling distributions, estimation, intervals and tests, with proofs.]
 ]
 #v(6pt)
 
