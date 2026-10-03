@@ -165,14 +165,35 @@ If you run $m$ tests at level $\alpha$ and every null is true, you expect $m\alp
 - **Bonferroni**: reject only if $p_i\le\alpha/m$. This controls the probability of *any* false rejection (family-wise error rate), at the price of low power.
 - **Benjamini–Hochberg**: sort the $p$-values and reject the smallest $k$, where $k$ is the largest index with $p_{(k)}\le \frac{k}{m}\alpha$. This controls the expected *proportion* of false rejections (false discovery rate) and is the usual choice when $m$ is large.
 
-# How to use this in an exam answer
+# Recap
 
-The open questions in this course usually ask for one of four things. A checklist for each:
+The note in a handful of questions. If you can answer each of these without looking, you have the core.
 
-1. *Derive an estimator.* Write the likelihood, take the log, differentiate, solve, and check the second derivative. Then state bias, variance and consistency.
-2. *Build an interval.* Name the pivot and its distribution, write the probability statement, invert it. State the assumption it needs (normality, or large $n$).
-3. *Run a test.* State $H_0$ and $H_1$, the statistic and its null distribution, the rejection region or $p$-value, and the conclusion in words about the *problem*, not just "reject".
-4. *Interpret.* Say what the interval or $p$-value does and does not mean (see above), and mention the assumption you would check.
+**What is the difference between a parameter, a statistic and an estimator?** A parameter $\theta$ is a fixed, unknown feature of the population. A statistic is any function of the sample, hence random. An estimator is a statistic used to guess a parameter; an estimate is its value on the data in hand.
+
+**Why does the sample mean behave so well?** It is unbiased for $\mu$, its variance is $\sigma^2/n$, the law of large numbers makes it converge to $\mu$, and the central limit theorem makes it approximately normal for large $n$, whatever the data distribution.
+
+**Why divide by $n-1$ in $S^2$?** Deviations are taken from $\bar X$, which was fitted to the same data, so one degree of freedom is used up. With $n-1$ the estimator is exactly unbiased, $\mathbb{E}[S^2]=\sigma^2$, and $(n-1)S^2/\sigma^2\sim\chi^2_{n-1}$ for normal data.
+
+**Why a $t$ and not a normal when $\sigma$ is unknown?** Because $S$ is random too. The standardized mean $(\bar X-\mu)/(S/\sqrt n)$ then follows $t_{n-1}$, which has heavier tails and approaches $\mathcal{N}(0,1)$ as $n$ grows.
+
+**What makes an estimator good?** Small mean squared error, $\operatorname{MSE}=\operatorname{Var}+\operatorname{bias}^2$, and consistency. Unbiased is not automatically best: a little bias can buy a lot of variance reduction, which is the idea behind shrinkage.
+
+**What is the best an unbiased estimator can do?** Its variance cannot go below $1/(nI(\theta))$, the Cramér–Rao bound, where $I(\theta)$ is the Fisher information.
+
+**What does maximum likelihood do, and why is it the default?** It picks the $\theta$ under which the observed data were most probable. For large $n$ it is consistent, asymptotically normal with variance $1/(nI(\theta))$ (so it reaches the Cramér–Rao bound), and invariant under reparametrization. It is not always unbiased: the MLE of the normal variance divides by $n$.
+
+**What does a 95% confidence interval mean?** The procedure covers the true parameter in 95% of repeated samples. It does not say the parameter lies in your specific interval with probability 0.95.
+
+**How do you build an interval?** Find a pivot, a function of data and parameter with a known distribution, and invert the probability statement. For the mean it is $\bar X\pm t_{n-1,1-\alpha/2}S/\sqrt n$.
+
+**What does a $p$-value measure?** The probability, if $H_0$ were true, of a statistic at least as extreme as the observed one. It is not the probability that $H_0$ is true and says nothing about effect size.
+
+**What are the two kinds of error, and what is power?** Type I is rejecting a true $H_0$ (probability $\alpha$, chosen in advance); Type II is keeping a false one (probability $\beta$). Power, $1-\beta$, is the chance of detecting a real effect and grows with sample size and effect size.
+
+**How are tests and intervals related?** A $(1-\alpha)$ interval is exactly the set of parameter values a level-$\alpha$ test does not reject, so an interval excluding $\mu_0$ means the test rejects $\mu=\mu_0$.
+
+**What goes wrong with many tests at once?** With $m$ tests you expect $m\alpha$ false positives. Bonferroni ($p_i\le\alpha/m$) controls the chance of any false positive; Benjamini–Hochberg controls the expected share of false discoveries and keeps more power.
 
 # Where this goes next
 
