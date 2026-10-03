@@ -9,60 +9,40 @@ tags:
   - Inference
 ---
 
-A point estimate from [Point estimation]({{ '/notes/statistics/point-estimation/' | relative_url }}) says nothing about its own precision. A confidence interval does: it is a range built from the data that covers the true parameter in a stated fraction of repeated samples. This note explains how to read one correctly, how to build the standard ones from a pivot using the $t$ and $\chi^2$ laws of [Sampling distributions]({{ '/notes/statistics/sampling-distributions/' | relative_url }}), and what makes an interval wide.
-
-The full statements and proofs for this note are in the [technical reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}), which covers all the statistics notes in one document. This page explains; the PDF is the thing to check a formula against.
+A range built from the data that covers the true parameter in a stated fraction of repeated samples. Proofs are in the [reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}).
 
 # Before you start
 
-[Point estimation]({{ '/notes/statistics/point-estimation/' | relative_url }}), and the sampling laws it rests on.
-
-| You should know | In one line | Where |
-|---|---|---|
-| **Estimator, bias, standard error** | an interval is an estimate plus or minus a multiple of its standard error | [Point estimation › Estimators and how to judge them]({{ '/notes/statistics/point-estimation/' | relative_url }}#estimators-and-how-to-judge-them) |
-| **Maximum likelihood** | the MLE is approximately normal, which gives the Wald interval | [Point estimation › Maximum likelihood]({{ '/notes/statistics/point-estimation/' | relative_url }}#maximum-likelihood) |
-| **$t$ and $\chi^2$ laws** | the pivots for the mean and the variance of normal data | [Sampling distributions › Student's t]({{ '/notes/statistics/sampling-distributions/' | relative_url }}#students-t), [Sampling distributions › The sample variance]({{ '/notes/statistics/sampling-distributions/' | relative_url }}#the-sample-variance-and-the-chi-square-distribution) |
-| **Normal quantiles** | the $z$ values such as 1.96 for 95% | [Common random variables › Normal]({{ '/notes/statistics/common-random-variables/' | relative_url }}#normal) |
-| **Central limit theorem** | why the large-$n$ intervals work for non-normal data | [Random variables › Limit theorems]({{ '/notes/statistics/random-variables/' | relative_url }}#limit-theorems) |
+| You should know | Where |
+|---|---|
+| Estimator, standard error, MLE asymptotics (Wald) | [Point estimation]({{ '/notes/statistics/point-estimation/' | relative_url }}#maximum-likelihood) |
+| $t$ and $\chi^2$ laws of normal samples | [Sampling distributions]({{ '/notes/statistics/sampling-distributions/' | relative_url }}#students-t) |
+| Normal quantiles, CLT | [Common random variables]({{ '/notes/statistics/common-random-variables/' | relative_url }}#normal) |
 
 # Confidence intervals
 
-A point estimate says nothing about its own precision. A **confidence interval** $[L,U]$ with level $1-\alpha$ is built from the data so that, over repeated samples,
+An interval $[L,U]$ of level $1-\alpha$ satisfies, over repeated samples,
 
-$$ P_\theta\big(L(X)\le\theta\le U(X)\big)=1-\alpha \quad\text{for every } \theta . $$
+$$ P_\theta\big(L(X)\le\theta\le U(X)\big)=1-\alpha\quad\text{for every }\theta. $$
 
-**How to read it.** The probability statement is about the *procedure*, not about the numbers in one computed interval. After the data are in, $\theta$ is a fixed number and the interval either contains it or does not. "95% confident" means: if we repeated the experiment many times, 95% of the intervals so constructed would cover the truth. It does *not* mean "$\theta$ lies in this interval with probability 0.95" (that is a Bayesian credible-interval statement, with a different meaning).
+**Reading it.** The probability is about the *procedure*. Once the data are in, $\theta$ is fixed and the interval either contains it or not. "95%" means 95% of intervals built this way cover the truth, not that $\theta$ lies in this one with probability 0.95 (that is a Bayesian credible interval).
 
-**Recipe: pivots.** A pivot is a function of data and parameter whose distribution does not depend on the parameter. Invert a probability statement about the pivot to isolate $\theta$.
+**Recipe: pivots.** A **pivot** is a function of data and parameter whose distribution does not depend on the parameter; invert a probability statement about it to isolate $\theta$.
 
-- Mean, $\sigma$ unknown, normal data. The pivot is $T\sim t_{n-1}$, giving
-  $$ \bar X\ \pm\ t_{n-1,\,1-\alpha/2}\ \frac{S}{\sqrt n}. $$
-  With $\sigma$ known, replace $t_{n-1,1-\alpha/2}$ by $z_{1-\alpha/2}$ and $S$ by $\sigma$.
-- Variance, normal data. The pivot $(n-1)S^2/\sigma^2\sim\chi^2_{n-1}$ gives
-  $$ \left[\frac{(n-1)S^2}{\chi^2_{n-1,\,1-\alpha/2}},\ \frac{(n-1)S^2}{\chi^2_{n-1,\,\alpha/2}}\right]. $$
-  This one is not symmetric around $S^2$ and, unlike the interval for the mean, is sensitive to non-normality.
-- Any MLE, large $n$ (the **Wald** interval): $\hat\theta\pm z_{1-\alpha/2}\,\widehat{\mathrm{se}}$. For a proportion this is $\hat p\pm z_{1-\alpha/2}\sqrt{\hat p(1-\hat p)/n}$. It is only approximate and can behave badly for small $n$ or $p$ near 0 or 1, where the Wilson interval is the safer choice.
+- *Mean, $\sigma$ unknown, normal data*: $T\sim t_{n-1}$ gives
+  $$ \bar X\pm t_{n-1,1-\alpha/2}\,\frac{S}{\sqrt n}, $$
+  with $z_{1-\alpha/2}$ and $\sigma$ when $\sigma$ is known.
+- *Variance, normal data*: $(n-1)S^2/\sigma^2\sim\chi^2_{n-1}$ gives
+  $$ \left[\frac{(n-1)S^2}{\chi^2_{n-1,1-\alpha/2}},\ \frac{(n-1)S^2}{\chi^2_{n-1,\alpha/2}}\right], $$
+  asymmetric, and unlike the mean's, sensitive to non-normality.
+- *Any MLE, large $n$ (Wald)*: $\hat\theta\pm z_{1-\alpha/2}\widehat{\mathrm{se}}$; for a proportion $\hat p\pm z_{1-\alpha/2}\sqrt{\hat p(1-\hat p)/n}$. Only approximate: poor for small $n$ or $p$ near 0 or 1, where the Wilson interval is safer.
 
-**What controls the width.** Width scales like $\sigma/\sqrt n$ times a critical value that grows with the confidence level. More confidence means a wider interval; more data means a narrower one; there is no free lunch between them.
-
-# Vocabulary
-
-The terms this note introduces. Earlier ones are in the notes linked under Before you start.
-
-| Term | Meaning |
-|---|---|
-| **Pivot** | A function of data and parameter whose distribution does not depend on the parameter |
-| **Confidence level / coverage** | Fraction of repeated intervals that contain the true parameter, $1-\alpha$ |
-| **Critical value** | A quantile of the null distribution that bounds the rejection region, e.g. $z_{1-\alpha/2}$ |
+**Width** scales like $\sigma/\sqrt n$ times a critical value that grows with the level: more confidence widens, more data narrows.
 
 # Recap
 
-The note in a handful of questions.
-
-**What does a 95% confidence interval mean?** The procedure covers the true parameter in 95% of repeated samples. It does not say the parameter lies in your specific interval with probability 0.95.
-
-**How do you build an interval?** Find a pivot, a function of data and parameter with a known distribution, and invert the probability statement. For the mean it is $\bar X\pm t_{n-1,1-\alpha/2}S/\sqrt n$.
+**What does a 95% interval mean?** The procedure covers the truth in 95% of repeated samples; it is not a probability statement about the parameter in the one interval you computed.
 
 # Where this goes next
 
-[Hypothesis tests]({{ '/notes/statistics/hypothesis-tests/' | relative_url }}) are the other face of the same machinery: a $(1-\alpha)$ interval is exactly the set of parameter values a level-$\alpha$ test would not reject. Linear regression uses intervals for each coefficient and for predictions.
+A $(1-\alpha)$ interval is exactly the set of values a level-$\alpha$ test does not reject: see [Hypothesis tests]({{ '/notes/statistics/hypothesis-tests/' | relative_url }}). Regression uses intervals for coefficients and predictions.
