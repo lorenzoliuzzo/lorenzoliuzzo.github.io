@@ -13,6 +13,18 @@ Real data are modelled with a small set of standard random variables, and knowin
 
 The full statements and proofs for this note are in the [technical reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}), which covers all the statistics notes in one document. This page explains; the PDF is the thing to check a formula against.
 
+# Before you start
+
+The two earlier probability notes. Every family below is described with the tools they introduce.
+
+| You should know | In one line | Where |
+|---|---|---|
+| **pmf, density, cdf** | the three ways to describe a distribution | [Random variables › Random variables and their distributions]({{ '/notes/statistics/random-variables/' | relative_url }}#random-variables-and-their-distributions) |
+| **Expectation** | linear always; $\mathbb{E}[XY]=\mathbb{E}X\,\mathbb{E}Y$ only if independent | [Random variables › Expectation]({{ '/notes/statistics/random-variables/' | relative_url }}#expectation) |
+| **Variance** | $\operatorname{Var}(aX+b)=a^2\operatorname{Var}X$; variances add for independent variables | [Random variables › Variance, covariance and correlation]({{ '/notes/statistics/random-variables/' | relative_url }}#variance-covariance-and-correlation) |
+| **Independence** | the joint distribution is the product of the marginals | [Probability foundations › Conditional probability and independence]({{ '/notes/statistics/probability-foundations/' | relative_url }}#conditional-probability-and-independence) |
+| **Central limit theorem** | sums and averages are approximately normal | [Random variables › Limit theorems]({{ '/notes/statistics/random-variables/' | relative_url }}#limit-theorems) |
+
 # Discrete random variables
 
 A discrete random variable takes countable values and is described by its probability mass function $p(x)=P(X=x)$.
@@ -93,7 +105,7 @@ A flexible positive, right-skewed distribution; the sum of $k$ independent expon
 
 # Vocabulary
 
-The terms used in this note.
+The terms this note introduces. Earlier ones are in the notes linked under Before you start.
 
 | Term | Meaning |
 |---|---|

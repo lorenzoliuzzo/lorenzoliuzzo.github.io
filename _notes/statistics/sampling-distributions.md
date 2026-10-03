@@ -13,6 +13,19 @@ An estimate is only as trustworthy as we can say how much it would change on ano
 
 The full statements and proofs for this note are in the [technical reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}), which covers all the statistics notes in one document. This page explains; the PDF is the thing to check a formula against.
 
+# Before you start
+
+The probability notes, and the distributions in [Common random variables]({{ '/notes/statistics/common-random-variables/' | relative_url }}).
+
+| You should know | In one line | Where |
+|---|---|---|
+| **Expectation and variance rules** | used to get $\mathbb{E}\bar X=\mu$ and $\operatorname{Var}\bar X=\sigma^2/n$ | [Random variables › Expectation]({{ '/notes/statistics/random-variables/' | relative_url }}#expectation) |
+| **Variance of a sum** | adds only when the covariances vanish | [Random variables › Variance, covariance and correlation]({{ '/notes/statistics/random-variables/' | relative_url }}#variance-covariance-and-correlation) |
+| **Law of large numbers, CLT** | why averages converge and become normal | [Random variables › Limit theorems]({{ '/notes/statistics/random-variables/' | relative_url }}#limit-theorems) |
+| **i.i.d.** | independent and identically distributed: the standard sampling model | [Random variables › Vocabulary]({{ '/notes/statistics/random-variables/' | relative_url }}#vocabulary) |
+| **Binomial and normal** | the proportion is binomial; the mean of normal data is normal | [Common random variables › Binomial]({{ '/notes/statistics/common-random-variables/' | relative_url }}#binomial), [Common random variables › Normal]({{ '/notes/statistics/common-random-variables/' | relative_url }}#normal) |
+| **Gamma** | the chi-square law is a special case | [Common random variables › Gamma]({{ '/notes/statistics/common-random-variables/' | relative_url }}#gamma) |
+
 # What a sampling distribution is
 
 Draw a sample, compute a statistic $T$, and repeat on fresh samples: the values of $T$ form a distribution. Its centre tells us about bias, its spread (the **standard error**) about precision, and its shape tells us which probability statements are valid. Two ways to obtain it:
@@ -70,7 +83,7 @@ Not every statistic has a bell-shaped sampling distribution. If $X_1,\dots,X_n$ 
 
 # Vocabulary
 
-The terms used in this note.
+The terms this note introduces. Earlier ones are in the notes linked under Before you start.
 
 | Term | Meaning |
 |---|---|

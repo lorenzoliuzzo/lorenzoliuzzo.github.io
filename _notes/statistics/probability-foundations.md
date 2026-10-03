@@ -13,6 +13,15 @@ Statistics is probability run backwards: probability starts from a known mechani
 
 The full statements and proofs for this note are in the [technical reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}), which covers all the statistics notes in one document. This page explains; the PDF is the thing to check a formula against.
 
+# Before you start
+
+Nothing from the other notes: only school-level maths.
+
+| You should know | In one line | Where |
+|---|---|---|
+| **Sets and set operations** | union, intersection, complement, subset | Assumed |
+| **Counting** | permutations and the binomial coefficient $\binom nk$ | Assumed |
+
 # Sample space and events
 
 A random experiment has a **sample space** $\Omega$, the set of all possible outcomes. An **event** is a subset $A\subseteq\Omega$ ("the outcome lies in $A$"). Events combine like sets:
@@ -84,7 +93,7 @@ Only about 9%, despite a "95% accurate" test: healthy people are so numerous tha
 
 # Vocabulary
 
-The probability terms used here and in the notes that follow.
+The terms this note introduces; later notes reuse them.
 
 | Term | Meaning |
 |---|---|

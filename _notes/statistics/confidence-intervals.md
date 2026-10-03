@@ -13,6 +13,18 @@ A point estimate from [Point estimation]({{ '/notes/statistics/point-estimation/
 
 The full statements and proofs for this note are in the [technical reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}), which covers all the statistics notes in one document. This page explains; the PDF is the thing to check a formula against.
 
+# Before you start
+
+[Point estimation]({{ '/notes/statistics/point-estimation/' | relative_url }}), and the sampling laws it rests on.
+
+| You should know | In one line | Where |
+|---|---|---|
+| **Estimator, bias, standard error** | an interval is an estimate plus or minus a multiple of its standard error | [Point estimation › Estimators and how to judge them]({{ '/notes/statistics/point-estimation/' | relative_url }}#estimators-and-how-to-judge-them) |
+| **Maximum likelihood** | the MLE is approximately normal, which gives the Wald interval | [Point estimation › Maximum likelihood]({{ '/notes/statistics/point-estimation/' | relative_url }}#maximum-likelihood) |
+| **$t$ and $\chi^2$ laws** | the pivots for the mean and the variance of normal data | [Sampling distributions › Student's t]({{ '/notes/statistics/sampling-distributions/' | relative_url }}#students-t), [Sampling distributions › The sample variance]({{ '/notes/statistics/sampling-distributions/' | relative_url }}#the-sample-variance-and-the-chi-square-distribution) |
+| **Normal quantiles** | the $z$ values such as 1.96 for 95% | [Common random variables › Normal]({{ '/notes/statistics/common-random-variables/' | relative_url }}#normal) |
+| **Central limit theorem** | why the large-$n$ intervals work for non-normal data | [Random variables › Limit theorems]({{ '/notes/statistics/random-variables/' | relative_url }}#limit-theorems) |
+
 # Confidence intervals
 
 A point estimate says nothing about its own precision. A **confidence interval** $[L,U]$ with level $1-\alpha$ is built from the data so that, over repeated samples,
@@ -35,7 +47,7 @@ $$ P_\theta\big(L(X)\le\theta\le U(X)\big)=1-\alpha \quad\text{for every } \thet
 
 # Vocabulary
 
-The terms used in this note.
+The terms this note introduces. Earlier ones are in the notes linked under Before you start.
 
 | Term | Meaning |
 |---|---|

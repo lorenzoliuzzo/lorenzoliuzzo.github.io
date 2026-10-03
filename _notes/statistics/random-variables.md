@@ -13,6 +13,17 @@ A random variable turns the outcome of an experiment into a number, and the rest
 
 The full statements and proofs for this note are in the [technical reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}), which covers all the statistics notes in one document. This page explains; the PDF is the thing to check a formula against.
 
+# Before you start
+
+The first note, [Probability foundations]({{ '/notes/statistics/probability-foundations/' | relative_url }}), plus basic calculus.
+
+| You should know | In one line | Where |
+|---|---|---|
+| **Sample space and events** | an event is a subset of $\Omega$; probabilities are numbers attached to events | [Probability foundations › Sample space and events]({{ '/notes/statistics/probability-foundations/' | relative_url }}#sample-space-and-events) |
+| **The axioms** | $P\ge0$, $P(\Omega)=1$, additive over disjoint events; hence $P(A^c)=1-P(A)$ | [Probability foundations › The axioms]({{ '/notes/statistics/probability-foundations/' | relative_url }}#the-axioms) |
+| **Conditional probability and independence** | $P(A\mid B)=P(A\cap B)/P(B)$; independent means $P(A\cap B)=P(A)P(B)$ | [Probability foundations › Conditional probability and independence]({{ '/notes/statistics/probability-foundations/' | relative_url }}#conditional-probability-and-independence) |
+| **Sums, integrals, derivatives** | a cdf is an integral of a density, a density a derivative of a cdf | Assumed |
+
 # Random variables and their distributions
 
 A **random variable** $X$ is a numerical outcome of the experiment: a function from $\Omega$ to the real numbers. Its **distribution** says how probability is spread over its values. Three equivalent descriptions:
@@ -88,7 +99,7 @@ The CLT is the reason the normal distribution appears everywhere in inference, e
 
 # Vocabulary
 
-The terms used here and in the notes that follow.
+The terms this note introduces; later notes reuse them.
 
 | Term | Meaning |
 |---|---|

@@ -13,6 +13,18 @@ A test decides between two claims about a parameter using the sampling distribut
 
 The full statements and proofs for this note are in the [technical reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}), which covers all the statistics notes in one document. This page explains; the PDF is the thing to check a formula against.
 
+# Before you start
+
+[Confidence intervals]({{ '/notes/statistics/confidence-intervals/' | relative_url }}) (a test and an interval are two views of one thing) and the sampling laws.
+
+| You should know | In one line | Where |
+|---|---|---|
+| **$t$ and $F$ laws** | null distributions of the standard test statistics | [Sampling distributions › Student's t]({{ '/notes/statistics/sampling-distributions/' | relative_url }}#students-t), [Sampling distributions › The F distribution]({{ '/notes/statistics/sampling-distributions/' | relative_url }}#the-f-distribution) |
+| **Pivot, critical value, level** | the same ingredients as an interval | [Confidence intervals]({{ '/notes/statistics/confidence-intervals/' | relative_url }}) |
+| **MLE and Fisher information** | the Wald and likelihood-ratio tests are built from them | [Point estimation › Maximum likelihood]({{ '/notes/statistics/point-estimation/' | relative_url }}#maximum-likelihood) |
+| **Conditional probability** | error rates are probabilities conditional on $H_0$ or $H_1$ | [Probability foundations › Conditional probability and independence]({{ '/notes/statistics/probability-foundations/' | relative_url }}#conditional-probability-and-independence) |
+| **Normal quantiles and $\Phi$** | critical values and power calculations | [Common random variables › Normal]({{ '/notes/statistics/common-random-variables/' | relative_url }}#normal) |
+
 # Hypothesis tests
 
 A test decides between two hypotheses about $\theta$: a **null** $H_0$ (the default, "no effect") and an **alternative** $H_1$. The procedure: choose a statistic $T$ whose distribution under $H_0$ is known, and reject $H_0$ if $T$ falls in a **rejection region**.
@@ -55,7 +67,7 @@ If you run $m$ tests at level $\alpha$ and every null is true, you expect $m\alp
 
 # Vocabulary
 
-The terms used in this note.
+The terms this note introduces. Earlier ones are in the notes linked under Before you start.
 
 | Term | Meaning |
 |---|---|

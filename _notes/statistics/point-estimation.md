@@ -13,6 +13,19 @@ Almost every method in applied statistics and machine learning answers the same 
 
 The full statements and proofs for this note are in the [technical reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}), which covers all the statistics notes in one document. This page explains; the PDF is the thing to check a formula against.
 
+# Before you start
+
+[Sampling distributions]({{ '/notes/statistics/sampling-distributions/' | relative_url }}) and the probability notes before it, plus derivatives and logarithms.
+
+| You should know | In one line | Where |
+|---|---|---|
+| **Sampling distribution, standard error** | the distribution of a statistic over repeated samples, and its spread | [Sampling distributions › What a sampling distribution is]({{ '/notes/statistics/sampling-distributions/' | relative_url }}#what-a-sampling-distribution-is) |
+| **Distribution of the mean and variance** | $\mathbb{E}\bar X=\mu$, $\operatorname{Var}\bar X=\sigma^2/n$; $(n-1)S^2/\sigma^2\sim\chi^2_{n-1}$ | [Sampling distributions › The sample mean]({{ '/notes/statistics/sampling-distributions/' | relative_url }}#the-sample-mean), [Sampling distributions › The sample variance]({{ '/notes/statistics/sampling-distributions/' | relative_url }}#the-sample-variance-and-the-chi-square-distribution) |
+| **Expectation and variance** | bias and MSE are expectations of the error | [Random variables › Expectation]({{ '/notes/statistics/random-variables/' | relative_url }}#expectation) |
+| **Law of large numbers** | the idea behind consistency | [Random variables › Limit theorems]({{ '/notes/statistics/random-variables/' | relative_url }}#limit-theorems) |
+| **Bernoulli and normal families** | the running examples for the likelihood | [Common random variables › Bernoulli]({{ '/notes/statistics/common-random-variables/' | relative_url }}#bernoulli), [Common random variables › Normal]({{ '/notes/statistics/common-random-variables/' | relative_url }}#normal) |
+| **Maximizing a function** | setting a derivative to zero | Assumed |
+
 # The setting: population, sample, model
 
 A **population** is the thing we care about; a **sample** is the data $x_1,\dots,x_n$ we actually have. Inference needs a bridge between the two, and that bridge is a **statistical model**: we assume the data are realizations of random variables $X_1,\dots,X_n$ whose joint law belongs to a family indexed by an unknown parameter $\theta$,
@@ -66,7 +79,7 @@ The **method of moments** is the simpler alternative: equate sample moments to p
 
 # Vocabulary
 
-The terms used in this note.
+The terms this note introduces. Earlier ones are in the notes linked under Before you start.
 
 | Term | Meaning |
 |---|---|
