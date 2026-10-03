@@ -1,0 +1,13 @@
+---
+layout: single
+---
+
+{% comment %}
+  A note. Wraps `single` and, when the note is listed in a course (see _courses/),
+  puts a strip above the text saying where it sits. The prev/next pager below the
+  text follows the course order too; see _includes/post_pagination.html.
+{% endcomment %}
+
+{% include course-context.html position="top" %}
+
+{{ content }}

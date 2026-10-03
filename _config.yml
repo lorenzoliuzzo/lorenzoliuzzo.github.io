@@ -103,6 +103,14 @@ collections:
     path: "_travel"
     permalink: /:collection/:path/
 
+  # One document per course: a short intro and the ordered list of notes that make
+  # it up. The order lives here, in `parts`, not in the notes themselves, so a note
+  # can be moved or inserted without touching any other file.
+  courses:
+    output: true
+    path: "_courses"
+    permalink: /:collection/:path/
+
 
 defaults:
   - scope:
@@ -118,7 +126,9 @@ defaults:
       path: "_notes"
       type: notes
     values:
-      layout: single
+      # The note layout wraps `single` and adds the course strip and prev/next
+      # links for notes that belong to a course.
+      layout: note
       author_profile: false
       show_date: true
       read_time: true
@@ -167,6 +177,18 @@ defaults:
       read_time: false
       back_to_top: true
       breadcrumbs: true
+
+  - scope:
+      path: "_courses"
+      type: courses
+    values:
+      layout: course
+      author_profile: false
+      show_date: false
+      read_time: false
+      back_to_top: true
+      breadcrumbs: true
+      toc: false
 
   - scope:
       path: "_travel"

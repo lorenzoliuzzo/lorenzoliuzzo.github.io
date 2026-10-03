@@ -26,6 +26,7 @@
     {% case page.collection %}
       {% when "notes" %}{% assign root_label = "Notes" %}{% assign root_url = "/notes/" %}{% assign crumbs = page.tags %}
       {% when "projects" %}{% assign root_label = "Projects" %}{% assign root_url = "/projects/" %}{% assign crumbs = page.tags %}
+      {% when "courses" %}{% assign root_label = "Courses" %}{% assign root_url = "/courses/" %}{% assign crumbs = "" | split: "" %}
       {% when "library" %}{% assign root_label = "Library" %}{% assign root_url = "/library/" %}{% assign crumbs = page.shelf | split: "|" %}
       {% else %}{% assign root_label = nil %}
     {% endcase %}

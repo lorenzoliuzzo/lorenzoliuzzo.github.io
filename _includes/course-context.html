@@ -1,0 +1,59 @@
+{% comment %}
+  Where this note sits in its course.
+
+  position — "top" renders the strip above the text. "data" renders nothing and
+             leaves `this_course`, `course_prev` and `course_next` set for the
+             caller (post_pagination.html uses them for the pager).
+
+  A note belongs to a course when its path is listed in the course's `parts`; the
+  first course that lists it wins. Reading order is the order of `parts`, limited to
+  published notes (a planned note has no page to link to). Liquid has no arrays to
+  build, so the ordered path list goes through a "|"-joined string.
+{% endcomment %}
+{% assign this_course = nil %}
+{% assign this_part = nil %}
+{% assign course_prev = nil %}
+{% assign course_next = nil %}
+{% for course in site.courses %}
+  {% unless this_course %}
+    {% for part in course.parts %}
+      {% for p in part.notes %}
+        {% assign rel = "_notes/" | append: p | append: ".md" %}
+        {% if rel == page.path %}
+          {% assign this_course = course %}
+          {% assign this_part = part %}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  {% endunless %}
+{% endfor %}
+
+{% if this_course %}
+  {% assign flat = "" %}
+  {% for part in this_course.parts %}
+    {% for p in part.notes %}
+      {% assign rel = "_notes/" | append: p | append: ".md" %}
+      {% assign doc = site.notes | where: "relative_path", rel | first %}
+      {% if doc %}{% assign flat = flat | append: rel | append: "|" %}{% endif %}
+    {% endfor %}
+  {% endfor %}
+  {% assign ordered = flat | split: "|" %}
+
+  {% assign idx = 0 %}
+  {% for rel in ordered %}
+    {% if rel == page.path %}{% assign idx = forloop.index0 %}{% endif %}
+  {% endfor %}
+
+  {% if include.position == "top" %}
+    <p class="course-strip">
+      <a href="{{ this_course.url | relative_url }}">{{ this_course.title }}</a>
+      &middot; {{ this_part.title }}
+      &middot; note {{ idx | plus: 1 }} of {{ ordered.size }}
+    </p>
+  {% else %}
+    {% assign prev_idx = idx | minus: 1 %}
+    {% assign next_idx = idx | plus: 1 %}
+    {% if idx > 0 %}{% assign course_prev = site.notes | where: "relative_path", ordered[prev_idx] | first %}{% endif %}
+    {% if next_idx < ordered.size %}{% assign course_next = site.notes | where: "relative_path", ordered[next_idx] | first %}{% endif %}
+  {% endif %}
+{% endif %}

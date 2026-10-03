@@ -7,7 +7,8 @@ author_profile: true
 ---
 
 Select a topic below to jump straight to that section, filter by title, or fold
-subtopics away to skim the outline.
+subtopics away to skim the outline. To read the notes in order, see the
+[courses]({{ '/courses/' | relative_url }}).
 
 <div class="archive-controls">
   <div class="archive-filter">

@@ -5,6 +5,9 @@
   a bare "Previous"/"Next", and a link back to the collection archive sits between
   them. Landing at the bottom of a note with no way back to the index was the main
   dead end in the old layout.
+
+  A note that is listed in a course (see _courses/) is paged in the course's reading
+  order instead of the collection's, and the middle link goes to the course page.
 {% endcomment %}
 {% assign locale = include.locale | default: site.locale %}
 
@@ -14,12 +17,24 @@
   {% else %}{% assign archive_url = nil %}
 {% endcase %}
 
-{% if page.previous or page.next or archive_url %}
+{% assign pager_prev = page.previous %}
+{% assign pager_next = page.next %}
+{% if page.collection == "notes" %}
+  {% include course-context.html position="data" %}
+  {% if this_course %}
+    {% assign pager_prev = course_prev %}
+    {% assign pager_next = course_next %}
+    {% assign archive_label = this_course.title | append: " course" %}
+    {% assign archive_url = this_course.url %}
+  {% endif %}
+{% endif %}
+
+{% if pager_prev or pager_next or archive_url %}
   <nav class="pagination pagination--pager-nav" aria-label="{{ page.collection | default: 'Post' }} pagination">
-    {% if page.previous %}
-      <a href="{{ page.previous.url | relative_url }}" class="pagination--pager pagination--pager-prev" rel="prev">
+    {% if pager_prev %}
+      <a href="{{ pager_prev.url | relative_url }}" class="pagination--pager pagination--pager-prev" rel="prev">
         <span class="pager__direction"><i class="fas fa-arrow-left" aria-hidden="true"></i> {{ site.data.ui-text[locale].pagination_previous | default: "Previous" }}</span>
-        <span class="pager__title">{{ page.previous.title | markdownify | strip_html | strip }}</span>
+        <span class="pager__title">{{ pager_prev.title | markdownify | strip_html | strip }}</span>
       </a>
     {% else %}
       <span class="pagination--pager disabled" aria-hidden="true"></span>
@@ -31,10 +46,10 @@
       </a>
     {% endif %}
 
-    {% if page.next %}
-      <a href="{{ page.next.url | relative_url }}" class="pagination--pager pagination--pager-next" rel="next">
+    {% if pager_next %}
+      <a href="{{ pager_next.url | relative_url }}" class="pagination--pager pagination--pager-next" rel="next">
         <span class="pager__direction">{{ site.data.ui-text[locale].pagination_next | default: "Next" }} <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
-        <span class="pager__title">{{ page.next.title | markdownify | strip_html | strip }}</span>
+        <span class="pager__title">{{ pager_next.title | markdownify | strip_html | strip }}</span>
       </a>
     {% else %}
       <span class="pagination--pager disabled" aria-hidden="true"></span>

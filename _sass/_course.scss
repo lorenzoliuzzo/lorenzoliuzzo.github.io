@@ -1,0 +1,89 @@
+// Course pages and the course strip and prev/next links on notes that belong to
+// one. Built on the same tokens as the archive cards so the two read as one family.
+
+.course-progress {
+  margin: 0 0 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.85em;
+  color: var(--text-muted);
+}
+
+.course-part {
+  margin: 0 0 2rem;
+
+  .course-part__title {
+    margin: 0 0 0.25rem;
+  }
+
+  .course-part__summary {
+    margin: 0 0 0.75rem;
+    color: var(--text-muted);
+  }
+}
+
+.course-notes {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.course-note {
+  display: flex;
+  gap: 0.9rem;
+  align-items: baseline;
+  margin: 0;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+
+  .course-note__num {
+    flex: 0 0 1.6rem;
+    font-family: var(--font-sans);
+    font-size: 0.85em;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-faint);
+    text-align: right;
+  }
+
+  .course-note__title {
+    font-family: var(--font-serif);
+    font-size: 1.05em;
+    line-height: var(--leading-tight);
+  }
+
+  a.course-note__title {
+    text-decoration: none;
+  }
+
+  .course-note__excerpt {
+    margin: 0.3rem 0 0;
+    font-family: var(--font-sans);
+    font-size: 0.8em;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  &:hover:not(.course-note--planned) {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-raised);
+  }
+}
+
+.course-note--planned {
+  background: transparent;
+
+  .course-note__title {
+    color: var(--text-muted);
+  }
+}
+
+.course-strip {
+  margin: 0 0 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.8em;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+}
