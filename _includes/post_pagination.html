@@ -7,7 +7,8 @@
   dead end in the old layout.
 
   A note that is listed in a course (see _courses/) is paged in the course's reading
-  order instead of the collection's, and the middle link goes to the course page.
+  order instead of the collection's, and the middle link goes to the course's section
+  of the archive.
 {% endcomment %}
 {% assign locale = include.locale | default: site.locale %}
 
@@ -25,7 +26,7 @@
     {% assign pager_prev = course_prev %}
     {% assign pager_next = course_next %}
     {% assign archive_label = this_course.title | append: " course" %}
-    {% assign archive_url = this_course.url %}
+    {% assign archive_url = course_url %}
   {% endif %}
 {% endif %}
 

@@ -2,10 +2,10 @@
   Where this note sits in its course.
 
   position — "top" renders the strip above the text. "data" renders nothing and
-             leaves `this_course`, `course_prev` and `course_next` set for the
+             leaves `this_course`, `this_part`, `course_url`, `course_prev` and `course_next` set for the
              caller (post_pagination.html uses them for the pager).
 
-  A note belongs to a course when its path is listed in the course's `parts`; the
+  Courses are _data/courses.yml. A note belongs to a course when its path is listed in the course's `parts`; the
   first course that lists it wins. Reading order is the order of `parts`, limited to
   published notes (a planned note has no page to link to). Liquid has no arrays to
   build, so the ordered path list goes through a "|"-joined string.
@@ -14,7 +14,8 @@
 {% assign this_part = nil %}
 {% assign course_prev = nil %}
 {% assign course_next = nil %}
-{% for course in site.courses %}
+{% assign course_url = nil %}
+{% for course in site.data.courses %}
   {% unless this_course %}
     {% for part in course.parts %}
       {% for p in part.notes %}
@@ -29,6 +30,8 @@
 {% endfor %}
 
 {% if this_course %}
+  {% assign course_slug = this_course.title | slugify %}
+  {% assign course_url = "/notes/#" | append: course_slug %}
   {% assign flat = "" %}
   {% for part in this_course.parts %}
     {% for p in part.notes %}
@@ -46,7 +49,7 @@
 
   {% if include.position == "top" %}
     <p class="course-strip">
-      <a href="{{ this_course.url | relative_url }}">{{ this_course.title }}</a>
+      <a href="{{ course_url | relative_url }}">{{ this_course.title }}</a>
       &middot; {{ this_part.title }}
       &middot; note {{ idx | plus: 1 }} of {{ ordered.size }}
     </p>

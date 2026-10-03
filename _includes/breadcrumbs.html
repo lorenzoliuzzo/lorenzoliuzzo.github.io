@@ -24,9 +24,12 @@
       yields an array of one — or an empty array for a book with no shelf.
     {% endcomment %}
     {% case page.collection %}
-      {% when "notes" %}{% assign root_label = "Notes" %}{% assign root_url = "/notes/" %}{% assign crumbs = page.tags %}
+      {% when "notes" %}
+        {% assign root_label = "Notes" %}{% assign root_url = "/notes/" %}{% assign crumbs = page.tags %}
+        {% comment %}A note in a course is filed under the course and its part, which are the archive's section and subsection ids.{% endcomment %}
+        {% include course-context.html position="data" %}
+        {% if this_course %}{% assign crumbs = this_course.title | append: "|" | append: this_part.title | split: "|" %}{% endif %}
       {% when "projects" %}{% assign root_label = "Projects" %}{% assign root_url = "/projects/" %}{% assign crumbs = page.tags %}
-      {% when "courses" %}{% assign root_label = "Courses" %}{% assign root_url = "/courses/" %}{% assign crumbs = "" | split: "" %}
       {% when "library" %}{% assign root_label = "Library" %}{% assign root_url = "/library/" %}{% assign crumbs = page.shelf | split: "|" %}
       {% else %}{% assign root_label = nil %}
     {% endcase %}

@@ -1,0 +1,43 @@
+# The notes archive (/notes/) is divided into courses. Each course lists its notes
+# in reading order, grouped in parts; the archive numbers the written ones 1..N and
+# shows the rest as planned. Paths are under _notes/, without the extension.
+#
+# The order lives here and only here: to move or insert a note, edit this file. A
+# note listed in a course is paged in this order (see _includes/post_pagination.html)
+# and is left out of the tag-based groups below the courses on the archive.
+- title: "Statistics"
+  summary: "Probability, statistical inference, regression, classification, model assessment and multivariate methods, in reading order."
+  reference: /assets/notes/statistics/statistics-reference/statistics-reference.pdf
+  parts:
+    - title: "Probability"
+      notes:
+        - statistics/probability-foundations
+        - statistics/random-variables
+        - statistics/common-random-variables
+    - title: "Inference"
+      notes:
+        - statistics/sampling-distributions
+        - statistics/point-estimation
+        - statistics/confidence-intervals
+        - statistics/hypothesis-tests
+    - title: "Regression and smoothing"
+      notes:
+        - statistics/linear-regression
+        - statistics/regularization
+        - statistics/splines
+        - statistics/gam-mars
+        - statistics/robust-statistics
+    - title: "Classification and trees"
+      notes:
+        - statistics/linear-classification
+        - statistics/decision-trees
+        - statistics/bagging-random-forests
+        - statistics/boosting
+    - title: "Assessing models"
+      notes:
+        - statistics/model-assessment
+        - statistics/conformal-prediction
+    - title: "Multivariate methods"
+      notes:
+        - statistics/pca-factor-analysis
+        - statistics/mixture-models

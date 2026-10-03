@@ -6,9 +6,9 @@ classes: wide
 author_profile: true
 ---
 
-Select a topic below to jump straight to that section, filter by title, or fold
-subtopics away to skim the outline. To read the notes in order, see the
-[courses]({{ '/courses/' | relative_url }}).
+Select a course or topic below to jump straight to that section, filter by title,
+or fold the parts away to skim the outline. Within a course the notes are numbered
+in reading order.
 
 <div class="archive-controls">
   <div class="archive-filter">
@@ -20,21 +20,65 @@ subtopics away to skim the outline. To read the notes in order, see the
 
 {% assign notes = site.notes | sort: "title" %}
 {% assign planned = site.data.planned_notes %}
+{% assign courses = site.data.courses %}
+
+{% comment %}
+  Courses (_data/courses.yml) come first, in the order the file lists them. Notes
+  that a course lists are drawn inside it; everything else is `loose` and keeps the
+  old grouping by tag below. Liquid has no set, so claimed paths go into one
+  delimited string and membership is a `contains` on "|path|".
+{% endcomment %}
+{% assign claimed = "|" %}
+{% for course in courses %}
+  {% for part in course.parts %}
+    {% for p in part.notes %}
+      {% assign claimed = claimed | append: "_notes/" | append: p | append: ".md|" %}
+    {% endfor %}
+  {% endfor %}
+{% endfor %}
+
+{% assign loose = "" | split: "" %}
+{% for n in notes %}
+  {% assign key = "|" | append: n.relative_path | append: "|" %}
+  {% unless claimed contains key %}{% assign loose = loose | push: n %}{% endunless %}
+{% endfor %}
+{% assign planned_loose = "" | split: "" %}
+{% for n in planned %}
+  {% assign key = "|" | append: n.path | append: "|" %}
+  {% unless claimed contains key %}{% assign planned_loose = planned_loose | push: n %}{% endunless %}
+{% endfor %}
 
 {% assign main_tags_str = "" %}
-{% for note in notes %}
+{% for note in loose %}
   {% if note.tags[0] %}{% assign main_tags_str = main_tags_str | append: note.tags[0] | append: "|" %}{% endif %}
 {% endfor %}
-{% for note in planned %}
+{% for note in planned_loose %}
   {% if note.tags[0] %}{% assign main_tags_str = main_tags_str | append: note.tags[0] | append: "|" %}{% endif %}
 {% endfor %}
 {% assign main_tags = main_tags_str | split: "|" | uniq | sort %}
 
 <nav class="notes-nav">
   <ul class="taxonomy__index">
+    {% for course in courses %}
+      {% assign written = 0 %}
+      {% assign upcoming = 0 %}
+      {% for part in course.parts %}
+        {% for p in part.notes %}
+          {% assign rel = "_notes/" | append: p | append: ".md" %}
+          {% assign doc = notes | where: "relative_path", rel | first %}
+          {% if doc %}{% assign written = written | plus: 1 %}{% else %}{% assign upcoming = upcoming | plus: 1 %}{% endif %}
+        {% endfor %}
+      {% endfor %}
+      <li>
+        <a href="#{{ course.title | slugify }}">
+          <strong>{{ course.title }}</strong> <span class="tag-count">{{ written }}</span>
+          {% if upcoming > 0 %}<span class="tag-count tag-count--planned">{{ upcoming }} planned</span>{% endif %}
+        </a>
+      </li>
+    {% endfor %}
     {% for main_tag in main_tags %}
-      {% assign in_main = notes | where_exp: "n", "n.tags[0] == main_tag" %}
-      {% assign planned_main = planned | where_exp: "n", "n.tags[0] == main_tag" %}
+      {% assign in_main = loose | where_exp: "n", "n.tags[0] == main_tag" %}
+      {% assign planned_main = planned_loose | where_exp: "n", "n.tags[0] == main_tag" %}
       <li>
         <a href="#{{ main_tag | slugify }}">
           <strong>{{ main_tag }}</strong> <span class="tag-count">{{ in_main.size }}</span>
@@ -45,9 +89,64 @@ subtopics away to skim the outline. To read the notes in order, see the
   </ul>
 </nav>
 
+{% for course in courses %}
+  {% assign cslug = course.title | slugify %}
+  <section id="{{ cslug }}" class="tag-section course-section">
+    <h2 class="tag-section__title">{{ course.title }}</h2>
+    {% if course.summary or course.reference %}
+      <p class="course-intro">
+        {{ course.summary }}
+        {% if course.reference %}<a href="{{ course.reference | relative_url }}">Technical reference (PDF)</a>{% endif %}
+      </p>
+    {% endif %}
+
+    {% assign n = 0 %}
+    {% for part in course.parts %}
+      {% assign written = 0 %}
+      {% assign upcoming = 0 %}
+      {% for p in part.notes %}
+        {% assign rel = "_notes/" | append: p | append: ".md" %}
+        {% assign doc = notes | where: "relative_path", rel | first %}
+        {% if doc %}{% assign written = written | plus: 1 %}{% else %}{% assign upcoming = upcoming | plus: 1 %}{% endif %}
+      {% endfor %}
+      <details class="tag-subsection" id="{{ cslug }}-{{ part.title | slugify }}" open>
+        <summary class="tag-subsection__summary">
+          <h3 class="tag-subsection__title">{{ part.title }}</h3>
+          <span class="tag-count">{{ written }}</span>
+          {% if upcoming > 0 %}<span class="tag-count tag-count--planned">{{ upcoming }} planned</span>{% endif %}
+        </summary>
+        <div class="entry-list entry-list--dense">
+          {% for p in part.notes %}
+            {% assign rel = "_notes/" | append: p | append: ".md" %}
+            {% assign doc = notes | where: "relative_path", rel | first %}
+            {% if doc %}
+              {% assign n = n | plus: 1 %}
+              <article class="entry-card entry-card--dense">
+                <h3 class="entry-card__title"><span class="entry-card__num">{{ n }}</span><a href="{{ doc.url | relative_url }}">{{ doc.title | default: "Untitled" }}</a></h3>
+                <div class="entry-card__aside">
+                  {% include note-status.html document=doc compact=true %}
+                  {% if doc.date %}<p class="entry-card__meta"><time datetime="{{ doc.date | date_to_xmlschema }}">{{ doc.date | date: site.date_format }}</time></p>{% endif %}
+                </div>
+              </article>
+            {% else %}
+              {% assign stub = planned | where: "path", rel | first %}
+              <div class="planned-list__item">
+                <span class="planned-list__title"><span class="entry-card__num">&middot;</span>{{ stub.title | default: p }}</span>
+                <span class="planned-list__badge">planned</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </details>
+    {% endfor %}
+
+    <a href="#page-title" class="back-to-top">&uarr; Back to top</a>
+  </section>
+{% endfor %}
+
 {% for main_tag in main_tags %}
-  {% assign in_main = notes | where_exp: "n", "n.tags[0] == main_tag" %}
-  {% assign planned_main = planned | where_exp: "n", "n.tags[0] == main_tag" %}
+  {% assign in_main = loose | where_exp: "n", "n.tags[0] == main_tag" %}
+  {% assign planned_main = planned_loose | where_exp: "n", "n.tags[0] == main_tag" %}
 
   {% assign sub_tags_str = "" %}
   {% for note in in_main %}
