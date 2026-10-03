@@ -201,7 +201,3 @@ The note in a handful of questions. If you can answer each of these without look
 - **Regularization**: trading a little bias for a lot of variance, via the MSE decomposition.
 - **Model assessment**: estimating prediction error is an inference problem with its own sampling distribution.
 - **Mixture models**: the likelihood is no longer solvable in closed form, which motivates the EM algorithm.
-
-# R in practice
-
-*To be added in the R phase of the plan: simulating sampling distributions and the CLT, `t.test`, `prop.test`, `p.adjust`, confidence interval coverage by simulation, and likelihood maximization with `optim`.*
