@@ -91,6 +91,20 @@ in reading order.
 
 {% for course in courses %}
   {% assign cslug = course.title | slugify %}
+  {% assign total = 0 %}
+  {% assign done = 0 %}
+  {% assign first_doc = nil %}
+  {% for part in course.parts %}
+    {% for p in part.notes %}
+      {% assign total = total | plus: 1 %}
+      {% assign rel = "_notes/" | append: p | append: ".md" %}
+      {% assign doc = notes | where: "relative_path", rel | first %}
+      {% if doc %}
+        {% assign done = done | plus: 1 %}
+        {% unless first_doc %}{% assign first_doc = doc %}{% endunless %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
   <section id="{{ cslug }}" class="tag-section course-section">
     <h2 class="tag-section__title">{{ course.title }}</h2>
     {% if course.summary or course.reference %}
@@ -99,6 +113,11 @@ in reading order.
         {% if course.reference %}<a href="{{ course.reference | relative_url }}">Technical reference (PDF)</a>{% endif %}
       </p>
     {% endif %}
+    <div class="course-progress">
+      <span class="course-progress__bar" role="img" aria-label="{{ done }} of {{ total }} notes written"><span style="width: {{ done | times: 100 | divided_by: total }}%"></span></span>
+      <span class="course-progress__text">{{ done }} of {{ total }} notes written</span>
+      {% if first_doc %}<a class="course-progress__start" href="{{ first_doc.url | relative_url }}">Start with {{ first_doc.title }} &rarr;</a>{% endif %}
+    </div>
 
     {% assign n = 0 %}
     {% for part in course.parts %}
@@ -109,12 +128,15 @@ in reading order.
         {% assign doc = notes | where: "relative_path", rel | first %}
         {% if doc %}{% assign written = written | plus: 1 %}{% else %}{% assign upcoming = upcoming | plus: 1 %}{% endif %}
       {% endfor %}
-      <details class="tag-subsection" id="{{ cslug }}-{{ part.title | slugify }}" open>
+      {% assign hue = forloop.index0 | modulo: 6 | plus: 1 %}
+      <details class="tag-subsection" id="{{ cslug }}-{{ part.title | slugify }}" style="--part: var(--hue-{{ hue }})" open>
         <summary class="tag-subsection__summary">
+          <span class="part-dot" aria-hidden="true"></span>
           <h3 class="tag-subsection__title">{{ part.title }}</h3>
           <span class="tag-count">{{ written }}</span>
           {% if upcoming > 0 %}<span class="tag-count tag-count--planned">{{ upcoming }} planned</span>{% endif %}
         </summary>
+        {% if part.blurb %}<p class="part-blurb">{{ part.blurb }}</p>{% endif %}
         <div class="entry-list entry-list--dense">
           {% for p in part.notes %}
             {% assign rel = "_notes/" | append: p | append: ".md" %}

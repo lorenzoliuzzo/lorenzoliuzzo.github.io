@@ -47,3 +47,17 @@ jobs:
 
       - name: Run the MyThingsLab suite
         run: node --test tools/mythingslab/core.test.mjs
+
+      # The course notes follow one structure (front matter, recall cards, concept
+      # graph, figures); see .claude/skills/write-site-note/. Ruby and Node are already
+      # here, so the check needs nothing installed.
+      - name: Check the course notes
+        run: ruby tools/check_notes.rb
+
+      # Figures are generated from tools/figures and committed, because the Pages
+      # build has no Python. A script edited without rerunning the build would leave
+      # the page showing the old figure.
+      - name: Check the figures are up to date
+        run: |
+          python3 tools/figures/build.py
+          git diff --exit-code -- _includes/fig assets/notes

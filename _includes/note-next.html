@@ -1,0 +1,25 @@
+{% comment %}
+  The step after this note: the next written note in the course with its summary, or,
+  when the next entry is not written yet, a quiet card naming it. Expects
+  course-context.html to have run. A note outside a course gets nothing; the pager
+  below still follows the collection.
+{% endcomment %}
+{% if this_course %}
+  {% if course_next_planned %}
+    <div class="next-step next-step--planned">
+      <span class="next-step__label">Next in the course &middot; not written yet</span>
+      <span class="next-step__title">{{ course_next_planned.title }}</span>
+    </div>
+  {% elsif course_next %}
+    <a class="next-step" href="{{ course_next.url | relative_url }}">
+      <span class="next-step__label">Next step &middot; {{ course_pos | plus: 1 }}&thinsp;/&thinsp;{{ course_total }}</span>
+      <span class="next-step__title">{{ course_next.title }}</span>
+      {% if course_next.summary != "" %}<span class="next-step__why">{{ course_next.summary | markdownify | strip_html | strip }}</span>{% endif %}
+    </a>
+  {% else %}
+    <div class="next-step next-step--planned">
+      <span class="next-step__label">End of the course so far</span>
+      <span class="next-step__title">{{ this_course.title }}</span>
+    </div>
+  {% endif %}
+{% endif %}

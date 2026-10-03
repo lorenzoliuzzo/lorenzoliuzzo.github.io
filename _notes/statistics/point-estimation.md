@@ -3,6 +3,24 @@ collection: notes
 title: "Point Estimation and Maximum Likelihood"
 date: 2026-10-03
 excerpt: "Estimators, bias, variance and MSE, the Cramér–Rao bound, and maximum likelihood."
+hook: "A good estimator is not one that is right on average but one with small total error; maximum likelihood is the default recipe, and for large samples it is about as good as any estimator can be."
+goals:
+  - judge an estimator by its bias, variance and MSE, and say why unbiased is not enough
+  - state the Cramér–Rao bound and what Fisher information measures
+  - derive a maximum likelihood estimator and read a standard error off it
+requires:
+  - sampling-distribution
+  - standard-error
+  - expectation
+  - variance
+  - law-of-large-numbers
+defines:
+  - {id: estimator, name: estimator, anchor: setting}
+  - {id: bias-and-mse, name: bias and MSE, anchor: judging-an-estimator}
+  - {id: cramer-rao-bound, name: Cramér–Rao bound, anchor: judging-an-estimator}
+  - {id: fisher-information, name: Fisher information, anchor: judging-an-estimator}
+  - {id: likelihood, name: likelihood, anchor: maximum-likelihood}
+  - {id: maximum-likelihood-estimator, name: maximum likelihood estimator, anchor: maximum-likelihood}
 read_time: true
 tags:
   - Statistics
@@ -10,13 +28,6 @@ tags:
 ---
 
 We have a finite sample and want to say something about the mechanism that generated it. The simplest version is to guess one number, a parameter, and then to ask how good the guess is. This note covers how to judge an estimator and the standard recipe for building one, maximum likelihood, which regression, regularization, PCA and mixture models all reuse. Proofs are in the [reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}).
-
-# Before you start
-
-| You should know | Where |
-|---|---|
-| Sampling distribution, standard error, the laws of $\bar X$ and $S^2$ | [Sampling distributions]({{ '/notes/statistics/sampling-distributions/' | relative_url }}) |
-| Expectation, variance, the LLN | [Random variables]({{ '/notes/statistics/random-variables/' | relative_url }}) |
 
 # Setting
 
@@ -32,7 +43,10 @@ An estimator is judged by the distribution of its error. The **bias** $\mathbb{E
 
 $$ \operatorname{MSE}(\hat\theta)=\mathbb{E}[(\hat\theta-\theta)^2]=\operatorname{Var}(\hat\theta)+\operatorname{bias}(\hat\theta)^2. $$
 
-This decomposition is the first appearance of the bias–variance trade-off, and its consequence is that unbiased does not mean best. An estimator with a little bias and much smaller variance can have lower MSE, which is the whole idea behind ridge and lasso.
+This decomposition is the first appearance of the bias–variance trade-off.
+
+> Unbiased does not mean best. An estimator with a little bias and much smaller variance can have lower MSE, which is the whole idea behind ridge and lasso.
+{: .idea}
 
 Is there a limit to how good an unbiased estimator can be? Yes, the Cramér–Rao bound:
 
@@ -48,7 +62,14 @@ The likelihood is the joint density of the data read as a function of $\theta$, 
 
 $$ \hat\theta_{\mathrm{MLE}}=\arg\max_\theta\ell(\theta),\qquad \ell(\theta)=\sum_i\log f(x_i;\theta), $$
 
-usually by solving the score equation $\ell'(\theta)=0$. For Bernoulli data this gives $\hat p=\bar x$, the sample proportion. For normal data it gives $\hat\mu=\bar x$ and $\hat\sigma^2=\frac1n\sum(x_i-\bar x)^2$, with the divisor $n$, so the MLE of the variance is biased, $\mathbb{E}\hat\sigma^2=\frac{n-1}{n}\sigma^2$. Maximum likelihood produces good estimators, but not always unbiased ones.
+usually by solving the score equation $\ell'(\theta)=0$.
+
+{% include fig.html src="statistics/likelihood" id="fig-likelihood" alt="Relative likelihood of a success probability p for 7 successes in 10 trials and for 70 in 100. Both curves peak at 0.7, and the curve for 100 trials is much narrower." caption="Likelihood of $p$ for the same observed proportion, $0.7$, at two sample sizes, each scaled to peak at 1. The maximizer is the same; the curvature at the peak, which is the Fisher information, grows with $n$, and so the estimate gets more precise." %}
+
+For Bernoulli data this gives $\hat p=\bar x$, the sample proportion. For normal data it gives $\hat\mu=\bar x$ and $\hat\sigma^2=\frac1n\sum(x_i-\bar x)^2$, with the divisor $n$, so the MLE of the variance is biased, $\mathbb{E}\hat\sigma^2=\frac{n-1}{n}\sigma^2$.
+
+> Maximum likelihood produces good estimators, but not always unbiased ones.
+{: .trap}
 
 Its appeal is what happens for large $n$. Under regularity conditions the MLE is consistent, asymptotically normal and asymptotically efficient,
 
@@ -58,9 +79,23 @@ so it reaches the Cramér–Rao bound. It is also invariant: the MLE of $g(\thet
 
 # Recap
 
-**What makes an estimator good?** Small mean squared error and consistency. MSE is variance plus squared bias, so an unbiased estimator is not automatically the best one.
+<details class="qa" markdown="1">
+<summary>What makes an estimator good?</summary>
 
-**Why is the MLE the default choice?** For large $n$ it is consistent, asymptotically normal, reaches the Cramér–Rao bound and is invariant under reparametrization. It can still be biased in finite samples, as the normal variance shows.
+Small mean squared error and consistency. MSE is variance plus squared bias, so an unbiased estimator is not automatically the best one.
+</details>
+
+<details class="qa" markdown="1">
+<summary>Why is the MLE the default choice?</summary>
+
+For large $n$ it is consistent, asymptotically normal, reaches the Cramér–Rao bound and is invariant under reparametrization. It can still be biased in finite samples, as the normal variance shows.
+</details>
+
+<details class="qa" markdown="1">
+<summary>Why divide by $n-1$ in the sample variance?</summary>
+
+The deviations are measured from $\bar X$, which was fitted to the same data and so uses up one degree of freedom. Dividing by $n$ would underestimate $\sigma^2$ by the factor $(n-1)/n$.
+</details>
 
 # Where this goes next
 

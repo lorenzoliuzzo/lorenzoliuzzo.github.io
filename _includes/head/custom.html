@@ -43,7 +43,11 @@
   collection is the only thing that separates them.
 {% endcomment %}
 {% if page.collection == "notes" %}
-  <script>document.documentElement.setAttribute("data-note", "");</script>
+  {% include course-context.html %}
+  <script>
+    document.documentElement.setAttribute("data-note", "");
+    {% if part_index > 0 %}document.documentElement.setAttribute("data-part", "{{ part_index | minus: 1 | modulo: 6 | plus: 1 }}");{% endif %}
+  </script>
 {% endif %}
 
 {% comment %}

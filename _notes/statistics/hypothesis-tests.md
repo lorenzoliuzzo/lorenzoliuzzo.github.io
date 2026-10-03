@@ -3,6 +3,27 @@ collection: notes
 title: "Hypothesis Tests"
 date: 2026-10-03
 excerpt: "Null and alternative, errors and power, p-values, the standard t tests, sample size, likelihood ratio tests, and many tests at once."
+hook: "A test asks whether the data would be surprising if nothing were going on; the p-value measures that surprise and says nothing about how big the effect is."
+goals:
+  - set up a test and read off its two kinds of error and its power
+  - choose the standard test for means, proportions and likelihood-based hypotheses
+  - size a study, and correct for running many tests
+requires:
+  - student-t
+  - f-distribution
+  - confidence-interval
+  - pivot
+  - maximum-likelihood-estimator
+  - fisher-information
+  - normal
+defines:
+  - {id: null-and-alternative, name: null and alternative, anchor: framework}
+  - {id: type-i-and-ii-errors, name: type I and II errors, anchor: framework}
+  - {id: p-value, name: p-value, anchor: framework}
+  - {id: t-test, name: t-test, anchor: standard-tests}
+  - {id: power, name: power and sample size, anchor: power-and-sample-size}
+  - {id: likelihood-ratio-test, name: likelihood ratio test, anchor: likelihood-ratio-tests}
+  - {id: multiple-testing, name: multiple testing, anchor: many-tests-at-once}
 read_time: true
 tags:
   - Statistics
@@ -10,15 +31,6 @@ tags:
 ---
 
 A test decides between two claims about a parameter by asking whether the data would be surprising if the default claim were true. Proofs are in the [reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}).
-
-# Before you start
-
-| You should know | Where |
-|---|---|
-| The $t$ and $F$ laws | [Sampling distributions]({{ '/notes/statistics/sampling-distributions/' | relative_url }}#students-t) |
-| Pivots, critical values, level | [Confidence intervals]({{ '/notes/statistics/confidence-intervals/' | relative_url }}) |
-| MLE, Fisher information | [Point estimation]({{ '/notes/statistics/point-estimation/' | relative_url }}#maximum-likelihood) |
-| Normal quantiles and $\Phi$ | [Common random variables]({{ '/notes/statistics/common-random-variables/' | relative_url }}#normal) |
 
 # Framework
 
@@ -28,10 +40,14 @@ We set a **null** hypothesis $H_0$, the default claim of no effect, against an a
 |----------------|------------|-------------|
 | Reject $H_0$   | Type I error (prob. $\alpha$) | correct (prob. = **power** $1-\beta$) |
 | Keep $H_0$     | correct    | Type II error (prob. $\beta$) |
+{: .keyed}
 
 The level $\alpha$ is fixed in advance and caps the Type I error. Power is the chance of detecting a real effect, and it grows with the sample size, the size of the effect and $\alpha$, and shrinks with noise.
 
-The $p$-value is the probability, computed assuming $H_0$, of a statistic at least as extreme as the one observed, and we reject when $p\le\alpha$. It is easy to over-read. It is not the probability that $H_0$ is true, it is not the probability that the result is a fluke, and it is not a measure of effect size: with enough data a negligible effect can have a tiny $p$-value. That is why the estimate and its interval should be reported alongside it.
+The $p$-value is the probability, computed assuming $H_0$, of a statistic at least as extreme as the one observed, and we reject when $p\le\alpha$.
+
+> **A $p$-value is easy to over-read.** It is not the probability that $H_0$ is true, it is not the probability that the result is a fluke, and it is not a measure of effect size: with enough data a negligible effect can have a tiny $p$-value. That is why the estimate and its interval should be reported alongside it.
+{: .trap}
 
 # Standard tests
 
@@ -41,15 +57,23 @@ $$ T=\frac{\bar X_1-\bar X_2}{\sqrt{S_1^2/n_1+S_2^2/n_2}}, $$
 
 approximately $t$ with the Welch–Satterthwaite degrees of freedom. It does not assume equal variances, which makes it the sensible default. Tests for proportions, and for any MLE, work the same way with the asymptotic normal (Wald) statistic.
 
-Tests and intervals are really one tool seen from two sides. A $(1-\alpha)$ interval is the set of values $\theta_0$ that a level-$\alpha$ test does not reject, so if the interval for $\mu$ excludes $\mu_0$, the $t$-test rejects $\mu=\mu_0$. The interval has the advantage of showing every value compatible with the data, not just one.
+> Tests and intervals are one tool seen from two sides. A $(1-\alpha)$ interval is the set of values $\theta_0$ that a level-$\alpha$ test does not reject, so if the interval for $\mu$ excludes $\mu_0$, the $t$-test rejects $\mu=\mu_0$. The interval has the advantage of showing every value compatible with the data, not just one.
+{: .idea}
 
 # Power and sample size
+
+The picture first. The test fixes a critical value from the null distribution; power is how much of the true distribution lies beyond it.
+
+{% include fig.html src="statistics/power" id="fig-power" alt="Two normal densities, one for the null hypothesis centred at zero and one for the alternative centred at 2.2, with a vertical line at the critical value 1.645. The tail of the null beyond the line is labelled alpha, the part of the alternative left of the line is labelled beta and the part right of it is labelled power." caption="One-sided $z$-test at $\alpha=0.05$ when the true mean is $2.2$ standard errors above the null. The blue sliver beyond the line is the Type I error rate, the orange area to its right is the power, and the orange area to its left is the Type II error rate." %}
 
 For a one-sided $z$-test of $\mu_0$ against a true mean $\mu_1>\mu_0$, with $\sigma$ known,
 
 $$ \text{power}=1-\Phi\Big(z_{1-\alpha}-\frac{(\mu_1-\mu_0)\sqrt n}{\sigma}\Big),\qquad n=\Big(\frac{(z_{1-\alpha}+z_{1-\beta})\,\sigma}{\mu_1-\mu_0}\Big)^2. $$
 
-The second formula is how a study is sized: choose the effect you want to detect and the power you want, and it gives $n$. Because the effect appears squared, detecting an effect half as large takes four times the data.
+The second formula is how a study is sized: choose the effect you want to detect and the power you want, and it gives $n$.
+
+> Because the effect appears squared, detecting an effect half as large takes four times the data.
+{: .rule}
 
 # Likelihood ratio tests
 
@@ -65,11 +89,23 @@ If we run $m$ tests at level $\alpha$ and every null is true, we expect $m\alpha
 
 # Recap
 
-**What does a $p$-value measure?** The probability, if $H_0$ were true, of a result at least as extreme as the one seen. It is not the probability that $H_0$ is true, and it says nothing about the size of the effect.
+<details class="qa" markdown="1">
+<summary>What does a $p$-value measure?</summary>
 
-**How are tests and intervals related?** The interval is the set of parameter values that the test does not reject.
+The probability, if $H_0$ were true, of a result at least as extreme as the one seen. It is not the probability that $H_0$ is true, and it says nothing about the size of the effect.
+</details>
 
-**What goes wrong with many tests?** We expect $m\alpha$ false positives. Bonferroni controls the chance of any false positive; Benjamini–Hochberg controls the share of false discoveries and keeps more power.
+<details class="qa" markdown="1">
+<summary>How are tests and intervals related?</summary>
+
+The interval is the set of parameter values that the test does not reject.
+</details>
+
+<details class="qa" markdown="1">
+<summary>What goes wrong with many tests?</summary>
+
+We expect $m\alpha$ false positives. Bonferroni controls the chance of any false positive; Benjamini–Hochberg controls the share of false discoveries and keeps more power.
+</details>
 
 # Where this goes next
 

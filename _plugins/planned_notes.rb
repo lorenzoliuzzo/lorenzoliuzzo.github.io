@@ -24,6 +24,8 @@ module MyThingsLab
         "title" => doc.data["title"].to_s.empty? ? File.basename(doc.relative_path, ".*") : doc.data["title"],
         "tags" => Array(doc.data["tags"]),
         "path" => doc.relative_path,
+        # A stub may already name the concepts it will introduce; see concept_index.rb.
+        "defines" => Array(doc.data["defines"]),
       }
     end
   end

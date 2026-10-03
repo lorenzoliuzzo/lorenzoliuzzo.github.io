@@ -1,0 +1,692 @@
+// Building blocks for a study note, in the order a reader meets them: the part
+// colour, the header card with the path dots, the callouts, recall cards, tables,
+// figures and margin notes inside the text, and the next-step card at the end.
+// The authoring rules that go with them are in .claude/skills/write-site-note/.
+//
+// Everything reads the tokens in _tokens.scss; tints come from color-mix() so the
+// dark theme needs no second set of rules.
+
+/* Part colour
+   ========================================================================== */
+
+// Set on <html> by _includes/head/custom.html from the note's place in its course.
+// Without a course the accent stands in.
+:root {
+  --part: var(--accent);
+}
+
+@for $i from 1 through 6 {
+  [data-part="#{$i}"] {
+    --part: var(--hue-#{$i});
+  }
+}
+
+// A short bar of the part colour above the title ties the page to its course.
+[data-note] .page__inner-wrap > header::before {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 4px;
+  margin-bottom: 1rem;
+  border-radius: 2px;
+  background: var(--part);
+}
+
+/* Header card
+   ========================================================================== */
+
+// Where you are, the one idea, what you will be able to do, what you need. Rendered
+// by _includes/note-head.html from front matter; no headings inside, so the contents
+// rail and the section counters ignore it.
+.note-head {
+  margin: 0 auto 2.5rem;
+  padding: 1.1rem 1.35rem 1.25rem;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--part);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  line-height: 1.55;
+
+  p,
+  ul,
+  table {
+    margin: 0;
+  }
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.note-head__label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--part);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.note-head__hook {
+  margin: 1.05rem 0 1.2rem !important;
+  font-family: var(--font-serif);
+  font-size: 1.3em;
+  line-height: 1.45;
+  color: var(--text);
+  text-align: left;
+  hyphens: none;
+
+  .note-head__label {
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+  }
+}
+
+.note-head__cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+
+  @media (min-width: 48em) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  }
+}
+
+.note-head__cols > :only-child {
+  grid-column: 1 / -1;
+}
+
+.note-head__goals ul {
+  padding-left: 1.1rem;
+
+  li {
+    margin: 0 0 0.3rem;
+    text-align: left;
+    hyphens: none;
+  }
+}
+
+.note-head__needs table {
+  width: 100%;
+  display: table;
+  font-size: 0.95em;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 0.28rem 0.5rem 0.28rem 0;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    background: none;
+    text-align: left;
+    vertical-align: baseline;
+  }
+
+  th {
+    width: 42%;
+    padding-right: 1rem;
+    font-weight: 500;
+  }
+
+  tr:last-child th,
+  tr:last-child td {
+    border-bottom: 0;
+  }
+
+  a + a::before {
+    content: " \00b7  ";
+    color: var(--text-faint);
+  }
+}
+
+.note-head__planned {
+  color: var(--text-faint);
+}
+
+/* Path dots
+   ========================================================================== */
+
+// One dot per note of the course, grouped by part: filled and linked once written,
+// hollow while planned, ringed for the page you are on.
+.path {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 1.25rem;
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+
+  a {
+    color: inherit;
+  }
+}
+
+.path__where a {
+  text-decoration: none;
+
+  &:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+}
+
+.path__dots {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.path__part {
+  display: flex;
+  gap: 0.28rem;
+  margin: 0;
+  padding: 0;
+}
+
+.path__dot {
+  display: block;
+  width: 0.62rem;
+  height: 0.62rem;
+  box-sizing: border-box;
+  border: 1.5px solid var(--dot, var(--border-strong));
+  border-radius: 50%;
+  background: var(--dot, var(--border-strong));
+  transition: transform 0.12s ease;
+
+  a:hover > & {
+    transform: scale(1.35);
+  }
+}
+
+.path__part--on .path__dot {
+  --dot: var(--part);
+}
+
+.path__dot--planned {
+  background: transparent;
+  border-style: dashed;
+}
+
+.path__dot--here {
+  box-shadow: 0 0 0 2px var(--surface-raised), 0 0 0 3.5px var(--part);
+}
+
+/* Callouts
+   ========================================================================== */
+
+// Written as a blockquote with a class, label added here:
+//
+//   > Text of the callout.
+//   {: .idea}
+//
+// idea · trap · rule · derive · try. At most one .idea per section, or none stand out.
+@mixin callout($colour, $label) {
+  --c: #{$colour};
+  margin: 1.8rem auto;
+  padding: 0.85rem 1.1rem 0.9rem 1.2rem;
+  border: 0;
+  border-left: 3px solid var(--c);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: color-mix(in srgb, var(--c) 8%, var(--surface));
+  color: var(--text);
+  font-style: normal;
+  text-align: left;
+  hyphens: none;
+
+  &::before {
+    content: #{$label};
+    display: block;
+    margin-bottom: 0.3rem;
+    color: var(--c);
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  p,
+  li {
+    text-align: left;
+    hyphens: none;
+  }
+}
+
+[data-note] .page__content {
+  blockquote.idea {
+    @include callout(var(--hue-1), "'Key idea'");
+  }
+
+  blockquote.trap {
+    @include callout(var(--hue-4), "'Watch out'");
+  }
+
+  blockquote.rule {
+    @include callout(var(--hue-3), "'Rule of thumb'");
+  }
+
+  blockquote.derive {
+    @include callout(var(--hue-2), "'Why it works'");
+  }
+
+  blockquote.try {
+    @include callout(var(--hue-5), "'Try it'");
+  }
+}
+
+/* Recall cards
+   ========================================================================== */
+
+// A question you can answer before you open it:
+//
+//   <details class="qa" markdown="1">
+//   <summary>Question</summary>
+//
+//   Answer.
+//   </details>
+//
+// Retrieval beats rereading, so the recap is made of these rather than of statements.
+details.qa {
+  margin: 0.75rem auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  text-align: left;
+  hyphens: none;
+
+  > summary {
+    display: flex;
+    gap: 0.7rem;
+    align-items: baseline;
+    padding: 0.7rem 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::before {
+      content: "?";
+      flex: none;
+      width: 1.35rem;
+      height: 1.35rem;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      line-height: 1.35rem;
+      text-align: center;
+    }
+
+    &:hover {
+      background: var(--surface-sunken);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+  }
+
+  &[open] > summary {
+    border-bottom: 1px solid var(--border);
+  }
+
+  > :not(summary) {
+    margin: 0;
+    padding: 0.7rem 1rem 0.8rem 3.05rem;
+  }
+
+  > p {
+    text-align: left;
+    hyphens: none;
+  }
+}
+
+/* Tables
+   ========================================================================== */
+
+// Plain markdown tables: rules, not boxes. Header in small sans caps, first column
+// stays quiet unless the table is marked `{: .keyed}`, numbers align with
+// `---:` in the separator row.
+[data-note] .page__content > table {
+  margin-top: 1.6rem;
+  margin-bottom: 1.8rem;
+  border-collapse: collapse;
+  border: 0;
+  font-size: 0.92em;
+
+  th,
+  td {
+    padding: 0.5rem 0.9rem 0.5rem 0;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    background: none;
+    vertical-align: top;
+  }
+
+  th {
+    border-bottom: 2px solid var(--border-strong);
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  td {
+    font-variant-numeric: tabular-nums;
+  }
+
+  tbody tr:hover td {
+    background: var(--surface-sunken);
+  }
+
+  &.keyed td:first-child {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}
+
+// Narrow screens: the table scrolls instead of the page.
+@media (max-width: 40em) {
+  [data-note] .page__content > table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+/* Figures
+   ========================================================================== */
+
+// Inline SVG from tools/figures. The figure's own classes (f-*) pick up the tokens,
+// so it follows the light and dark themes without a second image.
+.fig {
+  --fig-ink: var(--text);
+  --fig-muted: var(--text-muted);
+  --fig-faint: var(--text-faint);
+  --fig-grid: var(--border);
+  --fig-a: var(--hue-1);
+  --fig-b: var(--hue-4);
+  --fig-c: var(--hue-3);
+  --fig-d: var(--hue-2);
+  --fig-e: var(--hue-5);
+
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    font-family: var(--font-sans);
+  }
+
+  .f-ink {
+    fill: var(--fig-ink);
+  }
+
+  .f-muted {
+    fill: var(--fig-muted);
+  }
+
+  .f-faint {
+    fill: var(--fig-faint);
+  }
+
+  .f-i {
+    font-style: italic;
+    font-family: var(--font-serif);
+  }
+
+  .f-axis {
+    stroke: var(--fig-muted);
+    stroke-width: 1.2;
+    fill: none;
+  }
+
+  .f-grid {
+    stroke: var(--fig-grid);
+    stroke-width: 1;
+    fill: none;
+  }
+
+  .f-line {
+    stroke: var(--fig-ink);
+    stroke-width: 1.4;
+    fill: none;
+  }
+
+  .f-dash {
+    stroke-dasharray: 5 4;
+  }
+
+  .f-arrow {
+    fill: var(--fig-muted);
+  }
+
+  .f-box {
+    fill: var(--surface-raised);
+    stroke: var(--border-strong);
+    stroke-width: 1.2;
+  }
+
+  @each $k, $v in (a: --fig-a, b: --fig-b, c: --fig-c, d: --fig-d, e: --fig-e) {
+    .f-#{$k} {
+      fill: var(#{$v});
+    }
+
+    .f-#{$k}-line {
+      stroke: var(#{$v});
+      stroke-width: 2.2;
+      fill: none;
+    }
+
+    .f-#{$k}-fill {
+      fill: var(#{$v});
+      fill-opacity: 0.22;
+      stroke: none;
+    }
+
+    .f-#{$k}-solid {
+      fill: var(#{$v});
+      stroke: none;
+    }
+  }
+}
+
+// Wide figures take the reading column; margin figures are small and sit beside the
+// text (see "Margin notes" below) or inline on narrow screens.
+.fig--wide {
+  max-width: var(--measure);
+}
+
+.fig--margin {
+  max-width: 22rem;
+  margin: 1.6rem auto;
+}
+
+/* Margin notes
+   ========================================================================== */
+
+// A short remark or a small figure beside the paragraph it belongs to. On wide
+// screens it hangs in the right margin of a page that has any; below that width it
+// is an inline aside. Put it just before the paragraph it annotates.
+//
+//   > Remark.
+//   {: .margin}
+[data-note] .page__content .margin,
+.margin {
+  margin: 1.4rem auto;
+  padding: 0.1rem 0 0.1rem 0.9rem;
+  border-left: 2px solid var(--border-strong);
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-style: normal;
+  line-height: 1.5;
+  text-align: left;
+  hyphens: none;
+
+  p,
+  li {
+    margin: 0 0 0.5rem;
+    text-align: left;
+    hyphens: none;
+  }
+}
+
+figure.margin {
+  padding: 0;
+  border: 0;
+}
+
+// The facts to have at hand for a distribution or a method: a few labelled lines in
+// the margin, set apart from the prose that explains them.
+[data-note] .page__content .margin.spec,
+.margin.spec {
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--part);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--surface-raised);
+  color: var(--text);
+  font-size: 0.8rem;
+  line-height: 1.7;
+
+  strong {
+    margin-right: 0.35em;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+}
+
+@media (min-width: 90em) {
+  // Pages with margin notes get a narrower reading column against the left edge of
+  // the full column, so the notes have somewhere to go. Pages without keep the
+  // centred column.
+  [data-note] .page__content:has(> .margin) {
+    --prose: 640px;
+
+    > p,
+    > ul,
+    > ol,
+    > dl,
+    > h1,
+    > h2,
+    > h3,
+    > h4,
+    > h5,
+    > h6,
+    > blockquote:not(.margin),
+    > details.qa {
+      max-width: var(--prose);
+      margin-inline: calc((100% - var(--measure)) / 2) auto;
+    }
+
+    > .margin {
+      float: right;
+      clear: right;
+      width: calc(var(--measure) - var(--prose) - 40px);
+      max-width: none;
+      margin: 0.35rem calc((100% - var(--measure)) / 2) 1rem 0;
+    }
+
+    // Wide things must not collide with a margin float above them.
+    > table,
+    > .fig:not(.margin),
+    > .latex-like-equation {
+      clear: both;
+    }
+  }
+}
+
+/* Next step
+   ========================================================================== */
+
+// The one thing to do after this note, with a line on why. Rendered by
+// _includes/note-next.html from the course order.
+.next-step {
+  display: block;
+  margin: 3rem auto 0;
+  padding: 1.1rem 1.35rem;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--part);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  color: var(--text);
+  font-family: var(--font-sans);
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: var(--part);
+    box-shadow: var(--shadow-raised);
+  }
+}
+
+.next-step__label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--part);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.next-step__title {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: var(--leading-tight);
+}
+
+.next-step__why {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.next-step--planned {
+  border-left-style: dashed;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+// The two cards share the reading column's width.
+.note-head,
+.next-step {
+  max-width: var(--measure);
+}

@@ -1,57 +1,22 @@
 // Technical reference for the Statistics and Statistical Learning course (`_notes/statistics/`).
-// One document covers all of them: the site pages explain and are kept short,
-// this reference states the results precisely and proves the ones an exam is
-// likely to ask for.
+// One document covers all of its notes: the site pages explain and stay short, this
+// reference states the results precisely and proves the ones an exam is likely to ask for.
+// Style, environments and figures come from assets/notes/_typst/note-style.typ; the rules
+// for adding to it are in .claude/skills/write-typst-reference/.
+#import "../../_typst/note-style.typ": *
 
-#set document(title: "Statistics and Statistical Learning: technical reference", author: "Lorenzo Liuzzo")
-#set page(paper: "a4", margin: (x: 2.2cm, y: 2.4cm), numbering: "1")
-#set text(size: 10.5pt, lang: "en")
-#set par(justify: true, leading: 0.62em)
-#set heading(numbering: "1.1")
-#show heading.where(level: 1): set block(above: 1.6em, below: 0.9em)
-#show heading.where(level: 2): set block(above: 1.2em, below: 0.7em)
-#set math.equation(numbering: "(1)")
-#show link: set text(fill: rgb("#1f4e8c"))
+#show: reference.with(
+  title: "Statistics and Statistical Learning",
+  subtitle: "Technical reference",
+  abstract: [Probability, standard random variables, sampling distributions, estimation, intervals and tests, with proofs. Each chapter says which site note explains it; the last chapter collects the formulas.],
+  site: "https://lorenzoliuzzo.github.io/notes/",
+)
 
-#let EE = math.op("E")
-#let PP = math.op("P")
-#let Var = math.op("Var")
-#let Cov = math.op("Cov")
-#let MSE = math.op("MSE")
-#let bias = math.op("bias")
-#let se = math.op("se")
-#let argmax = math.op("arg max", limits: true)
-#let iid = $"i.i.d."$
-#let cd = $->^d$
-#let cp = $->^P$
-
-#let box-env(kind, title, body, fill, stroke) = block(
-  width: 100%, inset: (x: 10pt, y: 8pt), radius: 3pt, breakable: true,
-  fill: fill, stroke: (left: 2pt + stroke),
-)[
-  #text(weight: "bold", fill: stroke)[#kind]#if title != none [ #text(weight: "bold")[(#title)]]. #body
-]
-#let definition(title: none, body) = box-env("Definition", title, body, rgb("#f3f6fb"), rgb("#1f4e8c"))
-#let theorem(title: none, body) = box-env("Theorem", title, body, rgb("#f6f1fa"), rgb("#6a3d9a"))
-#let lemma(title: none, body) = box-env("Lemma", title, body, rgb("#f6f1fa"), rgb("#6a3d9a"))
-#let example(title: none, body) = box-env("Example", title, body, rgb("#f4f8f2"), rgb("#2e7d32"))
-#let proof(body) = block(inset: (left: 10pt), breakable: true)[
-  #emph[Proof.] #body #h(1fr) $square$
-]
-#let remark(body) = block(inset: (left: 10pt), breakable: true)[#emph[Remark.] #body]
-
-#align(center)[
-  #text(size: 19pt, weight: "bold")[Statistics and Statistical Learning] \
-  #v(2pt)
-  #text(size: 12pt)[Technical reference] \
-  #v(2pt)
-  #text(size: 9.5pt, fill: gray)[Companion to the Statistics and Statistical Learning notes on lorenzoliuzzo.github.io. Probability, standard random variables, sampling distributions, estimation, intervals and tests, with proofs.]
-]
-#v(6pt)
-
-#outline(indent: 1.2em, depth: 2)
+#let notes = "https://lorenzoliuzzo.github.io/notes/statistics/"
 
 = Probability toolkit
+
+#notes-line(notes, ("Probability Foundations", "probability-foundations"), ("Random Variables, Expectation and Variance", "random-variables"))
 
 == Probability spaces and the axioms
 
@@ -110,6 +75,9 @@ In Bayesian language $PP(B_j)$ is the prior, $PP(A | B_j)$ the likelihood, $PP(A
   $ PP(D | +) = (0.95 dot 0.01) / (0.95 dot 0.01 + 0.10 dot 0.99) = 0.0095 / 0.1085 approx 0.088. $
   The posterior is below 9% because the healthy majority produces more false positives than the sick minority produces true ones: the base rate matters.
 ]
+
+
+#fig("/statistics/figures/bayes-frequencies.svg", caption: [The same test counted in people. The sick are a thin sliver of the population, so the 10% of healthy people who test positive outnumber the true cases about ten to one.])
 
 == Random variables and distributions
 
@@ -194,6 +162,11 @@ Write $overline(X)_n = n^(-1) sum_(i=1)^n X_i$.
 ]
 The proof goes through characteristic functions and is not reproduced here. The Berry–Esseen theorem quantifies the rate: the Kolmogorov distance to $Phi$ is at most $C EE|X_1 - mu|^3 slash (sigma^3 sqrt(n))$. This is why the sample size needed depends on skewness.
 
+
+#fig("/statistics/figures/clt.svg", caption: [Standardized mean of $n$ exponential variables against the standard normal density. At $n = 2$ the skew is obvious, by $n = 30$ the two curves are hard to tell apart.])
+
+#rule[$n >= 30$ is a guide, not a theorem: the Berry–Esseen bound grows with skewness, and for heavy-tailed data it takes far more.]
+
 #theorem(title: "Slutsky and delta method")[
   If $A_n cd A$ and $B_n cp b$ (constant), then $A_n + B_n cd A + b$ and $A_n B_n cd b A$. If moreover $sqrt(n)(T_n - theta) cd cal(N)(0, tau^2)$ and $g$ is differentiable at $theta$ with $g'(theta) != 0$, then
   $ sqrt(n) (g(T_n) - g(theta)) cd cal(N)(0, g'(theta)^2 tau^2). $
@@ -201,6 +174,8 @@ The proof goes through characteristic functions and is not reproduced here. The 
 Slutsky is what licenses replacing an unknown $sigma$ by a consistent estimate in a pivot, which is how the Wald and large-sample $t$ intervals are justified.
 
 = Discrete random variables
+
+#notes-line(notes, ("Common Random Variables", "common-random-variables"))
 
 A discrete random variable has mass function $p(x) = PP(X = x)$ on a countable support, with $sum_x p(x) = 1$, $EE[X] = sum_x x p(x)$ and $Var(X) = EE[X^2] - (EE X)^2$. Probability background is in the Probability toolkit chapter.
 
@@ -245,7 +220,12 @@ The binomial mass function counts the $binom(n, k)$ arrangements of $k$ successe
   (i) $EE[X] = sum_(k>=1) k e^(-lambda) lambda^k slash k! = lambda e^(-lambda) sum_(k>=1) lambda^(k-1) slash (k-1)! = lambda$, and similarly $EE[X(X-1)] = lambda^2$, so $Var(X) = lambda^2 + lambda - lambda^2 = lambda$. (ii) $PP(X + Y = m) = sum_(j=0)^m e^(-lambda) lambda^j slash j! dot e^(-mu) mu^(m-j) slash (m-j)! = e^(-(lambda+mu)) (lambda + mu)^m slash m!$ by the binomial theorem. (iii) $PP(X_n = k) = [n! slash ((n-k)! n^k)] dot (lambda^k slash k!) (1 - lambda slash n)^(n-k)$. As $n -> infinity$ the first factor tends to 1, $(1 - lambda slash n)^n -> e^(-lambda)$ and $(1 - lambda slash n)^(-k) -> 1$.
 ]
 
+
+#fig("/statistics/figures/poisson-limit.svg", caption: [Binomial bars with the Poisson of the same mean $lambda = 2$ on top. With $n = 10$ they differ visibly, with $n = 100$ they nearly coincide.])
+
 = Continuous random variables
+
+#notes-line(notes, ("Common Random Variables", "common-random-variables"))
 
 A continuous random variable has a density $f$ with $PP(a <= X <= b) = integral_a^b f$, mean $EE[X] = integral x f(x) dif x$ and distribution function $F(x) = integral_(-infinity)^x f$.
 
@@ -292,6 +272,9 @@ The exponential is the only continuous distribution on $[0, infinity)$ with this
 
 Quantiles that recur: $z_(0.90) approx 1.282$, $z_(0.95) approx 1.645$, $z_(0.975) approx 1.960$, $z_(0.995) approx 2.576$, and $PP(|Z| <= 1, 2, 3) approx 0.683, 0.954, 0.997$.
 
+
+#fig("/statistics/figures/normal-rule.svg", caption: [The 68, 95 and 99.7 percent rule.], width: 52%)
+
 == Gamma and chi-square
 
 #definition[
@@ -306,6 +289,8 @@ Quantiles that recur: $z_(0.90) approx 1.282$, $z_(0.95) approx 1.645$, $z_(0.97
 ]
 
 = Sampling distributions of statistics
+
+#notes-line(notes, ("Sampling Distributions", "sampling-distributions"))
 
 A statistic $T = T(X_1, dots, X_n)$ is a random variable. Its sampling distribution is the law of $T$ when the sample is drawn from the assumed model, and its standard error is $se(T) = sqrt(Var(T))$.
 
@@ -366,6 +351,9 @@ Let $X_1, dots, X_n tilde.op cal(N)(mu, sigma^2)$ be #iid, with $overline(X) = o
 
 The $t_k$ distribution has density $Gamma((k+1) slash 2) slash (sqrt(k pi) Gamma(k slash 2)) dot (1 + t^2 slash k)^(-(k+1) slash 2)$. It is symmetric about 0, has mean 0 for $k > 1$ and variance $k slash (k-2)$ for $k > 2$, and has heavier tails than $cal(N)(0,1)$, to which it converges as $k -> infinity$. Selected 97.5% quantiles are $t_(5, 0.975) = 2.571$, $t_(9, 0.975) = 2.262$, $t_(29, 0.975) = 2.045$, against $z_(0.975) = 1.960$.
 
+
+#fig("/statistics/figures/t-vs-normal.svg", caption: [Left, the whole density: the normal and two $t$ curves look alike. Right, the right tail magnified: the $t$ puts more mass out there, so its critical value is larger and its intervals are wider.])
+
 #lemma(title: [Relation between $t$ and $F$])[
   If $T tilde.op t_k$ then $T^2 tilde.op F_(1,k)$.
 ]
@@ -393,6 +381,8 @@ Any sampling distribution can be approximated by simulation: draw $B$ samples fr
 When the model is unknown, the bootstrap replaces the unknown distribution $F$ by the empirical distribution $hat(F)_n$, which puts mass $1 slash n$ on each observation. Resample $n$ observations with replacement, compute $T^*_b$, repeat for $b = 1, dots, B$, and estimate $se(T)$ by the standard deviation of the $T^*_b$. It is consistent for smooth statistics such as the mean; it fails for extreme statistics such as the maximum in the previous example.
 
 = Point estimation
+
+#notes-line(notes, ("Point Estimation and Maximum Likelihood", "point-estimation"))
 
 This part uses the probability toolkit (axioms, expectation and variance rules, limit theorems, Slutsky) and the sampling distributions of the mean and variance, the $chi^2$, $t$ and $F$ laws, from the chapters above. They are quoted without proof.
 
@@ -448,9 +438,14 @@ A statistic $T(X)$ is sufficient for $theta$ if the conditional law of the sampl
 
 = Maximum likelihood
 
+#notes-line(notes, ("Point Estimation and Maximum Likelihood", "point-estimation"))
+
 #definition[
   The likelihood is $L(theta) = product_(i=1)^n f(x_i; theta)$, the log-likelihood $ell(theta) = log L(theta)$ and the maximum likelihood estimator $hat(theta)_"MLE" = argmax_theta ell(theta)$.
 ]
+
+
+#fig("/statistics/figures/likelihood.svg", caption: [Likelihood of a success probability for the same observed proportion at two sample sizes, each scaled to peak at 1. The maximizer is the same; the curvature at the peak, which is the Fisher information, grows with $n$.])
 
 #example(title: "Bernoulli")[
   $ell(p) = (sum x_i) log p + (n - sum x_i) log(1-p)$, $ell'(p) = (sum x_i) slash p - (n - sum x_i) slash (1-p)$. Setting it to zero gives $hat(p) = overline(x)$; $ell''<0$ so it is a maximum. The information is $I(p) = 1 slash (p(1-p))$ and $Var(hat(p)) = p(1-p) slash n = 1 slash (n I(p))$: the MLE attains the Cramér–Rao bound exactly.
@@ -482,11 +477,18 @@ Equate the first $d$ population moments $m_j(theta) = EE_theta X^j$ to the sampl
 
 = Interval estimation
 
+#notes-line(notes, ("Confidence Intervals", "confidence-intervals"))
+
 #definition[
   A $(1-alpha)$ confidence interval is a random interval $[L(X), U(X)]$ with $PP_theta (L(X) <= theta <= U(X)) >= 1 - alpha$ for all $theta in Theta$. The left side is the coverage; the inequality is replaced by an equality for exact intervals.
 ]
 
 The probability refers to the random endpoints under repeated sampling. For the realized interval, $theta$ is fixed and the event either holds or not.
+
+
+#fig("/statistics/figures/coverage.svg", caption: [Twenty independent samples, each with its own 95% interval for the same true mean. The intervals vary, the truth does not; about one in twenty misses, here the orange one.])
+
+#trap[The 95% describes the procedure, not the one interval you computed: it is not the probability that $theta$ lies inside it.]
 
 #definition(title: "Pivot")[
   $Q(X; theta)$ is a pivot if its distribution does not depend on $theta$.
@@ -516,6 +518,8 @@ If $PP(a <= Q(X; theta) <= b) = 1-alpha$ and $Q$ is monotone in $theta$, solving
 ]
 
 = Hypothesis testing
+
+#notes-line(notes, ("Hypothesis Tests", "hypothesis-tests"))
 
 == Framework
 
@@ -567,6 +571,9 @@ Part (i) is the pivot theorem with $mu = mu_0$. In (ii) the denominator is a wei
 
 The required $n$ scales like $sigma^2 slash delta^2$: halving the detectable effect quadruples the sample.
 
+
+#fig("/statistics/figures/power.svg", caption: [One-sided $z$-test at $alpha = 0.05$ when the true mean is $2.2$ standard errors above the null. The blue sliver beyond the line is the Type I error rate, the orange area to its right is the power, and the orange area to its left is the Type II error rate.])
+
 == Likelihood ratio tests
 
 #theorem(title: "Neyman–Pearson lemma")[
@@ -596,24 +603,19 @@ With $m$ tests and all nulls true, each at level $alpha$, the expected number of
 
 = Summary of the main formulas
 
-#table(
-  columns: (1fr, 2fr),
-  align: (left, left),
-  stroke: 0.5pt + gray,
-  inset: 6pt,
-  [*Quantity*], [*Result*],
-  [Standard error of the mean], [$sigma slash sqrt(n)$],
-  [$S^2$ unbiased], [$EE S^2 = sigma^2$, divisor $n - 1$],
-  [Normal sampling laws], [$(n-1) S^2 slash sigma^2 tilde.op chi^2_(n-1)$, $T tilde.op t_(n-1)$, $overline(X) perp S^2$],
-  [MSE], [$Var + bias^2$],
-  [Cramér–Rao], [$Var(hat(theta)) >= 1 slash (n I(theta))$],
-  [MLE], [$sqrt(n)(hat(theta) - theta_0) cd cal(N)(0, I(theta_0)^(-1))$],
-  [CI for the mean], [$overline(X) plus.minus t_(n-1, 1-alpha slash 2) S slash sqrt(n)$],
-  [CI for the variance], [$[(n-1) S^2 slash chi^2_(n-1, 1-alpha slash 2), (n-1) S^2 slash chi^2_(n-1, alpha slash 2)]$],
-  [Wald interval], [$hat(theta) plus.minus z_(1-alpha slash 2) hat(se)$],
-  [Sample size, one-sided $z$-test], [$n = ((z_(1-alpha) + z_(1-beta)) sigma slash delta)^2$],
-  [Likelihood ratio], [$-2 log Lambda cd chi^2_r$],
-  [Bonferroni / BH], [$p_i <= alpha slash m$ / largest $k$ with $p_((k)) <= k alpha slash m$],
+#formulas(("Quantity", "Result", "Where explained"),
+  [Standard error of the mean], [$sigma slash sqrt(n)$], [#link(notes + "sampling-distributions/#the-sample-mean")[Sampling distributions]],
+  [$S^2$ unbiased], [$EE S^2 = sigma^2$, divisor $n - 1$], [#link(notes + "point-estimation/#judging-an-estimator")[Point estimation]],
+  [Normal sampling laws], [$(n-1) S^2 slash sigma^2 tilde.op chi^2_(n-1)$, $T tilde.op t_(n-1)$, $overline(X) perp S^2$], [#link(notes + "sampling-distributions/#sample-variance-and-the-chi-square")[Sampling distributions]],
+  [MSE], [$Var + bias^2$], [#link(notes + "point-estimation/#judging-an-estimator")[Point estimation]],
+  [Cramér–Rao], [$Var(hat(theta)) >= 1 slash (n I(theta))$], [#link(notes + "point-estimation/#judging-an-estimator")[Point estimation]],
+  [MLE], [$sqrt(n)(hat(theta) - theta_0) cd cal(N)(0, I(theta_0)^(-1))$], [#link(notes + "point-estimation/#maximum-likelihood")[Point estimation]],
+  [CI for the mean], [$overline(X) plus.minus t_(n-1, 1-alpha slash 2) S slash sqrt(n)$], [#link(notes + "confidence-intervals/")[Confidence intervals]],
+  [CI for the variance], [$[(n-1) S^2 slash chi^2_(n-1, 1-alpha slash 2), (n-1) S^2 slash chi^2_(n-1, alpha slash 2)]$], [#link(notes + "confidence-intervals/")[Confidence intervals]],
+  [Wald interval], [$hat(theta) plus.minus z_(1-alpha slash 2) hat(se)$], [#link(notes + "confidence-intervals/")[Confidence intervals]],
+  [Sample size, one-sided $z$-test], [$n = ((z_(1-alpha) + z_(1-beta)) sigma slash delta)^2$], [#link(notes + "hypothesis-tests/#power-and-sample-size")[Hypothesis tests]],
+  [Likelihood ratio], [$-2 log Lambda cd chi^2_r$], [#link(notes + "hypothesis-tests/#likelihood-ratio-tests")[Hypothesis tests]],
+  [Bonferroni / BH], [$p_i <= alpha slash m$ / largest $k$ with $p_((k)) <= k alpha slash m$], [#link(notes + "hypothesis-tests/#many-tests-at-once")[Hypothesis tests]],
 )
 
 = References

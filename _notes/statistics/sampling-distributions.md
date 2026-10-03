@@ -3,6 +3,24 @@ collection: notes
 title: "Sampling Distributions"
 date: 2026-10-03
 excerpt: "What a sampling distribution is, and the distributions of the sample mean, proportion and variance, with the chi-square, t and F laws."
+hook: "An estimate from one sample is one draw from a distribution; the sampling distribution says how far the next draw could land."
+goals:
+  - give the distribution of the sample mean, proportion and variance
+  - choose between the normal, t, chi-square and F for a statistic
+  - explain why the sample maximum is not asymptotically normal
+requires:
+  - variance-of-a-sum
+  - law-of-large-numbers
+  - central-limit-theorem
+  - binomial
+  - normal
+  - gamma
+defines:
+  - {id: sampling-distribution, name: sampling distribution, anchor: what-a-sampling-distribution-is}
+  - {id: standard-error, name: standard error, anchor: the-sample-mean}
+  - {id: chi-square, name: chi-square, anchor: sample-variance-and-the-chi-square}
+  - {id: student-t, name: Student's t, anchor: students-t}
+  - {id: f-distribution, name: F distribution, anchor: the-f-distribution}
 read_time: true
 tags:
   - Statistics
@@ -10,13 +28,6 @@ tags:
 ---
 
 An estimate computed from one sample would have been different on another sample, and the question is by how much. The answer is the **sampling distribution** of the statistic: its distribution over repeated samples. This note shows how to get one and works out the cases that inference relies on. Proofs are in the [reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}).
-
-# Before you start
-
-| You should know | Where |
-|---|---|
-| The variance of a sum, the LLN and the CLT | [Random variables]({{ '/notes/statistics/random-variables/' | relative_url }}#variance-covariance-and-correlation) |
-| Binomial, normal and gamma distributions | [Common random variables]({{ '/notes/statistics/common-random-variables/' | relative_url }}) |
 
 # What a sampling distribution is
 
@@ -36,7 +47,10 @@ If the data are normal, $\bar X$ is exactly $\mathcal{N}(\mu,\sigma^2/n)$, and o
 
 ## The sample proportion
 
-If $X\sim$ Binomial($n,p$) counts the successes, the proportion $\hat p=X/n$ has mean $p$ and variance $p(1-p)/n$, and is approximately normal when $np(1-p)$ is large. A concrete case: a classifier with true accuracy $0.8$ evaluated on $n=100$ test examples has a standard error of $\sqrt{0.8\cdot0.2/100}=0.04$, so its measured accuracy will typically land between $0.72$ and $0.88$. A gap of a few points between two models on a test set of that size is within noise.
+If $X\sim$ Binomial($n,p$) counts the successes, the proportion $\hat p=X/n$ has mean $p$ and variance $p(1-p)/n$, and is approximately normal when $np(1-p)$ is large.
+
+> A classifier with true accuracy $0.8$ evaluated on $n=100$ test examples has a standard error of $\sqrt{0.8\cdot0.2/100}=0.04$, so its measured accuracy will typically land between $0.72$ and $0.88$. A gap of a few points between two models on a test set of that size is within noise.
+{: .trap}
 
 ## Sample variance and the chi-square
 
@@ -52,11 +66,14 @@ In practice $\sigma$ is unknown and we replace it by $S$. The standardized mean 
 
 $$ T=\frac{\bar X-\mu}{S/\sqrt n}\sim t_{n-1}, $$
 
-which is a standard normal divided by the square root of an independent $\chi^2_k/k$. The extra randomness from estimating $\sigma$ shows up as heavier tails than the normal, so intervals for small samples have to be wider. As the degrees of freedom grow, the $t$ approaches $\mathcal{N}(0,1)$:
+which is a standard normal divided by the square root of an independent $\chi^2_k/k$. The extra randomness from estimating $\sigma$ shows up as heavier tails than the normal, so intervals for small samples have to be wider. As the degrees of freedom grow, the $t$ approaches $\mathcal{N}(0,1)$. The bodies of the curves are almost the same, so the difference lives in the tails.
+
+{% include fig.html src="statistics/t-vs-normal" id="fig-t" alt="Left: densities of the normal, the t with 10 degrees of freedom and the t with 3 degrees of freedom, which are close to each other. Right: the same curves on the right tail, magnified, where the t with 3 degrees of freedom is clearly higher. Dashed lines mark the 97.5 percent critical values 1.96, 2.23 and 3.18." caption="Left, the whole density: the three curves look alike. Right, the right tail magnified: the $t$ puts more mass out there, so its 97.5% critical value is larger, and an interval built with it is wider." %}
 
 | Degrees of freedom | 5 | 9 | 29 | $\infty$ |
 |---|---|---|---|---|
 | 97.5% quantile | 2.571 | 2.262 | 2.045 | 1.960 |
+{: .keyed}
 
 ## The F distribution
 
@@ -64,12 +81,27 @@ The ratio of two independent scaled chi-squares, $(V_1/a)/(V_2/b)$, follows an $
 
 ## Not everything is normal: the sample maximum
 
-Not every statistic has a bell-shaped sampling distribution. Take i.i.d. Uniform($0,\theta$) data and $M=\max_i X_i$. Then $P(M\le m)=(m/\theta)^n$ on $[0,\theta]$, so $M$ piles up against the boundary $\theta$, and $\mathbb{E}M=\frac{n}{n+1}\theta$: it always underestimates a little, and normal-theory intervals do not apply. The lesson is to derive or simulate the sampling distribution of the statistic you actually use, instead of assuming it is normal.
+Not every statistic has a bell-shaped sampling distribution. Take i.i.d. Uniform($0,\theta$) data and $M=\max_i X_i$. Then $P(M\le m)=(m/\theta)^n$ on $[0,\theta]$, so $M$ piles up against the boundary $\theta$, and $\mathbb{E}M=\frac{n}{n+1}\theta$: it always underestimates a little, and normal-theory intervals do not apply. 
+
+> Derive or simulate the sampling distribution of the statistic you actually use, instead of assuming it is normal. The CLT is a statement about averages, not about every statistic.
+{: .idea}
 
 # Recap
 
-**Why a $t$ and not a normal when $\sigma$ is unknown?** Because $S$ is itself random, the standardized mean has heavier tails than a normal, and the exact law is $t_{n-1}$. For small $n$ ignoring this makes intervals too narrow.
+<details class="qa" markdown="1">
+<summary>Why a $t$ and not a normal when $\sigma$ is unknown?</summary>
 
-**Where do the chi-square, $t$ and $F$ come from?** The chi-square is a sum of squared standard normals, the $t$ is a normal over the square root of a $\chi^2_k/k$, and the $F$ is a ratio of two independent $\chi^2$ variables divided by their degrees of freedom.
+Because $S$ is itself random, the standardized mean has heavier tails than a normal, and the exact law is $t_{n-1}$. For small $n$ ignoring this makes intervals too narrow.
+</details>
 
-**Why is the sample maximum not normal?** It is tied to the boundary of the support, so it is skewed and biased. The CLT is a statement about averages, not about every statistic.
+<details class="qa" markdown="1">
+<summary>Where do the chi-square, $t$ and $F$ come from?</summary>
+
+The chi-square is a sum of squared standard normals, the $t$ is a normal over the square root of a $\chi^2_k/k$, and the $F$ is a ratio of two independent $\chi^2$ variables divided by their degrees of freedom.
+</details>
+
+<details class="qa" markdown="1">
+<summary>Why is the sample maximum not normal?</summary>
+
+It is tied to the boundary of the support, so it is skewed and biased. The CLT is a statement about averages, not about every statistic.
+</details>

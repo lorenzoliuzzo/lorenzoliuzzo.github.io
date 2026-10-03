@@ -45,6 +45,18 @@
   --shadow-raised: 0 1px 2px rgba(31, 29, 24, 0.04),
     0 4px 12px rgba(31, 29, 24, 0.06);
 
+  // Hues. Six, all at similar lightness so none shouts over the others. They do two
+  // jobs and keep them apart: a course's parts take --hue-1..6 in order (the dot
+  // path, the title stripe), and the note callouts and figure series pick from the
+  // same set by meaning (see _blocks.scss and tools/figures/kit.py). Tints are made
+  // with color-mix() from these, so a new hue is one line here.
+  --hue-1: #26647f; // blue: the accent
+  --hue-2: #7b4f9d; // violet
+  --hue-3: #2f7d52; // green
+  --hue-4: #b4581f; // orange
+  --hue-5: #a63a62; // rose
+  --hue-6: #5b6e22; // olive
+
   // Provenance badge palettes. Paired fg/bg/border so a badge is one lookup.
   --badge-ok-bg: #e4f4e8;
   --badge-ok-fg: #1a6135;
@@ -73,6 +85,13 @@
   --code-bg: #191d21;
 
   --shadow-raised: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.35);
+
+  --hue-1: #7cc3dd;
+  --hue-2: #c3a2e8;
+  --hue-3: #86d4a6;
+  --hue-4: #f2a96d;
+  --hue-5: #f090b3;
+  --hue-6: #b9d57f;
 
   --badge-ok-bg: #12301d;
   --badge-ok-fg: #86efac;

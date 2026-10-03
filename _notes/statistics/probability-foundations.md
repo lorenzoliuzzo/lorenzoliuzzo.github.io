@@ -3,6 +3,16 @@ collection: notes
 title: "Probability Foundations"
 date: 2026-10-03
 excerpt: "The three axioms and what follows from them, conditional probability, independence and Bayes' theorem."
+hook: "Everything in probability follows from three rules, and conditioning on what you learn is just rescaling inside the part that is still possible."
+goals:
+  - derive any probability identity from the three axioms
+  - condition on an event and recognize when two events are independent
+  - invert a conditional probability with Bayes' theorem, and see why the base rate matters
+defines:
+  - {id: probability-axioms, name: probability axioms, anchor: the-axioms}
+  - {id: conditional-probability, name: conditional probability, anchor: conditional-probability-and-independence}
+  - {id: independence, name: independence, anchor: conditional-probability-and-independence}
+  - {id: bayes-theorem, name: "Bayes' theorem", anchor: total-probability-and-bayes}
 read_time: true
 tags:
   - Statistics
@@ -30,7 +40,10 @@ That really is all of it. Every other rule is a short consequence of these three
 
 The union bound is crude but it is the tool you reach for when the events overlap in ways you cannot compute, and it shows up in proofs about multiple testing later.
 
-The axioms say nothing about what probability means. A frequentist reads $P(A)$ as the long-run frequency of $A$ over repeated trials. A Bayesian reads it as a degree of belief that gets updated as data arrive. The mathematics is identical; the real disagreement is about the unknown parameter $\theta$ of a model, which the frequentist treats as a fixed number and the Bayesian as a random quantity with its own distribution.
+> A frequentist reads $P(A)$ as a long-run frequency, a Bayesian as a degree of belief. The axioms are the same for both. They disagree about the unknown parameter $\theta$ of a model: a fixed number, or a random quantity with a distribution.
+{: .margin}
+
+The axioms say nothing about what probability means, and the mathematics below does not depend on the reading.
 
 # Conditional probability and independence
 
@@ -42,7 +55,10 @@ Read the other way round, this is the multiplication rule $P(A\cap B)=P(A\mid B)
 
 $$ P(A_1\cap\dots\cap A_n)=P(A_1)\,P(A_2\mid A_1)\cdots P(A_n\mid A_1\cap\dots\cap A_{n-1}). $$
 
-Two events are **independent** when learning one tells us nothing about the other, that is $P(A\cap B)=P(A)\,P(B)$, or equivalently $P(A\mid B)=P(A)$. Two mistakes are common here. The first is to confuse independent with mutually exclusive: if $A$ and $B$ are disjoint and both possible, then knowing $A$ occurred tells us for certain that $B$ did not, which is as strong a dependence as there is. The second is to stop at pairs. For several events, independence means the product rule holds for every sub-collection, and pairwise independence alone is strictly weaker.
+Two events are **independent** when learning one tells us nothing about the other, that is $P(A\cap B)=P(A)\,P(B)$, or equivalently $P(A\mid B)=P(A)$.
+
+> **Independent is not the same as disjoint.** If $A$ and $B$ are disjoint and both possible, knowing that $A$ occurred tells us for certain that $B$ did not, which is as strong a dependence as there is. And for more than two events, independence means the product rule holds for every sub-collection: pairwise independence alone is strictly weaker.
+{: .trap}
 
 ## Total probability and Bayes
 
@@ -60,10 +76,31 @@ The standard illustration is a medical test. Say a disease has prevalence 1%, an
 
 $$ P(D\mid +)=\frac{0.95\cdot 0.01}{0.95\cdot 0.01+0.10\cdot 0.99}\approx 0.088. $$
 
-The probability of being sick is under 9%, not 95%. The sick are rare, so even a small false-positive rate applied to the huge healthy group produces more positives than the true cases do. Whenever a result looks surprisingly weak, check whether the prior was ignored.
+The figure shows why it comes out so low: count people instead of probabilities.
+
+{% include fig.html src="statistics/bayes-frequencies" id="fig-bayes" alt="Two bars of people drawn to the same scale. Of 1000 people, 10 are sick. Of the 108.5 who test positive, 9.5 are sick and 99 are healthy." caption="The same test, counted in people. The sick are a thin sliver of the population, so the 10% of healthy people who test positive outnumber the true cases about ten to one." %}
+
+> A positive result from a 95% accurate test still leaves you under 9% likely to be sick. The sick are rare, so even a small false-positive rate on the huge healthy group produces more positives than the true cases do. When a result looks surprisingly weak, check whether the prior was ignored.
+{: .idea}
 
 # Recap
 
-**Why can an accurate test still give a low probability of disease?** Because the posterior depends on the prior as well as the likelihood. With a rare condition the prior is tiny, so false positives from the large healthy group swamp the true positives.
+Answer before you open each one.
 
-**Are disjoint events independent?** No, the opposite. If both can happen, learning that one occurred rules the other out.
+<details class="qa" markdown="1">
+<summary>Why can an accurate test still give a low probability of disease?</summary>
+
+The posterior depends on the prior as well as the likelihood. With a rare condition the prior is tiny, so false positives from the large healthy group swamp the true positives.
+</details>
+
+<details class="qa" markdown="1">
+<summary>Are disjoint events independent?</summary>
+
+No, the opposite. If both can happen, learning that one occurred rules the other out.
+</details>
+
+<details class="qa" markdown="1">
+<summary>You know $P(A\mid B)$ and want $P(B\mid A)$. What else do you need?</summary>
+
+The prior $P(B)$ and the total probability of $A$, which comes from splitting along a partition. Without the prior the inversion is undetermined.
+</details>
