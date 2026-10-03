@@ -45,7 +45,7 @@ Each of these follows from the three axioms in a line or two (the proofs are in 
 | $P(A\cup B)=P(A)+P(B)-P(A\cap B)$ | adding $P(A)+P(B)$ counts $A\cap B$ twice |
 | $P(\cup_i A_i)\le\sum_i P(A_i)$ | the **union bound**: overlaps are counted several times |
 
-The union rule generalizes to **inclusion–exclusion**: add the single probabilities, subtract the pairwise intersections, add the triple intersections, and so on. When the outcomes are equally likely, probability reduces to counting, $P(A)=|A|/|\Omega|$, which is where permutations and the binomial coefficient $\binom nk$ enter.
+The union rule generalizes to **inclusion–exclusion**: add the single probabilities, subtract the pairwise intersections, add the triple intersections, and so on. When the outcomes are equally likely, probability reduces to counting, $P(A)=\lvert A\rvert/\lvert\Omega\rvert$, which is where permutations and the binomial coefficient $\binom nk$ enter.
 
 A word on meaning. The axioms do not say what probability *is*. In the **frequentist** reading, $P(A)$ is the long-run relative frequency of $A$ in repeated trials. In the **Bayesian** reading it is a degree of belief, updated as data arrive. The mathematics is the same; the two schools differ in what they allow $\theta$ (an unknown parameter) to be: a fixed number, or a random quantity with its own distribution.
 
@@ -122,7 +122,7 @@ For two variables, the **covariance** $\operatorname{Cov}(X,Y)=\mathbb{E}[XY]-\m
 
 $$ \rho_{XY}=\frac{\operatorname{Cov}(X,Y)}{\sigma_X\,\sigma_Y}\in[-1,1], $$
 
-with $|\rho|=1$ exactly when $Y$ is a linear function of $X$. Covariance is bilinear and $\operatorname{Cov}(X,X)=\operatorname{Var}(X)$. This gives the rule for sums,
+with $\lvert\rho\rvert=1$ exactly when $Y$ is a linear function of $X$. Covariance is bilinear and $\operatorname{Cov}(X,X)=\operatorname{Var}(X)$. This gives the rule for sums,
 
 $$ \operatorname{Var}(X+Y)=\operatorname{Var}X+\operatorname{Var}Y+2\operatorname{Cov}(X,Y), $$
 

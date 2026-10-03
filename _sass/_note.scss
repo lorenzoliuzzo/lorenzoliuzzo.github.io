@@ -440,4 +440,14 @@
     margin-inline: auto;
     max-width: var(--measure);
   }
+
+  // Markdown tables share the reading column. The theme makes them display:block
+  // at 100% width, which left the cells packed at the column's left edge and
+  // out of line with the centred text above and below.
+  [data-note] .page__content > table {
+    display: table;
+    width: 100%;
+    max-width: var(--measure);
+    margin-inline: auto;
+  }
 }
