@@ -12,7 +12,7 @@ Almost every method in applied statistics and machine learning answers the same 
 
 A more formal version, with statements and proofs of the results quoted here, is in the [technical reference (PDF)]({{ '/assets/notes/statistics/probability-and-inference/probability-and-inference.pdf' | relative_url }}). This page explains; the PDF is the thing to check a formula against.
 
-## The setting: population, sample, model
+# The setting: population, sample, model
 
 A **population** is the thing we care about; a **sample** is the data $x_1,\dots,x_n$ we actually have. Inference needs a bridge between the two, and that bridge is a **statistical model**: we assume the data are realizations of random variables $X_1,\dots,X_n$ whose joint law belongs to a family indexed by an unknown parameter $\theta$,
 
@@ -22,7 +22,7 @@ $$ X_1,\dots,X_n \ \text{i.i.d.} \sim f(x;\theta), \qquad \theta \in \Theta . $$
 
 The central object is a **statistic**: any function $T(X_1,\dots,X_n)$ of the sample. Because the sample is random, $T$ is itself a random variable, and its distribution, the **sampling distribution**, is what tells us how much to trust it.
 
-## Probability in one page
+# Probability in one page
 
 **Axioms.** A probability $P$ on events satisfies $P(A)\ge 0$, $P(\Omega)=1$, and $P(\cup_i A_i)=\sum_i P(A_i)$ for disjoint events.
 
@@ -40,7 +40,7 @@ Expectation is linear, $\mathbb{E}[aX+bY]=a\mathbb{E}X+b\mathbb{E}Y$, always. Va
 
 The distributions that matter here (Bernoulli, binomial, Poisson, normal, and the sampling-distribution family $\chi^2$, $t$, $F$ below) are collected in [the distributions note]({{ '/notes/statistics/distributions/' | relative_url }}).
 
-### Two theorems that justify everything
+## Two theorems that justify everything
 
 **Law of large numbers.** The sample mean $\bar X_n=\tfrac1n\sum X_i$ converges to $\mu=\mathbb{E}X$ as $n\to\infty$. This is why averaging works.
 
@@ -50,7 +50,7 @@ $$ \sqrt{n}\,\frac{\bar X_n-\mu}{\sigma}\ \xrightarrow{d}\ \mathcal{N}(0,1). $$
 
 The CLT is the reason the normal distribution appears everywhere in inference, even when the data are not normal: sums and averages become approximately normal. How large $n$ must be depends on how skewed or heavy-tailed the data are, so "$n\ge 30$" is a rule of thumb, not a theorem.
 
-## Sampling distributions
+# Sampling distributions
 
 For normal data, $X_i\sim\mathcal{N}(\mu,\sigma^2)$, the three statistics we will use constantly have exact distributions.
 
@@ -64,7 +64,7 @@ The $t$ distribution has heavier tails than the normal because $S$ is itself noi
 
 The divisor $n-1$ in $S^2$ is not a convention: it is exactly what makes $\mathbb{E}[S^2]=\sigma^2$. Deviations are measured from $\bar X$, which was fitted to the same data and is, by construction, closer to them than $\mu$ is. One degree of freedom is spent estimating the mean.
 
-## Estimators and how to judge them
+# Estimators and how to judge them
 
 An **estimator** $\hat\theta=T(X_1,\dots,X_n)$ is a rule for guessing $\theta$ from data; an **estimate** is its value on one sample. Good estimators are judged by the distribution of their error:
 
@@ -84,7 +84,7 @@ $$ \operatorname{Var}(\hat\theta)\ \ge\ \frac{1}{n\,I(\theta)}, \qquad I(\theta)
 
 where $I(\theta)$ is the **Fisher information** of one observation: how sharply the log-density bends as $\theta$ moves, i.e. how much a single observation reveals about $\theta$. An unbiased estimator that reaches the bound is called efficient.
 
-## Maximum likelihood
+# Maximum likelihood
 
 The most important recipe for building estimators. Given the data, regard the joint density as a function of $\theta$: the **likelihood** $L(\theta)=\prod_i f(x_i;\theta)$. The **maximum likelihood estimator** is the parameter value under which the observed data were most probable,
 
@@ -105,7 +105,7 @@ so for large $n$ it reaches the Cramér–Rao bound. It is also **invariant**: t
 
 The **method of moments** is the simpler alternative: equate sample moments to population moments and solve. It is easy and consistent but generally less efficient.
 
-## Confidence intervals
+# Confidence intervals
 
 A point estimate says nothing about its own precision. A **confidence interval** $[L,U]$ with level $1-\alpha$ is built from the data so that, over repeated samples,
 
@@ -125,7 +125,7 @@ $$ P_\theta\big(L(X)\le\theta\le U(X)\big)=1-\alpha \quad\text{for every } \thet
 
 **What controls the width.** Width scales like $\sigma/\sqrt n$ times a critical value that grows with the confidence level. More confidence means a wider interval; more data means a narrower one; there is no free lunch between them.
 
-## Hypothesis tests
+# Hypothesis tests
 
 A test decides between two hypotheses about $\theta$: a **null** $H_0$ (the default, "no effect") and an **alternative** $H_1$. The procedure: choose a statistic $T$ whose distribution under $H_0$ is known, and reject $H_0$ if $T$ falls in a **rejection region**.
 
@@ -158,14 +158,14 @@ $$ \Lambda=\frac{\sup_{\theta\in\Theta_0}L(\theta)}{\sup_{\theta\in\Theta}L(\the
 
 where $r$ is the number of parameters $H_0$ fixes (Wilks' theorem). For simple versus simple hypotheses, the Neyman–Pearson lemma says the likelihood-ratio test is the *most powerful* at its level, which is the sense in which these tests are optimal. This is also where the $F$-test and the deviance comparisons of regression come from.
 
-### Testing many things at once
+## Testing many things at once
 
 If you run $m$ tests at level $\alpha$ and every null is true, you expect $m\alpha$ false rejections. Two standard corrections:
 
 - **Bonferroni**: reject only if $p_i\le\alpha/m$. This controls the probability of *any* false rejection (family-wise error rate), at the price of low power.
 - **Benjamini–Hochberg**: sort the $p$-values and reject the smallest $k$, where $k$ is the largest index with $p_{(k)}\le \frac{k}{m}\alpha$. This controls the expected *proportion* of false rejections (false discovery rate) and is the usual choice when $m$ is large.
 
-## How to use this in an exam answer
+# How to use this in an exam answer
 
 The open questions in this course usually ask for one of four things. A checklist for each:
 
@@ -174,13 +174,13 @@ The open questions in this course usually ask for one of four things. A checklis
 3. *Run a test.* State $H_0$ and $H_1$, the statistic and its null distribution, the rejection region or $p$-value, and the conclusion in words about the *problem*, not just "reject".
 4. *Interpret.* Say what the interval or $p$-value does and does not mean (see above), and mention the assumption you would check.
 
-## Where this goes next
+# Where this goes next
 
 - **Linear regression**: least squares is the Gaussian MLE, the coefficient $t$-tests and the overall $F$-test are exactly the tests above.
 - **Regularization**: trading a little bias for a lot of variance, via the MSE decomposition.
 - **Model assessment**: estimating prediction error is an inference problem with its own sampling distribution.
 - **Mixture models**: the likelihood is no longer solvable in closed form, which motivates the EM algorithm.
 
-## R in practice
+# R in practice
 
 *To be added in the R phase of the plan: simulating sampling distributions and the CLT, `t.test`, `prop.test`, `p.adjust`, confidence interval coverage by simulation, and likelihood maximization with `optim`.*

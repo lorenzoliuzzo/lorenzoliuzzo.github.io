@@ -374,3 +374,70 @@
     text-transform: uppercase;
   }
 }
+
+/* Page geometry (wide screens)
+   ========================================================================== */
+
+// The theme reserves a left column for the author sidebar even when it is
+// switched off, so the text ended up pushed right of centre and narrow. Here the
+// article takes the full width, with equal gutters on both sides: the right one
+// holds the contents rail (the theme draws it in the page's right padding), the
+// left one just keeps the text centred.
+@media (min-width: 64em) {
+  [data-note] {
+    --toc-width: 240px;
+    // Wider than the global --measure: notes carry equations and long sentences.
+    // Pixels, not rem: the theme scales the root font size up on wide screens.
+    --measure: 960px;
+    --page-width: min(1800px, 100%);
+  }
+
+  // The breadcrumbs sit outside #main, so they need the same cap to line up.
+  [data-note] #main,
+  [data-note] .breadcrumbs {
+    max-width: var(--page-width);
+  }
+
+  [data-note] .page {
+    float: none;
+    width: 100%;
+    padding-inline: var(--toc-width);
+  }
+
+  [data-note] .breadcrumbs {
+    float: none;
+    width: 100%;
+    // The extra 1em is #main's own side padding, which the breadcrumbs sit outside of.
+    padding-inline: calc(var(--toc-width) + 1em);
+
+    // The theme floats the list right to clear the author sidebar.
+    ol {
+      float: none;
+      width: 100%;
+      max-width: var(--measure);
+      margin-inline: auto;
+    }
+  }
+
+  [data-note] .sidebar__right {
+    width: var(--toc-width);
+    margin-inline-end: calc(-1 * var(--toc-width));
+  }
+
+  // Centre the reading column; figures, tables and code keep the full width.
+  [data-note] .page__inner-wrap > header,
+  [data-note] .page__content > p,
+  [data-note] .page__content > ul,
+  [data-note] .page__content > ol,
+  [data-note] .page__content > dl,
+  [data-note] .page__content > blockquote,
+  [data-note] .page__content > h1,
+  [data-note] .page__content > h2,
+  [data-note] .page__content > h3,
+  [data-note] .page__content > h4,
+  [data-note] .page__content > h5,
+  [data-note] .page__content > h6 {
+    margin-inline: auto;
+    max-width: var(--measure);
+  }
+}
