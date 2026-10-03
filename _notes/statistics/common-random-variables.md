@@ -9,64 +9,58 @@ tags:
   - Probability
 ---
 
-The catalogue of standard distributions, with the facts worth remembering about each. Proofs are in the [reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}).
+Real data are usually modelled with one of a small number of standard distributions, and recognizing which one fits a situation is a large part of applied statistics. This note goes through them, with the facts about each that are worth remembering. Proofs are in the [reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}).
 
 # Before you start
 
 | You should know | Where |
 |---|---|
 | pmf, density, cdf; expectation; variance; independence | [Random variables]({{ '/notes/statistics/random-variables/' | relative_url }}) |
-| Central limit theorem | [Random variables › Limit theorems]({{ '/notes/statistics/random-variables/' | relative_url }}#limit-theorems) |
+| Central limit theorem | [Random variables]({{ '/notes/statistics/random-variables/' | relative_url }}#limit-theorems) |
 
 # Discrete
 
 ## Bernoulli
 
-One yes/no trial, success probability $p$: $\mathbb{E}X=p$, $\operatorname{Var}X=p(1-p)$, largest at $p=\tfrac12$. An indicator $\mathbf 1_A$ is Bernoulli($P(A)$).
+The simplest random variable is a single yes/no trial, coded 1 with probability $p$ and 0 otherwise. Its mean is $p$ and its variance $p(1-p)$, which is largest at $p=\tfrac12$: a fair coin is the most uncertain yes/no event there is. Every indicator $\mathbf 1_A$ is a Bernoulli with $p=P(A)$.
 
 ## Binomial
 
-Successes in $n$ independent Bernoulli($p$) trials:
+Add up $n$ independent Bernoulli($p$) trials and you get the number of successes,
 
 $$ P(X=k)=\binom nk p^k(1-p)^{n-k},\qquad \mathbb{E}X=np,\quad \operatorname{Var}X=np(1-p). $$
 
-Mean and variance come from linearity and independence on the $n$ terms. Approximately normal once $np(1-p)\gtrsim10$. The number of correct predictions of a classifier on $n$ independent test examples is binomial.
+The mean and variance need no computation with the formula above: linearity and independence applied to the $n$ Bernoulli terms give them directly. For large $n$ the binomial is close to a normal, a reasonable approximation once $np(1-p)$ is around 10 or more. A typical use is the number of correct predictions of a classifier on $n$ independent test examples.
 
 ## Geometric
 
-Trials until the first success: $P(X=k)=(1-p)^{k-1}p$, mean $1/p$, variance $(1-p)/p^2$. **Memoryless**: past failures say nothing about the remaining wait.
+If instead we count trials until the first success, we get $P(X=k)=(1-p)^{k-1}p$, with mean $1/p$ and variance $(1-p)/p^2$. This distribution is **memoryless**: having already failed many times does not make success any closer, because the trials do not remember.
 
 ## Poisson
 
-Events in a fixed interval at constant rate $\lambda$, independent:
+The Poisson counts events in a fixed interval when they occur independently at a constant average rate $\lambda$:
 
 $$ P(X=k)=\frac{e^{-\lambda}\lambda^k}{k!},\qquad \mathbb{E}X=\operatorname{Var}X=\lambda. $$
 
-- It is the limit of Binomial($n,p$) for large $n$, small $p$, $np=\lambda$.
-- Independent Poissons add: rates add.
-- Mean $=$ variance is a check: count data with variance well above the mean are **overdispersed**, not Poisson.
+It arises as the limit of Binomial($n,p$) when $n$ is large, $p$ is small and $np=\lambda$ stays fixed, which is why it describes rare events so well. Independent Poisson variables add, with their rates. The equality of mean and variance is also a quick diagnostic: count data whose variance is well above the mean are **overdispersed**, and a plain Poisson model will understate the uncertainty.
 
 # Continuous
 
 ## Uniform
 
-Density $1/(b-a)$ on $[a,b]$, mean $(a+b)/2$, variance $(b-a)^2/12$. If $U\sim$ Uniform(0,1) and $F$ is a cdf, $F^{-1}(U)$ has cdf $F$: **inverse transform sampling**. Also, a $p$-value under the null is uniform on $(0,1)$.
+The uniform has constant density $1/(b-a)$ on $[a,b]$, with mean $(a+b)/2$ and variance $(b-a)^2/12$. It matters mostly because everything else can be built from it. If $U$ is Uniform(0,1) and $F$ is a cdf, then $F^{-1}(U)$ has cdf $F$, which is **inverse transform sampling** and the basis of most random number generation. It also appears in testing: under the null hypothesis, a $p$-value is uniform on $(0,1)$.
 
 ## Exponential
 
-Waiting time between events of a Poisson process of rate $\lambda$: $f(x)=\lambda e^{-\lambda x}$, $P(X>x)=e^{-\lambda x}$, mean $1/\lambda$, variance $1/\lambda^2$. The continuous analogue of the geometric, and also memoryless: $P(X>s+t\mid X>s)=P(X>t)$. These are the only memoryless families.
+The exponential is the waiting time between events of a Poisson process of rate $\lambda$: $f(x)=\lambda e^{-\lambda x}$ for $x\ge0$, so $P(X>x)=e^{-\lambda x}$, with mean $1/\lambda$ and variance $1/\lambda^2$. It is the continuous counterpart of the geometric and, like it, memoryless, $P(X>s+t\mid X>s)=P(X>t)$. These two are the only memoryless distributions, so if the failure rate of something depends on its age, the exponential is the wrong model.
 
 ## Normal
 
-$X\sim\mathcal{N}(\mu,\sigma^2)$, density $\frac{1}{\sqrt{2\pi\sigma^2}}e^{-(x-\mu)^2/(2\sigma^2)}$.
-
-- **Standardization**: $Z=(X-\mu)/\sigma\sim\mathcal{N}(0,1)$. Mass within $1,2,3$ standard deviations: 68%, 95%, 99.7%; $z_{0.975}\approx1.96$.
-- **Closed under linear combinations**: independent normals sum to a normal, and a linear function of a normal is normal.
-- The CLT makes it the limit of averages, hence the noise model of regression and the large-sample approximation of most estimators.
+The normal $\mathcal{N}(\mu,\sigma^2)$ has density $\frac{1}{\sqrt{2\pi\sigma^2}}e^{-(x-\mu)^2/(2\sigma^2)}$ and three properties that explain how dominant it is. Standardizing, $Z=(X-\mu)/\sigma$, reduces every normal probability to the standard normal, and about 68%, 95% and 99.7% of the mass lies within one, two and three standard deviations, with $z_{0.975}\approx1.96$. The family is closed under linear combinations: a sum of independent normals, or a linear function of one, is again normal. And the central limit theorem makes it the limit of averages, which is why it models noise in regression and approximates the distribution of most estimators for large $n$.
 
 ## Gamma
 
-Positive and right-skewed; a sum of $k$ independent exponentials is Gamma. The chi-square is a special case (see [Sampling distributions]({{ '/notes/statistics/sampling-distributions/' | relative_url }}#sample-variance-and-the-chi-square)).
+The gamma is a flexible positive, right-skewed distribution, and a sum of $k$ independent exponentials has this form. For us its main role is that the chi-square distribution is a special case; see [Sampling distributions]({{ '/notes/statistics/sampling-distributions/' | relative_url }}#sample-variance-and-the-chi-square).
 
 # Choosing a model
 
@@ -82,6 +76,6 @@ Positive and right-skewed; a sum of $k$ independent exponentials is Gamma. The c
 
 # Recap
 
-**Binomial or Poisson?** Binomial for successes out of $n$ fixed trials, Poisson for a count of events in an interval; Poisson is the large-$n$, small-$p$ limit of the binomial.
+**Binomial or Poisson?** Binomial when there is a fixed number of trials and we count successes, Poisson when we count events in an interval with no fixed number of trials. The Poisson is the limit of the binomial for large $n$ and small $p$.
 
-**Which families are memoryless?** Only the geometric (discrete) and the exponential (continuous).
+**Which distributions are memoryless?** Only the geometric among discrete ones and the exponential among continuous ones.

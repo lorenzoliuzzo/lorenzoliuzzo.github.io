@@ -5,7 +5,12 @@ series, convexity) and common physics are assumed known and are not explained or
 listed as prerequisites. A note keeps only the tools, observations and useful facts
 specific to its topic: the formulas to have at hand, the traps, the rules of thumb.
 No textbook definitions, no worked toy examples, no generic "where it is used" lists.
-The statistics notes are the reference examples.
+
+The notes are for studying, not only for lookup, so they are written as connected
+prose, the way you would explain the topic to yourself: say why a step is taken and
+how one idea leads to the next, and use bullets and tables only for genuinely
+parallel items (a list of rules, a choice table). Avoid telegraphic fragments, stacks
+of bold lead-ins and stock phrases. The statistics notes are the reference examples.
 
 Order, every part optional except the first three:
 

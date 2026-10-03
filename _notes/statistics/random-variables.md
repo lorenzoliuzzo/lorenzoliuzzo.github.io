@@ -9,7 +9,7 @@ tags:
   - Probability
 ---
 
-The summaries of a random variable that every later note uses: mean, spread, how two variables move together, and the two limit theorems behind averaging. Proofs are in the [reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}).
+From here on we work with numbers rather than events, so we need the standard summaries of a random variable: where it sits, how spread out it is, how it moves together with another variable. The note ends with the two theorems that explain why averaging data works at all. Proofs are in the [reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}).
 
 # Before you start
 
@@ -19,61 +19,64 @@ The summaries of a random variable that every later note uses: mean, spread, how
 
 # Distributions
 
-A random variable $X$ is a function from outcomes to numbers; its distribution is described by
+A random variable $X$ is a number attached to the outcome of an experiment, and its distribution tells us how probability is spread over the possible values. The most general description is the cumulative distribution function $F(x)=P(X\le x)$, which gives interval probabilities through $P(a<X\le b)=F(b)-F(a)$. For a discrete $X$ it is more convenient to list the mass function $p(x)=P(X=x)$. For a continuous $X$ we use the density $f=F'$, with $P(a\le X\le b)=\int_a^b f$. One thing to keep straight is that a density value is not a probability: every single point has probability zero, and $f(x)$ can even exceed one. Only areas under $f$ are probabilities.
 
-- the **cdf** $F(x)=P(X\le x)$, with $P(a<X\le b)=F(b)-F(a)$;
-- for discrete $X$, the **pmf** $p(x)=P(X=x)$;
-- for continuous $X$, the **density** $f=F'$, with $P(a\le X\le b)=\int_a^b f$. Points have probability zero, so a density value is **not** a probability.
-
-For a pair $(X,Y)$: the **joint** law, the **marginal** (sum or integrate out the other variable) and the **conditional** (joint over marginal). $X,Y$ are independent exactly when the joint factorizes into the marginals. The $p$-quantile $q_p$ solves $F(q_p)=p$; the median is $q_{0.5}$.
+With two variables we also need the joint distribution of the pair, the marginal of each (obtained by summing or integrating out the other), and the conditional distribution of one given the value of the other, which is the joint divided by the marginal. $X$ and $Y$ are independent exactly when the joint factorizes into the product of the marginals. The $p$-quantile $q_p$ solves $F(q_p)=p$, and the median is $q_{0.5}$.
 
 # Expectation
 
-$$ \mathbb{E}[X]=\sum_x x\,p(x)\quad\text{or}\quad\int x f(x)\,dx,\qquad \mathbb{E}[g(X)]=\sum_x g(x)p(x)\ \text{ or }\int g f. $$
+The expectation is the probability-weighted average of the values,
 
-- **Linearity**, always, with no independence needed: $\mathbb{E}[aX+b]=a\mathbb{E}X+b$, $\mathbb{E}[X+Y]=\mathbb{E}X+\mathbb{E}Y$.
-- **Products**: $\mathbb{E}[XY]=\mathbb{E}X\,\mathbb{E}Y$ only if $X,Y$ are independent.
-- **Indicators**: $\mathbb{E}[\mathbf 1_A]=P(A)$, so probabilities are expectations.
-- **Jensen**: for convex $g$, $g(\mathbb{E}X)\le\mathbb{E}[g(X)]$; in particular $\mathbb{E}[X^2]\ge(\mathbb{E}X)^2$. Beware $\mathbb{E}[g(X)]\ne g(\mathbb{E}X)$ in general.
+$$ \mathbb{E}[X]=\sum_x x\,p(x)\quad\text{or}\quad\int x\,f(x)\,dx, $$
+
+and for a function of $X$ we do not need its distribution first, we just weight $g(x)$ in the same way: $\mathbb{E}[g(X)]=\sum_x g(x)p(x)$ or $\int g f$.
+
+The property that does most of the work is linearity, $\mathbb{E}[aX+b]=a\,\mathbb{E}X+b$ and $\mathbb{E}[X+Y]=\mathbb{E}X+\mathbb{E}Y$, which holds always, with no independence needed. That is what makes so many calculations short. Products are different: $\mathbb{E}[XY]=\mathbb{E}X\,\mathbb{E}Y$ needs independence, and fails in general.
+
+A useful trick is that probabilities are expectations of indicators, $\mathbb{E}[\mathbf 1_A]=P(A)$, so anything proved for expectations also holds for probabilities. Finally, Jensen's inequality says that for convex $g$ we have $g(\mathbb{E}X)\le\mathbb{E}[g(X)]$. The case to remember is $\mathbb{E}[X^2]\ge(\mathbb{E}X)^2$, and the general warning is that $\mathbb{E}[g(X)]$ is not $g(\mathbb{E}X)$: the mean of the squares is not the square of the mean.
 
 # Variance, covariance and correlation
 
-$\operatorname{Var}(X)=\mathbb{E}[(X-\mu)^2]=\mathbb{E}[X^2]-\mu^2$, $\sigma=\sqrt{\operatorname{Var}X}$. Shifts do not matter and scaling squares: $\operatorname{Var}(aX+b)=a^2\operatorname{Var}X$. The standardized $Z=(X-\mu)/\sigma$ has mean 0 and variance 1.
+The variance measures spread around the mean, $\operatorname{Var}(X)=\mathbb{E}[(X-\mu)^2]=\mathbb{E}[X^2]-\mu^2$, and the standard deviation $\sigma$ is its square root, which has the same units as $X$. Shifting a variable does not change its spread, while scaling by $a$ multiplies the variance by $a^2$:
 
-$$ \operatorname{Cov}(X,Y)=\mathbb{E}[XY]-\mathbb{E}X\,\mathbb{E}Y,\qquad \rho_{XY}=\frac{\operatorname{Cov}(X,Y)}{\sigma_X\sigma_Y}\in[-1,1], $$
+$$ \operatorname{Var}(aX+b)=a^2\operatorname{Var}(X). $$
 
-with $\lvert\rho\rvert=1$ exactly when $Y$ is linear in $X$. Covariance is bilinear and $\operatorname{Cov}(X,X)=\operatorname{Var}X$, hence
+Standardizing, $Z=(X-\mu)/\sigma$, therefore gives mean 0 and variance 1.
+
+For two variables the covariance $\operatorname{Cov}(X,Y)=\mathbb{E}[XY]-\mathbb{E}X\,\mathbb{E}Y$ measures how they move together, and dividing by the two standard deviations gives the correlation, which is free of units and lies in $[-1,1]$:
+
+$$ \rho_{XY}=\frac{\operatorname{Cov}(X,Y)}{\sigma_X\sigma_Y}. $$
+
+It reaches $\pm1$ exactly when $Y$ is a linear function of $X$. Because covariance is bilinear, expanding $\operatorname{Var}(X+Y)$ produces a cross term:
 
 $$ \operatorname{Var}(X+Y)=\operatorname{Var}X+\operatorname{Var}Y+2\operatorname{Cov}(X,Y). $$
 
-Variances add **only when covariances vanish**. For independent $X_i$ with variance $\sigma^2$ this gives the most used formula in statistics, $\operatorname{Var}(\bar X)=\sigma^2/n$.
+So variances add only when the covariances vanish, for instance under independence. For independent $X_1,\dots,X_n$ with common variance $\sigma^2$ this gives $\operatorname{Var}(\bar X)=\sigma^2/n$, probably the single most used formula in statistics.
 
-**Zero correlation does not imply independence.** For $X\sim\mathcal{N}(0,1)$ and $Y=X^2$, $\operatorname{Cov}(X,Y)=\mathbb{E}[X^3]=0$ yet $Y$ is a function of $X$. Correlation detects only *linear* dependence.
+Independence implies zero covariance, but the converse is false, and the standard counterexample is worth keeping in mind. Take $X\sim\mathcal{N}(0,1)$ and $Y=X^2$. Then $\operatorname{Cov}(X,Y)=\mathbb{E}[X^3]=0$, even though $Y$ is completely determined by $X$. Correlation only detects linear dependence.
 
 ## Conditioning a random variable
 
-$\mathbb{E}[X\mid Y]$ is the best guess of $X$ given $Y$, itself a random variable (a function of $Y$):
+The conditional expectation $\mathbb{E}[X\mid Y]$ is the best guess of $X$ once $Y$ is known. It is itself a random variable, since it depends on $Y$, and it satisfies two identities that will come back in regression and mixture models:
 
 $$ \mathbb{E}[X]=\mathbb{E}\big[\mathbb{E}[X\mid Y]\big],\qquad \operatorname{Var}(X)=\mathbb{E}\big[\operatorname{Var}(X\mid Y)\big]+\operatorname{Var}\big(\mathbb{E}[X\mid Y]\big). $$
 
-The second is the **law of total variance**: total spread = average spread within groups + spread of the group means. Both return in regression and mixtures.
+The first says that averaging the group means gives the overall mean. The second is the law of total variance: the total spread is the average spread inside the groups plus the spread between the group means.
 
 ## Shape
 
-Skewness and kurtosis are the standardized third and fourth central moments: asymmetry and tail weight (the normal has kurtosis 3). For skewed or heavy-tailed data the mean, median and mode differ and the mean is the one outliers move most.
+Two further summaries describe the shape of a distribution. Skewness, the standardized third central moment, measures asymmetry, and kurtosis, the standardized fourth, measures tail weight, with the normal sitting at 3. For skewed or heavy-tailed data the mean, median and mode separate, and the mean is the one that outliers drag around most.
 
 # Limit theorems
 
-**LLN.** $\bar X_n=\tfrac1n\sum X_i\to\mu$ as $n\to\infty$.
-
-**CLT.** For i.i.d. $X_i$ with mean $\mu$ and finite variance $\sigma^2$,
+The law of large numbers says that the sample mean $\bar X_n=\tfrac1n\sum X_i$ converges to $\mu$ as $n$ grows. This is the reason averaging works. The central limit theorem adds the shape of the fluctuations: for i.i.d. $X_i$ with mean $\mu$ and finite variance $\sigma^2$,
 
 $$ \sqrt{n}\,\frac{\bar X_n-\mu}{\sigma}\ \xrightarrow{d}\ \mathcal{N}(0,1). $$
 
-This is why the normal appears everywhere in inference even for non-normal data. How large $n$ must be depends on skewness and tail weight, so "$n\ge30$" is a rule of thumb, not a theorem.
+This is why the normal distribution turns up everywhere in inference, even when the data themselves are far from normal. How large $n$ has to be depends on how skewed or heavy-tailed the data are, so "$n\ge30$" is a rule of thumb and not a theorem.
 
 # Recap
 
-**Does zero correlation mean independence?** No: uncorrelated only rules out *linear* dependence ($X$ and $X^2$ for symmetric $X$).
+**Does zero correlation mean independence?** No. Uncorrelated only rules out linear dependence; $X$ and $X^2$ for a symmetric $X$ are uncorrelated yet completely dependent.
 
-**When is the variance of a sum the sum of the variances?** When the covariances vanish, in particular under independence; otherwise add $2\operatorname{Cov}$. This is what gives $\operatorname{Var}(\bar X)=\sigma^2/n$.
+**When is the variance of a sum equal to the sum of the variances?** When the covariances vanish, in particular for independent variables. Otherwise there is the extra $2\operatorname{Cov}$ term, and with independence this is exactly what gives $\operatorname{Var}(\bar X)=\sigma^2/n$.
