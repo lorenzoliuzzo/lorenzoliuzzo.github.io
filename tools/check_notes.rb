@@ -1,9 +1,14 @@
 #!/usr/bin/env ruby
-# Checks the notes that belong to a course (_data/courses.yml) against the standard in
-# .claude/skills/write-site-note/. Standard library only, so CI needs no bundle install.
+# Checks the courses (_data/courses/<slug>.yml, grouped by _data/domains.yml) and the notes
+# that belong to them against the standard in .claude/skills/write-site-note/. Standard
+# library only, so CI needs no bundle install.
 #
-#   ruby tools/check_notes.rb            # all course notes
+#   ruby tools/check_notes.rb            # all courses and their notes
 #   ruby tools/check_notes.rb statistics # notes whose path starts with statistics/
+#
+# A course marked `legacy: true` (notes imported before the standard existed) gets the
+# structural checks only: its files exist, every note is listed once, its domain is known.
+# Drop the flag when its notes have been brought up to standard and the full checks start.
 #
 # Errors fail the run (exit 1); warnings are printed and do not. The same mistakes in
 # front matter also show up as warnings in _plugins/concept_index.rb at build time.
@@ -33,7 +38,10 @@ def heading_ids(body)
   end
 end
 
-courses = YAML.load_file(File.join(ROOT, "_data/courses.yml"))
+domains = YAML.load_file(File.join(ROOT, "_data/domains.yml")).map { |d| d["id"] }
+courses = Dir[File.join(ROOT, "_data/courses/*.yml")].sort.map do |path|
+  YAML.load_file(path).merge("slug" => File.basename(path, ".yml"), "file" => path.sub("#{ROOT}/", ""))
+end
 filter = ARGV[0]
 
 notes = {} # key => {path:, data:, body:}
@@ -46,7 +54,7 @@ end
 order = {} # note key => [course index, position]
 courses.each_with_index do |course, ci|
   pos = 0
-  course["parts"].each { |part| part["notes"].each { |k| order[k] ||= [ci, pos += 1] } }
+  Array(course["parts"]).each { |part| Array(part["notes"]).each { |k| order[k] ||= [ci, pos += 1] } }
 end
 
 concepts = {} # id => note key
@@ -65,6 +73,34 @@ errors = 0
 warnings = 0
 err = ->(n, msg) { puts "ERROR #{n[:path]}: #{msg}"; errors += 1 }
 warn_ = ->(n, msg) { puts "warn  #{n[:path]}: #{msg}"; warnings += 1 }
+course_err = lambda do |course, msg|
+  puts "ERROR #{course['file']}: #{msg}"
+  errors += 1
+end
+
+# The courses themselves.
+listed = {}
+courses.each do |course|
+  course_err.(course, "slug `#{course['slug']}` should be lower-case and hyphenated") unless course["slug"].match?(/\A[a-z0-9]+(-[a-z0-9]+)*\z/)
+  %w[title summary domain].each { |k| course_err.(course, "lacks `#{k}`") if course[k].to_s.strip.empty? }
+  course_err.(course, "domain `#{course['domain']}` is not in _data/domains.yml (#{domains.join(', ')})") unless domains.include?(course["domain"])
+  course_err.(course, "`parts` is empty") if Array(course["parts"]).empty?
+  if course["reference"] && !File.exist?(File.join(ROOT, course["reference"]))
+    course_err.(course, "reference #{course['reference']} does not exist")
+  end
+  Array(course["parts"]).each do |part|
+    course_err.(course, "a part lacks `title`") if part["title"].to_s.strip.empty?
+    course_err.(course, "part `#{part['title']}` has no notes") if Array(part["notes"]).empty?
+    Array(part["notes"]).each do |key|
+      course_err.(course, "#{key} is also listed in #{listed[key]}") if listed[key]
+      listed[key] ||= course["slug"]
+    end
+  end
+end
+(notes.keys - listed.keys).each do |key|
+  puts "warn  #{notes[key][:path]}: not listed in any course (_data/courses/); the shelf shows it under More notes"
+  warnings += 1
+end
 
 courses.each do |course|
   course["parts"].each do |part|
@@ -73,11 +109,12 @@ courses.each do |course|
 
       n = notes[key]
       if n.nil?
-        puts "ERROR _data/courses.yml lists #{key}, but _notes/#{key}.md does not exist"
+        puts "ERROR #{course['file']} lists #{key}, but _notes/#{key}.md does not exist"
         errors += 1
         next
       end
       next unless n[:written]
+      next if course["legacy"]
 
       d, body = n[:data], n[:body]
 

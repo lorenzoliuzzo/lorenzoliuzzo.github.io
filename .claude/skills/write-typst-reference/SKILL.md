@@ -37,7 +37,7 @@ The compile root is `assets/notes`. A reference starts with:
 
 `reference` sets the page, type, running header (course title and current chapter), numbered headings, title block and contents. Do not re-set page, text or heading styles in the course file; if the style needs to change for every course, change `note-style.typ`.
 
-A new course also needs `reference: /assets/notes/<course>/<course>-reference/<course>-reference.pdf` in `_data/courses.yml` (it becomes the link on the notes archive and in each note's introduction).
+A new course also needs `reference: /assets/notes/<course>/<course>-reference/<course>-reference.pdf` in the course's data file `_data/courses/<slug>.yml` (it becomes the PDF button on the course page, the badge on its shelf card and the link in each note's introduction).
 
 ## 2. Structure
 

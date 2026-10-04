@@ -1,0 +1,15 @@
+# The groups on the notes shelf (/notes/). A course names its domain in its data file
+# (_data/courses/<slug>.yml). `hue` is one of --hue-1..6 in _sass/_tokens.scss; it only
+# colours the domain's rule, chips and course-card accents, not what is inside a course.
+- id: ai
+  title: "Artificial Intelligence"
+  blurb: "Learning from data, from neural networks and clustering to optimisation inspired by evolution."
+  hue: 1
+- id: physics
+  title: "Physics"
+  blurb: "From fields and quanta to the structure of matter, and the statistical mechanics that connects them."
+  hue: 4
+- id: mathematics
+  title: "Mathematics"
+  blurb: "Probability, statistics and logic: the language the other courses are written in."
+  hue: 3

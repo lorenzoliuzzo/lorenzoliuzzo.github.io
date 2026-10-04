@@ -1,0 +1,22 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+domain: ai
+order: 2
+title: "Evolutionary Computing"
+summary: "Optimisation by variation and selection: the evolutionary algorithm and its elements, genetic programming, meta-heuristics, swarms and the theory behind them."
+parts:
+  - title: "Foundations"
+    blurb: "What an evolutionary algorithm is and the parts it is built from."
+    notes:
+      - ai/evolutionary-computing/introduction
+      - ai/evolutionary-computing/EA
+      - ai/evolutionary-computing/elements-of-ea
+  - title: "Variants"
+    blurb: "Evolving programs, and search methods that borrow from other natural processes."
+    notes:
+      - ai/evolutionary-computing/genetic-programming
+      - ai/evolutionary-computing/meta-heuristics
+      - ai/evolutionary-computing/population-based-ea
+  - title: "Theory"
+    blurb: "Why and when these algorithms work."
+    notes:
+      - ai/evolutionary-computing/theoretical-foundations

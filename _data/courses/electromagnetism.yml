@@ -1,0 +1,20 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+domain: physics
+order: 1
+title: "Electromagnetism"
+summary: "Electric and magnetic fields, circuits, and Maxwell's equations leading to electromagnetic waves."
+parts:
+  - title: "Fields"
+    blurb: "The electric and the magnetic field."
+    notes:
+      - physics/electromagnetism/electric-field
+      - physics/electromagnetism/magnetic-field
+  - title: "Circuits"
+    blurb: "Fields at work in RC, RLC and LC circuits."
+    notes:
+      - physics/electromagnetism/circuits
+  - title: "Maxwell and waves"
+    blurb: "The four equations, and the waves they predict."
+    notes:
+      - physics/electromagnetism/maxwell-equations
+      - physics/electromagnetism/em-waves

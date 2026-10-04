@@ -1,0 +1,31 @@
+{% comment %}The glossary's filter box. Hides concepts that do not match and the letters left empty. Inert without JavaScript.{% endcomment %}
+<script>
+  (function () {
+    var box = document.getElementById("glossary-search");
+    if (!box) return;
+    var terms = Array.prototype.slice.call(document.querySelectorAll(".term"));
+    var letters = Array.prototype.slice.call(document.querySelectorAll(".letter"));
+    var jumps = Array.prototype.slice.call(document.querySelectorAll("#glossary-letters a"));
+    var empty = document.getElementById("glossary-empty");
+    function fold(s) { return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
+    function apply() {
+      var words = fold(box.value).split(/\s+/).filter(Boolean), shown = 0;
+      terms.forEach(function (t) {
+        var hay = fold(t.getAttribute("data-find"));
+        var hit = words.every(function (w) { return hay.indexOf(w) !== -1; });
+        t.hidden = !hit; if (hit) shown++;
+      });
+      letters.forEach(function (l, i) {
+        var any = !!l.querySelector(".term:not([hidden])");
+        l.hidden = !any;
+        if (jumps[i]) jumps[i].classList.toggle("is-off", !any);
+      });
+      empty.hidden = shown !== 0;
+    }
+    box.addEventListener("input", apply);
+    box.addEventListener("keydown", function (e) { if (e.key === "Escape") { box.value = ""; apply(); box.blur(); } });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "/" && !/^(input|textarea|select)$/i.test((document.activeElement || {}).tagName || "") && !e.metaKey && !e.ctrlKey) { e.preventDefault(); box.focus(); }
+    });
+  })();
+</script>

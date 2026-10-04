@@ -1,0 +1,149 @@
+{% comment %}
+  The body of a course page: a hero with the course in a sentence, the way in and the
+  facts; a route map of its parts; the notes of each part in reading order with what each
+  one gives; and a rail saying how the course connects to the others. Everything comes
+  from the course hash that _plugins/courses.rb builds; there is nothing to edit here
+  when a course is added.
+
+  No heading above h2 in here, and the only h2s are the parts, so the page stays a flat
+  outline.
+{% endcomment %}
+{% assign c = include.course %}
+<div class="course" style="--domain: var(--hue-{{ c.domain_hue }})" data-course="{{ c.slug }}" data-total="{{ c.total }}">
+
+  <div class="course-hero">
+    <p class="course-hero__lede">{{ c.summary }}</p>
+    <ul class="course-hero__chips">
+      <li><a class="chip chip--domain" href="{{ '/notes/' | relative_url }}#{{ c.domain }}"><span class="chip__dot"></span>{{ c.domain_title }}</a></li>
+      <li><span class="chip chip--status chip--{{ c.status }}">{{ c.status_label }}</span></li>
+      {% if c.level %}<li><span class="chip">{{ c.level }}</span></li>{% endif %}
+    </ul>
+    <div class="course-hero__actions">
+      {% if c.first_url %}
+        <a class="btn-go" id="course-go" href="{{ c.first_url | relative_url }}">Start with {{ c.first_title }} <span aria-hidden="true">&rarr;</span></a>
+      {% else %}
+        <span class="btn-go btn-go--off">No notes written yet</span>
+      {% endif %}
+      {% if c.reference %}<a class="btn-ghost" href="{{ c.reference | relative_url }}"><i class="far fa-file-pdf" aria-hidden="true"></i> Technical reference (PDF)</a>{% endif %}
+    </div>
+    <dl class="course-hero__facts">
+      <div><dt>Written</dt><dd>{{ c.written }}<small> of {{ c.total }}</small></dd></div>
+      <div><dt>Concepts</dt><dd>{{ c.concepts.size }}</dd></div>
+      <div><dt>Verified</dt><dd>{{ c.verified }}<small> of {{ c.written }}</small></dd></div>
+      <div id="course-read" hidden><dt>You read</dt><dd><span data-read>0</span><small> of {{ c.written }}</small></dd></div>
+    </dl>
+  </div>
+
+  {% if c.parts.size > 1 %}
+    <ol class="route" aria-label="Parts of this course">
+      {% for part in c.parts %}
+        {% assign span = part.items.size %}
+        {% assign fill = part.written | times: 100 | divided_by: span %}
+        <li class="route__part" style="--part: var(--hue-{{ part.hue }}); flex-grow: {{ span }}">
+          <a href="#{{ part.slug }}">
+            <span class="route__bar"><span style="width: {{ fill }}%"></span></span>
+            <span class="route__name">{{ part.title }}</span>
+            <span class="route__count">{{ part.written }}&thinsp;/&thinsp;{{ span }}</span>
+          </a>
+        </li>
+      {% endfor %}
+    </ol>
+  {% endif %}
+
+  <div class="course-grid">
+    <div class="course-main">
+      {% assign pos = 0 %}
+      {% for part in c.parts %}
+        <section class="part" id="{{ part.slug }}" style="--part: var(--hue-{{ part.hue }})">
+          <header class="part__head">
+            <span class="part__no">{{ forloop.index }}</span>
+            <h2 class="part__title">{{ part.title }}</h2>
+            <span class="part__count">{{ part.written }} of {{ part.items.size }} written</span>
+          </header>
+          {% if part.blurb %}<p class="part__blurb">{{ part.blurb }}</p>{% endif %}
+          <ol class="rows">
+            {% for item in part.items %}
+              {% assign pos = pos | plus: 1 %}
+              {% if item.written %}
+                <li class="row" data-url="{{ item.url | relative_url }}">
+                  <a class="row__link" href="{{ item.url | relative_url }}">
+                    <span class="row__no">{{ pos }}</span>
+                    <span class="row__body">
+                      <span class="row__title">{{ item.title | markdownify | strip_html | strip }}</span>
+                      {% if item.summary != "" %}<span class="row__summary">{{ item.summary }}</span>{% endif %}
+                    </span>
+                    <span class="row__side">
+                      {% if item.concepts.size > 0 %}<span class="row__concepts" title="Concepts this note introduces">{{ item.concepts.size }} concept{% if item.concepts.size != 1 %}s{% endif %}</span>{% endif %}
+                      {% case item.state %}
+                        {% when "verified" %}<i class="fas fa-circle-check row__state row__state--ok" title="Human-verified" aria-label="Human-verified"></i>
+                        {% when "stale" %}<i class="fas fa-triangle-exclamation row__state row__state--warn" title="Edited since it was verified" aria-label="Edited since verification"></i>
+                        {% when "unlocked" %}<i class="fas fa-lock-open row__state row__state--warn" title="Marked verified without a checksum" aria-label="Verified, unlocked"></i>
+                        {% else %}<i class="far fa-circle row__state" title="Awaiting human review" aria-label="Awaiting human review"></i>
+                      {% endcase %}
+                    </span>
+                  </a>
+                </li>
+              {% else %}
+                <li class="row row--planned">
+                  <span class="row__link">
+                    <span class="row__no">{{ pos }}</span>
+                    <span class="row__body"><span class="row__title">{{ item.title }}</span></span>
+                    <span class="row__side"><span class="row__badge">planned</span></span>
+                  </span>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ol>
+        </section>
+      {% endfor %}
+
+      {% if c.concepts.size > 0 %}
+        <details class="course-concepts">
+          <summary><span>Concepts in this course</span><span class="course-concepts__n">{{ c.concepts.size }}</span></summary>
+          <ul>
+            {% for concept in c.concepts %}
+              <li>{% if concept.href %}<a href="{{ concept.href | relative_url }}">{{ concept.name }}</a>{% else %}<span class="is-planned">{{ concept.name }}</span>{% endif %}</li>
+            {% endfor %}
+          </ul>
+          <p class="course-concepts__all"><a href="{{ '/concepts/' | relative_url }}">All concepts, A to Z &rarr;</a></p>
+        </details>
+      {% endif %}
+    </div>
+
+    <aside class="course-aside" aria-label="How this course connects to others">
+      {% if c.reads_from.size > 0 %}
+        <section class="links-card">
+          <h3 class="links-card__title">Builds on</h3>
+          <ul>
+            {% for l in c.reads_from %}
+              <li style="--domain: var(--hue-{{ l.hue }})">
+                <a href="{{ l.url | relative_url }}"><span class="chip__dot"></span>{{ l.title }}</a>
+                <span class="links-card__names">{{ l.names | join: ", " }}{% if l.count > 5 %} and {{ l.count | minus: 5 }} more{% endif %}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+      {% if c.feeds.size > 0 %}
+        <section class="links-card">
+          <h3 class="links-card__title">Leads to</h3>
+          <ul>
+            {% for l in c.feeds %}
+              <li style="--domain: var(--hue-{{ l.hue }})">
+                <a href="{{ l.url | relative_url }}"><span class="chip__dot"></span>{{ l.title }}</a>
+                <span class="links-card__names">{{ l.names | join: ", " }}{% if l.count > 5 %} and {{ l.count | minus: 5 }} more{% endif %}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+      {% if c.reads_from.size == 0 and c.feeds.size == 0 %}
+        <section class="links-card links-card--quiet">
+          <h3 class="links-card__title">Connections</h3>
+          <p>No links to other courses yet. They appear here when a note <code>requires</code> a concept that another course defines.</p>
+        </section>
+      {% endif %}
+      <p class="course-aside__back"><a href="{{ '/notes/' | relative_url }}#{{ c.domain }}">&larr; All {{ c.domain_title }} courses</a></p>
+    </aside>
+  </div>
+</div>

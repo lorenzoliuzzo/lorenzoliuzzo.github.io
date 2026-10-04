@@ -119,7 +119,7 @@ defaults:
       type: notes
     values:
       # The note layout wraps `single` and adds a strip saying where the note sits
-      # in its course (_data/courses.yml).
+      # in its course (_data/courses/<slug>.yml).
       layout: note
       author_profile: false
       show_date: true

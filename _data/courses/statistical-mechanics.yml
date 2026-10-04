@@ -1,0 +1,17 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+domain: physics
+order: 5
+title: "Statistical Mechanics"
+summary: "Statistical mechanics from information theory: ensembles, interacting systems and the Ising model, phase transitions and broken symmetry."
+parts:
+  - title: "Foundations"
+    blurb: "Entropy, ensembles and the ideal gas."
+    notes:
+      - physics/statistical-mechanics/01
+      - physics/statistical-mechanics/02
+  - title: "Phase transitions"
+    blurb: "Spin models, mean field theory, and what symmetry breaking implies."
+    notes:
+      - physics/statistical-mechanics/03
+      - physics/statistical-mechanics/04
+      - physics/statistical-mechanics/05

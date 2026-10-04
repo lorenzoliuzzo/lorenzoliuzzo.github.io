@@ -1,0 +1,25 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+domain: ai
+order: 1
+title: "Neural Networks"
+summary: "The classic network architectures: perceptrons and their activation functions, convolutional and recurrent models, associative memories and self-organising maps."
+parts:
+  - title: "Foundations"
+    blurb: "The neuron, the activation functions and the multi-layer perceptron."
+    notes:
+      - ai/neural-networks/introduction
+      - ai/neural-networks/activation-functions
+      - ai/neural-networks/multi-layer-perceptron
+  - title: "Architectures"
+    blurb: "Networks shaped for local structure, sequences and compression."
+    notes:
+      - ai/neural-networks/radial-basis-function-network
+      - ai/neural-networks/convolutional-nn
+      - ai/neural-networks/recurrent-nn
+      - ai/neural-networks/autoencoder
+  - title: "Associative and competitive"
+    blurb: "Networks that store patterns or organise themselves without labels."
+    notes:
+      - ai/neural-networks/hopfield-network
+      - ai/neural-networks/self-organizing-map
+      - ai/neural-networks/learning-vector-quantization

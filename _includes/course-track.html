@@ -1,0 +1,35 @@
+{% comment %}
+  Course page, per-reader and local: turns "Start with" into "Continue with" once the
+  reader has opened a note of this course, and marks the notes already opened. The store
+  is written by note-track.html and read here and on the shelf; it lives in this browser
+  only and the page is complete without it.
+{% endcomment %}
+<script>
+  (function () {
+    var root = document.querySelector(".course");
+    if (!root) return;
+    var slug = root.getAttribute("data-course");
+    var progress = {}, seen = {};
+    try {
+      progress = JSON.parse(localStorage.getItem("notes-progress")) || {};
+      seen = JSON.parse(localStorage.getItem("notes-seen")) || {};
+    } catch (e) { return; }
+
+    var rows = root.querySelectorAll(".row[data-url]");
+    var count = 0;
+    Array.prototype.forEach.call(rows, function (row) {
+      if (seen[row.getAttribute("data-url")]) { row.classList.add("is-seen"); count++; }
+    });
+    var read = document.getElementById("course-read");
+    if (read && count) {
+      read.querySelector("[data-read]").textContent = count;
+      read.hidden = false;
+    }
+
+    var last = progress[slug], go = document.getElementById("course-go");
+    if (last && go && last.url) {
+      go.setAttribute("href", last.url);
+      go.innerHTML = "Continue with " + last.title.replace(/[<>&]/g, "") + " <span aria-hidden=\"true\">&rarr;</span>";
+    }
+  })();
+</script>

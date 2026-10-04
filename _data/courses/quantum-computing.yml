@@ -1,0 +1,16 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+domain: physics
+order: 4
+title: "Quantum Computing"
+summary: "Computation with qubits: the circuit model, the algorithms that exploit it, and the hardware that realises it."
+parts:
+  - title: "Foundations"
+    blurb: "Qubits and the circuit model."
+    notes:
+      - physics/quantum-computing/introduction
+      - physics/quantum-computing/circuits
+  - title: "Algorithms and hardware"
+    blurb: "What quantum computers can do, and what they are built from."
+    notes:
+      - physics/quantum-computing/algorithms
+      - physics/quantum-computing/architectures

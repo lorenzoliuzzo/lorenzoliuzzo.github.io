@@ -5,7 +5,7 @@ layout: single
 {% comment %}
   A note. Wraps `single`: a header card above the text (course path, the idea, goals,
   prerequisites) and a next-step card below it. Both come from front matter and from
-  _data/courses.yml; a note with neither still renders as plain text. The pager under
+  _data/courses/<slug>.yml; a note with neither still renders as plain text. The pager under
   the footer follows the course order too; see _includes/post_pagination.html.
 {% endcomment %}
 
@@ -15,3 +15,4 @@ layout: single
 {{ content }}
 
 {% include note-next.html %}
+{% include note-track.html %}

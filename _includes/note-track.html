@@ -1,0 +1,25 @@
+{% comment %}
+  A note, remembered by this browser: which note of its course was opened last (the shelf's
+  "Continue" strip and the course page's button read it) and which notes were opened at
+  all. Local storage only; nothing is sent anywhere, and the note reads the same without it.
+  Expects course-context.html to have run.
+{% endcomment %}
+{% if this_course %}
+<script>
+  (function () {
+    try {
+      var progress = JSON.parse(localStorage.getItem("notes-progress")) || {};
+      var seen = JSON.parse(localStorage.getItem("notes-seen")) || {};
+      var url = {{ page.url | relative_url | jsonify }};
+      var now = Date.now();
+      progress[{{ this_course.slug | jsonify }}] = {
+        url: url, title: {{ page.title | jsonify }}, course: {{ this_course.title | jsonify }},
+        pos: {{ course_pos }}, total: {{ course_total }}, t: now
+      };
+      seen[url] = now;
+      localStorage.setItem("notes-progress", JSON.stringify(progress));
+      localStorage.setItem("notes-seen", JSON.stringify(seen));
+    } catch (e) { /* storage unavailable: the page is the same without it */ }
+  })();
+</script>
+{% endif %}

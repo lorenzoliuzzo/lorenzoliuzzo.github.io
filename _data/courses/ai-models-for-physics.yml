@@ -1,0 +1,17 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+domain: ai
+order: 5
+title: "AI Models for Physics"
+summary: "Where machine learning and physics meet: models borrowed from statistical physics, and networks that learn physical systems."
+parts:
+  - title: "From statistical physics"
+    blurb: "The Ising model and the Boltzmann machine."
+    notes:
+      - ai/ai-models-for-physics/ising
+      - ai/ai-models-for-physics/boltzmann-machines
+  - title: "Networks for physical systems"
+    blurb: "Networks that respect the physics of their data."
+    notes:
+      - ai/ai-models-for-physics/physics-informed-nn
+      - ai/ai-models-for-physics/convolutional-nn
+      - ai/ai-models-for-physics/graph-nn

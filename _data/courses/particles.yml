@@ -1,0 +1,22 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+domain: physics
+order: 6
+title: "Particle Physics"
+summary: "How the structure of matter was found out, and the Standard Model that describes it."
+parts:
+  - title: "Experiments"
+    blurb: "Scattering, cross sections and the detectors that record them."
+    notes:
+      - physics/particles/rutherford-experiment
+      - physics/particles/cross-section
+      - physics/particles/detectors
+  - title: "Decays and forces"
+    blurb: "Radioactivity, and the strong and weak interactions."
+    notes:
+      - physics/particles/radioactive-decays
+      - physics/particles/strong-force
+      - physics/particles/weak-force
+  - title: "The Standard Model"
+    blurb: "The particles and interactions in one framework."
+    notes:
+      - physics/particles/standard-model

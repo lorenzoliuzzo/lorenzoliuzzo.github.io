@@ -1,0 +1,18 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+domain: physics
+order: 3
+title: "Quantum Mechanics"
+summary: "From the first quantum phenomena to the Schrödinger equation and the systems it solves."
+parts:
+  - title: "Origins"
+    blurb: "The experiments and models that broke classical physics."
+    notes:
+      - physics/quantum-mechanics/photoelectric-effect
+      - physics/quantum-mechanics/bohr-model
+  - title: "Wave mechanics"
+    blurb: "The Schrödinger equation, the uncertainty principle and the solvable systems."
+    notes:
+      - physics/quantum-mechanics/schrodinger-equation
+      - physics/quantum-mechanics/uncertainty-principle
+      - physics/quantum-mechanics/harmonic-oscillator
+      - physics/quantum-mechanics/hydrogen-atom

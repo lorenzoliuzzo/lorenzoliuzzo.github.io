@@ -18,13 +18,13 @@ Reference examples, in the order to read them: `_notes/statistics/sampling-distr
 
 ## 1. Before writing anything
 
-1. Open `_data/courses.yml`. Find the note (or add it, see `plan-course-notes`). Read its neighbours: the note before it, the note after it, and the stub titles in the same part. Everything a note *requires* must be defined by an earlier note in that file.
+1. Open the course's data file, `_data/courses/<slug>.yml`. Find the note (or add it, see `plan-course-notes`). Read its neighbours: the note before it, the note after it, and the stub titles in the same part. Everything a note *requires* must be defined by an earlier note in that file.
 2. Read the material the user points at (slides, book chapter). Decide, in writing, before drafting:
    - **the hook**: the single claim worth remembering if all else is forgotten;
    - **2 to 4 goals**: what the reader can *do* afterwards;
    - **the concepts it defines** (ids, section 3) and **the concepts it requires**;
    - **the anchor figure**: the one picture the note will be remembered by.
-3. Size check. A note is about **700 to 1,300 words**, formulas and tables included (the linter warns above 1,500). If the plan has more than two big ideas or will not fit, split it and update `courses.yml`. A note that cannot state its hook in one sentence is two notes.
+3. Size check. A note is about **700 to 1,300 words**, formulas and tables included (the linter warns above 1,500). If the plan has more than two big ideas or will not fit, split it and update the course file. A note that cannot state its hook in one sentence is two notes.
 4. Order of work for new material: outline (hook, goals, concepts) → reference chapter in Typst → figure scripts → the note → checks. The note is a digest of the reference, never the other way round.
 
 ## 2. File anatomy
@@ -69,7 +69,7 @@ The answer.
 Rules for the file:
 
 - **Never** set `layout` or `permalink` (the collection defaults apply) and **never** set `human_verified`, `verified_at` or `verified_hash`: those are the author's sign-off, recorded by the MyThingsLab drawer, and a note stays "AI-drafted" until they give it.
-- The tags are `[Course area, Part]`, e.g. `Statistics`, `Inference`. They only matter for the archive's fallback grouping; the course order comes from `courses.yml`.
+- The tags are `[Course area, Part]`, e.g. `Statistics`, `Inference`. They only matter for notes outside any course; the course order comes from the course file.
 - A stub is a note with front matter and an **empty body**. The build keeps it out of the site and lists it as planned. A stub may already carry `defines`, so later notes can require its concepts.
 
 ## 3. Front matter, field by field
@@ -99,7 +99,7 @@ Every `defines` entry becomes a node of `/graph.json`; every `requires` entry an
    `Proofs are in the [reference (PDF)]({{ '/assets/notes/<course>/<course>-reference/<course>-reference.pdf' | relative_url }}).`
 2. **`#` sections**, 2 to 6 of them, each with a job (a step in the argument), 100 to 300 words. `##` only for parallel items (the distributions of a catalogue) or a genuine sub-step. No `###`.
 3. **`# Recap`**: 2 to 4 recall cards (section 7).
-4. **`# Where this goes next`**: only for links the course order does not give (other courses, later topics that reuse the note). The previous/next pager and the Next-step card come from `courses.yml`; do not repeat them.
+4. **`# Where this goes next`**: only for links the course order does not give (other courses, later topics that reuse the note). The previous/next pager and the Next-step card come from the course file; do not repeat them.
 5. A `# Vocabulary` section only when the note introduces many terms that need a one-line gloss. Usually omitted. **Never** a `# Before you start` section: the header card builds it.
 
 Cross-links inside the course: `[Random variables]({{ '/notes/statistics/random-variables/' | relative_url }}#limit-theorems)`. The target note must exist and the anchor must be one of its headings (the linter checks).
@@ -188,7 +188,7 @@ It is tied to the boundary of the support, so it is skewed and biased.
 
 ## 8. Layout and colour: what you do *not* control
 
-The part colour, header card ("The idea", goals, prerequisites, path dots), "Next step" card, section numbering, contents rail, breadcrumbs and pager are generated from front matter and `courses.yml`. Do not recreate them in Markdown, do not add inline styles or HTML other than the recall-card `<details>`, and do not number headings by hand.
+The part colour, header card ("The idea", goals, prerequisites, path dots), "Next step" card, section numbering, contents rail, breadcrumbs and pager are generated from front matter and the course file (`_data/courses/<slug>.yml`). Do not recreate them in Markdown, do not add inline styles or HTML other than the recall-card `<details>`, and do not number headings by hand.
 
 ## 9. Checks (run all, fix everything)
 
@@ -209,5 +209,5 @@ Then read the note once as the reader: Is the hook true and memorable? Does each
 - Put a proof longer than five lines in a note: it goes to the reference.
 - Add more than three figures, or a figure that decorates instead of arguing.
 - Repeat the header card's content (prerequisites, goals) in the body.
-- Edit another note's `defines` ids, or reorder `courses.yml`, without being asked.
+- Edit another note's `defines` ids, or reorder a course file, without being asked.
 - Leave a stub's `defines` pointing at anchors that will not exist: the anchor is checked only once the note has a body.

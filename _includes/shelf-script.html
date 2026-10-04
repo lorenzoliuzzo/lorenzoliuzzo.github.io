@@ -1,0 +1,169 @@
+{% comment %}
+  The shelf's three small behaviours, none of which the page needs:
+
+    domain chips   show one domain, or all; /notes/#physics opens already filtered
+    old anchors    /notes/#<course> and /notes/#<course>-<part> forward to the course page
+    continue       the notes most recently opened in this browser (written by note-track.html)
+    search         over notes and concepts, from /notes-index.json, fetched on first use
+
+  Without JavaScript every course is on the page and the chips and search box do nothing.
+  This is an include, not inline in a page, so kramdown never rewrites the script.
+{% endcomment %}
+<script>
+  (function () {
+    var INDEX_URL = {{ '/notes-index.json' | relative_url | jsonify }};
+    var courses = document.getElementById("shelf-courses");
+    var results = document.getElementById("shelf-results");
+    var box = document.getElementById("shelf-search");
+    var chips = Array.prototype.slice.call(document.querySelectorAll(".shelf-chips .chip--btn"));
+    var sections = Array.prototype.slice.call(document.querySelectorAll(".domain"));
+    if (!courses || !box) return;
+
+    /* Domain chips ----------------------------------------------------------- */
+
+    function show(domain) {
+      chips.forEach(function (chip) { chip.setAttribute("aria-pressed", chip.getAttribute("data-domain") === domain ? "true" : "false"); });
+      sections.forEach(function (s) { s.hidden = !(domain === "all" || s.getAttribute("data-domain") === domain); });
+    }
+    chips.forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        var d = chip.getAttribute("data-domain");
+        show(d);
+        try { history.replaceState(null, "", d === "all" ? location.pathname : "#" + d); } catch (e) { /* not essential */ }
+      });
+    });
+    // Before courses had their own pages, a course was /notes/#<course> and a part
+    // /notes/#<course>-<part>. Links like that still land on the right page.
+    var OLD = {
+      {% for c in site.data.courses %}{{ c.title | slugify | jsonify }}: {{ c.url | relative_url | jsonify }},
+      {% for p in c.parts %}{{ c.title | slugify | append: "-" | append: p.slug | jsonify }}: {{ c.url | relative_url | append: "#" | append: p.slug | jsonify }},
+      {% endfor %}
+      {% if c.domain == "ai" %}{{ "artificial-intelligence-" | append: c.slug | jsonify }}: {{ c.url | relative_url | jsonify }},{% elsif c.domain == "physics" %}{{ "physics-" | append: c.slug | jsonify }}: {{ c.url | relative_url | jsonify }},{% endif %}
+      {% endfor %}
+      "physics-particles": {{ '/notes/particles/' | relative_url | jsonify }}
+    };
+    // The old sections were the notes' first tag; the domains took their place.
+    var DOMAIN_ALIAS = { "artificial-intelligence": "ai", "logic": "mathematics" };
+    function fromHash() {
+      var h = location.hash.slice(1);
+      if (OLD[h]) { location.replace(OLD[h]); return; }
+      if (DOMAIN_ALIAS[h]) h = DOMAIN_ALIAS[h];
+      var known = chips.some(function (c) { return c.getAttribute("data-domain") === h; });
+      show(known && h !== "all" ? h : "all");
+    }
+    window.addEventListener("hashchange", fromHash);
+    fromHash();
+
+    /* Continue --------------------------------------------------------------- */
+
+    try {
+      var progress = JSON.parse(localStorage.getItem("notes-progress")) || {};
+      var recent = Object.keys(progress).map(function (k) { return progress[k]; })
+        .filter(function (p) { return p && p.url && p.title; })
+        .sort(function (a, b) { return b.t - a.t; }).slice(0, 3);
+      var strip = document.getElementById("shelf-continue");
+      if (recent.length && strip) {
+        var label = document.createElement("p");
+        label.className = "shelf-continue__label";
+        label.textContent = "Pick up where you left off";
+        var list = document.createElement("div");
+        list.className = "shelf-continue__list";
+        recent.forEach(function (p) {
+          var a = document.createElement("a");
+          a.href = p.url;
+          a.className = "shelf-continue__item";
+          var c = document.createElement("span"); c.className = "shelf-continue__course"; c.textContent = p.course + (p.pos ? " · " + p.pos + " / " + p.total : "");
+          var t = document.createElement("span"); t.className = "shelf-continue__title"; t.textContent = p.title;
+          a.appendChild(c); a.appendChild(t); list.appendChild(a);
+        });
+        strip.appendChild(label); strip.appendChild(list); strip.hidden = false;
+      }
+    } catch (e) { /* storage unavailable: no strip */ }
+
+    /* Search ----------------------------------------------------------------- */
+
+    var index = null, loading = false, waiting = [];
+    function load(then) {
+      if (index) return then();
+      waiting.push(then);
+      if (loading) return;
+      loading = true;
+      fetch(INDEX_URL).then(function (r) { return r.json(); }).then(function (data) {
+        index = data; loading = false;
+        var queue = waiting; waiting = [];
+        queue.forEach(function (fn) { fn(); });
+      }).catch(function () { loading = false; waiting = []; results.hidden = false; results.textContent = "The search index could not be loaded."; });
+    }
+
+    function fold(s) { return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
+
+    function score(entry, words) {
+      var title = fold(entry.t), crumb = fold((entry.c || "") + " " + (entry.p || "") + " " + (entry.n || "")), rest = fold((entry.e || "") + " " + (entry.x || ""));
+      var total = 0;
+      for (var i = 0; i < words.length; i++) {
+        var w = words[i], s = 0;
+        if (title === w) s = 10;
+        else if (title.indexOf(w) === 0) s = 7;
+        else if (title.indexOf(" " + w) !== -1) s = 6;
+        else if (title.indexOf(w) !== -1) s = 4;
+        else if (crumb.indexOf(w) !== -1) s = 2;
+        else if (rest.indexOf(w) !== -1) s = 1;
+        if (!s) return 0;
+        total += s;
+      }
+      return total + (entry.w ? 0.5 : 0) + (entry.k === "note" ? 0.2 : 0);
+    }
+
+    function mark(text, words) {
+      var frag = document.createDocumentFragment();
+      var lower = fold(text), spans = [];
+      words.forEach(function (w) { var at = lower.indexOf(w); if (at !== -1) spans.push([at, at + w.length]); });
+      spans.sort(function (a, b) { return a[0] - b[0]; });
+      var pos = 0;
+      spans.forEach(function (sp) {
+        if (sp[0] < pos) return;
+        frag.appendChild(document.createTextNode(text.slice(pos, sp[0])));
+        var m = document.createElement("mark"); m.textContent = text.slice(sp[0], sp[1]); frag.appendChild(m);
+        pos = sp[1];
+      });
+      frag.appendChild(document.createTextNode(text.slice(pos)));
+      return frag;
+    }
+
+    function render(q) {
+      var words = fold(q).split(/\s+/).filter(Boolean);
+      results.textContent = "";
+      if (!words.length) { results.hidden = true; courses.hidden = false; return; }
+      var found = index.map(function (e) { return { e: e, s: score(e, words) }; })
+        .filter(function (r) { return r.s > 0; })
+        .sort(function (a, b) { return b.s - a.s; }).slice(0, 40);
+      courses.hidden = true; results.hidden = false;
+      var head = document.createElement("p");
+      head.className = "shelf-results__head";
+      head.textContent = found.length ? found.length + (found.length === 40 ? "+" : "") + " result" + (found.length === 1 ? "" : "s") + " for “" + q.trim() + "”" : "Nothing matches “" + q.trim() + "”";
+      results.appendChild(head);
+      var list = document.createElement("ul"); list.className = "shelf-results__list";
+      found.forEach(function (r) {
+        var e = r.e, li = document.createElement("li");
+        var link = document.createElement(e.u ? "a" : "span");
+        link.className = "result" + (e.u ? "" : " result--planned");
+        if (e.u) link.href = e.u;
+        var kind = document.createElement("span"); kind.className = "result__kind result__kind--" + e.k; kind.textContent = e.k === "concept" ? "Concept" : (e.w ? "Note" : "Planned");
+        var title = document.createElement("span"); title.className = "result__title"; title.appendChild(mark(e.t, words));
+        var crumb = document.createElement("span"); crumb.className = "result__crumb";
+        crumb.textContent = e.k === "concept" ? [e.c, e.n && "defined in " + e.n].filter(Boolean).join(" · ") : [e.c, e.p].filter(Boolean).join(" · ");
+        link.appendChild(kind); link.appendChild(title); link.appendChild(crumb);
+        if (e.e) { var ex = document.createElement("span"); ex.className = "result__excerpt"; ex.textContent = e.e; link.appendChild(ex); }
+        li.appendChild(link); list.appendChild(li);
+      });
+      results.appendChild(list);
+    }
+
+    box.addEventListener("input", function () { load(function () { render(box.value); }); });
+    box.addEventListener("focus", function () { load(function () {}); });
+    box.addEventListener("keydown", function (e) { if (e.key === "Escape") { box.value = ""; render(""); box.blur(); } });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "/" && !/^(input|textarea|select)$/i.test((document.activeElement || {}).tagName || "") && !e.metaKey && !e.ctrlKey) { e.preventDefault(); box.focus(); }
+    });
+  })();
+</script>

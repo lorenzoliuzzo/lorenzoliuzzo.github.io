@@ -3,12 +3,59 @@
 
   The theme builds each crumb's href from a single URL segment, which only works
   for flat, top-level pages: on a note at /notes/physics/optics/ it emits links to
-  /physics and /optics, neither of which exists. Notes here are filed by tag and
-  library entries by shelf, not by folder, so the crumbs are built from whichever
-  of those the collection uses and point at the matching section of the archive.
-  Anything else falls back to a plain trail.
+  /physics and /optics, neither of which exists. The crumbs here are built from
+  what the page knows about itself:
+
+    a note in a course   Notes / Course / Part / this note   (course page, part section)
+    a course page        Notes / Domain / this course        (the domain's shelf)
+    a note outside one   Notes / its tags                    (the old tag grouping)
+    projects, library    their archive, then tag or shelf
+
+  Each crumb is "label~href" and the list is joined with "|".
 {% endcomment %}
 {% assign locale = include.locale | default: site.locale %}
+{% assign sep = site.data.ui-text[locale].breadcrumb_separator | default: "/" %}
+{% assign root_label = nil %}
+{% assign trail = "" %}
+
+{% case page.collection %}
+  {% when "notes" %}
+    {% assign root_label = "Notes" %}{% assign root_url = "/notes/" %}
+    {% include course-context.html position="data" %}
+    {% if this_course %}
+      {% assign part_href = course_url | append: "#" | append: this_part.slug %}
+      {% assign trail = this_course.title | append: "~" | append: course_url | append: "|" | append: this_part.title | append: "~" | append: part_href %}
+    {% else %}
+      {% assign anchor = "" %}
+      {% for tag in page.tags limit: 2 %}
+        {% if anchor == "" %}{% assign anchor = tag | slugify %}{% else %}{% assign anchor = anchor | append: "-" | append: tag | slugify %}{% endif %}
+        {% assign crumb = tag | append: "~" | append: root_url | append: "#" | append: anchor %}
+        {% if trail == "" %}{% assign trail = crumb %}{% else %}{% assign trail = trail | append: "|" | append: crumb %}{% endif %}
+      {% endfor %}
+    {% endif %}
+  {% when "projects" %}
+    {% assign root_label = "Projects" %}{% assign root_url = "/projects/" %}
+    {% assign anchor = "" %}
+    {% for tag in page.tags limit: 2 %}
+      {% if anchor == "" %}{% assign anchor = tag | slugify %}{% else %}{% assign anchor = anchor | append: "-" | append: tag | slugify %}{% endif %}
+      {% assign crumb = tag | append: "~" | append: root_url | append: "#" | append: anchor %}
+      {% if trail == "" %}{% assign trail = crumb %}{% else %}{% assign trail = trail | append: "|" | append: crumb %}{% endif %}
+    {% endfor %}
+  {% when "library" %}
+    {% assign root_label = "Library" %}{% assign root_url = "/library/" %}
+    {% assign shelves = page.shelf | split: "|" %}
+    {% assign anchor = "" %}
+    {% for tag in shelves limit: 2 %}
+      {% if anchor == "" %}{% assign anchor = tag | slugify %}{% else %}{% assign anchor = anchor | append: "-" | append: tag | slugify %}{% endif %}
+      {% assign crumb = tag | append: "~" | append: root_url | append: "#" | append: anchor %}
+      {% if trail == "" %}{% assign trail = crumb %}{% else %}{% assign trail = trail | append: "|" | append: crumb %}{% endif %}
+    {% endfor %}
+  {% else %}
+    {% if page.layout == "course" %}
+      {% assign root_label = "Notes" %}{% assign root_url = "/notes/" %}
+      {% assign trail = page.course.domain_title | append: "~/notes/#" | append: page.course.domain %}
+    {% endif %}
+{% endcase %}
 
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <ol itemscope itemtype="https://schema.org/BreadcrumbList">
@@ -16,45 +63,25 @@
       <a href="{{ '/' | relative_url }}" itemprop="item"><span itemprop="name">{{ site.data.ui-text[locale].breadcrumb_home_label | default: "Home" }}</span></a>
       <meta itemprop="position" content="1" />
     </li>
-    <span class="sep">{{ site.data.ui-text[locale].breadcrumb_separator | default: "/" }}</span>
-
-    {% comment %}
-      `crumbs` is the middle of the trail. Notes and projects are filed by tag, so it
-      is the tag list; a library entry has a single shelf string, and splitting it
-      yields an array of one — or an empty array for a book with no shelf.
-    {% endcomment %}
-    {% case page.collection %}
-      {% when "notes" %}
-        {% assign root_label = "Notes" %}{% assign root_url = "/notes/" %}{% assign crumbs = page.tags %}
-        {% comment %}A note in a course is filed under the course and its part, which are the archive's section and subsection ids.{% endcomment %}
-        {% include course-context.html position="data" %}
-        {% if this_course %}{% assign crumbs = this_course.title | append: "|" | append: this_part.title | split: "|" %}{% endif %}
-      {% when "projects" %}{% assign root_label = "Projects" %}{% assign root_url = "/projects/" %}{% assign crumbs = page.tags %}
-      {% when "library" %}{% assign root_label = "Library" %}{% assign root_url = "/library/" %}{% assign crumbs = page.shelf | split: "|" %}
-      {% else %}{% assign root_label = nil %}
-    {% endcase %}
+    <span class="sep">{{ sep }}</span>
 
     {% if root_label %}
       <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
         <a href="{{ root_url | relative_url }}" itemprop="item"><span itemprop="name">{{ root_label }}</span></a>
         <meta itemprop="position" content="2" />
       </li>
-      <span class="sep">{{ site.data.ui-text[locale].breadcrumb_separator | default: "/" }}</span>
+      <span class="sep">{{ sep }}</span>
 
       {% assign position = 2 %}
-      {% assign anchor = "" %}
-      {% for tag in crumbs limit: 2 %}
+      {% assign crumbs = trail | split: "|" %}
+      {% for crumb in crumbs %}
+        {% assign pair = crumb | split: "~" %}
         {% assign position = position | plus: 1 %}
-        {% if anchor == "" %}
-          {% assign anchor = tag | slugify %}
-        {% else %}
-          {% assign anchor = anchor | append: "-" | append: tag | slugify %}
-        {% endif %}
         <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-          <a href="{{ root_url | relative_url }}#{{ anchor }}" itemprop="item"><span itemprop="name">{{ tag }}</span></a>
+          <a href="{{ pair[1] | relative_url }}" itemprop="item"><span itemprop="name">{{ pair[0] }}</span></a>
           <meta itemprop="position" content="{{ position }}" />
         </li>
-        <span class="sep">{{ site.data.ui-text[locale].breadcrumb_separator | default: "/" }}</span>
+        <span class="sep">{{ sep }}</span>
       {% endfor %}
     {% endif %}
 
