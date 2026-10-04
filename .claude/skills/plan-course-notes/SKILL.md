@@ -9,7 +9,7 @@ A course is the unit the reader studies and the unit of the knowledge graph. It 
 
 ## 1. The course file and the domain
 
-The notes shelf (`/notes/`) shows one card per course, grouped by **domain** (`_data/domains.yml`: Artificial Intelligence, Physics, Mathematics). Each course has its own page at `/notes/<slug>/` with its parts, a route map, what each note gives and how it connects to other courses. A new course is one file, `_data/courses/<slug>.yml`; the file name is the slug.
+The notes shelf (`/notes/`) lists the courses, grouped by **domain** (`_data/domains.yml`: Artificial Intelligence, Physics, Mathematics). Each course has its own page at `/notes/<slug>/` with its parts, what each note gives and how it connects to other courses. A new course is one file, `_data/courses/<slug>.yml`; the file name is the slug.
 
 ```yaml
 domain: mathematics            # an id from _data/domains.yml
@@ -76,7 +76,7 @@ A gap shows up as a `requires` that points nowhere. Add a stub for it rather tha
 
 ## 5. The path as the reader sees it
 
-Check the result in the browser: the shelf shows the course as a card in its domain; the course page shows the route map, the parts with each note's excerpt (so every note needs a good `excerpt`), and the connections; a note shows the path dots, header card and Next-step card. Read the first three notes of the course in order as a new reader: is every "You need" row satisfied by what you have already read? Does the Next-step card sell the next note (its `excerpt`)? Fix the data, not the layout.
+Check the result in the browser: the shelf lists the course under its domain; the course page shows the parts with each note's excerpt (so every note needs a good `excerpt`), and the connections; a note shows the path dots, header card and Next-step card. Read the first three notes of the course in order as a new reader: is every "You need" row satisfied by what you have already read? Does the Next-step card sell the next note (its `excerpt`)? Fix the data, not the layout.
 
 ## 6. Order of work for a whole course
 

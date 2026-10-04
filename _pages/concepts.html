@@ -19,12 +19,8 @@ description: Every concept the notes introduce, A to Z, with where it is defined
   <p class="shelf-lede">Every concept the notes introduce, with the note that defines it and the notes that rely on it. This is the same data that links each note to what it needs.</p>
 
   <div class="shelf-tools">
-    <label class="shelf-search">
-      <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <input type="search" id="glossary-search" placeholder="Filter {{ list.size }} concepts" autocomplete="off" spellcheck="false" aria-label="Filter concepts">
-      <kbd aria-hidden="true">/</kbd>
-    </label>
-    <a class="shelf-link" href="{{ '/notes/' | relative_url }}"><span aria-hidden="true">&larr;</span> All courses</a>
+    <input type="search" id="glossary-search" placeholder="Filter {{ list.size }} concepts" autocomplete="off" spellcheck="false" aria-label="Filter concepts">
+    <div class="shelf-chips"><a class="shelf-link" href="{{ '/notes/' | relative_url }}">&larr; All courses</a></div>
   </div>
 
   <nav class="letters" aria-label="Jump to a letter" id="glossary-letters">
@@ -41,8 +37,8 @@ description: Every concept the notes introduce, A to Z, with where it is defined
           {% for c in g.items %}
             <li class="term" data-find="{{ c.name | downcase }} {{ c.course | downcase }}">
               <div class="term__line">
-                {% if c.url and c.planned == false %}<a class="term__name" href="{{ c.url | relative_url }}">{{ c.name }}</a>{% else %}<span class="term__name is-planned">{{ c.name }}</span><span class="row__badge">planned</span>{% endif %}
-                {% if c.course %}<a class="term__course" href="{{ c.course_url | relative_url }}" style="--domain: var(--hue-{{ c.hue }})"><span class="chip__dot"></span>{{ c.course }}</a>{% endif %}
+                {% if c.url and c.planned == false %}<a class="term__name" href="{{ c.url | relative_url }}">{{ c.name }}</a>{% else %}<span class="term__name is-planned">{{ c.name }}</span>{% endif %}
+                {% if c.course %}<a class="term__course" href="{{ c.course_url | relative_url }}">{{ c.course }}</a>{% endif %}
               </div>
               <p class="term__meta">
                 Defined in {% if c.note_url %}<a href="{{ c.note_url | relative_url }}">{{ c.note_title }}</a>{% else %}{{ c.note_title }}{% endif %}.

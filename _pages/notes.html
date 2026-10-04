@@ -8,7 +8,7 @@ breadcrumbs: false
 description: Study notes organised as courses, each a path with what you need first and what comes next.
 ---
 {% comment %}
-  The notes shelf: every course as a card, grouped by domain. A course's notes live on
+  The notes shelf: every course as a line, grouped by domain. A course's notes live on
   its own page (/notes/<slug>/). Courses, domains and counts come from
   _plugins/courses.rb; this page only lays them out. It is an .html page on purpose:
   kramdown would otherwise treat indented markup as code.
@@ -17,27 +17,15 @@ description: Study notes organised as courses, each a path with what you need fi
 {% assign groups = site.data.domain_groups %}
 
 <div class="shelf">
-  <p class="shelf-lede">Study notes from my physics and AI degrees, organised as courses. Each course is a path: the notes in reading order, what you need before each one, and what it opens up.</p>
-  <p class="shelf-stats">
-    <span><strong>{{ stats.courses }}</strong> courses</span>
-    <span><strong>{{ stats.written }}</strong> notes written</span>
-    <span><strong>{{ stats.planned }}</strong> planned</span>
-    <span><strong>{{ stats.concepts }}</strong> concepts</span>
-  </p>
+  <p class="shelf-lede">Study notes from my physics and AI degrees, one course at a time. Each course is a path: the notes in reading order, what you need before each one, and what it opens up.</p>
 
   <div class="shelf-tools">
-    <label class="shelf-search">
-      <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      <input type="search" id="shelf-search" placeholder="Search notes and concepts" autocomplete="off" spellcheck="false" aria-label="Search notes and concepts" aria-controls="shelf-results">
-      <kbd aria-hidden="true">/</kbd>
-    </label>
+    <input type="search" id="shelf-search" placeholder="Search notes and concepts" autocomplete="off" spellcheck="false" aria-label="Search notes and concepts" aria-controls="shelf-results">
     <div class="shelf-chips" role="group" aria-label="Show one domain">
-      <button type="button" class="chip chip--btn" data-domain="all" aria-pressed="true">All <span>{{ stats.courses }}</span></button>
-      {% for d in groups %}
-        <button type="button" class="chip chip--btn" data-domain="{{ d.id }}" aria-pressed="false" style="--domain: var(--hue-{{ d.hue }})"><span class="chip__dot"></span>{{ d.title }} <span>{{ d.courses.size }}</span></button>
-      {% endfor %}
+      <button type="button" class="chip--btn" data-domain="all" aria-pressed="true">All</button>
+      {% for d in groups %}<button type="button" class="chip--btn" data-domain="{{ d.id }}" aria-pressed="false">{{ d.title }}</button>{% endfor %}
+      <a class="shelf-link" href="{{ '/concepts/' | relative_url }}">Concepts A&ndash;Z</a>
     </div>
-    <a class="shelf-link" href="{{ '/concepts/' | relative_url }}">Concepts A&ndash;Z <span aria-hidden="true">&rarr;</span></a>
   </div>
 
   <section class="shelf-continue" id="shelf-continue" aria-label="Continue reading" hidden></section>
@@ -46,44 +34,25 @@ description: Study notes organised as courses, each a path with what you need fi
 
   <div id="shelf-courses">
     {% for d in groups %}
-      <section class="domain" id="{{ d.id }}" data-domain="{{ d.id }}" style="--domain: var(--hue-{{ d.hue }})">
-        <header class="domain__head">
-          <h2 class="domain__title"><span class="domain__dot"></span>{{ d.title }}</h2>
-          <p class="domain__meta">{{ d.courses.size }} course{% if d.courses.size != 1 %}s{% endif %} &middot; {{ d.written }} notes written{% if d.planned > 0 %}, {{ d.planned }} planned{% endif %}</p>
-          {% if d.blurb != "" %}<p class="domain__blurb">{{ d.blurb }}</p>{% endif %}
-        </header>
-        <div class="courses">
+      <section class="domain" id="{{ d.id }}" data-domain="{{ d.id }}">
+        <h2 class="domain__title">{{ d.title }}</h2>
+        {% if d.blurb != "" %}<p class="domain__blurb">{{ d.blurb }}</p>{% endif %}
+        <ul class="courses">
           {% for c in d.courses %}
-            <article class="course-card course-card--{{ c.status }}">
-              <div class="course-card__top">
-                <span class="chip chip--status chip--{{ c.status }}">{{ c.status_label }}</span>
-                <span class="course-card__n">{{ c.total }} note{% if c.total != 1 %}s{% endif %}</span>
-              </div>
-              <h3 class="course-card__title"><a href="{{ c.url | relative_url }}">{{ c.title }}</a></h3>
-              <p class="course-card__summary">{{ c.summary }}</p>
-              <div class="course-card__parts" aria-hidden="true">
-                {% for part in c.parts %}
-                  {% assign fill = part.written | times: 100 | divided_by: part.items.size %}
-                  <span style="flex-grow: {{ part.items.size }}; --part: var(--hue-{{ part.hue }}); --fill: {{ fill }}%" title="{{ part.title }}"></span>
-                {% endfor %}
-              </div>
-              <p class="course-card__foot">
-                <span>{{ c.written }} of {{ c.total }} written</span>
-                {% if c.reference %}<span class="course-card__pdf"><i class="far fa-file-pdf" aria-hidden="true"></i> PDF reference</span>{% endif %}
-                {% if c.reads_from.size > 0 %}<span class="course-card__links" title="Builds on other courses"><i class="fas fa-link" aria-hidden="true"></i> {{ c.reads_from.size }}</span>{% endif %}
-              </p>
-            </article>
+            <li class="course-item course-item--{{ c.status }}">
+              <a class="course-item__title" href="{{ c.url | relative_url }}">{{ c.title }}</a>
+              <span class="course-item__meta">{% if c.written == 0 %}planned{% elsif c.written == c.total %}{{ c.total }} note{% if c.total != 1 %}s{% endif %}{% else %}{{ c.written }} of {{ c.total }}{% endif %}</span>
+              <span class="course-item__summary">{{ c.summary }}</span>
+            </li>
           {% endfor %}
-        </div>
+        </ul>
       </section>
     {% endfor %}
 
     {% if site.data.loose_notes.size > 0 %}
-      <section class="domain" id="more" data-domain="more" style="--domain: var(--hue-6)">
-        <header class="domain__head">
-          <h2 class="domain__title"><span class="domain__dot"></span>More notes</h2>
-          <p class="domain__blurb">Notes that no course lists yet. Add them to a course in <code>_data/courses/</code> and they move onto its path.</p>
-        </header>
+      <section class="domain" id="more" data-domain="more">
+        <h2 class="domain__title">More notes</h2>
+        <p class="domain__blurb">Notes that no course lists yet. Add them to a course in <code>_data/courses/</code> and they move onto its path.</p>
         <ul class="loose">
           {% for n in site.data.loose_notes %}<li><a href="{{ n.url | relative_url }}">{{ n.title }}</a></li>{% endfor %}
         </ul>

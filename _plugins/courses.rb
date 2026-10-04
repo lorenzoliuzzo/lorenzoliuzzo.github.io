@@ -44,8 +44,22 @@ module MyThingsLab
         end
         text = para.to_s
       end
-      text = text.gsub(/\[([^\]]*)\]\([^)]*\)/, '\1').gsub(/[*_`$]/, "").gsub(/\s+/, " ").strip
-      text.length > 170 ? "#{text[0, 167].sub(/\s+\S*\z/, '')}…" : text
+      # An excerpt can arrive as rendered HTML (older notes): list items become clauses,
+      # the "Outline" heading goes, and every other tag is dropped.
+      text = text.gsub(%r{</li>}, "; ").gsub(%r{<h\d[^>]*>\s*Outline\s*</h\d>}i, "").gsub(/<[^>]+>/, " ")
+      text = text.gsub(/\[([^\]]*)\]\([^)]*\)/, '\1').gsub(/[*_`$]/, "").gsub(/\s+/, " ").strip.sub(/[;,]\s*\z/, "")
+      shorten(text)
+    end
+
+    # A blurb ends where a thought ends: at a sentence if one fits, else at a clause, and
+    # only as a last resort in the middle of a phrase.
+    def shorten(text, limit = 170)
+      return text if text.length <= limit
+      sentence = text[0, limit + 50][/\A.*?[.!?](?=\s|\z)/]
+      return sentence if sentence && sentence.length <= limit + 50 && sentence.length > 40
+      clause = text[0, limit][/\A.*[,;:]/]
+      return clause.chomp(",").chomp(";").chomp(":") if clause && clause.length > limit / 2
+      "#{text[0, limit - 3].sub(/\s+\S*\z/, '')}…"
     end
 
     def sort_key(name)
