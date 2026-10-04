@@ -1,11 +1,60 @@
-legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+# Supervised Learning (Università di Milano-Bicocca). One file per course: the file name is the
+# course's slug and its page is /notes/supervised-learning/. See .claude/skills/plan-course-notes/.
+# The two assignment write-ups that used to sit in this course are in supervised-learning-assignments.yml.
 domain: ai
 order: 3
 title: "Supervised Learning"
-summary: "Combining classifiers and comparing them rigorously."
+summary: "The learning problem and the classic learners, ensembles, local image features and detectors, then convolutional, recurrent and attention-based networks."
 parts:
-  - title: "Ensembles and comparison"
-    blurb: "Stacking models together, and testing whether one classifier really beats another."
+  - title: "The learning problem"
+    blurb: "What it means to learn from labelled examples, why training error misleads, and how to measure and compare learners honestly."
     notes:
-      - ai/supervised-learning/ensemble-stacking
-      - ai/supervised-learning/friedman-test
+      - ai/supervised-learning/learning-problem
+      - ai/supervised-learning/validation-and-cross-validation
+      - ai/supervised-learning/comparing-classifiers
+  - title: "Classic learners"
+    blurb: "Five ways to draw a decision boundary: a line, a tree, the neighbours, a margin and a network."
+    notes:
+      - ai/supervised-learning/linear-discriminant-analysis
+      - ai/supervised-learning/decision-trees
+      - ai/supervised-learning/k-nearest-neighbors
+      - ai/supervised-learning/support-vector-machines
+      - ai/supervised-learning/kernel-methods
+      - ai/supervised-learning/neural-networks-and-backpropagation
+  - title: "Ensembles"
+    blurb: "Why a committee of weak learners beats a single strong one, and the four ways to build the committee."
+    notes:
+      - ai/supervised-learning/why-ensembles
+      - ai/supervised-learning/adaboost
+      - ai/supervised-learning/bagging-random-forests
+      - ai/supervised-learning/random-tree-ensembles
+      - ai/supervised-learning/stacking
+  - title: "Keypoints"
+    blurb: "Recognizing one specific object in a cluttered image: from template matching to SIFT, matching and RANSAC."
+    notes:
+      - ai/supervised-learning/template-matching
+      - ai/supervised-learning/harris-corner-detector
+      - ai/supervised-learning/sift-detector
+      - ai/supervised-learning/sift-descriptor
+      - ai/supervised-learning/matching-and-ransac
+  - title: "Recognition and detection"
+    blurb: "Recognizing classes of objects instead of instances, scoring detectors, and the first real-time face detector."
+    notes:
+      - ai/supervised-learning/descriptor-variants
+      - ai/supervised-learning/bag-of-visual-words
+      - ai/supervised-learning/detection-metrics
+      - ai/supervised-learning/haar-features-integral-image
+      - ai/supervised-learning/viola-jones-cascade
+  - title: "Convolutional networks"
+    blurb: "Learning the features instead of designing them: convolution, famous architectures, and detectors built on them."
+    notes:
+      - ai/supervised-learning/cnn
+      - ai/supervised-learning/cnn-architectures
+      - ai/supervised-learning/two-stage-detection
+      - ai/supervised-learning/yolo
+  - title: "Sequences and attention"
+    blurb: "Networks for ordered data, attention in place of recurrence, and learning from data without labels."
+    notes:
+      - ai/supervised-learning/rnn
+      - ai/supervised-learning/transformers
+      - ai/supervised-learning/self-supervised-learning
