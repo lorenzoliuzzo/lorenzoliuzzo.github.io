@@ -26,6 +26,7 @@
       blurb: "Predicting a number from inputs, from straight lines to flexible curves, and how to keep them from overfitting."
       notes:
         - statistics/linear-regression
+        - statistics/regression-diagnostics
         - statistics/regularization
         - statistics/splines
         - statistics/gam-mars

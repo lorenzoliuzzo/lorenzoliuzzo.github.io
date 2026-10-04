@@ -13,6 +13,9 @@
 )
 
 #let notes = "https://lorenzoliuzzo.github.io/notes/statistics/"
+#let argmin = math.op("arg min", limits: true)
+#let col = math.op("col")
+#let corr = math.op("corr")
 
 = Probability toolkit
 
@@ -601,6 +604,331 @@ With $m$ tests and all nulls true, each at level $alpha$, the expected number of
   (i) By the union bound, $PP(union.big_(i in H_0) {p_i <= alpha slash m}) <= m_0 alpha slash m <= alpha$. (ii) is the Benjamini–Hochberg (1995) theorem; the proof conditions on the other $p$-values and is omitted.
 ]
 
+= Linear regression
+
+#notes-line(notes, ("Linear Regression", "linear-regression"), ("Regression Diagnostics and Leverage", "regression-diagnostics"))
+
+This chapter uses expectation, variance and covariance of random vectors, the multivariate linear map rule $Var(A Y) = A thin Var(Y) thin A^top$, and the $chi^2$, $t$ and $F$ laws, all from the chapters above.
+
+== The model and least squares
+
+Observe $bold(y) in RR^n$ and a fixed design matrix $X in RR^(n times p)$ of full column rank, usually with a column of ones. The linear model is
+$ bold(y) = X beta + bold(epsilon.alt), quad EE bold(epsilon.alt) = 0, quad Var(bold(epsilon.alt)) = sigma^2 I_n. $
+
+#definition(title: "Least squares", id: "least-squares")[
+  $hat(beta) = argmin_beta norm(bold(y) - X beta)^2$, and the residual sum of squares is $"RSS" = norm(bold(y) - X hat(beta))^2$.
+]
+
+#theorem(title: "Normal equations")[
+  $hat(beta)$ is the unique solution of $X^top X hat(beta) = X^top bold(y)$, that is $hat(beta) = (X^top X)^(-1) X^top bold(y)$.
+]
+#proof[
+  $X^top X$ is invertible because $X$ has full column rank. Put $bold(e) = bold(y) - X hat(beta)$ with $hat(beta)$ the stated solution, so $X^top bold(e) = 0$. For any $beta$, $bold(y) - X beta = bold(e) + X(hat(beta) - beta)$ and the two parts are orthogonal, hence $norm(bold(y) - X beta)^2 = norm(bold(e))^2 + norm(X(hat(beta) - beta))^2$, which is smallest, and only, at $beta = hat(beta)$.
+]
+
+#definition(title: "Hat matrix", id: "hat-matrix")[
+  $H = X (X^top X)^(-1) X^top$, so that $hat(bold(y)) = H bold(y)$ and $bold(e) = (I - H) bold(y)$.
+]
+
+#lemma(title: "Projection")[
+  $H$ is symmetric and idempotent, $H X = X$, and $"tr" H = p$. Hence $H$ is the orthogonal projection onto $col(X)$ and $I - H$ the projection onto its complement, of rank $n - p$. In particular $X^top bold(e) = 0$, and if $X$ has an intercept column, $sum_i e_i = 0$.
+]
+#proof[
+  Symmetry and $H^2 = X (X^top X)^(-1) X^top X (X^top X)^(-1) X^top = H$ are direct, and $H X = X$ follows by cancelling. The trace of an idempotent matrix is its rank, and $"tr" H = "tr"((X^top X)^(-1) X^top X) = "tr" I_p = p$. Then $X^top (I - H) = 0$; the intercept column gives $bold(1)^top bold(e) = 0$.
+]
+
+#lemma(title: "Moments of the estimates")[
+  $EE hat(beta) = beta$, $Var(hat(beta)) = sigma^2 (X^top X)^(-1)$, $EE bold(e) = 0$, $Var(bold(e)) = sigma^2 (I - H)$, and $s^2 = "RSS" slash (n - p)$ is unbiased for $sigma^2$.
+]
+#proof[
+  $hat(beta) = A bold(y)$ with $A = (X^top X)^(-1) X^top$ and $A X = I$, so $EE hat(beta) = beta$, and $A A^top = (X^top X)^(-1)$ gives the variance. Also $bold(e) = (I - H) bold(epsilon.alt)$, so $Var(bold(e)) = sigma^2 (I - H)^2 = sigma^2 (I - H)$. Then $EE norm(bold(e))^2 = "tr" Var(bold(e)) = sigma^2 (n - p)$.
+]
+
+#theorem(title: "Gauss–Markov", id: "gauss-markov")[
+  Among all linear unbiased estimators $bold(a)^top bold(y)$ of $bold(c)^top beta$, the least squares estimator $bold(c)^top hat(beta)$ has the smallest variance.
+]
+#proof[
+  Unbiasedness for every $beta$ means $bold(a)^top X = bold(c)^top$. Write $bold(a) = X (X^top X)^(-1) bold(c) + bold(d)$; then $bold(d)^top X = 0$. The two parts of $bold(a)$ are orthogonal, so $Var(bold(a)^top bold(y)) = sigma^2 (norm(X (X^top X)^(-1) bold(c))^2 + norm(bold(d))^2) >= sigma^2 bold(c)^top (X^top X)^(-1) bold(c) = Var(bold(c)^top hat(beta))$.
+]
+
+#fig("/statistics/figures/ols-geometry.svg", caption: [Least squares as a projection. The fitted vector $hat(bold(y))$ is the point of $col(X)$ nearest to $bold(y)$, the residual is orthogonal to every column, and the coefficients are the coordinates of $hat(bold(y))$ in the columns.], width: 86%)
+
+== Normal errors and inference
+
+#theorem(title: "Sampling distributions", id: "coefficient-inference")[
+  If in addition $bold(epsilon.alt) tilde.op cal(N)(0, sigma^2 I)$, then $hat(beta) tilde.op cal(N)(beta, sigma^2 (X^top X)^(-1))$, $(n - p) s^2 slash sigma^2 tilde.op chi^2_(n-p)$, and $hat(beta)$ is independent of $s^2$. Under these assumptions $hat(beta)$ is also the maximum likelihood estimator, and the MLE of $sigma^2$ is $"RSS" slash n$.
+]
+#proof[
+  $hat(beta)$ and $bold(e)$ are linear in $bold(y)$, hence jointly normal, with $Cov(hat(beta), bold(e)) = sigma^2 A (I - H) = 0$ since $A H = A$; uncorrelated jointly normal vectors are independent. In an orthonormal basis whose last $n - p$ vectors span $col(X)^perp$, $norm(bold(e))^2 slash sigma^2$ is the sum of the squares of the last $n - p$ coordinates of $bold(epsilon.alt) slash sigma$, which are i.i.d. $cal(N)(0,1)$. The likelihood is maximized in $beta$ by minimizing $norm(bold(y) - X beta)^2$.
+]
+
+#theorem(title: [$t$ statistics and intervals])[
+  Under normal errors, with $hat("se")(hat(beta)_j) = s sqrt([(X^top X)^(-1)]_(j j))$,
+  $ (hat(beta)_j - beta_j) slash hat("se")(hat(beta)_j) tilde.op t_(n-p). $
+  The interval $hat(beta)_j plus.minus t_(n-p, 1-alpha slash 2) hat("se")(hat(beta)_j)$ has coverage $1 - alpha$, and the $t$-test of $beta_j = 0$ rejects when $|hat(beta)_j| slash hat("se")$ exceeds the same quantile. At a new point $bold(x)_0$ the mean response $bold(x)_0^top beta$ has variance $sigma^2 bold(x)_0^top (X^top X)^(-1) bold(x)_0$ for its estimate, while a new observation is predicted with error variance $sigma^2 (1 + bold(x)_0^top (X^top X)^(-1) bold(x)_0)$.
+]
+#proof[
+  Standardize the normal $hat(beta)_j$ and divide by the independent $sqrt(chi^2_(n-p) slash (n-p))$: this is the definition of $t_(n-p)$. The prediction variance adds the variance $sigma^2$ of the new error to that of $bold(x)_0^top hat(beta)$.
+]
+
+== Sums of squares and the $F$-test
+
+#definition(title: [Sums of squares and $R^2$], id: "r-squared")[
+  $"SST" = sum_i (y_i - overline(y))^2$, $"SSR" = sum_i (hat(y)_i - overline(y))^2$, $"SSE" = "RSS"$, and $R^2 = "SSR" slash "SST"$. The adjusted version is $1 - ("SSE" slash (n-p)) slash ("SST" slash (n-1))$.
+]
+
+#theorem(title: "Decomposition")[
+  With an intercept, $"SST" = "SSR" + "SSE"$, and $R^2 = op("corr")(bold(y), hat(bold(y)))^2 = 1 - "SSE" slash "SST"$.
+]
+#proof[
+  $bold(y) - overline(y) bold(1) = (hat(bold(y)) - overline(y) bold(1)) + bold(e)$, the first part lies in $col(X)$ (it contains $bold(1)$) and $bold(e)$ is orthogonal to it, so Pythagoras applies. Moreover $sum_i (y_i - overline(y))(hat(y)_i - overline(y)) = "SSR" + sum_i e_i (hat(y)_i - overline(y)) = "SSR"$, so the squared correlation is $"SSR"^2 slash ("SST" dot "SSR")$, the same ratio.
+]
+
+#theorem(title: [$F$-test of nested models], id: "anova-f-test")[
+  Let the reduced model with $p - q$ parameters have column space inside $col(X)$ and residual sum of squares $"SSE"_0 >= "SSE"$. Under normal errors and the reduced model,
+  $ F = (("SSE"_0 - "SSE") slash q) / ("SSE" slash (n - p)) tilde.op F_(q, n-p). $
+  The overall test of "no predictor matters" has $q = p - 1$ and $F = ("SSR" slash (p-1)) slash ("SSE" slash (n-p))$. For $q = 1$, $F = t^2$ for the corresponding coefficient.
+]
+#proof[
+  $"SSE"_0 - "SSE" = norm((H - H_0) bold(y))^2$ where $H_0$ projects onto the smaller space, and $H - H_0$ is a projection of rank $q$ orthogonal to $I - H$. Under the reduced model $(H - H_0) bold(y) = (H - H_0) bold(epsilon.alt)$, so the two sums of squares divided by $sigma^2$ are independent $chi^2_q$ and $chi^2_(n-p)$.
+]
+
+#formulas(("Source", "Sum of squares", "df and mean square"),
+  [Regression], [$"SSR"$], [$p - 1$, $"SSR" slash (p - 1)$],
+  [Residual], [$"SSE"$], [$n - p$, $s^2 = "SSE" slash (n - p)$],
+  [Total], [$"SST"$], [$n - 1$],
+)
+
+== Leverage, influence and collinearity
+
+#lemma(title: "Leverage", id: "leverage")[
+  Let $h_(i i) = bold(x)_i^top (X^top X)^(-1) bold(x)_i$ be the diagonal of $H$. Then $Var(e_i) = sigma^2 (1 - h_(i i))$, $sum_i h_(i i) = p$, $0 <= h_(i i) <= 1$, and $h_(i i) >= 1 slash n$ with an intercept. In simple regression $h_(i i) = 1 slash n + (x_i - overline(x))^2 slash S_(x x)$. The fitted value is $hat(y)_i = h_(i i) y_i + sum_(j != i) h_(i j) y_j$.
+]
+#proof[
+  The variance is the diagonal of $sigma^2 (I - H)$ and the trace is $"tr" H = p$. From $H^2 = H$, $h_(i i) = sum_j h_(i j)^2 >= h_(i i)^2$, so $h_(i i) in [0, 1]$. If $bold(1) in col(X)$ then $H - bold(1) bold(1)^top slash n$ is again a projection, so its diagonal is nonnegative.
+]
+
+#definition(title: "Studentized residuals", id: "studentized-residual")[
+  The internally studentized residual is $r_i = e_i slash (s sqrt(1 - h_(i i)))$. The externally studentized residual replaces $s$ by $s_((i))$, computed without observation $i$; under normal errors it has a $t_(n-p-1)$ distribution.
+]
+
+#lemma(title: "Deleting one observation")[
+  With $M = X^top X$ and $hat(beta)_((i))$ the estimate without observation $i$,
+  $ hat(beta) - hat(beta)_((i)) = (M^(-1) bold(x)_i e_i) / (1 - h_(i i)), quad y_i - bold(x)_i^top hat(beta)_((i)) = e_i / (1 - h_(i i)). $
+]
+#proof[
+  By Sherman–Morrison, $(M - bold(x)_i bold(x)_i^top)^(-1) = M^(-1) + M^(-1) bold(x)_i bold(x)_i^top M^(-1) slash (1 - h_(i i))$, and the deleted cross-product is $X^top bold(y) - bold(x)_i y_i$. Multiplying out, $hat(beta)_((i)) = hat(beta) - M^(-1) bold(x)_i y_i + M^(-1) bold(x)_i (hat(y)_i - h_(i i) y_i) slash (1 - h_(i i)) = hat(beta) - M^(-1) bold(x)_i e_i slash (1 - h_(i i))$. For the second identity, $y_i - bold(x)_i^top hat(beta)_((i)) = e_i + h_(i i) e_i slash (1 - h_(i i))$.
+]
+
+#definition(title: "Cook's distance", id: "cooks-distance")[
+  $D_i = (hat(beta) - hat(beta)_((i)))^top X^top X (hat(beta) - hat(beta)_((i))) slash (p s^2) = norm(hat(bold(y)) - hat(bold(y))_((i)))^2 slash (p s^2)$.
+]
+
+#theorem(title: "Cook's distance, closed form")[
+  $D_i = r_i^2 / p dot h_(i i) / (1 - h_(i i))$.
+]
+#proof[
+  Substitute the deletion formula: $D_i = e_i^2 bold(x)_i^top M^(-1) M M^(-1) bold(x)_i slash ((1 - h_(i i))^2 p s^2) = e_i^2 h_(i i) slash (p s^2 (1 - h_(i i))^2)$, which is the stated product.
+]
+
+#remark[
+  The second identity of the deletion lemma gives the leave-one-out residuals without refitting, $"PRESS" = sum_i (e_i slash (1 - h_(i i)))^2$. Common flags are $h_(i i) > 2 p slash n$ and $D_i > 4 slash n$ (or $> 1$); they are screening devices, not tests.
+]
+
+#theorem(title: "Variance inflation", id: "multicollinearity")[
+  Let $R_j^2$ be the $R^2$ of the regression of column $j$ on the other columns, and $S_(j j) = sum_i (x_(i j) - overline(x)_j)^2$. Then
+  $ Var(hat(beta)_j) = sigma^2 / ((1 - R_j^2) S_(j j)) = "VIF"_j dot sigma^2 / S_(j j), quad "VIF"_j = 1 / (1 - R_j^2). $
+]
+#proof[
+  Let $M_(-j)$ be the projection onto $col(X_(-j))^perp$ and $tilde(bold(x))_j = M_(-j) bold(x)_j$. Applying $M_(-j)$ to $bold(y) = hat(bold(y)) + bold(e)$ kills the other columns and fixes $bold(e)$, so $M_(-j) bold(y) = tilde(bold(x))_j hat(beta)_j + bold(e)$ and, since $bold(e) perp tilde(bold(x))_j$, $hat(beta)_j = tilde(bold(x))_j^top bold(y) slash norm(tilde(bold(x))_j)^2$ (Frisch–Waugh–Lovell). Then $Var(hat(beta)_j) = sigma^2 slash norm(tilde(bold(x))_j)^2$, and $norm(tilde(bold(x))_j)^2 = (1 - R_j^2) S_(j j)$ is the residual sum of squares of that auxiliary regression.
+]
+
+#fig("/statistics/figures/leverage-influence.svg", caption: [The same vertical outlier in the middle and at the edge of the $x$ range. Dashed: fit without it; solid: fit with it. Leverage, not the size of the residual alone, decides how far the line moves.])
+
+= Regularization
+
+#notes-line(notes, ("Regularization: Ridge and Lasso", "regularization"))
+
+Notation as in the previous chapter; the columns of $X$ are centred and scaled, the intercept is not penalized, and $lambda >= 0$ is the penalty weight.
+
+== Prediction error and the trade-off
+
+#theorem(title: "Bias–variance decomposition of prediction error", id: "bias-variance-tradeoff")[
+  Let $y_0 = f(bold(x)_0) + epsilon.alt_0$ be a new observation, independent of the training data, with $EE epsilon.alt_0 = 0$ and $Var(epsilon.alt_0) = sigma^2$, and let $hat(f)$ be fitted on the training data. Then
+  $ EE[(y_0 - hat(f)(bold(x)_0))^2] = sigma^2 + (EE hat(f)(bold(x)_0) - f(bold(x)_0))^2 + Var(hat(f)(bold(x)_0)). $
+]
+#proof[
+  Write $y_0 - hat(f) = epsilon.alt_0 + (f - EE hat(f)) + (EE hat(f) - hat(f))$. The three terms are independent of each other or have zero mean, so the cross terms vanish, and squaring gives irreducible noise, squared bias and variance.
+]
+
+== Ridge regression
+
+#definition(title: "Ridge regression", id: "ridge-regression")[
+  $hat(beta)_lambda = argmin_beta norm(bold(y) - X beta)^2 + lambda norm(beta)^2 = (X^top X + lambda I)^(-1) X^top bold(y)$.
+]
+
+With the singular value decomposition $X = U D V^top$ and singular values $d_1 >= dots >= d_p > 0$, in the coordinates $gamma = V^top beta$ the estimate shrinks each least squares coordinate by a factor,
+$ hat(gamma)_(lambda, j) = d_j^2 / (d_j^2 + lambda) hat(gamma)_j. $
+The fitted values are $hat(bold(y))_lambda = H_lambda bold(y)$ with $H_lambda = X (X^top X + lambda I)^(-1) X^top$.
+
+#definition(title: "Effective degrees of freedom", id: "effective-degrees-of-freedom")[
+  For a linear fit $hat(bold(y)) = S bold(y)$ the effective degrees of freedom are $"df" = "tr" S$. For ridge, $"df"(lambda) = sum_j d_j^2 slash (d_j^2 + lambda)$, decreasing from $p$ at $lambda = 0$ to $0$.
+]
+
+#theorem(title: "Ridge can beat least squares")[
+  The coordinate $j$ of the ridge estimate has mean squared error
+  $ "MSE"_j (lambda) = (sigma^2 d_j^2 + lambda^2 gamma_j^2) / (d_j^2 + lambda)^2, $
+  and $"MSE"_j'(0) = -2 sigma^2 slash d_j^4 < 0$. Hence for every true $beta$ there is $lambda > 0$ at which the total $EE norm(hat(beta)_lambda - beta)^2$ is smaller than that of least squares.
+]
+#proof[
+  By the moment lemma, $hat(gamma)_j$ has mean $gamma_j$ and variance $sigma^2 slash d_j^2$. Scaling by $d_j^2 slash (d_j^2 + lambda)$ gives variance $sigma^2 d_j^2 slash (d_j^2 + lambda)^2$ and bias $-lambda gamma_j slash (d_j^2 + lambda)$. Differentiate the sum at $lambda = 0$, where the numerator's derivative vanishes.
+]
+
+#remark[
+  Ridge is the posterior mean, and mode, under $y mid(|) beta tilde.op cal(N)(X beta, sigma^2 I)$ and prior $beta tilde.op cal(N)(0, tau^2 I)$ with $lambda = sigma^2 slash tau^2$, because $-2 sigma^2 log "posterior" = norm(bold(y) - X beta)^2 + (sigma^2 slash tau^2) norm(beta)^2 + "const"$.
+]
+
+== Lasso
+
+#definition(title: "Lasso", id: "lasso")[
+  $hat(beta)_lambda = argmin_beta 1/2 norm(bold(y) - X beta)^2 + lambda norm(beta)_1$.
+]
+
+The problem is convex, so a minimizer exists, but it need not be unique unless the columns are in general position. Subgradient optimality gives the conditions below.
+
+#theorem(title: "Optimality conditions and soft-thresholding", id: "soft-thresholding")[
+  $hat(beta)$ is a minimizer iff, for every $j$, $X_j^top (bold(y) - X hat(beta)) = lambda "sign"(hat(beta)_j)$ if $hat(beta)_j != 0$, and $|X_j^top (bold(y) - X hat(beta))| <= lambda$ if $hat(beta)_j = 0$. In particular $hat(beta) = 0$ iff $lambda >= norm(X^top bold(y))_infinity$. If $X^top X = I$, with $b_j$ the least squares coefficients,
+  $ hat(beta)_(lambda, j) = "sign"(b_j) (|b_j| - lambda)_+. $
+]
+#proof[
+  The objective is convex, so $0$ must lie in the subdifferential $-X^top (bold(y) - X beta) + lambda partial norm(beta)_1$, which is the stated pair of conditions. For $X^top X = I$ the objective separates into $1/2 (b_j - beta_j)^2 + lambda |beta_j|$ plus a constant; setting the subgradient to zero gives $beta_j = b_j - lambda "sign"(beta_j)$ when this has the sign of $b_j$, and $beta_j = 0$ when $|b_j| <= lambda$.
+]
+
+#formulas(("Rule", "Penalty", "Estimate for orthonormal columns"),
+  [Least squares], [none], [$b_j$],
+  [Ridge], [$lambda norm(beta)^2$], [$b_j slash (1 + lambda)$],
+  [Lasso], [$lambda norm(beta)_1$], [$"sign"(b_j) (|b_j| - lambda)_+$],
+  [Best subset], [$lambda norm(beta)_0$ (with $1/2 norm(bold(y) - X beta)^2$)], [$b_j bb(1){|b_j| > sqrt(2 lambda)}$],
+)
+
+#remark[
+  The lasso solution has at most $min(n, p)$ nonzero coefficients. It is the MAP estimate under independent Laplace priors. The elastic net adds the ridge term, $1/2 norm(bold(y) - X beta)^2 + lambda (alpha norm(beta)_1 + (1 - alpha) / 2 norm(beta)^2)$, which keeps the sparsity and spreads weight over correlated predictors. $lambda$ is chosen by cross-validation, over a grid starting from $norm(X^top bold(y))_infinity$.
+]
+
+#fig("/statistics/figures/shrinkage-functions.svg", caption: [With orthonormal predictors the three penalties are three functions of the least squares coefficient: proportional shrinkage (ridge), soft thresholding (lasso) and hard thresholding (best subset).])
+
+#fig("/statistics/figures/penalty-geometry.svg", caption: [Elliptical contours of the residual sum of squares around the least squares estimate meet the constraint region. The disc has no corners, so ridge lands in the open; the diamond has corners on the axes, where a coefficient is exactly zero.])
+
+= Splines and additive models
+
+#notes-line(notes, ("Regression and Smoothing Splines", "splines"), ("GAMs and MARS", "gam-mars"))
+
+== Basis expansions and regression splines
+
+#definition(title: "Basis expansion", id: "basis-expansion")[
+  $f(x) = sum_(m=1)^M beta_m h_m(x)$ for fixed functions $h_m$. The model is linear in $beta$, so everything in the linear regression chapter applies with $X_(i m) = h_m(x_i)$.
+]
+
+#definition(title: "Cubic spline", id: "regression-spline")[
+  With knots $xi_1 < dots < xi_K$, a cubic spline is a piecewise cubic polynomial that is twice continuously differentiable at every knot. A natural cubic spline is in addition linear on $(-infinity, xi_1]$ and $[xi_K, infinity)$.
+]
+
+#theorem(title: "Dimension and bases")[
+  The cubic splines with knots $xi_1, dots, xi_K$ form a vector space of dimension $K + 4$ with the truncated power basis $1, x, x^2, x^3, (x - xi_k)_+^3$ for $k = 1, dots, K$. The natural cubic splines form a subspace of dimension $K$ (for $K >= 2$).
+]
+#proof[
+  A twice differentiable gluing at $xi_k$ allows a jump only in the third derivative, which is exactly what adding $c_k (x - xi_k)_+^3$ to a cubic does, and every spline has this form. Requiring zero second and third derivative on each of the two outer intervals gives four independent linear conditions on the $K + 4$ coefficients, leaving $K$.
+]
+
+#fig("/statistics/figures/regression-spline.svg", caption: [A cubic polynomial and a cubic spline with three knots fitted to the same noisy data. The spline has seven parameters and follows the curve; the global polynomial cannot.])
+
+== Smoothing splines
+
+#definition(title: "Smoothing spline", id: "smoothing-spline")[
+  For $lambda > 0$, $hat(f) = argmin_f sum_i (y_i - f(x_i))^2 + lambda integral f''(t)^2 dif t$ over twice differentiable $f$ with $f''$ square integrable.
+]
+
+#theorem(title: "Reinsch")[
+  For distinct $x_1 < dots < x_n$ the minimizer is the natural cubic spline with knots at the $x_i$, and its values at the knots are $hat(bold(f)) = (I + lambda K)^(-1) bold(y)$, where $K$ is the positive semidefinite matrix with $integral f''^2 = bold(f)^top K bold(f)$ for the natural spline through $bold(f)$.
+]
+#proof[
+  Let $g$ be any admissible function and $f$ the natural cubic spline with $f(x_i) = g(x_i)$. Put $h = g - f$, so $h(x_i) = 0$. Integrating by parts twice, $integral f'' h'' = [f'' h']_(x_1)^(x_n) - integral f''' h' = - sum_i f'''(x_i^+) (h(x_(i+1)) - h(x_i)) = 0$, using $f'' = 0$ outside $[x_1, x_n]$, $f'''$ piecewise constant and $h$ vanishing at the knots. Hence $integral g''^2 = integral f''^2 + integral h''^2 >= integral f''^2$, with equality only for $h'' = 0$, i.e. $g = f$. The fit terms agree, so the minimum is over natural splines, where the criterion is $norm(bold(y) - bold(f))^2 + lambda bold(f)^top K bold(f)$, minimized at the stated $hat(bold(f))$.
+]
+
+#definition(title: "Linear smoother", id: "linear-smoother")[
+  A fit of the form $hat(bold(y)) = S bold(y)$. For the smoothing spline $S_lambda = (I + lambda K)^(-1)$ is symmetric with eigenvalues $1 slash (1 + lambda d_k) in (0, 1]$, $d_k$ the eigenvalues of $K$; the constants and the linear functions span its null space, so two eigenvalues equal 1 for every $lambda$. Thus $"df"(lambda) = "tr" S_lambda = sum_k 1 slash (1 + lambda d_k)$ decreases from $n$ to $2$. Leave-one-out residuals obey $y_i - hat(f)_((i))(x_i) = (y_i - hat(f)(x_i)) slash (1 - S_(i i))$, and generalized cross-validation is $"GCV"(lambda) = n^(-1) sum_i (y_i - hat(f)(x_i))^2 slash (1 - "df" slash n)^2$.
+]
+
+#fig("/statistics/figures/smoothing-spline.svg", caption: [Smoothing splines fitted to the data of the previous figure at three effective degrees of freedom: nearly a straight line, close to the truth, and following the noise. The penalty $lambda$ moves the fit along this range.])
+
+== Additive models and backfitting
+
+#definition(title: "Additive model", id: "additive-model")[
+  $EE[Y mid(|) bold(x)] = alpha + sum_(j=1)^p f_j (x_j)$ with $EE f_j (X_j) = 0$ for identifiability. The generalized additive model applies a link: $g(mu) = alpha + sum_j f_j (x_j)$.
+]
+
+The backfitting algorithm sets $hat(alpha) = overline(y)$, $f_j equiv 0$, and cycles over $j$: $f_j <- S_j (bold(y) - hat(alpha) - sum_(k != j) f_k)$, then centres $f_j$, until the functions stop changing. For symmetric smoothers with eigenvalues in $[0, 1]$, such as smoothing splines, it converges, and for smoothing splines the limit minimizes $sum_i (y_i - alpha - sum_j f_j (x_(i j)))^2 + sum_j lambda_j integral f_j''^2$ (Buja, Hastie and Tibshirani, 1989); the solution is unique unless a function of some predictors is exactly an additive function of the others (concurvity). Proof omitted.
+
+== MARS
+
+#definition(title: "Hinge functions and MARS", id: "mars")[
+  A hinge pair at knot $t$ is $(x - t)_+$ and $(t - x)_+$, the positive parts. MARS fits $f(bold(x)) = beta_0 + sum_m beta_m B_m (bold(x))$ where each $B_m$ is a product of hinge functions of distinct variables; the degree is the number of factors allowed.
+]
+
+The forward pass starts from $B_0 = 1$ and, at each step, adds the pair $B_l (x_v - t)_+$, $B_l (t - x_v)_+$ over all existing terms $B_l$, variables $v$ and observed values $t$, choosing the one that lowers RSS most, until a maximum number of terms is reached. The backward pass removes one term at a time, each time the one whose removal raises RSS least, and the model size is chosen to minimize $"GCV" = ("RSS" slash N) slash (1 - C(M) slash N)^2$ with $C(M) = M + d K$, $K$ the number of knots retained and $d$ a fixed cost per knot, typically between 2 and 4. With degree 1 the model is additive with piecewise linear components.
+
+#fig("/statistics/figures/hinge-basis.svg", caption: [MARS in one dimension. Right: the hinge pair at knot $t = 4$. Left: the forward pass overgrows a sum of hinges (dashed, nine terms) and the backward pass prunes it to three, with knots near the two bends of the data.])
+
+= Robust statistics
+
+#notes-line(notes, ("Robust Statistics", "robust-statistics"))
+
+== Breakdown and the influence function
+
+#definition(title: "Breakdown point", id: "breakdown-point")[
+  The finite-sample breakdown point of an estimator $T$ at a sample is the smallest fraction $m slash n$ of observations that can be replaced by arbitrary values so that $T$ becomes unbounded.
+]
+
+The mean has breakdown $1 slash n$: moving one point to infinity moves the mean. The median has breakdown $ceil(n slash 2) slash n -> 1 slash 2$: fewer than half of the points cannot push both order statistics around the middle beyond the remaining ones.
+
+#definition(title: "Influence function", id: "influence-function")[
+  For a functional $T$ and distribution $F$, $"IF"(x; T, F) = lim_(epsilon -> 0) [T((1 - epsilon) F + epsilon delta_x) - T(F)] slash epsilon$, the effect on $T$ of a small contamination at $x$. For regular $T$, $sqrt(n)(T(F_n) - T(F)) cd cal(N)(0, EE["IF"^2])$ (Hampel et al., 1986), and $sup_x |"IF"|$ is the gross-error sensitivity.
+]
+
+#example(title: "Mean and median")[
+  Mean: $T(F_epsilon) = (1 - epsilon) mu + epsilon x$, so $"IF" = x - mu$, unbounded. Median $m$: $F_epsilon (m_epsilon) = 1 slash 2$ means $(1 - epsilon) F(m_epsilon) + epsilon bb(1){x <= m_epsilon} = 1 slash 2$. Differentiating at $epsilon = 0$, with $F(m) = 1 slash 2$, gives $-1 slash 2 + f(m) m' + bb(1){x <= m} = 0$, so $"IF" = "sign"(x - m) slash (2 f(m))$, bounded.
+]
+
+== M-estimators
+
+#definition(title: "M-estimator of location", id: "m-estimator")[
+  $hat(theta) = argmin_theta sum_i rho(x_i - theta)$, equivalently the root of $sum_i psi(x_i - theta) = 0$ with $psi = rho'$. Scale is estimated separately, for example by $"MAD" slash 0.6745$.
+]
+
+#theorem(title: "Influence of an M-estimator")[
+  At $F$ with $EE_F psi(X - theta_0) = 0$, $"IF"(x) = psi(x - theta_0) slash EE_F psi'(X - theta_0)$, and the asymptotic variance is $EE psi^2 slash (EE psi')^2$.
+]
+#proof[
+  $theta_epsilon$ solves $g(epsilon, theta) = (1 - epsilon) EE_F psi(X - theta) + epsilon psi(x - theta) = 0$. At $(0, theta_0)$, $partial_epsilon g = psi(x - theta_0)$ and $partial_theta g = -EE_F psi'(X - theta_0)$; implicit differentiation gives $theta' = -partial_epsilon g slash partial_theta g$. The variance is $EE["IF"^2]$.
+]
+
+#formulas(("Estimator", "ψ(u)", "Influence"),
+  [Mean], [$u$], [unbounded],
+  [Median], [$"sign"(u)$], [bounded, jumps],
+  [Huber, $k$], [$max(-k, min(k, u))$], [bounded; $k = 1.345$ gives 95% efficiency at the normal],
+  [Tukey biweight, $c$], [$u (1 - (u slash c)^2)^2$ for $|u| <= c$, else $0$], [redescends to 0; $c = 4.685$ for 95% efficiency],
+)
+
+Huber's $psi$ is monotone, so $rho$ is convex and the solution is unique. The biweight is redescending: $rho$ is not convex, there can be several roots, and a robust starting value is required. Iteratively reweighted least squares solves $sum_i w_i (x_i - theta) = 0$ with weights $w_i = psi(r_i slash s) slash (r_i slash s)$, refitted until convergence; for Huber's $rho$ every step decreases the objective.
+
+#fig("/statistics/figures/psi-functions.svg", caption: [Loss $rho$ (left) and its derivative $psi$ (right), the pull of a residual on the fit. Squared error pulls proportionally to the residual; Huber caps the pull; the biweight lets it fall back to zero for gross outliers.])
+
+== Robust regression
+
+An M-estimator of regression minimizes $sum_i rho(r_i (beta) slash s)$. Its influence function is proportional to $psi(r slash sigma) bold(x)$: bounded in the residual but not in $bold(x)$. A single point with extreme leverage can therefore still break it down, with breakdown point $1 slash n$. Bounded-influence (Mallows and Schweppe) estimators downweight by leverage as well. High-breakdown estimators are the least trimmed squares (LTS), which minimizes the sum of the $h$ smallest squared residuals (breakdown near $1 slash 2$ for $h approx (n + p + 1) slash 2$), and MM-estimators, which start from a high-breakdown scale and fit and then take an efficient M-step (breakdown 1/2, 95% efficiency at the normal); see Rousseeuw and Leroy (1987) and Maronna, Martin and Yohai (2019).
+
+#fig("/statistics/figures/robust-fit.svg", caption: [Four outliers in $y$. The least squares line is drawn towards them; the Huber M-estimate stays with the bulk of the data and recovers the true slope almost exactly.])
+
 = Summary of the main formulas
 
 #formulas(("Quantity", "Result", "Where explained"),
@@ -616,6 +944,17 @@ With $m$ tests and all nulls true, each at level $alpha$, the expected number of
   [Sample size, one-sided $z$-test], [$n = ((z_(1-alpha) + z_(1-beta)) sigma slash delta)^2$], [#link(notes + "hypothesis-tests/#power-and-sample-size")[Hypothesis tests]],
   [Likelihood ratio], [$-2 log Lambda cd chi^2_r$], [#link(notes + "hypothesis-tests/#likelihood-ratio-tests")[Hypothesis tests]],
   [Bonferroni / BH], [$p_i <= alpha slash m$ / largest $k$ with $p_((k)) <= k alpha slash m$], [#link(notes + "hypothesis-tests/#many-tests-at-once")[Hypothesis tests]],
+  [Least squares], [$hat(beta) = (X^top X)^(-1) X^top bold(y)$, $Var(hat(beta)) = sigma^2 (X^top X)^(-1)$, $s^2 = "RSS" slash (n-p)$], [#link(notes + "linear-regression/#least-squares")[Linear regression]],
+  [Coefficient $t$ and interval], [$(hat(beta)_j - beta_j) slash hat("se")(hat(beta)_j) tilde.op t_(n-p)$], [#link(notes + "linear-regression/#what-the-estimates-are")[Linear regression]],
+  [$R^2$ and overall $F$], [$"SSR" slash "SST"$; $F = ("SSR" slash (p-1)) slash ("SSE" slash (n-p))$], [#link(notes + "linear-regression/#is-the-model-worth-anything")[Linear regression]],
+  [Leverage], [$h_(i i) = bold(x)_i^top (X^top X)^(-1) bold(x)_i$, $sum_i h_(i i) = p$], [#link(notes + "regression-diagnostics/#leverage-and-influence")[Diagnostics]],
+  [Cook's distance], [$D_i = r_i^2 h_(i i) slash (p (1 - h_(i i)))$], [#link(notes + "regression-diagnostics/#leverage-and-influence")[Diagnostics]],
+  [Variance inflation], [$"VIF"_j = 1 slash (1 - R_j^2)$], [#link(notes + "regression-diagnostics/#collinearity")[Diagnostics]],
+  [Ridge], [$hat(beta)_lambda = (X^top X + lambda I)^(-1) X^top bold(y)$, $"df" = sum_j d_j^2 slash (d_j^2 + lambda)$], [#link(notes + "regularization/#ridge-shrinks-everything")[Regularization]],
+  [Lasso, orthonormal], [$"sign"(b_j)(|b_j| - lambda)_+$], [#link(notes + "regularization/#lasso-shrinks-and-selects")[Regularization]],
+  [Smoothing spline], [$hat(bold(f)) = (I + lambda K)^(-1) bold(y)$, $"df" = "tr" S_lambda$], [#link(notes + "splines/#smoothing-splines")[Splines]],
+  [Cubic spline dimension], [$K + 4$ (natural: $K$)], [#link(notes + "splines/#regression-splines")[Splines]],
+  [Influence of an M-estimator], [$psi(x - theta) slash EE psi'$], [#link(notes + "robust-statistics/#m-estimators")[Robust statistics]],
 )
 
 = References
@@ -625,3 +964,9 @@ With $m$ tests and all nulls true, each at level $alpha$, the expected number of
 - L. Wasserman, _All of Statistics_, Springer, 2004: concise statements of the limit theorems, the bootstrap, MLE and multiple testing.
 - B. Efron and R. J. Tibshirani, _An Introduction to the Bootstrap_, Chapman and Hall, 1993.
 - Y. Benjamini and Y. Hochberg, "Controlling the false discovery rate", _J. R. Statist. Soc. B_ 57 (1995).
+- G. A. F. Seber and A. J. Lee, _Linear Regression Analysis_, 2nd ed., Wiley, 2003: the projection treatment of least squares, the $F$-test and the diagnostics.
+- T. Hastie, R. Tibshirani and J. Friedman, _The Elements of Statistical Learning_, 2nd ed., Springer, 2009: ridge, lasso, splines, additive models and MARS (chapters 3, 5, 9).
+- A. E. Hoerl and R. W. Kennard, "Ridge regression: biased estimation for nonorthogonal problems", _Technometrics_ 12 (1970); R. Tibshirani, "Regression shrinkage and selection via the lasso", _J. R. Statist. Soc. B_ 58 (1996).
+- P. J. Green and B. W. Silverman, _Nonparametric Regression and Generalized Linear Models_, Chapman and Hall, 1994: smoothing splines and the Reinsch algorithm.
+- J. H. Friedman, "Multivariate adaptive regression splines", _Annals of Statistics_ 19 (1991); A. Buja, T. Hastie and R. Tibshirani, "Linear smoothers and additive models", _Annals of Statistics_ 17 (1989).
+- F. R. Hampel et al., _Robust Statistics: The Approach Based on Influence Functions_, Wiley, 1986; R. A. Maronna, R. D. Martin and V. J. Yohai, _Robust Statistics: Theory and Methods_, 2nd ed., Wiley, 2019; P. J. Rousseeuw and A. M. Leroy, _Robust Regression and Outlier Detection_, Wiley, 1987.
