@@ -44,6 +44,17 @@ A probability space is a triple $(Omega, cal(F), PP)$: a sample space $Omega$, a
 
 The general inclusion–exclusion formula is $PP(union.big_(i=1)^n A_i) = sum_i PP(A_i) - sum_(i<j) PP(A_i inter A_j) + sum_(i<j<k) PP(A_i inter A_j inter A_k) - dots.c$. Two further facts follow from (A3) by taking limits: if $A_n$ increases to $A$ then $PP(A_n) -> PP(A)$, and likewise for decreasing sequences (continuity of $PP$). When $Omega$ is finite and outcomes are equally likely, $PP(A) = |A| slash |Omega|$.
 
+#theorem(title: "Inclusion–exclusion for three events")[
+  $PP(A union B union C) = PP(A) + PP(B) + PP(C) - PP(A inter B) - PP(A inter C) - PP(B inter C) + PP(A inter B inter C)$.
+]
+#proof[
+  Apply (v) to $A union B$ and $C$: $PP(A union B union C) = PP(A union B) + PP(C) - PP((A union B) inter C)$. Expand $PP(A union B)$ by (v) and use the distributive law $(A union B) inter C = (A inter C) union (B inter C)$, whose intersection is $A inter B inter C$, so by (v) again $PP((A union B) inter C) = PP(A inter C) + PP(B inter C) - PP(A inter B inter C)$. Substituting gives the formula.
+]
+
+#remark[
+  The axioms do not fix the probabilities: for one coin toss, $PP("H") = p$, $PP("T") = 1-p$ satisfies (A1)–(A3) for every $p in [0,1]$. Values come from symmetry (equally likely outcomes, $PP(A) = N(A) slash N$, hence counting with the product rule, permutations $n! slash (n-k)!$ and combinations $binom(n,k)$), from long-run relative frequency, or from belief. Under the frequentist reading $PP(A)$ is the limit of $n(A) slash n$, which the law of large numbers makes precise; under the subjective reading it is a degree of belief given available information.
+]
+
 == Conditional probability, independence, Bayes
 
 #definition[
@@ -210,6 +221,23 @@ The binomial mass function counts the $binom(n, k)$ arrangements of $k$ successe
   With $q = 1 - p$, $EE[X] = p sum_(k>=1) k q^(k-1) = p slash (1-q)^2 = 1 slash p$, using $sum_(k >= 1) k q^(k-1) = d/(d q) sum_(k>=0) q^k = (1-q)^(-2)$. A second differentiation gives $EE[X(X-1)]$ and hence the variance. For the tail, $PP(X > k) = q^k$, so $PP(X > m + k | X > m) = q^(m+k) slash q^m = q^k$.
 ]
 
+== Hypergeometric and negative binomial
+
+#definition[
+  Sampling $n$ items without replacement from $N$ items of which $M$ are successes, the number of successes has $PP(X = x) = binom(M,x) binom(N-M,n-x) slash binom(N,n)$ (the hypergeometric law). The number $X$ of failures before the $r$-th success in independent $"Bernoulli"(p)$ trials has $PP(X = x) = binom(x+r-1, r-1) p^r (1-p)^x$ (negative binomial).
+]
+
+#theorem(title: "Moments")[
+  Hypergeometric: $EE[X] = n M slash N$ and $Var(X) = (N-n) slash (N-1) dot n (M slash N)(1 - M slash N)$. Negative binomial: $EE[X] = r(1-p) slash p$ and $Var(X) = r(1-p) slash p^2$.
+]
+#proof[
+  Hypergeometric: write $X = sum_(i=1)^n I_i$ with $I_i$ the indicator that draw $i$ is a success. By symmetry each $PP(I_i = 1) = M slash N$, so $EE[X] = n M slash N$ by linearity. For $i != j$, $PP(I_i = I_j = 1) = M(M-1) slash (N(N-1))$, so $Cov(I_i, I_j) = M(M-1) slash (N(N-1)) - (M slash N)^2 = - (M slash N)(1 - M slash N) slash (N-1)$. Then $Var(X) = n p(1-p) + n(n-1) Cov = n p(1-p)[1 - (n-1) slash (N-1)]$ with $p = M slash N$, which equals the stated formula. Negative binomial: the pmf counts arrangements of the first $r-1$ successes among the first $x + r - 1$ trials, the last trial being the $r$-th success. $X$ is a sum of $r$ independent copies of "failures before a success", each with mean $(1-p) slash p$ and variance $(1-p) slash p^2$ (the geometric shifted by one), giving the moments by linearity and independence.
+]
+
+#remark[
+  When $n slash N -> 0$ the finite-population correction $(N-n) slash (N-1) -> 1$ and the hypergeometric approaches $"Binomial"(n, M slash N)$; the negative binomial has variance larger than its mean, which is why it models overdispersed counts.
+]
+
 == Poisson
 
 #definition[
@@ -225,6 +253,13 @@ The binomial mass function counts the $binom(n, k)$ arrangements of $k$ successe
 
 
 #fig("/statistics/figures/poisson-limit.svg", caption: [Binomial bars with the Poisson of the same mean $lambda = 2$ on top. With $n = 10$ they differ visibly, with $n = 100$ they nearly coincide.])
+
+#theorem(title: "The Poisson process")[
+  Suppose counts in disjoint intervals are independent and, in an interval of length $Delta t$, one event occurs with probability $alpha Delta t + o(Delta t)$ and two or more with probability $o(Delta t)$. Then the number of events in $[0, t]$ is $"Poisson"(alpha t)$, and the waiting time to the first event is $"Exponential"(alpha)$.
+]
+#proof[
+  Let $P_k(t)$ be the probability of $k$ events in $[0,t]$. Conditioning on what happens in $(t, t + Delta t]$ gives $P_0(t + Delta t) = P_0(t)(1 - alpha Delta t) + o(Delta t)$ and $P_k(t + Delta t) = P_k(t)(1 - alpha Delta t) + P_(k-1)(t) alpha Delta t + o(Delta t)$. Letting $Delta t -> 0$: $P_0' = -alpha P_0$ and $P_k' = -alpha P_k + alpha P_(k-1)$, with $P_0(0) = 1$ and $P_k(0) = 0$. The first equation gives $P_0(t) = e^(-alpha t)$; if $P_(k-1)(t) = e^(-alpha t) (alpha t)^(k-1) slash (k-1)!$, then $(e^(alpha t) P_k)' = alpha e^(alpha t) P_(k-1) = alpha^k t^(k-1) slash (k-1)!$, so $P_k(t) = e^(-alpha t) (alpha t)^k slash k!$ by induction. The first event time $T$ satisfies $PP(T > t) = P_0(t) = e^(-alpha t)$.
+]
 
 = Continuous random variables
 

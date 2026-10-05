@@ -49,6 +49,15 @@ Add up $n$ independent Bernoulli($p$) trials and you get the number of successes
 > For large $n$ the binomial is close to a normal, a reasonable approximation once $np(1-p)$ is around 10 or more.
 {: .rule}
 
+## Hypergeometric
+
+> **pmf** $\binom Mx\binom{N-M}{n-x}\big/\binom Nn$  
+> **Mean** $nM/N$  
+> **Variance** $\tfrac{N-n}{N-1}\,n\tfrac MN(1-\tfrac MN)$
+{: .margin .spec}
+
+Take $n$ items **without replacement** from a population of $N$ in which $M$ are successes, and count the successes. The pmf is plain counting, favourable samples over all samples. The mean is that of a binomial with $p=M/N$, but the variance is smaller by the finite-population correction $(N-n)/(N-1)$: draws without replacement are slightly negatively correlated. When $n$ is small against $N$ the correction is near 1 and the binomial is a good stand-in. Example: a lot of 20 printers has 6 faulty; inspecting 5, the chance of exactly 2 faulty is $\binom62\binom{14}3/\binom{20}5\approx0.35$.
+
 ## Geometric
 
 > **pmf** $(1-p)^{k-1}p$, $k\ge1$  
@@ -58,6 +67,15 @@ Add up $n$ independent Bernoulli($p$) trials and you get the number of successes
 
 If instead we count trials until the first success, we get the geometric distribution. It is **memoryless**: having already failed many times does not make success any closer, because the trials do not remember.
 
+## Negative binomial
+
+> **pmf** $\binom{x+r-1}{r-1}p^r(1-p)^x$  
+> **Mean** $r(1-p)/p$  
+> **Variance** $r(1-p)/p^2$
+{: .margin .spec}
+
+Keep running independent trials until the $r$-th success and count the failures before it. For $r=1$ this is the geometric (counting failures rather than trials), and in general it is a sum of $r$ independent geometrics. Its variance exceeds its mean, which makes it the usual model for overdispersed counts.
+
 ## Poisson
 
 > **pmf** $e^{-\lambda}\lambda^k/k!$  
@@ -65,7 +83,7 @@ If instead we count trials until the first success, we get the geometric distrib
 > **Variance** $\lambda$
 {: .margin .spec}
 
-The Poisson counts events in a fixed interval when they occur independently at a constant average rate $\lambda$. It arises as the limit of Binomial($n,p$) when $n$ is large, $p$ is small and $np=\lambda$ stays fixed, which is why it describes rare events so well. Independent Poisson variables add, with their rates.
+The Poisson counts events in a fixed interval when they occur independently at a constant average rate $\lambda$. It arises as the limit of Binomial($n,p$) when $n$ is large, $p$ is small and $np=\lambda$ stays fixed, which is why it describes rare events so well. Independent Poisson variables add, with their rates. The model comes from a **Poisson process**: if counts in disjoint intervals are independent and a short interval of length $\Delta t$ holds one event with probability about $\alpha\Delta t$ and two with negligible probability, then the count in an interval of length $t$ is Poisson with $\lambda=\alpha t$, and the gaps between events are exponential with rate $\alpha$.
 
 {% include fig.html src="statistics/poisson-limit" id="fig-poisson-limit" alt="Two panels of bars for the binomial pmf with mean 2, for n equal to 10 and to 100, with the Poisson pmf with mean 2 drawn on top. The Poisson curve matches the bars better for n equal to 100." caption="Binomial bars and the Poisson with the same mean. With $n=10$ the two still differ visibly, with $n=100$ and $p=0.02$ they nearly coincide." %}
 
