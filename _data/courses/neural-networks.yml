@@ -1,13 +1,15 @@
-legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+# Neural networks after Piuri's lectures. Notes are brought to the standard one at a time.
 domain: ai
 order: 1
 title: "Neural Networks"
+reference: /assets/notes/neural-networks/neural-networks-reference/neural-networks-reference.pdf
 summary: "The classic network architectures: perceptrons and their activation functions, convolutional and recurrent models, associative memories and self-organising maps."
 parts:
   - title: "Foundations"
     blurb: "The neuron, the activation functions and the multi-layer perceptron."
     notes:
       - ai/neural-networks/introduction
+      - ai/neural-networks/threshold-logic-units
       - ai/neural-networks/activation-functions
       - ai/neural-networks/multi-layer-perceptron
   - title: "Architectures"
