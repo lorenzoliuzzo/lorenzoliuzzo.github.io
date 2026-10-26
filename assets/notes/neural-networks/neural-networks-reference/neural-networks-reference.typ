@@ -8,7 +8,7 @@
 #show: reference.with(
   title: "Neural Networks",
   subtitle: "Technical reference",
-  abstract: [The general model of a neural network, learning tasks and their error, data representation, and threshold logic units with the delta rule, with proofs. Each chapter says which site note explains it; the last chapter collects the formulas.],
+  abstract: [The general model of a neural network, learning tasks and their error, data representation, and threshold logic units with the delta rule, multi-layer perceptrons with universal approximation, activation functions, training and depth, with proofs. Each chapter says which site note explains it; the last chapter collects the formulas.],
   site: "https://lorenzoliuzzo.github.io/notes/",
 )
 
@@ -216,6 +216,163 @@ The mean and $s$ are computed on the training data and the same numbers are appl
   Training with the encoding false $= 0$, true $= 1$ cannot change $w_i$ on an error where $x_i = 0$. ADALINE codes false as $-1$, so every weight moves on every error. The hidden units of a multi-layer network have no desired outputs, so the delta rule cannot train them; the solution of a task by hidden units is also not unique.
 ]
 
+= Multi-layer perceptrons
+
+#notes-line(notes, ("Multi-Layer Perceptron", "multi-layer-perceptron"))
+
+== Layered networks
+
+#definition(title: [$r$-layer perceptron])[
+  A feed-forward network whose units are partitioned into layers $U_1, dots, U_r$ with $U_1 = U_"in"$, $U_r = U_"out"$ and connections only from $U_l$ to $U_(l+1)$. Hidden and output units have the weighted sum as network input function. For layers of $m$ and $n$ units the weights form a matrix $W in RR^(n times m)$. With activation functions $phi_l$ applied elementwise and thresholds $theta_l$, the layer outputs are
+  $ a_1 = x, quad a_l = phi_l (W_l a_(l-1) - theta_l), quad l = 2, dots, r, $
+  and the network computes $y = a_r$. It has $sum_(l=2)^r n_l (n_(l-1) + 1)$ parameters.
+]
+
+#lemma(title: "Linear hidden units collapse")[
+  If $phi_l$ is the identity for $l = 2, dots, r - 1$, the network computes $y = phi_r (M x - c)$ with $M = W_r W_(r-1) dots.c W_2$ and a fixed vector $c$, the same function as a network without hidden layers.
+]
+#proof[
+  By induction, $a_l = W_l dots.c W_2 x - c_l$ for $l <= r - 1$: the case $l = 2$ is the definition, and $a_(l+1) = W_(l+1) a_l - theta_(l+1)$ is again affine in $x$.
+]
+
+== Universal approximation
+
+#theorem(title: "Staircase approximation", id: "universal-approximation-theorem")[
+  Let $f: [a, b] -> RR$ be continuous and let $sigma_k (z) = 1 slash (1 + e^(-k z))$ be the logistic function with slope $k$. For every $epsilon > 0$ there are $N$, $k$, switching points $s_1 < dots < s_N$ and weights $Delta_1, dots, Delta_N$ such that the three-layer perceptron
+  $ g(x) = f(a) + sum_(i=1)^N Delta_i sigma_k (x - s_i) $
+  satisfies $sup_(x in [a, b]) |f(x) - g(x)| <= 3 epsilon$.
+]
+#proof[
+  $f$ is uniformly continuous, so there is $h > 0$ with $|f(x) - f(y)| < epsilon$ whenever $|x - y| <= h$. Take nodes $a = t_0 < dots < t_N = b$ with $t_i - t_(i-1) <= h$, let $s_i = (t_(i-1) + t_i) slash 2$, $Delta_i = f(t_i) - f(t_(i-1))$ and $V = sum_i |Delta_i|$. Let $H$ be the unit step. The staircase $S(x) = f(a) + sum_i Delta_i H(x - s_i)$ equals $f(t_j)$ on $(s_j, s_(j+1))$ because $sum_(i <= j) Delta_i = f(t_j) - f(a)$, and every $x$ in that interval is within $h$ of $t_j$, so $|f(x) - S(x)| < epsilon$ there.
+
+  Let $eta = min_i (s_(i+1) - s_i) slash 2$ and choose $k$ so that $V slash (1 + e^(k eta)) < epsilon$. If $x$ is at distance at least $eta$ from every $s_i$, each term satisfies $|sigma_k (x - s_i) - H(x - s_i)| <= 1 slash (1 + e^(k eta))$, so $|g(x) - S(x)| < epsilon$ and $|f(x) - g(x)| < 2 epsilon$. If $x$ is within $eta$ of $s_j$ (for one $j$ only), the terms with $i != j$ again contribute an error below $epsilon$ in total, and the $j$th term lies between $0$ and $Delta_j$; so $g(x)$ lies within $epsilon$ of the interval between $f(t_(j-1))$ and $f(t_j)$, both within $epsilon$ of $f(x)$ because $x$ is within $h$ of $t_(j-1)$ and $t_j$. Hence $|f(x) - g(x)| <= 3 epsilon$.
+]
+
+#remark[
+  The result extends to continuous functions of $d$ variables, to any bounded non-constant sigmoid and to approximation of integrable functions in an $L^p$ norm: Cybenko (1989) for sigmoids with limits $0$ and $1$ in the sup norm, Hornik (1991) for bounded non-constant activations. Leshno, Lin, Pinkus and Schocken (1993) prove that a continuous activation gives a universal one-hidden-layer family if and only if it is not a polynomial. The lectures obtain the multivariate case with bumps built from steps, which uses two hidden layers (four layers in their counting) and measures the error as the area between the functions. The staircase needs of the order of $epsilon^(-d)$ pieces for a Lipschitz function of $d$ variables; Barron (1993) gives a rate independent of $d$ for functions with a bounded first Fourier moment. That some functions need exponentially many units in a shallow network but few in a deep one is shown by Telgarsky (2016) and Eldan and Shamir (2016).
+]
+
+#fig("/neural-networks/figures/mlp-staircase.svg", caption: [The construction of the theorem with $N = 6$ and $N = 24$ hidden units and $k = 12 N$ on $[0, 1]$: the largest error falls from $0.09$ to $0.02$.])
+
+= Activation functions
+
+#notes-line(notes, ("Activation Functions", "activation-functions"))
+
+#definition(title: "Sigmoid function")[
+  A function $phi: RR -> RR$ that is monotonically non-decreasing with finite limits at $-infinity$ and $+infinity$. Examples are the step, the semi-linear function (linear between two points, constant outside), the sine until saturation, the logistic function and the hyperbolic tangent.
+]
+
+#definition(title: "Logistic function", id: "logistic-function")[
+  $sigma(z) = 1 slash (1 + e^(-z))$, with values in $(0, 1)$ and $sigma(0) = 1 slash 2$.
+]
+
+#lemma[
+  $sigma'(z) = sigma(z)(1 - sigma(z)) <= 1 slash 4$, with equality at $z = 0$; $sigma(-z) = 1 - sigma(z)$; and $tanh z = 2 sigma(2 z) - 1$, $tanh'(z) = 1 - tanh^2 z <= 1$.
+]
+#proof[
+  $sigma' = e^(-z) slash (1 + e^(-z))^2 = sigma dot (e^(-z) slash (1 + e^(-z))) = sigma (1 - sigma)$. The product of two numbers in $[0,1]$ with sum $1$ is at most $1 slash 4$ (AM-GM), with equality for both equal to $1 slash 2$. Further $2 sigma(2 z) - 1 = (1 - e^(-2z)) slash (1 + e^(-2z)) = tanh z$, so $tanh' = 4 sigma'(2 z) = 4 sigma(2z)(1 - sigma(2z)) = (1 + tanh z)(1 - tanh z) = 1 - tanh^2 z$.
+]
+
+#definition(title: "Rectified linear unit", id: "rectified-linear-unit")[
+  $"relu"(z) = max(0, z)$, with derivative $0$ for $z < 0$ and $1$ for $z > 0$ (undefined at $0$). The leaky variant uses $alpha z$ for $z < 0$; the softplus $log(1 + e^z)$ is a smooth version, with derivative $sigma(z)$.
+]
+
+#remark[
+  The ReLU is unbounded, hence not a sigmoid, but it is not a polynomial and so gives universal one-hidden-layer networks (Leshno et al., 1993).
+]
+
+#fig("/neural-networks/figures/activation-functions.svg", caption: [The logistic function, tanh and the ReLU (left) and their derivatives (right). The two sigmoids lose their slope for large $|z|$.])
+
+= Training
+
+#notes-line(notes, ("Training a Multi-Layer Perceptron", "training-mlp"))
+
+== Gradient descent
+
+#definition(title: "Gradient descent", id: "gradient-descent")[
+  For an error $e(w)$ differentiable in the parameters $w$ (weights and thresholds), repeat $w arrow.l w - eta nabla_w e(w)$ with learning rate $eta > 0$. Online descent uses the gradient of one pattern's error, batch descent that of the sum over the training set.
+]
+
+#lemma(title: "Logistic unit")[
+  For $y = sigma(w dot x - theta)$ and the pattern error $e = (o - y)^2$,
+  $ partial e slash partial w_i = -2 (o - y) y (1 - y) x_i, quad partial e slash partial theta = 2 (o - y) y (1 - y). $
+  Absorbing $2$ into $eta$, the corrections are $Delta w_i = eta (o - y) y (1 - y) x_i$ and $Delta theta = -eta (o - y) y (1 - y)$.
+]
+#proof[
+  The chain rule with $partial y slash partial (w dot x - theta) = y (1 - y)$ and $partial (w dot x - theta) slash partial w_i = x_i$, $partial slash partial theta = -1$.
+]
+
+#remark[
+  The factor $y (1 - y)$ is at most $1 slash 4$ and vanishes as $y -> 0$ or $1$: a saturated unit changes slowly whatever its error. For targets in ${0, 1}$ the error of a logistic output cannot reach $0$, since $y in (0, 1)$.
+]
+
+== Variants
+
+#definition(title: "Momentum", id: "momentum")[
+  $Delta w(t) = -eta nabla e(t) + beta Delta w(t - 1)$ with $0 <= beta < 1$. In a region of constant gradient the steps converge to $-eta nabla e slash (1 - beta)$, an effective rate $1 slash (1 - beta)$ times larger.
+]
+
+#definition(title: "Resilient propagation", id: "resilient-propagation")[
+  Every parameter $w_i$ has its own step size $Delta_i$. With $g_i(t) = partial e slash partial w_i$ at step $t$:
+  $ Delta_i(t) = cases(min(a^+ Delta_i(t-1), Delta_max) & "if" g_i(t) g_i(t-1) > 0, max(a^- Delta_i(t-1), Delta_min) & "if" g_i(t) g_i(t-1) < 0, Delta_i(t-1) & "otherwise"), quad Delta w_i = -"sign"(g_i(t)) Delta_i(t), $
+  with $a^+ = 1.2$ and $a^- = 0.5$ (Riedmiller and Braun, 1993). Only the sign of the gradient enters.
+]
+
+#remark[
+  _Manhattan training_ is $Delta w = -eta "sign"(nabla e)$ with a fixed step. _Flat-spot elimination_ replaces $phi'$ by $phi' + zeta$ for a small constant $zeta$ in the gradient. _Quickprop_ (Fahlman, 1988) approximates $e$ in each weight by a parabola through the last two gradients and jumps to its vertex, $Delta w(t) = g(t) slash (g(t - 1) - g(t)) dot Delta w(t - 1)$.
+]
+
+#fig("/neural-networks/figures/gradient-flat-spot.svg", caption: [Log error against iteration for $e = sigma(w)^2$ started at $w = 4$: plain gradient descent with $eta = 1$ stays on the flat tail, momentum with $beta = 0.9$ and Rprop leave it within about $30$ iterations.])
+
+== Complexity
+
+#definition(title: "Weight decay", id: "weight-decay")[
+  Minimize $e_"tot" = e + (xi slash 2) sum_i w_i^2$ with $xi > 0$. The gradient step becomes $w_i arrow.l w_i (1 - eta xi) - eta partial e slash partial w_i$, since $partial slash partial w_i ((xi slash 2) w_i^2) = xi w_i$. For a linear unit with squared error this is ridge regression.
+]
+
+#definition(title: "Early stopping", id: "early-stopping")[
+  Evaluate the error on a validation set after each epoch and stop when it begins to increase, keeping the parameters of the epoch with the smallest validation error.
+]
+
+#definition(title: "Sensitivity analysis", id: "sensitivity-analysis")[
+  The sensitivity of the outputs to input $i$ over a training set $L$ is
+  $ s_i = 1 / (|L|) sum_(l in L) sum_(v in U_"out") |partial out_v^((l)) slash partial ext_i^((l))|, $
+  computed by back-propagation to the input units. It depends on the scale of the inputs and, being local, can underrate inputs that share their effect with correlated ones.
+]
+
+= Depth
+
+#notes-line(notes, ("Deep Networks", "deep-learning"))
+
+#theorem(title: "Depth gives exponentially many pieces")[
+  Let $t(x) = 2 max(0, x) - 4 max(0, x - 1 slash 2)$, so that $t(x) = 2 x$ on $[0, 1 slash 2]$ and $t(x) = 2 - 2 x$ on $[1 slash 2, 1]$. The $k$-fold composition $t^k$, computed by $k$ layers of two ReLU units, is piecewise linear on $[0, 1]$ with $2^k$ pieces, each mapping onto $[0, 1]$. A network with one hidden layer of $m$ ReLU units is piecewise linear on $RR$ with at most $m + 1$ pieces, so representing $t^k$ on $[0, 1]$ takes $m >= 2^k - 1$ units.
+]
+#proof[
+  For $k = 1$ the two pieces map onto $[0, 1]$. If $t^k$ has $2^k$ linear pieces each mapping affinely onto $[0, 1]$, then on each piece $t^(k+1) = t compose t^k$ is the composition of an affine onto map with $t$, which has two linear pieces; so $t^(k+1)$ has $2^(k+1)$ pieces, again onto $[0, 1]$. For the shallow network, $c + sum_(i=1)^m a_i max(0, w_i x - b_i)$ is linear except possibly at the $m$ points $b_i slash w_i$ (a unit with $w_i = 0$ is constant), so it has at most $m + 1$ pieces; $t^k$ has $2^k$ pieces with distinct slopes on neighbouring pieces, hence needs $m + 1 >= 2^k$.
+]
+
+#remark[
+  _Parity._
+  The lectures give $2^(n - 1)$ hidden units for the parity of $n$ bits, which is the construction of one unit per input with output $1$. A single hidden layer of $n$ threshold units suffices: $h_k = [x_1 + dots + x_n >= k]$ for $k = 1, dots, n$ and the output $y = [sum_k (-1)^(k+1) h_k >= 1 slash 2]$. If $s$ inputs are on, $h_1 = dots = h_s = 1$ and the others are $0$, so the sum is $1$ for odd $s$ and $0$ for even $s$. A chain of exclusive-or blocks of three threshold units each also gives $3 (n - 1)$ units in $n - 1$ layers. Exponential separations of depth from width are proved for other functions: Telgarsky (2016) for the sawtooth above, Eldan and Shamir (2016) for a radial function in $RR^d$.
+]
+
+#lemma(title: "Vanishing gradient bound")[
+  In a layered network with $delta_l = partial e slash partial z_l$ the derivative with respect to the net input of layer $l$, $delta_l = (W_(l+1)^top delta_(l+1)) dot.o phi'(z_l)$. If $norm(W_l)_2 <= w$ for all $l$ and $|phi'| <= c$, then $norm(delta_l) <= (c w)^(L - l) norm(delta_L)$.
+]
+#proof[
+  $norm(W^top v) <= norm(W)_2 norm(v)$ and a componentwise product with a vector bounded by $c$ multiplies the norm by at most $c$; iterate from $l = L - 1$ down.
+]
+
+#remark[
+  For the logistic function $c = 1 slash 4$, so the bound decays unless $w > 4$; for tanh $c = 1$; for the ReLU $c = 1$ on active units.
+]
+
+#definition(title: "Dropout", id: "dropout")[
+  In each training step every input or hidden unit is omitted independently with probability $p$, together with its connections. At test time all units are used and the outgoing weights are multiplied by $1 - p$ (equivalently, activations are scaled by $1 slash (1 - p)$ during training). See Srivastava et al. (2014).
+]
+
+#fig("/neural-networks/figures/depth-sawtooth.svg", caption: [The tent function composed $k$ times has $2^k$ linear pieces and needs $2 k$ ReLU units.])
+
 = Summary of formulas
 
 #formulas(
@@ -232,6 +389,16 @@ The mean and $s$ are computed on the training data and the same numbers are appl
   [Unit firing only at $a$], [$w_i = 2 a_i - 1$, $theta = sum_i a_i$], [#link(notes + "threshold-logic-units/#two-layers-compute-everything")[Threshold Logic Units]],
   [Delta rule], [$Delta theta = -eta (o - y)$, $Delta w_i = eta (o - y) x_i$], [#link(notes + "threshold-logic-units/#the-delta-rule")[Threshold Logic Units]],
   [Corrections, online, $v_0 = 0$], [$k <= (R norm(v^*) slash gamma)^2$], [#link(notes + "threshold-logic-units/#convergence-and-where-it-ends")[Threshold Logic Units]],
+  [Layer], [$a_l = phi_l (W_l a_(l-1) - theta_l)$], [#link(notes + "multi-layer-perceptron/#layers-of-units")[Multi-Layer Perceptron]],
+  [Parameters of an MLP], [$sum_l n_l (n_(l-1) + 1)$], [#link(notes + "multi-layer-perceptron/#layers-of-units")[Multi-Layer Perceptron]],
+  [Staircase network], [$g = f(a) + sum_i Delta_i sigma_k (x - s_i)$, $Delta_i = f(t_i) - f(t_(i-1))$], [#link(notes + "multi-layer-perceptron/#universal-approximation")[Multi-Layer Perceptron]],
+  [Logistic slope], [$sigma' = sigma (1 - sigma) <= 1 slash 4$; $tanh' = 1 - tanh^2$], [#link(notes + "activation-functions/#the-logistic-function")[Activation Functions]],
+  [Logistic unit step], [$Delta w_i = eta (o - y) y (1 - y) x_i$], [#link(notes + "training-mlp/#gradient-descent")[Training a Multi-Layer Perceptron]],
+  [Momentum], [$Delta w(t) = -eta nabla e(t) + beta Delta w(t - 1)$], [#link(notes + "training-mlp/#variants-of-gradient-descent")[Training a Multi-Layer Perceptron]],
+  [Weight decay], [$w arrow.l w (1 - eta xi) - eta partial e slash partial w$], [#link(notes + "training-mlp/#controlling-complexity")[Training a Multi-Layer Perceptron]],
+  [Sensitivity], [$s_i = |L|^(-1) sum_l sum_v |partial out_v slash partial ext_i|$], [#link(notes + "training-mlp/#sensitivity-analysis")[Training a Multi-Layer Perceptron]],
+  [Tent composition], [$2^k$ pieces from $2 k$ ReLU units; shallow net needs $>= 2^k - 1$], [#link(notes + "deep-learning/#why-depth")[Deep Networks]],
+  [Gradient bound], [$norm(delta_l) <= (c w)^(L - l) norm(delta_L)$], [#link(notes + "deep-learning/#why-deep-networks-are-hard-to-train")[Deep Networks]],
 )
 
 = References
@@ -244,5 +411,9 @@ The mean and $s$ are computed on the training data and the same numbers are appl
 - B. Widrow and M. E. Hoff, "Adaptive switching circuits", _IRE WESCON Convention Record_ 4 (1960), 96 to 104: the delta rule and ADALINE.
 - A. B. J. Novikoff, "On convergence proofs on perceptrons", _Symposium on the Mathematical Theory of Automata_ 12 (1962), 615 to 622: the convergence argument above. M. Minsky and S. Papert, _Perceptrons_, MIT Press, 1969: the limits of a single unit.
 - OEIS A000609: the number of threshold functions of $n$ variables.
+- G. Cybenko, "Approximation by superpositions of a sigmoidal function", _Mathematics of Control, Signals and Systems_ 2 (1989), 303 to 314; K. Hornik, "Approximation capabilities of multilayer feedforward networks", _Neural Networks_ 4 (1991), 251 to 257; M. Leshno, V. Y. Lin, A. Pinkus and S. Schocken, "Multilayer feedforward networks with a nonpolynomial activation function can approximate any function", _Neural Networks_ 6 (1993), 861 to 867: universal approximation.
+- A. R. Barron, "Universal approximation bounds for superpositions of a sigmoidal function", _IEEE Transactions on Information Theory_ 39 (1993), 930 to 945; M. Telgarsky, "Benefits of depth in neural networks", _COLT_ 2016; R. Eldan and O. Shamir, "The power of depth for feedforward neural networks", _COLT_ 2016: how many units are needed.
+- M. Riedmiller and H. Braun, "A direct adaptive method for faster backpropagation learning: the RPROP algorithm", _IEEE ICNN_ 1993; S. E. Fahlman, "An empirical study of learning speed in back-propagation networks", CMU technical report, 1988: the training variants.
+- N. Srivastava, G. Hinton, A. Krizhevsky, I. Sutskever and R. Salakhutdinov, "Dropout: a simple way to prevent neural networks from overfitting", _Journal of Machine Learning Research_ 15 (2014), 1929 to 1958.
 - C. M. Bishop, _Pattern Recognition and Machine Learning_, Springer, 2006, section 5.2: the error function of a network from maximum likelihood.
 - Y. LeCun, L. Bottou, G. B. Orr and K.-R. Müller, "Efficient BackProp", in _Neural Networks: Tricks of the Trade_, Springer, 1998: preparation of the inputs.
