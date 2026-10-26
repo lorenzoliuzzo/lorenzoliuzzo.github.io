@@ -8,7 +8,7 @@
 #show: reference.with(
   title: "Neural Networks",
   subtitle: "Technical reference",
-  abstract: [The general model of a neural network, learning tasks and their error, data representation, and threshold logic units with the delta rule, multi-layer perceptrons with universal approximation, activation functions, training and depth, with proofs. Each chapter says which site note explains it; the last chapter collects the formulas.],
+  abstract: [The general model of a neural network, learning tasks and their error, data representation, and threshold logic units with the delta rule, multi-layer perceptrons with universal approximation, activation functions, training and depth, autoencoders, radial basis function networks, learning vector quantization and self-organizing maps, with proofs. Each chapter says which site note explains it; the last chapter collects the formulas.],
   site: "https://lorenzoliuzzo.github.io/notes/",
 )
 
@@ -373,6 +373,148 @@ The mean and $s$ are computed on the training data and the same numbers are appl
 
 #fig("/neural-networks/figures/depth-sawtooth.svg", caption: [The tent function composed $k$ times has $2^k$ linear pieces and needs $2 k$ ReLU units.])
 
+= Autoencoders
+
+#notes-line(notes, ("Autoencoders", "autoencoder"))
+
+#definition(title: "Autoencoder", id: "autoencoder")[
+  A three-layer perceptron with $d$ inputs, $k$ hidden units and $d$ outputs trained on a free learning task $L = {x^((l))}$ with the inputs as desired outputs, that is by minimizing $sum_l norm(x^((l)) - hat(x)^((l)))^2$. The hidden layer computes the code $f = phi(W_1 x - b_1)$ (the encoder) and the output layer the reconstruction $hat(x) = psi(W_2 f - b_2)$ (the decoder). Only the encoder is used afterwards.
+]
+
+#theorem(title: "Linear autoencoder and principal components")[
+  Let $X in RR^(d times N)$ hold centred data as columns, with singular value decomposition $X = U Sigma V^top$ and singular values $sigma_1 >= sigma_2 >= dots$, and let $k <= "rank"(X)$. For all $W_1 in RR^(k times d)$, $W_2 in RR^(d times k)$,
+  $ norm(X - W_2 W_1 X)_F^2 >= sum_(i > k) sigma_i^2, $
+  with equality for $W_2 = U_k$, $W_1 = U_k^top$, where $U_k$ holds the first $k$ columns of $U$. The optimal reconstruction is the orthogonal projection on the span of the first $k$ principal axes.
+]
+#proof[
+  $W_2 W_1 X$ has rank at most $k$. By the Eckart-Young theorem the best approximation of $X$ of rank at most $k$ in the Frobenius norm is $U_k Sigma_k V_k^top$, with squared error $sum_(i > k) sigma_i^2$. Finally $U_k U_k^top X = U_k Sigma_k V_k^top$.
+]
+
+#remark[
+  The optimal weights are not unique: for invertible $A in RR^(k times k)$, replacing $(W_1, W_2)$ by $(A W_1, W_2 A^(-1))$ leaves $W_2 W_1$ unchanged. Only the span of the code is determined.
+]
+
+#definition(title: "Denoising autoencoder", id: "denoising-autoencoder")[
+  An autoencoder whose input is a corrupted version $tilde(x)$ of $x$ (added noise, or a random subset of components set to zero) and whose desired output is the clean $x$.
+]
+
+#definition(title: "Stacked autoencoder", id: "stacked-autoencoder")[
+  A network built in steps. Step 1 trains an autoencoder on the inputs and keeps the code $f^((1))$. Step $j$ trains an autoencoder on $f^((j-1))$ and keeps $f^((j))$. A classifier or predictor is trained on the last code. The encoders are then stacked, the classifier added on top, and the whole network is fine-tuned by back-propagation.
+]
+
+#fig("/neural-networks/figures/autoencoder.svg", caption: [A 4-2-4 autoencoder (left); a linear autoencoder with a one-unit code on two-dimensional data (right): inputs (open) and their reconstructions on the first principal axis (filled), mean squared error $0.050$.])
+
+= Radial basis function networks
+
+#notes-line(notes, ("Radial Basis Function Networks", "radial-basis-function-network"))
+
+#definition(title: "Radial activation function", id: "radial-activation-function")[
+  A monotonically decreasing $f: [0, infinity) -> [0, 1]$ with $f(0) = 1$ and $lim_(r -> infinity) f(r) = 0$. The Gaussian is $f(r) = e^(-r^2 slash 2)$. The Minkowski distance is $d_p (x, y) = (sum_i |x_i - y_i|^p)^(1 slash p)$, with $p = 1$ the city-block, $p = 2$ the Euclidean and $p -> infinity$ the maximum distance.
+]
+
+#definition(title: "Radial basis function network", id: "radial-basis-function-network")[
+  A three-layer feed-forward network. Each hidden unit $k$ has a centre $c_k$ (its weight vector) and a radius $sigma_k > 0$, net input $d(c_k, x)$ and activation $a_k = f(d(c_k, x) slash sigma_k)$. The output unit has the weighted sum as net input and the identity activation:
+  $ y(x) = theta + sum_(k=1)^m w_k a_k (x). $
+]
+
+#theorem(title: "Interpolation")[
+  Let $iota^((1)), dots, iota^((m))$ be distinct points, $f$ Gaussian, $d$ Euclidean and a common radius $sigma$. Then the matrix $A in RR^(m times m)$ with $A_(l k) = f(d(iota^((k)), iota^((l))) slash sigma)$ is positive definite, and for every $o in RR^m$ the weights $w = A^(-1) o$ give a network with $theta = 0$ and $y(iota^((l))) = o_l$ for all $l$.
+]
+#proof[
+  The Gaussian has the representation $e^(-norm(x - y)^2 slash 2 sigma^2) = integral g(omega) e^(i omega dot (x - y)) dif omega$ with $g > 0$ (its Fourier transform is a Gaussian). Hence for $a != 0$, $a^top A a = integral g(omega) |sum_l a_l e^(i omega dot iota^((l)))|^2 dif omega >= 0$, and it vanishes only if $sum_l a_l e^(i omega dot iota^((l))) = 0$ for almost every $omega$, which is impossible because exponentials with distinct frequencies are linearly independent. A positive definite matrix is invertible (Micchelli, 1986). The lectures choose $sigma = d_max slash sqrt(2 m)$ with $d_max$ the largest distance between two patterns.
+]
+
+#theorem(title: "Least squares for the output weights")[
+  Let $A in RR^(m times (k+1))$ have a first column of ones (for $theta$) and further columns $a_j (iota^((l)))$ for $k < m$ centres, and have full column rank. Then $norm(A w - o)^2$ is minimal exactly at $w = (A^top A)^(-1) A^top o = A^+ o$, the pseudo-inverse solution.
+]
+#proof[
+  The gradient of $norm(A w - o)^2$ is $2 A^top (A w - o)$; it vanishes at the stated $w$, and the function is convex with Hessian $2 A^top A$ positive definite, so the stationary point is the unique minimum.
+]
+
+#lemma(title: "Gradients of a Gaussian unit")[
+  For one output, $e = sum_l (o_l - y_l)^2$ and $a_k = exp(-d_k^2 slash 2 sigma_k^2)$ with $d_k^2 = norm(x - c_k)^2$:
+  $ partial e slash partial w_k &= -2 sum_l (o_l - y_l) a_k, \
+    partial e slash partial c_k &= -2 sum_l (o_l - y_l) w_k a_k (x - c_k) slash sigma_k^2, \
+    partial e slash partial sigma_k &= -2 sum_l (o_l - y_l) w_k a_k d_k^2 slash sigma_k^3. $
+]
+#proof[
+  $partial y slash partial w_k = a_k$, $partial a_k slash partial c_k = a_k (x - c_k) slash sigma_k^2$ and $partial a_k slash partial sigma_k = a_k d_k^2 slash sigma_k^3$, combined by the chain rule with $partial e slash partial y = -2 (o - y)$.
+]
+
+#definition(title: "c-means")[
+  Given points $x_1, dots, x_n$ and $c$, start from $c$ centres; repeat (1) assign every point to its nearest centre, (2) replace each centre by the mean of its points, until the centres no longer change.
+]
+#lemma[
+  The objective $J = sum_j min_i norm(x_j - c_i)^2$ does not increase in either step, so c-means stops after finitely many iterations.
+]
+#proof[
+  Step (1) gives each point its nearest centre. For a group of $n_i$ points with mean $mu$, $sum norm(x - c)^2 = sum norm(x - mu)^2 + n_i norm(mu - c)^2$, so replacing $c$ by $mu$ does not increase $J$. There are finitely many partitions and $J$ strictly decreases unless the partition is unchanged, so the algorithm stops.
+]
+
+The solution of the training task has up to three phases: (1) output weights by $A^+ o$, (2) centres by clustering and then phase 1, (3) phase 2 and then gradient descent on all parameters with the lemma above.
+
+#fig("/neural-networks/figures/rbf-fit.svg", caption: [Gaussian units on a regular grid with radius $0.6$ times the spacing and least-squares output weights: largest error $0.08$ with $4$ units, $0.02$ with $9$.])
+
+= Learning vector quantization
+
+#notes-line(notes, ("Learning Vector Quantization", "learning-vector-quantization"))
+
+#definition(title: "Learning vector quantization", id: "learning-vector-quantization")[
+  A two-layer network with reference (codebook) vectors $r_1, dots, r_c$ as the weight vectors of the output units, a distance as network input and a radial activation. Each reference vector may carry a class. Training adapts the vectors on a set of patterns, as follows. For each pattern $x$ find the winner $r$ closest to $x$ and update only it: attraction $r arrow.l r + eta (x - r)$ if the classes agree (or without classes), repulsion $r arrow.l r - eta (x - r)$ if they differ. The learning rate decreases over time, for instance $eta(t) = eta_0 alpha^t$ with $0 < alpha < 1$.
+]
+
+#definition(title: "Winner takes all", id: "winner-takes-all")[
+  The output function of the network: $out_u = 1$ if $act_u = max_v act_v$ and $0$ otherwise, ties broken at random.
+]
+
+#remark[
+  _Two-winner rule:_ if the two nearest vectors have different classes, attract the one with the pattern's class and repel the other. _Window rule:_ apply it only if $min(d_1 slash d_2, d_2 slash d_1) > (1 - xi) slash (1 + xi)$ for the distances $d_1, d_2$ to those vectors, with window parameter $xi$ (Kohonen).
+]
+
+#lemma(title: "Online c-means")[
+  Without classes, if a vector is attracted with $eta = 1 slash n$ at its $n$th winning pattern, it equals the mean of the patterns it has won.
+]
+#proof[
+  By induction: $r_n = r_(n-1) + (x_n - r_(n-1)) slash n = ((n - 1) r_(n-1) + x_n) slash n$, and the mean of $n$ patterns is $((n - 1) mu_(n-1) + x_n) slash n$.
+]
+
+#definition(title: "Expectation maximization for a Gaussian mixture", id: "expectation-maximization")[
+  For the density $p(x) = sum_c pi_c cal(N)(x; mu_c, Sigma_c)$ and data $x_1, dots, x_n$: the E-step computes $gamma_(j c) = pi_c cal(N)(x_j; mu_c, Sigma_c) slash sum_(c') pi_(c') cal(N)(x_j; mu_(c'), Sigma_(c'))$, the probability that component $c$ generated $x_j$; the M-step sets $pi_c = 1 slash n sum_j gamma_(j c)$, $mu_c = sum_j gamma_(j c) x_j slash sum_j gamma_(j c)$ and $Sigma_c = sum_j gamma_(j c)(x_j - mu_c)(x_j - mu_c)^top slash sum_j gamma_(j c)$. Soft LVQ is its online version.
+]
+
+#theorem(title: "EM does not decrease the likelihood")[
+  With $theta$ the parameters and $ell(theta) = sum_j log sum_c p(x_j, c | theta)$, the EM update $theta_(t+1) = argmax_theta Q(theta | theta_t)$, with $Q(theta | theta_t) = sum_j sum_c gamma_(j c)^((t)) log p(x_j, c | theta)$, satisfies $ell(theta_(t+1)) >= ell(theta_t)$.
+]
+#proof[
+  With $gamma_(j c)^((t)) = p(x_j, c | theta_t) slash p(x_j | theta_t)$, Jensen's inequality for the concave logarithm gives
+  $ ell(theta) - ell(theta_t) &= sum_j log sum_c gamma_(j c)^((t)) (p(x_j, c | theta)) / (gamma_(j c)^((t)) p(x_j | theta_t)) \
+    &>= sum_j sum_c gamma_(j c)^((t)) log (p(x_j, c | theta)) / (p(x_j, c | theta_t)) \
+    &= Q(theta | theta_t) - Q(theta_t | theta_t). $
+  Taking $theta = theta_(t+1)$ makes the right side nonnegative.
+]
+
+#fig("/neural-networks/figures/lvq-update.svg", caption: [One LVQ step with $eta = 0.3$: the winner $r_2$ has the wrong class and is repelled, the nearest vector $r_1$ of the right class is attracted, and the boundary moves across the pattern $x$.])
+
+= Self-organizing maps
+
+#notes-line(notes, ("Self-Organizing Maps", "self-organizing-map"))
+
+#definition(title: "Self-organizing map", id: "self-organizing-map")[
+  A two-layer network like an LVQ network whose output units lie on a grid (usually two-dimensional, square or hexagonal) with a distance $d_"grid"$ between units. Unit $u$ has a reference vector $r_u$ in the data space. The map assigns an input to the winner $u^*$ whose reference vector is nearest.
+]
+
+#definition(title: "Neighbourhood function", id: "neighborhood-function")[
+  A radial function $f(d, rho)$ of the grid distance, decreasing in $d$ with radius $rho$; for example $f(d, rho) = e^(-d^2 slash 2 rho^2)$. Training updates all units:
+  $ r_u arrow.l r_u + eta(t) thin f(d_"grid"(u, u^*), rho(t)) thin (x - r_u), $
+  with learning rate $eta(t)$ and radius $rho(t)$ decreasing over time, for instance geometrically, $eta(t) = eta_0 (eta_T slash eta_0)^(t slash T)$ and $rho(t) = rho_0 (rho_T slash rho_0)^(t slash T)$.
+]
+
+#remark[
+  For $rho -> 0$ only the winner is updated and the rule becomes the attraction rule of LVQ. A step function as $f$ gives a sharp neighbourhood, a smooth $f$ shrinks it gradually. Training can fail, leaving a twisted map, if the initial $eta$ or $rho$ is too small. The map preserves topology (neighbours in the data map to neighbours on the grid) but not distances, and reference vectors at the border lie slightly inside the data because the border units are pulled from one side only.
+]
+
+#fig("/neural-networks/figures/som-training.svg", caption: [An $8 times 8$ map trained on uniform points of the unit square ($eta$ from $0.6$ to $0.02$, $rho$ from $4$ to $0.6$ over $3000$ steps, Gaussian neighbourhood): the random start contracts to a patch and unfolds over the square.])
+
 = Summary of formulas
 
 #formulas(
@@ -399,6 +541,11 @@ The mean and $s$ are computed on the training data and the same numbers are appl
   [Sensitivity], [$s_i = |L|^(-1) sum_l sum_v |partial out_v slash partial ext_i|$], [#link(notes + "training-mlp/#sensitivity-analysis")[Training a Multi-Layer Perceptron]],
   [Tent composition], [$2^k$ pieces from $2 k$ ReLU units; shallow net needs $>= 2^k - 1$], [#link(notes + "deep-learning/#why-depth")[Deep Networks]],
   [Gradient bound], [$norm(delta_l) <= (c w)^(L - l) norm(delta_L)$], [#link(notes + "deep-learning/#why-deep-networks-are-hard-to-train")[Deep Networks]],
+  [Linear autoencoder], [error $= sum_(i > k) sigma_i^2$ at the projection on $U_k$], [#link(notes + "autoencoder/#what-a-linear-autoencoder-learns")[Autoencoders]],
+  [RBF network], [$y = theta + sum_k w_k f(d(c_k, x) slash sigma_k)$], [#link(notes + "radial-basis-function-network/#the-radial-unit")[Radial Basis Function Networks]],
+  [Output weights], [$w = (A^top A)^(-1) A^top o$], [#link(notes + "radial-basis-function-network/#weights-by-linear-algebra")[Radial Basis Function Networks]],
+  [LVQ updates], [$r arrow.l r plus.minus eta (x - r)$], [#link(notes + "learning-vector-quantization/#learning-rules")[Learning Vector Quantization]],
+  [SOM update], [$r_u arrow.l r_u + eta thin f(d_"grid", rho)(x - r_u)$], [#link(notes + "self-organizing-map/#training-the-map")[Self-Organizing Maps]],
 )
 
 = References
@@ -415,5 +562,7 @@ The mean and $s$ are computed on the training data and the same numbers are appl
 - A. R. Barron, "Universal approximation bounds for superpositions of a sigmoidal function", _IEEE Transactions on Information Theory_ 39 (1993), 930 to 945; M. Telgarsky, "Benefits of depth in neural networks", _COLT_ 2016; R. Eldan and O. Shamir, "The power of depth for feedforward neural networks", _COLT_ 2016: how many units are needed.
 - M. Riedmiller and H. Braun, "A direct adaptive method for faster backpropagation learning: the RPROP algorithm", _IEEE ICNN_ 1993; S. E. Fahlman, "An empirical study of learning speed in back-propagation networks", CMU technical report, 1988: the training variants.
 - N. Srivastava, G. Hinton, A. Krizhevsky, I. Sutskever and R. Salakhutdinov, "Dropout: a simple way to prevent neural networks from overfitting", _Journal of Machine Learning Research_ 15 (2014), 1929 to 1958.
+- J. Park and I. W. Sandberg, "Universal approximation using radial-basis-function networks", _Neural Computation_ 3 (1991), 246 to 257; C. A. Micchelli, "Interpolation of scattered data: distance matrices and conditionally positive definite functions", _Constructive Approximation_ 2 (1986), 11 to 22.
+- T. Kohonen, _Self-Organizing Maps_, 3rd ed., Springer, 2001: LVQ, the two-winner and window rules, and the map; A. P. Dempster, N. M. Laird and D. B. Rubin, "Maximum likelihood from incomplete data via the EM algorithm", _Journal of the Royal Statistical Society B_ 39 (1977), 1 to 38.
 - C. M. Bishop, _Pattern Recognition and Machine Learning_, Springer, 2006, section 5.2: the error function of a network from maximum likelihood.
 - Y. LeCun, L. Bottou, G. B. Orr and K.-R. Müller, "Efficient BackProp", in _Neural Networks: Tricks of the Trade_, Springer, 1998: preparation of the inputs.
