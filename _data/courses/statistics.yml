@@ -29,12 +29,10 @@ parts:
       - statistics/splines
       - statistics/gam-mars
       - statistics/robust-statistics
-  - title: "Classification and trees"
-    blurb: "Predicting a label: linear boundaries, trees, and ensembles of trees."
+  - title: "Classification"
+    blurb: "Predicting a label: logistic regression and ROC, then gradient boosting. Trees and bagging are in supervised learning."
     notes:
       - statistics/linear-classification
-      - statistics/decision-trees
-      - statistics/bagging-random-forests
       - statistics/boosting
   - title: "Assessing models"
     blurb: "How well a fitted model will do on new data, and how sure you can be."

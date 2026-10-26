@@ -1,27 +1,31 @@
 # Neural networks after Piuri's lectures. Notes are brought to the standard one at a time.
+# Hopfield, Boltzmann and recurrent networks are in energy-based-networks.yml; CNN and RNN are
+# owned by supervised-learning (see /mnt/project-files/notes/site-notes-roadmap.md, overlap register).
 domain: ai
 order: 1
 title: "Neural Networks"
 reference: /assets/notes/neural-networks/neural-networks-reference/neural-networks-reference.pdf
-summary: "The classic network architectures: perceptrons and their activation functions, convolutional and recurrent models, associative memories and self-organising maps."
+summary: "Units, layers and learning: threshold units, multi-layer perceptrons and their training, autoencoders, radial basis functions and competitive learning."
 parts:
   - title: "Foundations"
-    blurb: "The neuron, the activation functions and the multi-layer perceptron."
+    blurb: "The vocabulary of networks and the unit that started them: what one threshold unit can compute and how it learns."
     notes:
       - ai/neural-networks/introduction
       - ai/neural-networks/threshold-logic-units
-      - ai/neural-networks/activation-functions
+  - title: "Feed-forward"
+    blurb: "Layers of smooth units, the functions they can approximate, how they are trained and why depth needs care."
+    notes:
       - ai/neural-networks/multi-layer-perceptron
-  - title: "Architectures"
-    blurb: "Networks shaped for local structure, sequences and compression."
+      - ai/neural-networks/activation-functions
+      - ai/neural-networks/training-mlp
+      - ai/neural-networks/deep-learning
+  - title: "Representations"
+    blurb: "Networks that learn a compact code for their input."
+    notes:
+      - ai/neural-networks/autoencoder
+  - title: "Radial and competitive"
+    blurb: "Units that respond to distance, and units that compete to represent the input."
     notes:
       - ai/neural-networks/radial-basis-function-network
-      - ai/neural-networks/convolutional-nn
-      - ai/neural-networks/recurrent-nn
-      - ai/neural-networks/autoencoder
-  - title: "Associative and competitive"
-    blurb: "Networks that store patterns or organise themselves without labels."
-    notes:
-      - ai/neural-networks/hopfield-network
-      - ai/neural-networks/self-organizing-map
       - ai/neural-networks/learning-vector-quantization
+      - ai/neural-networks/self-organizing-map

@@ -7,6 +7,8 @@ tags:
   - Artificial Intelligence
   - Unsupervised Learning
   - Clustering
+defines:
+  - {id: k-means, name: k-means, anchor: 1-k-means-clustering}
 ---
 
 When trying to discover natural groupings within data, the choice of the clustering algorithm heavily depends on the underlying topological assumptions of the dataset and the computational constraints of the deployment environment.
