@@ -8,6 +8,8 @@ order: 3
 tags:
   - Artificial Intelligence
   - Evolutionary Computing
+defines:
+  - {id: simulated-annealing, name: simulated annealing, anchor: simulated-annealing}
 ---
 
 A **meta-heuristic** is an algorithmic framework for approximately solving combinatorial optimization problems. It prescribes an abstract sequence of steps that applies to any problem, while requiring problem-specific implementations of each step. Meta-heuristics are used when no efficient exact algorithm is known, and they provide no optimality guarantee.

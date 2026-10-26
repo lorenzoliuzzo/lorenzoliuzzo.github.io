@@ -1,0 +1,22 @@
+# Recurrent and energy-based networks, after Piuri's lectures 14 to 16. Separate from neural-networks.yml
+# because it is also the entry to the statistical mechanics of neural networks.
+domain: ai
+order: 6
+title: "Energy-Based Networks"
+short: "Energy-based networks"
+summary: "Networks that settle into low-energy states: Hopfield memories, Boltzmann machines and the dynamics of recurrent networks."
+parts:
+  - title: "Associative memory"
+    blurb: "Storing patterns as stable states and using the same energy to solve optimisation problems."
+    notes:
+      - ai/energy-based-networks/hopfield-network
+      - ai/energy-based-networks/hopfield-optimisation
+  - title: "Stochastic networks"
+    blurb: "Replacing the deterministic update by sampling from the Boltzmann distribution, and learning from it."
+    notes:
+      - ai/energy-based-networks/boltzmann-machine
+      - ai/energy-based-networks/restricted-boltzmann-machine
+  - title: "Dynamics"
+    blurb: "Recurrent networks written as differential equations."
+    notes:
+      - ai/energy-based-networks/recurrent-dynamics

@@ -55,10 +55,13 @@ module MyThingsLab
       priority :low
 
       def generate(site)
+        # A retired note that has since been written is live again: its page must win,
+        # or the redirect and the note write the same file and either may come out.
+        live = site.documents.map(&:url)
         Array(site.data["retired_urls"]).each do |entry|
           from = entry["from"].to_s
           to = entry["to"].to_s
-          next if from.empty? || to.empty?
+          next if from.empty? || to.empty? || live.include?(from)
 
           # A directory URL needs an index.html behind it; a bare .html path is
           # already the file to write.
