@@ -1,0 +1,24 @@
+// Site-wide banner under the masthead (see _includes/masthead.html). Sits in the
+// normal flow rather than fixed, so it scrolls away instead of eating vertical
+// space on every screen.
+
+.site-notice {
+  background: var(--badge-warn-bg);
+  border-bottom: 1px solid var(--badge-warn-border);
+}
+
+.site-notice__text {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.55rem 1rem;
+  color: var(--badge-warn-fg);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  line-height: var(--leading-tight);
+  text-align: center;
+
+  i {
+    margin-right: 0.45em;
+    opacity: 0.85;
+  }
+}

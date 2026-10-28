@@ -3,8 +3,10 @@
 
   Included from _includes/footer/custom.html behind a jekyll.environment guard, so it
   is absent from any production build rather than merely hidden. It talks to
-  tools/mythingslab/server.mjs on 127.0.0.1:4001, which holds the API key and does
-  the disk writes. Nothing here ever ships.
+  tools/mythingslab/server.mjs on 127.0.0.1:4001, which does the disk writes and
+  shells one Python subprocess per turn (tools/mythingslab/shim.py) to make its one
+  LLM call through the MyThingsLab fleet's mythings.engine seam. Nothing here ever
+  ships.
 
   The server addresses a file by collection plus a path relative to that
   collection's directory, so the drawer works on any collection listed in
@@ -19,6 +21,7 @@
      data-note-path="{{ page.path | remove_first: collection_dir }}"
      data-note-title="{{ page.title | escape }}"
      data-noun="{{ mtl_noun }}"
+     data-verified="{{ page.verification_state | default: 'unverified' }}"
      data-api="http://127.0.0.1:4001"></div>
 
 <style>
@@ -107,6 +110,7 @@
   .mtl-foot-row {
     display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px;
   }
+  .mtl-foot-left { display: flex; align-items: center; gap: 8px; }
   .mtl-send {
     padding: 7px 16px; border: none; border-radius: 8px;
     background: #1f2937; color: #fff; font-size: 0.76rem; font-weight: 600;
@@ -119,6 +123,12 @@
     cursor: pointer; font-family: inherit;
   }
   .mtl-verify:hover { background: #f9fafb; }
+  .mtl-quiz {
+    padding: 7px 12px; border-radius: 8px; border: 1px solid #d1d5db;
+    background: #fff; color: #374151; font-size: 0.72rem; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .mtl-quiz:hover { background: #f9fafb; }
   .mtl-note { margin: 6px 0 0; font-size: 0.66rem; color: #9ca3af; text-align: left; }
 </style>
 
@@ -140,6 +150,13 @@
   launch.innerHTML = '<span class="mtl-dot"></span> Chat with this ' + NOUN;
   document.body.appendChild(launch);
 
+  // Quizzing only exists for study notes, and only once a human has actually
+  // signed off on one -- self-testing against an unreviewed AI draft would just
+  // quiz you on whatever the model got wrong. server.mjs checks this same claim
+  // again before running one; this is only about not offering a button that a
+  // legitimate request would immediately 400 on.
+  const canQuiz = COLLECTION === "notes" && root.dataset.verified === "verified";
+
   const drawer = el("div", { id: "mtl-drawer" });
   drawer.innerHTML = [
     '<div class="mtl-head">',
@@ -150,7 +167,10 @@
     '<div class="mtl-foot">',
     '  <textarea placeholder="Ask about this page, or say how a passage should read&hellip;"></textarea>',
     '  <div class="mtl-foot-row">',
-    '    <button class="mtl-verify">Mark human-verified</button>',
+    '    <div class="mtl-foot-left">',
+    '      <button class="mtl-verify">Mark human-verified</button>',
+    canQuiz ? '      <button class="mtl-quiz">Quiz me on this</button>' : "",
+    "    </div>",
     '    <button class="mtl-send">Send</button>',
     "  </div>",
     '  <p class="mtl-note">Edits write straight to the Markdown source. Review with <code>git diff</code>.</p>',
@@ -162,6 +182,7 @@
   const input = drawer.querySelector("textarea");
   const sendBtn = drawer.querySelector(".mtl-send");
   const verifyBtn = drawer.querySelector(".mtl-verify");
+  const quizBtn = drawer.querySelector(".mtl-quiz");
 
   resetLog();
 
@@ -169,6 +190,7 @@
   drawer.querySelector(".mtl-x").addEventListener("click", () => toggle(false));
   sendBtn.addEventListener("click", send);
   verifyBtn.addEventListener("click", verify);
+  if (quizBtn) quizBtn.addEventListener("click", quizMe);
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) send();
   });
@@ -236,6 +258,11 @@
 
     const body = push("assistant", "thinking…");
     let answer = "";
+    // The model call is one blocking subprocess round trip, not a token stream, so
+    // there is nothing incremental to show — this just proves the connection is
+    // still alive during what can be a long silence, rather than leaving
+    // "thinking…" static and indistinguishable from a hang.
+    let dots = 0;
 
     try {
       const res = await fetch(API + "/api/chat", {
@@ -255,6 +282,8 @@
           answer += data.text;
           body.textContent = stripPatch(answer);
           log.scrollTop = log.scrollHeight;
+        } else if (event === "thinking") {
+          if (!answer) body.textContent = "thinking" + ".".repeat((dots++ % 3) + 1);
         } else if (event === "error") {
           throw new Error(data.message);
         }
@@ -271,6 +300,50 @@
       body.textContent = err.message;
       // Drop the unanswered turn so a retry does not resend a dangling user message.
       history.pop();
+    } finally {
+      setBusy(false);
+      log.scrollTop = log.scrollHeight;
+    }
+  }
+
+  // Not a chat turn: quizzing doesn't touch `history` (the model never sees the
+  // questions again, and a follow-up chat message shouldn't either), and never
+  // parses a patch out of the reply -- myprofessor's quiz prompt never asks for
+  // one, so a fenced block appearing here would be a coincidence, not an edit.
+  async function quizMe() {
+    if (busy) return;
+    if (log.querySelector(".mtl-empty")) log.innerHTML = "";
+    setBusy(true);
+
+    const body = push("assistant", "thinking…");
+    let answer = "";
+    let dots = 0;
+
+    try {
+      const res = await fetch(API + "/api/quiz", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ collection: COLLECTION, path: DOC }),
+      });
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || res.statusText);
+
+      await readEvents(res.body, (event, data) => {
+        if (event === "text") {
+          answer += data.text;
+          body.textContent = answer;
+          log.scrollTop = log.scrollHeight;
+        } else if (event === "thinking") {
+          if (!answer) body.textContent = "thinking" + ".".repeat((dots++ % 3) + 1);
+        } else if (event === "error") {
+          throw new Error(data.message);
+        }
+      });
+
+      if (!answer.trim()) throw new Error("empty response from the model");
+      body.textContent = answer;
+    } catch (err) {
+      body.parentNode.classList.add("mtl-err");
+      body.textContent = err.message;
     } finally {
       setBusy(false);
       log.scrollTop = log.scrollHeight;
@@ -384,6 +457,7 @@
     busy = state;
     sendBtn.disabled = state;
     verifyBtn.disabled = state;
+    if (quizBtn) quizBtn.disabled = state;
     sendBtn.textContent = state ? "…" : "Send";
   }
 

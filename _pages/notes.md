@@ -6,10 +6,14 @@ classes: wide
 author_profile: true
 ---
 
-Select a topic below to jump straight to that section, or filter by title.
+Select a topic below to jump straight to that section, filter by title, or fold
+subtopics away to skim the outline.
 
-<div class="archive-filter">
-  <input type="search" id="archive-filter" placeholder="Filter notes by title&hellip;" autocomplete="off" aria-label="Filter notes by title">
+<div class="archive-controls">
+  <div class="archive-filter">
+    <input type="search" id="archive-filter" placeholder="Filter notes by title&hellip;" autocomplete="off" aria-label="Filter notes by title">
+  </div>
+  <button type="button" class="fold-toggle" id="fold-toggle" hidden>Collapse all</button>
 </div>
 <p class="archive-filter__empty" id="archive-filter-empty" hidden>No notes match that filter.</p>
 
@@ -59,21 +63,36 @@ Select a topic below to jump straight to that section, or filter by title.
     {% for sub_tag in sub_tags %}
       {% assign in_sub = in_main | where_exp: "n", "n.tags[1] == sub_tag" | sort: "date" | reverse %}
       {% assign planned_sub = planned_main | where_exp: "n", "n.tags[1] == sub_tag" %}
-      <div class="tag-subsection" id="{{ main_tag | slugify }}-{{ sub_tag | slugify }}">
-        <h3 class="tag-subsection__title">{{ sub_tag }}</h3>
+      <details class="tag-subsection" id="{{ main_tag | slugify }}-{{ sub_tag | slugify }}" open>
+        <summary class="tag-subsection__summary">
+          <h3 class="tag-subsection__title">{{ sub_tag }}</h3>
+          <span class="tag-count">{{ in_sub.size }}</span>
+          {% if planned_sub.size > 0 %}<span class="tag-count tag-count--planned">{{ planned_sub.size }} planned</span>{% endif %}
+        </summary>
         {% include entry-list.html entries=in_sub date=true status=true dense=true %}
         {% include planned-list.html entries=planned_sub %}
-      </div>
+      </details>
     {% endfor %}
 
     {% assign uncategorized = in_main | where_exp: "n", "n.tags[1] == nil" | sort: "date" | reverse %}
     {% assign planned_uncat = planned_main | where_exp: "n", "n.tags[1] == nil" %}
     {% if uncategorized.size > 0 or planned_uncat.size > 0 %}
-      <div class="tag-subsection">
-        {% if sub_tags.size > 0 %}<h3 class="tag-subsection__title">General</h3>{% endif %}
-        {% include entry-list.html entries=uncategorized date=true status=true dense=true %}
-        {% include planned-list.html entries=planned_uncat %}
-      </div>
+      {% if sub_tags.size > 0 %}
+        <details class="tag-subsection" id="{{ main_tag | slugify }}-general" open>
+          <summary class="tag-subsection__summary">
+            <h3 class="tag-subsection__title">General</h3>
+            <span class="tag-count">{{ uncategorized.size }}</span>
+            {% if planned_uncat.size > 0 %}<span class="tag-count tag-count--planned">{{ planned_uncat.size }} planned</span>{% endif %}
+          </summary>
+          {% include entry-list.html entries=uncategorized date=true status=true dense=true %}
+          {% include planned-list.html entries=planned_uncat %}
+        </details>
+      {% else %}
+        <div class="tag-subsection">
+          {% include entry-list.html entries=uncategorized date=true status=true dense=true %}
+          {% include planned-list.html entries=planned_uncat %}
+        </div>
+      {% endif %}
     {% endif %}
 
     <a href="#page-title" class="back-to-top">&uarr; Back to top</a>

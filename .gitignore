@@ -15,3 +15,8 @@ tools/mythingslab/.env
 
 # CV build fonts, fetched by cv/fetch-fonts.sh
 cv/fonts/
+
+# MyThingsLab drawer runtime state: the local Engine-spend ledger (shim.py) and
+# whatever the fleet's shared venv leaves behind when it imports mythings here.
+.mythings/
+tools/mythingslab/__pycache__/

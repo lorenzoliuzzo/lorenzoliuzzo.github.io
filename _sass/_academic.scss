@@ -154,6 +154,18 @@
 /* Bibliography (rendered by _includes/footer/custom.html)
    ========================================================================== */
 
+// This is the only place the reference list is styled. The include used to
+// carry its own <style> block with hardcoded colours, which fought these rules
+// and stayed light blue on a dark background.
+
+.latex-like-bibliography {
+  margin-top: 3rem;
+
+  h2 {
+    margin-top: 0;
+  }
+}
+
 .bib-entry {
   display: flex;
   gap: 0.75rem;
@@ -168,7 +180,102 @@
   font-variant-numeric: tabular-nums;
 }
 
+.bib-text {
+  flex: 1;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.bib-link {
+  margin-left: 0.35rem;
+  color: var(--accent);
+  font-size: 0.9em;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Also the "loading" and "nothing cited yet" line.
+.bib-empty {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+// A missing or unparseable .bib is an authoring mistake, so it stays loud
+// rather than muted like .bib-empty.
+.bib-error {
+  color: #c0392b;
+  font-family: var(--font-sans);
+  font-size: 0.85em;
+}
+
+// The bracketed number a citation carries in the text. cursor: help advertises
+// the title tooltip holding the full reference.
 .cite-link {
+  color: var(--accent);
   font-variant-numeric: tabular-nums;
   text-decoration: none;
+  cursor: help;
+}
+
+/* Figure and table index (built by _includes/float-index.html)
+   ========================================================================== */
+
+// Navigation furniture, so it takes the sans face and muted weight the TOC rail
+// uses rather than the serif of the body copy it sits in.
+.float-index {
+  max-width: var(--measure);
+  margin: 2rem 0 2.5rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--border);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+}
+
+.float-index__heading {
+  margin: 0 0 0.5rem;
+  color: var(--text-faint);
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+
+  // Air between the Tables group and the figure list above it.
+  .float-index__list + & {
+    margin-top: 1.4rem;
+  }
+}
+
+.float-index__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  a {
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.28rem 0;
+    color: var(--text-muted);
+    line-height: 1.45;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+}
+
+// Captions run long, so the label keeps its own column and the text wraps under
+// itself instead of pushing the numbers out of alignment.
+.float-index__label {
+  flex: 0 0 4.25rem;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.float-index__caption {
+  flex: 1;
 }

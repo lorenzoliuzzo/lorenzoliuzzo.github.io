@@ -63,6 +63,36 @@ function escapeRegExp(text) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function unquote(value) {
+  if (value.length >= 2 && value[0] === value[value.length - 1] && (value[0] === '"' || value[0] === "'")) {
+    return value.slice(1, -1);
+  }
+  return value;
+}
+
+// Reads one flat scalar key out of the front matter block — title, human_verified,
+// verified_hash, anything formatScalar() could have written. Not a YAML parser: a
+// nested value (a list like `tags:`) is invisible to this on purpose, same
+// unanchored-indentation reasoning as updateFrontMatter's `^key:` match.
+export function frontMatterValue(source, key) {
+  const { frontMatter } = splitFrontMatter(source);
+  if (frontMatter === null) return null;
+  const match = new RegExp(`^${escapeRegExp(key)}:[ \\t]*(.*)$`, "m").exec(frontMatter);
+  return match ? unquote(match[1].trim()) : null;
+}
+
+// Must mirror Verification.state_for's "verified" branch in
+// _plugins/note_verification.rb: recorded, hashed, and the hash matches the body
+// on disk right now. Used to gate a server action (quizzing) on the same claim the
+// badge renders, not just on what the client last saw painted on the page.
+export function isVerified(source) {
+  if (frontMatterValue(source, "human_verified") !== "true") return false;
+  const storedHash = frontMatterValue(source, "verified_hash");
+  if (!storedHash) return false;
+  const { body } = splitFrontMatter(source);
+  return storedHash === hashBody(body);
+}
+
 export function applyPatch(source, oldString, newString) {
   if (typeof oldString !== "string" || oldString.length === 0) {
     return { ok: false, reason: "empty_old_string" };

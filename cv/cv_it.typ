@@ -1,4 +1,5 @@
 #import "@preview/modern-cv:0.10.0": *
+#import "@preview/fontawesome:0.6.0": fa-icon
 
 #show: resume.with(
   author: (
@@ -6,7 +7,14 @@
     lastname: "Liuzzo",
     email: "lorenzoliuzzo@outlook.com",
     github: "lorenzoliuzzo",
-    positions: ("Fisico", "Programmatore", "Architetto del Software"),
+    custom: (
+      (
+        text: "lorenzoliuzzo.github.io",
+        icon: "globe",
+        link: "https://lorenzoliuzzo.github.io",
+      ),
+    ),
+    positions: ("Fisico", "Programmatore", "Sistemi di AI"),
   ),
   profile-picture: image("../assets/images/profile.jpg"),
   language: "it",
@@ -14,75 +22,93 @@
   keywords: ("Fisico", "Programmatore"),
 )
 
-#align(center, block(width: 100%)[
-  #set par(justify: false)
-  #emph[Fisico] e #emph[programmatore] specializzato in #emph[AI] con esperienza
-  in #emph[machine learning], #emph[analisi dati] e #emph[sviluppo software].
-  Attitudine a risolvere problemi complessi attraverso approcci scientifici e
-  innovativi.
-])
-
-= Educazione
-
-#resume-entry(
-  title: "Università degli Studi di Milano, di Milano-Bicocca e di Pavia",
-  location: "Milano/Pavia, Italia",
-  date: "Settembre 2025 - in corso",
-  description: "Laurea magistrale in Artificial Intelligence for Science and Technology",
+// Tre segnali, ognuno con un compito solo, così non serve alzare la voce:
+//   `lead` — il colore d'accento del documento sulla frase di cui parla il punto;
+//   `tech` — un peso più marcato sulle tecnologie, così lo stack si legge a colpo d'occhio;
+//   `xlink` — un piccolo segno dopo il testo cliccabile, l'unica cosa che marca un link.
+// Il grassetto resta raro di proposito: una affermazione per voce, e solo le competenze più solide.
+#let lead(body) = text(fill: default-accent-color, weight: "semibold")[#body]
+#let tech(body) = text(weight: "medium")[#body]
+#let link-mark = box(
+  baseline: -0.3em,
+  text(size: 0.5em, fill: rgb("#8d93b5"))[#fa-icon("arrow-up-right-from-square")],
 )
+#let xlink(url, body) = link(url)[#body#h(1.2pt)#link-mark]
 
-#resume-entry(
-  title: "Università degli Studi di Milano",
-  location: "Milano, Italia",
-  date: "Settembre 2021 - Luglio 2025",
-  description: "Laurea triennale in Fisica, Votazione: 100/110",
-)
-#resume-item[
-  #emph[Tesi: «Ray tracing and Monte Carlo methods for uncertainty quantification
-  in the pointing direction of radio telescopes for CMB observations.»]
+// github-link del template si ferma all'icona: aggiungendo lo stesso segno dei link in
+// linea, tutta la pagina usa una sola convenzione per dire "qui si può cliccare".
+#let github-link(path) = align(right + horizon)[
+  #box(height: 11pt, fa-icon("github", fill: color-darkgray))#h(2pt)#xlink("https://github.com/" + path)[#path]
 ]
 
-#resume-entry(
-  title: "I.I.S. Severi-Correnti",
-  location: "Milano, Italia",
-  date: "Settembre 2016 - Giugno 2021",
-  description: "Diploma Scientifico, Votazione: 100/100",
-)
+// resume-item fissa `set par(leading: 0.65em)` dentro la funzione, e nessuna set rule
+// qui fuori riesce a scavalcarla. Impostare l'interlinea dentro il corpo invece
+// funziona, quindi l'item viene avvolto una volta sola e tutti i punti di chiamata la
+// ereditano. Il valore spende in leggibilità lo spazio libero in fondo all'ultima pagina.
+#let template-item = resume-item
+#let resume-item(body) = template-item[
+  #set text(size: 9.5pt)
+  #set par(leading: 0.66em)
+  #body
+]
 
-#resume-entry(
-  title: "EF International Language School",
-  location: "Brighton, Inghilterra",
-  date: "Giugno - Settembre 2019",
-  description: "Corso intensivo di lingua inglese full-immersion",
-)
-
-= Scuole e Workshop
-
-#resume-entry(
-  title: "School on Quantum Simulation",
-  location: "Milano, Italia",
-  date: "9 - 11 Settembre 2026",
-  description: "Dipartimento di Fisica, Università degli Studi di Milano",
-)
-
-#resume-entry(
-  title: "Qiskit Fall Fest",
-  location: "Milano, Italia",
-  date: "31 Ottobre - 7 Novembre 2025",
-  description: "IBM Quantum · Dipartimento di Fisica, Università degli Studi di Milano",
-)
+// Risalita nello spazio libero lasciato dalla griglia dell'intestazione, con la stessa
+// larghezza della colonna del nome per non finire sotto alla foto.
+#v(-33pt)
+#block(width: 100% - 4cm - 10pt)[
+  #set par(justify: false)
+  #align(center)[
+    #emph[Fisico] e #emph[programmatore] specializzato in #emph[AI]. La fisica mi ha
+    insegnato a ricavare il modello prima di scrivere il codice; ultimamente passo gran
+    parte del tempo a capire quanto di quella scrittura si possa delegare a un modello, e
+    dove debba ancora decidere una persona.
+  ]
+]
+#v(-4pt)
 
 = Esperienze
 
 #resume-entry(
-  title: "Money Ball AI",
-  location: "Milano, Italia",
-  date: "Settembre 2025 - in corso",
-  description: "Founder, Technical Lead e Developer",
+  title: "MyThingsLab",
+  location: github-link("MyThingsLab"),
+  date: "Luglio 2026 - in corso",
+  description: "Progetto personale",
 )
 #resume-item[
-  - Ho fondato e guido #emph[MoneyBallingAI], un team di quattro persone (fisico, informatico, statistico) che trasforma i dati grezzi play-by-play NBA in modelli predittivi per l'analisi cestistica.
-  - Curo l'architettura della piattaforma: un backend a database a grafo per i dati play-by-play, un backend di simulazione e il livello di Machine Learning costruito su di essi.
+  - #lead[Un harness, non un singolo tool.] Avviato a luglio 2026 per capire fin dove si
+    possa spingere lo sviluppo assistito dall'AI, e dove debba fermarsi: #strong[più di 50
+    piccoli tool Python] nel primo mese, ognuno indipendente, tutti su un solo SDK —
+    #xlink("https://github.com/MyThingsLab/my-things-core")[#tech[my-things-core]] — e i
+    suoi cinque contratti (ledger, policy, engine, GitHub, isolation), così niente viene
+    ricostruito due volte.
+  - #lead[Controllo, non autonomia.] Worker headless prendono una issue, fanno il lavoro
+    deterministico senza chiamare il modello, invocano l'LLM solo per il passo che richiede
+    giudizio e chiudono con una pull request — mai un merge, così l'ultima parola resta a
+    una persona.
+  - #lead[Nessun modello dentro il core.] L'SDK è dependency-free e si appoggia a #tech[gh]
+    e #tech[git], e l'LLM vive dietro un unico protocollo #tech[Engine] il cui default
+    deterministico permette di esercitare e testare l'intera flotta senza spendere un token.
+]
+
+#resume-entry(
+  title: "Money Balling AI",
+  location: github-link("MoneyBallingAI"),
+  date: "Settembre 2025 - in corso",
+  description: "Founder e Technical Lead",
+)
+#resume-item[
+  - Un team di quattro persone che costruisce un unico modello capace di predire il
+    #strong[box score esatto] di una partita NBA — ogni riga di giocatore e di squadra — con
+    incertezza calibrata. Ne curo l'architettura, dal play-by-play grezzo alla predizione:
+  - #lead[Dati] — play-by-play scomposto in periodi, stint di quintetto e possessi,
+    aggregato in finestre cumulative di statistiche e modellato come grafi di stint
+    eterogenei, con identità globali stabili per giocatori e squadre tra le stagioni.
+  - #lead[Encoder] — una GNN eterogenea su quei grafi con memoria per entità tra partite
+    e gerarchica su stagione/partita/stint, pre-addestrata su un task di delta del box
+    score per ottenere embedding stabili di giocatori e squadre.
+  - #lead[Simulatore] — un motore Monte Carlo vettorizzato di possessi le cui policy sono
+    behavior-cloned su possessi reali; la #lead[calibrazione] confronta le distribuzioni per
+    statistica con il box score reale usando MAE, CRPS, PIT e coverage, test-first e sotto CI.
 ]
 
 #resume-entry(
@@ -92,10 +118,8 @@
   description: "A domicilio",
 )
 #resume-item[
-  - Assistenza continuativa a 20+ studenti
-  - Preparazione esame di maturità e recupero debiti
-  - Metodologie didattiche personalizzate in base alle esigenze dello studente
-  - Monitoraggio dei progressi e report periodici alle famiglie
+  Assistenza continuativa a 20+ studenti: preparazione agli esami, recupero debiti e
+  report periodici alle famiglie.
 ]
 
 #resume-entry(
@@ -115,27 +139,73 @@
 #resume-entry(
   title: "Capo Scout",
   location: "Milano, Italia",
-  date: "2021-2022",
-  description: "Reparto Breithorn, Gruppo Milano 8, AGESCI",
+  date: "2021 - 2022",
+  description: "Reparto Breithorn - Gruppo MI8 - AGESCI",
 )
 #resume-item[
-  - Progettazione e conduzione di attività educative e ricreative rivolte a ragazzi tra i 12-16 anni
-  - Organizzazione di campi invernali/estivi e uscite formative durante tutto l'anno
-  - Coordinamento con altri educatori e famiglie
+  Attività educative per ragazzi tra i 12 e i 16 anni: campi, uscite e coordinamento con
+  educatori e famiglie.
 ]
 
-= Progetti
+= Educazione
 
 #resume-entry(
-  title: "MyThingsLab",
-  location: github-link("MyThingsLab"),
-  date: "Luglio 2026 - in corso",
-  description: "Architect/Developer",
+  title: "Università degli Studi di Milano, di Milano-Bicocca e di Pavia",
+  location: "Milano/Pavia, Italia",
+  date: "Settembre 2025 - in corso",
+  description: "Laurea magistrale in Artificial Intelligence for Science and Technology",
+)
+
+#resume-entry(
+  title: "Università degli Studi di Milano",
+  location: "Milano, Italia",
+  date: "Settembre 2021 - Luglio 2025",
+  description: "Laurea triennale in Fisica, Votazione: 100/110",
 )
 #resume-item[
-  - Una flotta di 56 strumenti Python componibili su un SDK condiviso, con un policy engine per ogni side effect.
-  - Guida un ciclo di sviluppo autonomo: worker LLM headless chiudono le issue di un backlog come pull request, in modo deterministico tranne dove serve un giudizio.
+  Tesi: #emph[ray tracing e metodi Monte Carlo per la quantificazione dell'incertezza nel
+  puntamento di radiotelescopi per osservazioni della CMB.]
 ]
+
+#resume-entry(
+  title: "I.I.S. Severi-Correnti",
+  location: "Milano, Italia",
+  date: "Settembre 2016 - Giugno 2021",
+  description: "Diploma Scientifico, Votazione: 100/100",
+)
+
+// Un secondo punto di rottura: in italiano il testo è più lungo e senza questo la
+// coppia I.I.S. + EF finisce insieme sulla pagina dopo, lasciando un buco qui.
+#block(height: 0pt, above: 0pt, below: 0pt, width: 100%)[#box()]
+
+#resume-entry(
+  title: "EF International Language School",
+  location: "Brighton, Inghilterra",
+  date: "Giugno - Settembre 2019",
+  description: "Corso intensivo di lingua inglese full-immersion",
+)
+
+// resume-entry è sticky: senza un blocco neutro qui l'intera coda di Educazione viene
+// trascinata sulla pagina successiva invece di spezzarsi dopo questa voce.
+#block(height: 0pt, above: 0pt, below: 0pt, width: 100%)[#box()]
+
+= Scuole e Workshop
+
+#resume-entry(
+  title: "School on Quantum Simulation",
+  location: "Milano, Italia",
+  date: "Settembre 2026",
+  description: "Dipartimento di Fisica, Università degli Studi di Milano",
+)
+
+#resume-entry(
+  title: "Qiskit Fall Fest",
+  location: "Milano, Italia",
+  date: "Ottobre - Novembre 2025",
+  description: "IBM Quantum · Dipartimento di Fisica, Università degli Studi di Milano",
+)
+
+= Progetti
 
 #resume-entry(
   title: "Gauge-Equivariant Graph Neural Networks",
@@ -144,43 +214,21 @@
   description: "Designer/Developer",
 )
 #resume-item[
-  Teoria di campo del Modello Standard su reticolo simulata con GNN
-  gauge-equivarianti in #emph[PyTorch Geometric], con gruppi di gauge
-  SU(3)×SU(2)×U(1), fermioni di Wilson-Dirac e rottura spontanea di simmetria
-  di Higgs.
+  Teoria di campo del Modello Standard su reticolo simulata con GNN gauge-equivarianti in
+  #tech[PyTorch Geometric]: gruppi di gauge SU(3)×SU(2)×U(1), fermioni di Wilson-Dirac e
+  rottura spontanea di simmetria di Higgs.
 ]
 
 #resume-entry(
-  title: "Supervised Learning on Food Images",
-  location: github-link("lorenzoliuzzo/supervised-learning-on-food-images"),
-  date: "Luglio 2026",
+  title: "Progetti dei corsi della magistrale",
+  location: github-link("lorenzoliuzzo"),
+  date: "Maggio - Luglio 2026",
   description: "Designer/Developer",
 )
 #resume-item[
-  Una rete neurale convoluzionale sotto i 10M di parametri che classifica le 251
-  classi del dataset FoodX-251.
-]
-
-#resume-entry(
-  title: "Transverse Field Ising Model",
-  location: github-link("lorenzoliuzzo/TFIM"),
-  date: "Luglio 2026",
-  description: "Designer/Developer",
-)
-#resume-item[
-  Esplorazione delle transizioni di fase quantistiche nel Transverse Field Ising
-  Model, implementata su #emph[PennyLane].
-]
-
-#resume-entry(
-  title: "Unsupervised Learning on Country Data",
-  location: github-link("lorenzoliuzzo/unsupervised-learning-on-country-data"),
-  date: "Maggio 2026",
-  description: "Designer/Developer",
-)
-#resume-item[
-  Clustering e riduzione della dimensionalità applicati a dati socio-economici a
-  livello nazionale.
+  - #xlink("https://github.com/lorenzoliuzzo/supervised-learning-on-food-images")[#strong[Supervised Learning on Food Images]] — una #tech[CNN] in #tech[PyTorch] sotto i 10M di parametri sulle 251 classi del dataset FoodX-251.
+  - #xlink("https://github.com/lorenzoliuzzo/TFIM")[#strong[Transverse Field Ising Model]] — transizioni di fase quantistiche esplorate su #tech[PennyLane].
+  - #xlink("https://github.com/lorenzoliuzzo/unsupervised-learning-on-country-data")[#strong[Unsupervised Learning on Country Data]] — clustering e riduzione della dimensionalità su dati socio-economici nazionali.
 ]
 
 #resume-entry(
@@ -190,76 +238,83 @@
   description: "Designer/Developer",
 )
 #resume-item[
-  Implementazione in #emph[Julia] che permette di modellare il sistema riflettivo
-  di un telescopio ottico e di studiare la propagazione di difetti strumentali
-  degli specchi nella direzione di puntamento, combinando l'ottica geometrica con
-  tecniche di #emph[ray tracing] e di simulazione #emph[Monte Carlo].
+  Modello in #tech[Julia] del sistema riflettivo di un telescopio: i difetti degli specchi
+  propagati sulla direzione di puntamento via #emph[ray tracing] e #emph[Monte Carlo].
 ]
 
 #resume-entry(
-  title: "Ray Tracing Engine",
-  location: github-link("lorenzoliuzzo/PhotoNim"),
-  date: "Marzo - Luglio 2024",
-  description: "Co-Designer/Developer",
-)
-#resume-item[
-  - Progetto di coppia per il corso #emph[Tecniche numeriche per la generazione di immagini fotorealistiche] presso UNIMI.
-  - Traduzione di un modello fisico in codice numerico ben strutturato, testato e documentato, con apprendimento rapido di un nuovo linguaggio (#emph[Nim]).
-]
-
-#resume-entry(
-  title: "Dimensional Analysis Library",
-  location: github-link("lorenzoliuzzo/ctda-cpp"),
-  date: "Settembre - Ottobre 2023",
+  title: "Programmazione di sistema e numerica",
+  location: "C++ · Nim",
+  date: "2023 - 2024",
   description: "Designer/Developer",
 )
 #resume-item[
-  «CTDA: Compile Time Dimensional Analysis», implementazione in C++ di tipi
-  numerici che supportano unità di misura.
+  - #xlink("https://github.com/lorenzoliuzzo/PhotoNim")[#strong[Ray Tracing Engine]] — progetto di coppia a UNIMI: un modello fisico tradotto in codice numerico strutturato, testato e documentato, imparando in fretta un nuovo linguaggio (#tech[Nim]).
+  - #xlink("https://github.com/lorenzoliuzzo/ctda-cpp")[#strong[Dimensional Analysis Library]] — «CTDA: Compile Time Dimensional Analysis», tipi numerici C++ che portano le unità di misura nel sistema dei tipi.
 ]
 
-= Skills
+= Come Sviluppo Software
 
-#resume-skill-item("Lingue straniere", (strong("Inglese C1"),))
+#resume-item[
+  - #lead[L'AI su tutto il flusso, non solo sulla scrittura del codice.] Tool componibili
+    coprono ricerca, progettazione, implementazione, test e documentazione, così il modello
+    viene usato dove serve davvero e non in un unico passaggio.
+  - #lead[Prima il deterministico, il modello solo dove serve giudizio.] L'LLM sta dietro un
+    unico punto di innesto #tech[Engine], così l'intero scheletro di un tool gira ed è
+    testato a costo zero di token.
+  - #lead[Test-driven, e sempre attraverso una pull request.] I test si scrivono insieme al
+    codice, spesso prima; #tech[pytest], coverage e #tech[ruff] girano a ogni push, e il
+    lavoro entra passando da una review, non da un push sul branch principale.
+  - #lead[Ogni effetto collaterale passa da un gate.] Un motore di policy decide ogni azione
+    allow/ask/deny, i tool aprono pull request invece di fare merge, e ogni #emph[ask] mi
+    arriva su Telegram prima che accada qualcosa.
+  - #lead[Capire il problema prima di scrivere il codice.] Un'abitudine che viene dalla
+    fisica: ricavare il modello, decidere cosa deve davvero calcolare il codice e solo dopo
+    scriverlo — tipizzato, documentato e senza astrazioni per bisogni che non esistono.
+]
+
+= Competenze Tecniche
+
+#resume-skill-item("Lingue", (strong("Italiano"), strong("Inglese C1")))
 #resume-skill-item(
   "Programmazione",
-  (strong("C++"), strong("Python"), strong("Julia"), "C", "Nim"),
+  (strong("Python"), strong("C++"), strong("Julia"), "C", "Nim"),
 )
 #resume-skill-item(
-  "Impaginazione",
-  (strong("LaTeX"), strong("Typst"), strong("Markdown"), "HTML"),
-)
-#resume-skill-item(
-  "Strumenti di Sviluppo",
-  (strong("Git"), strong("GitHub"), strong("Jupyter")),
+  "AI Engineering",
+  (
+    strong("Claude"),
+    strong("Claude Code"),
+    "Workflow agentici",
+    "Prompt & context engineering",
+  ),
 )
 #resume-skill-item(
   "ML & Data Science",
   (
     strong("PyTorch"),
     strong("PyTorch Geometric"),
-    strong("Scikit-learn"),
-    strong("Pandas"),
-    strong("NumPy"),
-    strong("SciPy"),
+    "Scikit-learn",
+    "Pandas",
+    "NumPy",
+    "SciPy",
   ),
 )
-#resume-skill-item("Quantum Computing", (strong("PennyLane"), strong("Qiskit")))
-
-= Interessi personali
-
 #resume-skill-item(
-  "Hiking & Camping",
-  ("Camminare in montagna e vivere l'essenzialità della natura",),
+  "Database & Quantum",
+  ("Neo4j", "Cypher", strong("PennyLane"), "Qiskit"),
 )
 #resume-skill-item(
-  "Volontariato",
-  ("Campi scout", "Assistenza agli anziani", "Musica-Terapia per bambini con disabilità"),
+  "Pratiche",
+  (strong("Sviluppo test-driven"), strong("Workflow a pull request"), "CI/CD", "Tipizzazione statica"),
 )
-#resume-skill-item("Sport", ("Nuoto", "Pallanuoto", "SlackLine", "Arrampicata"))
 #resume-skill-item(
-  "Viaggiare",
-  ("Qualsiasi meta e modalità: piedi, bici, treno, macchina, aereo",),
+  "Strumenti di sviluppo",
+  (strong("Git"), strong("GitHub"), "GitHub Actions", "pytest", "ruff", "Jupyter"),
+)
+#resume-skill-item(
+  "Typesetting",
+  (strong("LaTeX"), strong("Typst"), strong("Markdown"), "Jekyll"),
 )
 
 #v(1fr)

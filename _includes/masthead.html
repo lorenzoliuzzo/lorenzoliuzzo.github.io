@@ -57,6 +57,21 @@
   </div>
 </div>
 
+{% comment %}
+  --- local addition: site-wide notice ---
+  Driven by `site_notice` in _config.yml; delete that key to remove the banner
+  from every page at once.
+{% endcomment %}
+{% if site.site_notice %}
+  <div class="site-notice" role="status">
+    <p class="site-notice__text">
+      <i class="fas fa-tools" aria-hidden="true"></i>
+      {{ site.site_notice }}
+    </p>
+  </div>
+{% endif %}
+{% comment %}--- end local addition ---{% endcomment %}
+
 {% comment %}--- local addition: theme toggle behaviour ---{% endcomment %}
 <script>
   (function () {
