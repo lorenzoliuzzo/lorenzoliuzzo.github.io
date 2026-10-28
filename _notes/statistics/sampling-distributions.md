@@ -16,8 +16,8 @@ requires:
   - normal
   - gamma
 defines:
-  - {id: sampling-distribution, name: sampling distribution, anchor: what-a-sampling-distribution-is}
-  - {id: standard-error, name: standard error, anchor: the-sample-mean}
+  - {id: sampling-distribution, name: sampling distribution, anchor: def-sampling-distribution}
+  - {id: standard-error, name: standard error, anchor: def-standard-error}
   - {id: chi-square, name: chi-square, anchor: sample-variance-and-the-chi-square}
   - {id: student-t, name: Student's t, anchor: students-t}
   - {id: f-distribution, name: F distribution, anchor: the-f-distribution}
@@ -26,12 +26,19 @@ tags:
   - Statistics
   - Inference
 ---
+An estimate computed from one sample would have been different on another sample, and the question is by how much.
 
-An estimate computed from one sample would have been different on another sample, and the question is by how much. The answer is the **sampling distribution** of the statistic: its distribution over repeated samples. This note shows how to get one and works out the cases that inference relies on. Proofs are in the [reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}).
+> The answer is the **sampling distribution** of the statistic: its distribution over repeated samples.
+{: .definition #def-sampling-distribution title="Sampling distribution"}
+
+This note shows how to get one and works out the cases that inference relies on. Proofs are in the [reference (PDF)]({{ '/assets/notes/statistics/statistics-reference/statistics-reference.pdf' | relative_url }}).
 
 # What a sampling distribution is
 
-A statistic $T$ is any function of the sample, so it is random. If we could repeat the sampling many times, the values of $T$ would form a distribution. Its centre tells us about the bias, its spread, called the **standard error**, tells us about the precision, and its shape tells us which probability statements we are allowed to make.
+A statistic $T$ is any function of the sample, so it is random. If we could repeat the sampling many times, the values of $T$ would form a distribution.
+
+> Its centre tells us about the bias, its spread, called the **standard error**, tells us about the precision, and its shape tells us which probability statements we are allowed to make.
+{: .definition #def-standard-error title="Standard error"}
 
 There are three ways to find it. When the data model is simple we can derive it, which is what the rest of the note does. When it is not, we can simulate: draw many samples from an assumed model, compute $T$ on each, and look at the result. This works for any statistic and is the quickest way to build intuition for a formula. And when we do not want to assume a model at all, the **bootstrap** resamples the observed data with replacement and uses the spread of $T$ over the resamples as an estimate of the standard error.
 

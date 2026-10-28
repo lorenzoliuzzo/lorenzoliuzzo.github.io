@@ -15,10 +15,10 @@ requires:
   - variance
   - law-of-large-numbers
 defines:
-  - {id: estimator, name: estimator, anchor: setting}
+  - {id: estimator, name: estimator, anchor: def-estimator}
   - {id: bias-and-mse, name: bias and MSE, anchor: judging-an-estimator}
   - {id: cramer-rao-bound, name: Cramér–Rao bound, anchor: judging-an-estimator}
-  - {id: fisher-information, name: Fisher information, anchor: judging-an-estimator}
+  - {id: fisher-information, name: Fisher information, anchor: def-fisher-information}
   - {id: likelihood, name: likelihood, anchor: maximum-likelihood}
   - {id: maximum-likelihood-estimator, name: maximum likelihood estimator, anchor: maximum-likelihood}
 read_time: true
@@ -35,7 +35,12 @@ We model the data as realizations of
 
 $$ X_1,\dots,X_n\ \text{i.i.d.}\sim f(x;\theta),\qquad \theta\in\Theta, $$
 
-where the parameter $\theta$ is a fixed, unknown number. A **statistic** is any function $T(X_1,\dots,X_n)$ of the sample. It is random, and its sampling distribution tells us how far to trust it. An **estimator** $\hat\theta=T(X)$ is a rule for guessing $\theta$, and an **estimate** is the value that rule takes on the data we actually have. The i.i.d. assumption is what makes everything below work, and it is exactly what breaks for time series and clustered data.
+where the parameter $\theta$ is a fixed, unknown number. A **statistic** is any function $T(X_1,\dots,X_n)$ of the sample. It is random, and its sampling distribution tells us how far to trust it.
+
+> An **estimator** $\hat\theta=T(X)$ is a rule for guessing $\theta$, and an **estimate** is the value that rule takes on the data we actually have.
+{: .definition #def-estimator title="Estimator"}
+
+The i.i.d. assumption is what makes everything below work, and it is exactly what breaks for time series and clustered data.
 
 # Judging an estimator
 
@@ -52,7 +57,10 @@ Is there a limit to how good an unbiased estimator can be? Yes, the Cramér–Ra
 
 $$ \operatorname{Var}(\hat\theta)\ \ge\ \frac{1}{nI(\theta)},\qquad I(\theta)=\mathbb{E}\Big[\Big(\tfrac{\partial}{\partial\theta}\log f(X;\theta)\Big)^2\Big]. $$
 
-The **Fisher information** $I(\theta)$ measures how sharply the log-density changes as $\theta$ moves, in other words how much a single observation tells us about $\theta$. An unbiased estimator that reaches the bound is called efficient.
+> The **Fisher information** $I(\theta)$ measures how sharply the log-density changes as $\theta$ moves, in other words how much a single observation tells us about $\theta$.
+{: .definition #def-fisher-information title="Fisher information"}
+
+An unbiased estimator that reaches the bound is called efficient.
 
 A familiar example of bias is the sample variance. We divide by $n-1$ and not $n$ because the deviations are taken from $\bar X$, which was fitted to the same data and so uses up one degree of freedom. With $n-1$ we get $\mathbb{E}S^2=\sigma^2$ exactly, and $(n-1)S^2/\sigma^2\sim\chi^2_{n-1}$ for normal data.
 

@@ -16,11 +16,11 @@ requires:
   - effective-degrees-of-freedom
   - bias-variance-tradeoff
 defines:
-  - {id: basis-expansion, name: basis expansion, anchor: basis-expansions}
+  - {id: basis-expansion, name: basis expansion, anchor: def-basis-expansion}
   - {id: regression-spline, name: regression spline, anchor: regression-splines}
-  - {id: natural-spline, name: natural spline, anchor: regression-splines}
+  - {id: natural-spline, name: natural spline, anchor: def-natural-spline}
   - {id: smoothing-spline, name: smoothing spline, anchor: smoothing-splines}
-  - {id: linear-smoother, name: linear smoother, anchor: smoothing-splines}
+  - {id: linear-smoother, name: linear smoother, anchor: def-linear-smoother}
 read_time: true
 tags:
   - Statistics
@@ -31,7 +31,10 @@ A straight line is rarely the shape of the data, and the way out is to keep the 
 
 # Basis expansions
 
-A **basis expansion** models the regression function as $f(x)=\sum_{m=1}^M\beta_mh_m(x)$ for fixed functions $h_m$ such as $x$, $x^2$, $x^3$. The model is nonlinear in $x$ but linear in $\beta$, so it is fitted by least squares on the matrix with entries $h_m(x_i)$, and standard errors, $F$-tests and penalties carry over unchanged. The question is which functions to use, and global polynomials are the first answer and a poor one: one bend needed in one place forces the whole curve to change, and at the ends of the range a polynomial swings away from the data.
+> A **basis expansion** models the regression function as $f(x)=\sum_{m=1}^M\beta_mh_m(x)$ for fixed functions $h_m$ such as $x$, $x^2$, $x^3$.
+{: .definition #def-basis-expansion title="Basis expansion"}
+
+The model is nonlinear in $x$ but linear in $\beta$, so it is fitted by least squares on the matrix with entries $h_m(x_i)$, and standard errors, $F$-tests and penalties carry over unchanged. The question is which functions to use, and global polynomials are the first answer and a poor one: one bend needed in one place forces the whole curve to change, and at the ends of the range a polynomial swings away from the data.
 
 # Regression splines
 
@@ -46,7 +49,10 @@ The remedy is to be local. Cut the range at **knots** $\xi_1<\dots<\xi_K$ and fi
 
 {% include fig.html src="statistics/regression-spline" id="fig-regression-spline" alt="Noisy data around a sine-like curve, with a true curve, a cubic polynomial fit and a cubic spline fit with three knots. The spline follows the true curve closely; the polynomial deviates, especially near the ends." caption="One noisy sample, three fits. The cubic spline with three knots (7 parameters) follows the curve, while the global cubic (4 parameters) cannot bend where it needs to and drifts at the ends." %}
 
-At the boundaries of the data the cubic pieces are the least constrained, and the variance there is the highest. A **natural spline** is forced to be linear beyond the outer knots, which removes four parameters and tames the ends at the cost of a little bias there.
+At the boundaries of the data the cubic pieces are the least constrained, and the variance there is the highest.
+
+> A **natural spline** is forced to be linear beyond the outer knots, which removes four parameters and tames the ends at the cost of a little bias there.
+{: .definition #def-natural-spline title="Natural spline"}
 
 > Knots are usually placed at quantiles of $x$, so that each piece has about the same number of points, and only a few are needed. Their number $K$ plays the role of the model size and is chosen by cross-validation or by effective degrees of freedom.
 {: .rule}
@@ -62,7 +68,12 @@ The first term rewards fitting the data and the second punishes curvature. With 
 > **Why it is a natural spline.** Take any competitor $g$ and let $f$ be the natural spline through the same points. For $h=g-f$ we have $h(x_i)=0$, and integrating by parts twice gives $\int f''h''=0$. Hence $\int g''^2=\int f''^2+\int h''^2\ge\int f''^2$: a competitor can only add roughness, never fit better.
 {: .derive}
 
-The problem is therefore finite. The fitted values at the knots are $\hat f=(I+\lambda K)^{-1}y$, where the matrix $K$ encodes the roughness. This is linear in $y$, so the smoothing spline is a **linear smoother**, $\hat y=S_\lambda y$, and it is a ridge regression in disguise: the smooth components (the constants and straight lines, which cost no roughness) are kept untouched and the wiggly ones are shrunk by $1/(1+\lambda d_k)$. As for ridge, the trace $\operatorname{tr}S_\lambda$ is the effective degrees of freedom, and it runs from $n$ at $\lambda=0$ to $2$ for the line.
+The problem is therefore finite. The fitted values at the knots are $\hat f=(I+\lambda K)^{-1}y$, where the matrix $K$ encodes the roughness.
+
+> This is linear in $y$, so the smoothing spline is a **linear smoother**, $\hat y=S_\lambda y$, and it is a ridge regression in disguise: the smooth components (the constants and straight lines, which cost no roughness) are kept untouched and the wiggly ones are shrunk by $1/(1+\lambda d_k)$.
+{: .definition #def-linear-smoother title="Linear smoother"}
+
+As for ridge, the trace $\operatorname{tr}S_\lambda$ is the effective degrees of freedom, and it runs from $n$ at $\lambda=0$ to $2$ for the line.
 
 {% include fig.html src="statistics/smoothing-spline" id="fig-smoothing" alt="The same noisy data with the true curve and three smoothing spline fits: an almost straight line at about 2.5 degrees of freedom, a smooth fit at 7 and a wiggly fit at 22 that chases the noise." caption="Smoothing splines of the same data at three effective degrees of freedom. Too few and the fit is a line; too many and it follows the noise. One number moves the fit along this range." %}
 

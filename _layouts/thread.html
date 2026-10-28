@@ -1,0 +1,16 @@
+---
+layout: single
+---
+
+{% comment %}
+  A thread: an essay that follows one idea through several courses. Wraps `single`. The
+  route card above the text lists the notes the thread passes through, in order, from
+  front matter `route`; the reference list below is built from the thread's {% cite %}
+  tags like a note's (_plugins/citations.rb).
+{% endcomment %}
+
+{% include thread-route.html %}
+
+{{ content }}
+
+{% include references.html %}

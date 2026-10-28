@@ -1,0 +1,27 @@
+domain: physics
+title: "General Relativity"
+summary: "Gravity as the geometry of spacetime: tensors and curvature, the Einstein equations, and their solutions from black holes to the expanding universe."
+parts:
+  - title: "Geometry"
+    blurb: "The language of curved spacetime."
+    notes:
+      - physics/general-relativity/equivalence-principle
+      - physics/general-relativity/tensors-and-manifolds
+      - physics/general-relativity/metric-and-spacetime
+  - title: "Curvature"
+    blurb: "Motion and the meaning of curved."
+    notes:
+      - physics/general-relativity/geodesics
+      - physics/general-relativity/curvature
+  - title: "Field equations"
+    blurb: "How matter curves spacetime."
+    notes:
+      - physics/general-relativity/einstein-equations
+      - physics/general-relativity/schwarzschild-solution
+      - physics/general-relativity/tests-of-general-relativity
+      - physics/general-relativity/black-holes
+  - title: "Waves and cosmos"
+    blurb: "Dynamics of spacetime itself."
+    notes:
+      - physics/general-relativity/gravitational-waves
+      - physics/general-relativity/cosmology

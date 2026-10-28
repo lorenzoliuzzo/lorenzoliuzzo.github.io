@@ -1,0 +1,66 @@
+---
+title: Coverage
+permalink: /notes/status/
+layout: single
+classes: wide
+author_profile: true
+---
+
+{% comment %}
+  Where the notes stand, derived from the files and never hand-edited: a note is planned
+  while its body is empty (_plugins/planned_notes.rb), written once it has prose, and
+  verified when the sign-off hash still matches (_plugins/note_verification.rb). Words are
+  counted from the published notes. A course marked `legacy` has not been brought to the
+  standard in .claude/skills/write-site-note/ yet.
+{% endcomment %}
+
+<p>Where each course stands. <span class="coverage__legend">Green: verified by a human read. Blue: written, not yet verified. Grey: planned.</span></p>
+
+{% assign all_total = 0 %}{% assign all_written = 0 %}{% assign all_verified = 0 %}{% assign all_words = 0 %}
+<table class="coverage">
+  <thead>
+    <tr><th>Course</th><th>Standard</th><th>Written</th><th>Verified</th><th>Planned</th><th>Words</th><th></th></tr>
+  </thead>
+  <tbody>
+  {% for c in site.data.courses %}
+    {% assign words = 0 %}
+    {% for part in c.parts %}{% for item in part.items %}{% if item.written %}
+      {% assign doc = site.notes | where: "url", item.url | first %}
+      {% if doc %}{% assign w = doc.content | number_of_words %}{% assign words = words | plus: w %}{% endif %}
+    {% endif %}{% endfor %}{% endfor %}
+    {% assign drafted = c.written | minus: c.verified %}
+    {% if c.total > 0 %}
+      {% assign v_pct = c.verified | times: 100 | divided_by: c.total %}
+      {% assign d_pct = drafted | times: 100 | divided_by: c.total %}
+    {% else %}{% assign v_pct = 0 %}{% assign d_pct = 0 %}{% endif %}
+    <tr>
+      <td><a href="{{ c.url | relative_url }}">{{ c.short | default: c.title }}</a></td>
+      <td>{% if c.legacy %}legacy{% else %}standard{% endif %}</td>
+      <td>{{ c.written }} of {{ c.total }}</td>
+      <td>{{ c.verified }}</td>
+      <td>{{ c.planned }}</td>
+      <td>{{ words }}</td>
+      <td><div class="coverage__bar" role="img" aria-label="{{ c.verified }} verified, {{ drafted }} written, {{ c.planned }} planned"><span class="is-verified" style="width: {{ v_pct }}%"></span><span class="is-drafted" style="width: {{ d_pct }}%"></span></div></td>
+    </tr>
+    {% assign all_total = all_total | plus: c.total %}{% assign all_written = all_written | plus: c.written %}{% assign all_verified = all_verified | plus: c.verified %}{% assign all_words = all_words | plus: words %}
+  {% endfor %}
+  </tbody>
+  <tfoot>
+    <tr><th>All courses</th><th></th><th>{{ all_written }} of {{ all_total }}</th><th>{{ all_verified }}</th><th>{{ all_total | minus: all_written }}</th><th>{{ all_words }}</th><th></th></tr>
+  </tfoot>
+</table>
+
+
+<h2 id="too-long">Longer than the standard</h2>
+<p>A note carries one idea in 700 to 1,300 words. These are over 1,500 and want splitting.</p>
+<ul>
+{% assign any_long = false %}
+{% for doc in site.notes %}
+  {% assign w = doc.content | number_of_words %}
+  {% if w > 1500 %}{% assign any_long = true %}<li><a href="{{ doc.url | relative_url }}">{{ doc.title }}</a> ({{ w }} words)</li>{% endif %}
+{% endfor %}
+{% unless any_long %}<li>None.</li>{% endunless %}
+</ul>
+
+<h2 id="threads">Threads</h2>
+<p>{{ site.threads.size }} so far: {% for t in site.threads %}<a href="{{ t.url | relative_url }}">{{ t.title }}</a>{% unless forloop.last %}, {% endunless %}{% endfor %}.</p>

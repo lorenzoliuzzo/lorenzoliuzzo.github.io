@@ -1,0 +1,89 @@
+{% comment %}
+  One concept on one page: its definition, the results about it with their proofs, what they
+  mean, where it is used, where it goes wrong, what it needs and who needs it. Built from
+  site.data.knowledge_concepts (_plugins/knowledge.rb). Parameter: id.
+{% endcomment %}
+{% assign c = site.data.knowledge_concepts[include.id] %}
+{% if c %}
+<div class="cs">
+  <p class="cs__meta">
+    {% if c.course %}<a href="{{ '/notes/' | append: c.course | append: '/' | relative_url }}">{{ c.course_title }}</a>{% endif %}
+    <span>Defined in <a href="{{ c.url | append: '#' | append: c.anchor | relative_url }}">{{ c.title }}</a></span>
+    <span>{{ c.used_by.size }} note{% if c.used_by.size != 1 %}s{% endif %} use{% if c.used_by.size == 1 %}s{% endif %} it</span>
+  </p>
+  {% if c.needs.size > 0 %}
+  <p class="cs__needs">Needs
+    {% for n in c.needs %}{% if n.url %}<a class="chip" href="{{ n.url | relative_url }}">{{ n.name }}</a>{% else %}<span class="chip">{{ n.name }}</span>{% endif %}{% endfor %}
+  </p>
+  {% endif %}
+
+  <section class="cs__section" data-layer="define">
+    <h2 class="cs__h">Definition</h2>
+    {% if c.definition %}
+      {% include concept-statement.html s=c.definition main=true %}
+      {% for e in c.extra_definitions %}{% include concept-statement.html s=e %}{% endfor %}
+    {% else %}
+      <p class="gap">Not yet stated as a definition block. It is introduced in <a href="{{ c.url | append: '#' | append: c.anchor | relative_url }}">{{ c.title }}</a>; <code>ruby tools/knowledge.rb --suggest {{ c.note }}</code> drafts one.</p>
+    {% endif %}
+  </section>
+
+  {% if c.results.size > 0 %}
+  <section class="cs__section" data-layer="claim">
+    <h2 class="cs__h">What holds <small>{{ c.results.size }}</small></h2>
+    {% for e in c.results %}{% include concept-statement.html s=e %}{% endfor %}
+  </section>
+  {% endif %}
+
+  {% if c.meaning.size > 0 %}
+  <section class="cs__section" data-layer="interpret">
+    <h2 class="cs__h">What it means</h2>
+    {% for e in c.meaning %}{% include concept-statement.html s=e %}{% endfor %}
+  </section>
+  {% endif %}
+
+  {% if c.use.size > 0 %}
+  <section class="cs__section" data-layer="use">
+    <h2 class="cs__h">Where it is used</h2>
+    {% for e in c.use %}{% include concept-statement.html s=e %}{% endfor %}
+  </section>
+  {% endif %}
+
+  {% if c.caution.size > 0 %}
+  <section class="cs__section" data-layer="caution">
+    <h2 class="cs__h">Where it goes wrong</h2>
+    {% for e in c.caution %}{% include concept-statement.html s=e %}{% endfor %}
+  </section>
+  {% endif %}
+
+  {% if c.missing.size > 0 and c.definition %}
+  <details class="cs__section cs__todo">
+    <summary>Still to write <small>{{ c.missing.size }}</small></summary>
+    <ul>
+      {% for m in c.missing %}
+      <li data-slot="{{ m }}">
+        {% case m %}
+        {% when "claim" %}<b>A result.</b> State what holds as a theorem, property or law.
+        {% when "justify" %}<b>A reason.</b> A proof, a short derivation, or a citation for why it holds.
+        {% when "instance" %}<b>An example.</b> A worked case with numbers, or where it is used.
+        {% when "boundary" %}<b>A pitfall.</b> An input or situation where the idea fails, and why.
+        {% when "practice" %}<b>Practice.</b> An exercise or a try-it whose answer can be checked.
+        {% when "define" %}<b>A definition.</b> One sentence that says what the term means.
+        {% endcase %}
+      </li>
+      {% endfor %}
+    </ul>
+    <p class="cs__hint">Add typed blocks right after the definition in <a href="{{ c.url | relative_url }}">{{ c.title }}</a>, or point one at this concept with <code>about="{{ c.id }}"</code>.</p>
+  </details>
+  {% endif %}
+
+  {% if c.used_by.size > 0 %}
+  <section class="cs__section">
+    <h2 class="cs__h">Used in</h2>
+    <ul class="cs__used">
+      {% for u in c.used_by %}<li><a href="{{ u.url | relative_url }}">{{ u.title }}</a></li>{% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+  <p class="cs__section"><a href="{{ '/concepts/' | relative_url }}">&larr; All concepts</a></p>
+</div>
+{% endif %}

@@ -9,9 +9,9 @@ goals:
   - check by hand that a polynomial kernel is an inner product of explicit features
   - choose between the linear, polynomial and Gaussian kernels
 requires:
+  - kernel-trick
   - support-vector-machine
 defines:
-  - {id: kernel-trick, name: kernel trick, anchor: the-kernel-trick}
   - {id: kernel-function, name: kernel function, anchor: choosing-a-kernel}
   - {id: rbf-kernel, name: Gaussian (RBF) kernel, anchor: choosing-a-kernel}
 read_time: true

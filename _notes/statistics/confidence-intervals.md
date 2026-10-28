@@ -18,7 +18,7 @@ requires:
   - central-limit-theorem
 defines:
   - {id: confidence-interval, name: confidence interval, anchor: confidence-intervals}
-  - {id: pivot, name: pivot, anchor: confidence-intervals}
+  - {id: pivot, name: pivot, anchor: def-pivot}
   - {id: wald-interval, name: Wald interval, anchor: confidence-intervals}
 read_time: true
 tags:
@@ -41,7 +41,10 @@ The probability here belongs to the procedure. Once the data are in, $\theta$ is
 > Saying "95% confidence" means that 95% of the intervals built this way would cover the truth. It does not mean that $\theta$ lies in this particular interval with probability 0.95. That is the statement a Bayesian credible interval makes, and it is a different thing.
 {: .trap}
 
-To build an interval we look for a **pivot**, a function of the data and the parameter whose distribution does not depend on the parameter, and invert a probability statement about it to isolate $\theta$. For the mean of normal data with unknown $\sigma$, the pivot is $T\sim t_{n-1}$ and we get
+> To build an interval we look for a **pivot**, a function of the data and the parameter whose distribution does not depend on the parameter, and invert a probability statement about it to isolate $\theta$.
+{: .definition #def-pivot title="Pivot"}
+
+For the mean of normal data with unknown $\sigma$, the pivot is $T\sim t_{n-1}$ and we get
 
 $$ \bar X\pm t_{n-1,1-\alpha/2}\,\frac{S}{\sqrt n}, $$
 

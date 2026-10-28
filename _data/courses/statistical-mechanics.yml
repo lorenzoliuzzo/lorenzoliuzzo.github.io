@@ -1,17 +1,38 @@
-legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
 domain: physics
 order: 5
 title: "Statistical Mechanics"
+origin: "Statistical mechanics can be built from one idea, that a probability distribution should claim no more than is known, and followed through ensembles, gases that condense, magnets that order, and the symmetry and dimension arguments that explain which of them can. The Ising model reappears in the course on AI models for physics as an energy function and a sampling problem."
 summary: "Statistical mechanics from information theory: ensembles, interacting systems and the Ising model, phase transitions and broken symmetry."
 parts:
-  - title: "Foundations"
-    blurb: "Entropy, ensembles and the ideal gas."
+  - title: "Information and ensembles"
+    blurb: "Entropy as missing information, the ensembles it produces, and why they agree."
     notes:
-      - physics/statistical-mechanics/01
-      - physics/statistical-mechanics/02
-  - title: "Phase transitions"
-    blurb: "Spin models, mean field theory, and what symmetry breaking implies."
+      - physics/statistical-mechanics/information-entropy
+      - physics/statistical-mechanics/maximum-entropy-ensembles
+      - physics/statistical-mechanics/fluctuations-and-ensemble-equivalence
+      - physics/statistical-mechanics/ergodicity-and-paradoxes
+  - title: "Gases and the critical point"
+    blurb: "From the ideal gas to the van der Waals fluid and its universal critical behaviour."
     notes:
-      - physics/statistical-mechanics/03
-      - physics/statistical-mechanics/04
-      - physics/statistical-mechanics/05
+      - physics/statistical-mechanics/ideal-gas-canonical
+      - physics/statistical-mechanics/interacting-gases-and-van-der-waals
+      - physics/statistical-mechanics/critical-point-and-universality
+  - title: "Spin models"
+    blurb: "The Ising model and its relatives, solved in one and two dimensions and in mean field."
+    notes:
+      - physics/statistical-mechanics/spin-models
+      - physics/statistical-mechanics/mean-field-exponents
+      - physics/statistical-mechanics/ising-1d
+      - physics/statistical-mechanics/ising-2d
+  - title: "Phase transitions and broken symmetry"
+    blurb: "What kinds of transition there are, what dimension and symmetry allow, and Landau theory."
+    notes:
+      - physics/statistical-mechanics/classification-and-dimensionality
+      - physics/statistical-mechanics/broken-symmetry-and-order-parameter
+      - physics/statistical-mechanics/ginzburg-landau-theory
+  - title: "Continuous symmetry"
+    blurb: "Goldstone modes, the Mermin-Wagner theorem, and defects."
+    notes:
+      - physics/statistical-mechanics/goldstone-modes
+      - physics/statistical-mechanics/mermin-wagner
+      - physics/statistical-mechanics/topological-defects-and-rigidity

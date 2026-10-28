@@ -16,9 +16,9 @@ requires:
   - leverage
   - influence
 defines:
-  - {id: breakdown-point, name: breakdown point, anchor: outliers-and-breakdown}
-  - {id: influence-function, name: influence function, anchor: outliers-and-breakdown}
-  - {id: m-estimator, name: M-estimator, anchor: m-estimators}
+  - {id: breakdown-point, name: breakdown point, anchor: def-breakdown-point}
+  - {id: influence-function, name: influence function, anchor: def-influence-function}
+  - {id: m-estimator, name: M-estimator, anchor: def-m-estimator}
   - {id: robust-regression, name: robust regression, anchor: robust-regression}
 read_time: true
 tags:
@@ -30,7 +30,15 @@ The mean and least squares are optimal for clean, normal data, and they are the 
 
 # Outliers and breakdown
 
-Take the mean and the median of a sample and move one observation to infinity. The mean follows it, and the median does not move at all. Two numbers capture this. The **breakdown point** is the smallest fraction of observations that can be replaced by arbitrary values before the estimate becomes arbitrary: $1/n$ for the mean, close to $1/2$ for the median, which is the highest any estimator can have. The **influence function** is the local version, the effect on the estimate of a small contamination placed at the point $x$, divided by the amount of contamination. For the mean it is $x-\mu$, which grows without limit, and for the median it is $\operatorname{sign}(x-m)/(2f(m))$, which is bounded.
+Take the mean and the median of a sample and move one observation to infinity. The mean follows it, and the median does not move at all. Two numbers capture this.
+
+> The **breakdown point** is the smallest fraction of observations that can be replaced by arbitrary values before the estimate becomes arbitrary: $1/n$ for the mean, close to $1/2$ for the median, which is the highest any estimator can have.
+{: .definition #def-breakdown-point title="Breakdown point"}
+
+> The **influence function** is the local version, the effect on the estimate of a small contamination placed at the point $x$, divided by the amount of contamination.
+{: .definition #def-influence-function title="Influence function"}
+
+For the mean it is $x-\mu$, which grows without limit, and for the median it is $\operatorname{sign}(x-m)/(2f(m))$, which is bounded.
 
 This is the population counterpart of the influence of a single case in the previous note. There the influence was misfit times leverage, here it is a function of how far a value lies from the centre, and what a robust method does is bound it.
 
@@ -46,7 +54,10 @@ This is the population counterpart of the influence of a single case in the prev
 
 # M-estimators
 
-An **M-estimator** generalizes maximum likelihood: it minimizes $\sum_i\rho(x_i-\theta)$, or equivalently solves $\sum_i\psi(x_i-\theta)=0$ with $\psi=\rho'$. Normal likelihood gives $\rho(u)=u^2/2$ and the mean, and a Laplace likelihood gives $\rho(u)=\lvert u\rvert$ and the median. The function $\psi$ is the pull a residual exerts on the estimate, and the influence function of the estimator is proportional to it: $\operatorname{IF}(x)=\psi(x-\theta)/\mathbb{E}\psi'$. So a robust estimator is one with a bounded $\psi$.
+> An **M-estimator** generalizes maximum likelihood: it minimizes $\sum_i\rho(x_i-\theta)$, or equivalently solves $\sum_i\psi(x_i-\theta)=0$ with $\psi=\rho'$.
+{: .definition #def-m-estimator title="M-estimator"}
+
+Normal likelihood gives $\rho(u)=u^2/2$ and the mean, and a Laplace likelihood gives $\rho(u)=\lvert u\rvert$ and the median. The function $\psi$ is the pull a residual exerts on the estimate, and the influence function of the estimator is proportional to it: $\operatorname{IF}(x)=\psi(x-\theta)/\mathbb{E}\psi'$. So a robust estimator is one with a bounded $\psi$.
 
 Two choices of $\psi$ do most of the work. **Huber's** is the identity for residuals below a threshold $k$ and constant beyond it, which means quadratic loss near the fit and linear loss in the tails; $k=1.345$ times the scale keeps 95% efficiency at the normal. **Tukey's biweight** is redescending: the pull grows, peaks and then returns to zero, so gross outliers are ignored altogether, at the price of a loss that is not convex and can have several solutions.
 

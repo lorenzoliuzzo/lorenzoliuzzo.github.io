@@ -1,0 +1,25 @@
+domain: mathematics
+title: "Mathematical Methods for Physics"
+summary: "Differential equations, complex analysis, Fourier methods and the special functions that physics keeps returning to."
+parts:
+  - title: "Differential equations"
+    blurb: "Ordinary and linear differential equations and the oscillator."
+    notes:
+      - mathematics/mathematical-methods/ordinary-differential-equations
+      - mathematics/mathematical-methods/linear-odes
+  - title: "Complex analysis"
+    blurb: "Functions of a complex variable and what they make easy."
+    notes:
+      - mathematics/mathematical-methods/complex-functions
+      - mathematics/mathematical-methods/residues
+  - title: "Fourier methods"
+    blurb: "Decomposing functions into waves."
+    notes:
+      - mathematics/mathematical-methods/fourier-series
+      - mathematics/mathematical-methods/fourier-transform
+      - mathematics/mathematical-methods/distributions-and-greens-functions
+  - title: "Partial differential equations"
+    blurb: "The equations of heat, waves and fields."
+    notes:
+      - mathematics/mathematical-methods/pdes-and-separation-of-variables
+      - mathematics/mathematical-methods/special-functions

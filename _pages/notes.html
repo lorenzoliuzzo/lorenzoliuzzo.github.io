@@ -25,6 +25,10 @@ description: Study notes organised as courses, each a path with what you need fi
       <button type="button" class="chip--btn" data-domain="all" aria-pressed="true">All</button>
       {% for d in groups %}<button type="button" class="chip--btn" data-domain="{{ d.id }}" aria-pressed="false">{{ d.title }}</button>{% endfor %}
       <a class="shelf-link" href="{{ '/concepts/' | relative_url }}">Concepts A&ndash;Z</a>
+      <a class="shelf-link" href="{{ '/notes/map/' | relative_url }}">Course map</a>
+      <a class="shelf-link" href="{{ '/notes/knowledge/' | relative_url }}">Statements</a>
+      <a class="shelf-link" href="{{ '/concepts/' | relative_url }}">Concepts</a>
+      <a class="shelf-link" href="{{ '/notes/review/' | relative_url }}">Review</a>
     </div>
   </div>
 

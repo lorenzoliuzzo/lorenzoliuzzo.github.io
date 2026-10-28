@@ -6,13 +6,16 @@ layout: single
   A note. Wraps `single`: a header card above the text (course path, the idea, goals,
   prerequisites) and a next-step card below it. Both come from front matter and from
   _data/courses/<slug>.yml; a note with neither still renders as plain text. The pager under
-  the footer follows the course order too; see _includes/post_pagination.html.
+  the footer follows the course order too; see _includes/post_pagination.html. The reference
+  list at the end is built from the note's {% cite %} tags; see _plugins/citations.rb.
 {% endcomment %}
 
 {% include course-context.html %}
 {% include note-head.html %}
+{% include note-context.html %}
 
 {{ content }}
 
+{% include references.html %}
 {% include note-next.html %}
 {% include note-track.html %}

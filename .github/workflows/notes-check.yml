@@ -54,6 +54,10 @@ jobs:
       - name: Check the course notes
         run: ruby tools/check_notes.rb
 
+      # Citation numbering and rendering (_plugins/citations.rb); needs no Jekyll.
+      - name: Test the citation logic
+        run: ruby tools/test_citations.rb
+
       # Figures are generated from tools/figures and committed, because the Pages
       # build has no Python. A script edited without rerunning the build would leave
       # the page showing the old figure.

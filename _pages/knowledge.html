@@ -1,0 +1,90 @@
+---
+title: Statements
+permalink: /notes/knowledge/
+layout: single
+classes: wide knowledge-page
+author_profile: false
+breadcrumbs: false
+description: Explore every definition, property, theorem, implication, application, example and pitfall in the notes, by kind, course and text.
+---
+{% comment %}
+  The explorer for typed knowledge (_data/knowledge.yml, _plugins/knowledge.rb). Liquid lays
+  every entry out once, in course order; assets/js/knowledge.js filters, groups and counts
+  them. Without JavaScript the full list shows, in course order.
+{% endcomment %}
+{% assign spec = site.data.knowledge %}
+{% assign items = site.data.knowledge_items %}
+<link rel="stylesheet" href="{{ '/assets/css/knowledge.css' | relative_url }}">
+
+<div class="kx" id="kx">
+  <p class="kx-lede">Everything the notes state, one block at a time: what words mean, what holds, what follows, where it is used and where it goes wrong. {{ items.size }} entries from {{ site.data.courses | size }} courses. Press <kbd>/</kbd> to search.</p>
+
+  <div class="kx-bar">
+    <input type="search" id="kx-q" placeholder="Search statements, for example &ldquo;eigenvalue&rdquo;" autocomplete="off" spellcheck="false" aria-label="Search statements">
+    <div class="kx-group" role="group" aria-label="Group by">
+      <span>Group by</span>
+      <button type="button" data-group="course" aria-pressed="true">Course</button>
+      <button type="button" data-group="kind" aria-pressed="false">Kind</button>
+      <button type="button" data-group="note" aria-pressed="false">Note</button>
+    </div>
+  </div>
+
+  <div class="kx-layout">
+    <aside class="kx-facets" aria-label="Filters">
+      <details open>
+        <summary>Kind</summary>
+        <ul class="kx-kinds">
+          {% for l in spec.layers %}
+            <li class="kx-layer" data-layer="{{ l.id }}">
+              <button type="button" class="kx-f" data-f="layer" data-v="{{ l.id }}" aria-pressed="false" title="{{ l.ask }}"><span class="kx-f__name">{{ l.title }}</span><span class="kx-f__n"></span></button>
+              <ul>
+                {% for k in spec.kinds %}{% if k.layer == l.id and k.index %}
+                  <li data-layer="{{ l.id }}"><button type="button" class="kx-f" data-f="kind" data-v="{{ k.id }}" aria-pressed="false" title="{{ k.about }}"><span class="kx-f__name">{{ k.label }}</span><span class="kx-f__n"></span></button></li>
+                {% endif %}{% endfor %}
+              </ul>
+            </li>
+          {% endfor %}
+        </ul>
+      </details>
+      <details open>
+        <summary>Course</summary>
+        <ul class="kx-courses">
+          {% for c in site.data.courses %}{% if c.statement_total > 0 %}
+            <li><button type="button" class="kx-f" data-f="course" data-v="{{ c.slug }}" aria-pressed="false"><span class="kx-f__name">{{ c.short | default: c.title }}</span><span class="kx-f__n"></span></button></li>
+          {% endif %}{% endfor %}
+        </ul>
+      </details>
+    </aside>
+
+    <section class="kx-main" aria-live="polite">
+      <div class="kx-status">
+        <span id="kx-count"></span>
+        <span class="kx-active" id="kx-active"></span>
+        <button type="button" id="kx-clear" hidden>Clear filters</button>
+      </div>
+      <div id="kx-results">
+        <ol class="kx-list" id="kx-list">
+          {% for b in items %}
+            {% assign k = spec.kinds | where: "id", b.kind | first %}
+            <li class="kx-item" id="k-{{ b.id }}" data-layer="{{ k.layer }}" data-kind="{{ b.kind }}" data-course="{{ b.course }}" data-course-title="{{ b.course_title | escape }}" data-note="{{ b.note | escape }}" data-url="{{ b.url | relative_url }}" data-order="{{ forloop.index }}">
+              <span class="kx-badge">{{ k.label }}</span>
+              <div class="kx-body">
+                {% if b.title != "" %}<strong class="kx-title">{{ b.title }}</strong>{% endif %}
+                <div class="kx-text">{{ b.text | markdownify }}</div>
+                <button type="button" class="kx-more" hidden>Show more</button>
+                <p class="kx-foot">
+                  <a href="{{ b.url | append: '#' | append: b.id | relative_url }}">Open in {{ b.note }}</a>
+                  <a class="kx-course" href="{{ '/notes/' | append: b.course | append: '/' | relative_url }}">{{ b.course_title }}</a>
+                  {% if b.concept %}<span class="kx-concept" title="Concept id: {{ b.concept }}">Concept{% if b.used > 0 %} &middot; used in {{ b.used }} note{% if b.used > 1 %}s{% endif %}{% endif %}</span>{% endif %}
+                  <button type="button" class="kx-copy" data-href="{{ b.url | append: '#' | append: b.id | relative_url }}">Copy link</button>
+                </p>
+              </div>
+            </li>
+          {% endfor %}
+        </ol>
+      </div>
+      <p class="kx-empty" id="kx-empty" hidden>No entries match. Try fewer filters.</p>
+    </section>
+  </div>
+</div>
+<script src="{{ '/assets/js/knowledge.js' | relative_url }}" defer></script>

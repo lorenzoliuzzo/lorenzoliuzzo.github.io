@@ -9,12 +9,12 @@ goals:
   - explain the forward and backward passes of back-propagation
   - say what limits a network in practice
 requires:
+  - artificial-neuron
+  - activation-function
+  - multilayer-perceptron
   - overfitting
   - linear-classifier
 defines:
-  - {id: artificial-neuron, name: artificial neuron, anchor: the-unit}
-  - {id: activation-function, name: activation function, anchor: the-unit}
-  - {id: multilayer-perceptron, name: multilayer perceptron, anchor: layers}
   - {id: back-propagation, name: back-propagation, anchor: back-propagation}
 read_time: true
 tags:

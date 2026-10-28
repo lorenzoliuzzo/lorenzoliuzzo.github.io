@@ -1,0 +1,533 @@
+// Typed knowledge in the reading view: the "In this note" strip, the statement list in the
+// contents rail, and the skim mode that hides everything but the statements. The kinds
+// themselves are drawn in _context.scss and _blocks.scss; the vocabulary is in
+// _data/knowledge.yml. Layer colours: define blue, claim violet, justify grey,
+// interpret olive, use green, caution orange.
+
+[data-layer="define"] { --lc: var(--hue-1); }
+[data-layer="claim"] { --lc: var(--hue-2); }
+[data-layer="justify"] { --lc: var(--text-muted); }
+[data-layer="interpret"] { --lc: var(--hue-6); }
+[data-layer="use"] { --lc: var(--hue-3); }
+[data-layer="caution"] { --lc: var(--hue-4); }
+
+/* In this note
+   ========================================================================== */
+
+.stmts {
+  margin: -1.25rem auto 2rem;
+  padding: 0.8rem 1.1rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-sunken);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+}
+
+.stmts__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  margin-bottom: 0.55rem;
+}
+
+.stmts__modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-left: auto;
+
+  button {
+    padding: 0.1rem 0.6rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 0.72rem;
+    cursor: pointer;
+
+    &[aria-pressed="true"] {
+      border-color: var(--lc, var(--accent));
+      background: var(--lc, var(--accent));
+      color: var(--surface);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  }
+}
+
+.stmts__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    margin: 0;
+  }
+}
+
+.stmts__item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.15rem 0.6rem 0.15rem 0.5rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--lc);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  color: var(--text);
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--lc);
+    color: var(--text);
+  }
+}
+
+.stmts__kind {
+  color: var(--lc);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.stmts__more {
+  margin-top: 0.5rem;
+  color: var(--text-faint);
+  font-size: 0.72rem;
+}
+
+/* Contents rail: the statements under the headings
+   ========================================================================== */
+
+.stmts-rail__modes {
+  display: flex;
+  gap: 0.3rem;
+  margin: 0 0 0.6rem;
+
+  button {
+    padding: 0 0.55rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 0.68rem;
+    cursor: pointer;
+
+    &[aria-pressed="true"] {
+      border-color: var(--text);
+      color: var(--text);
+    }
+  }
+}
+
+.sidebar__right .stmts-rail {
+  margin-top: 1.4rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-sans);
+}
+
+.sidebar__right .stmts-rail__title {
+  margin: 0 0 0.5rem;
+  color: var(--text-faint);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.sidebar__right .stmts-rail ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar__right .stmts-rail li {
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar__right .stmts-rail__link {
+  display: block;
+  padding: 0.22rem 0 0.22rem 0.7rem;
+  border-left: 1px solid var(--border-strong);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.35;
+  text-decoration: none;
+
+  &:hover,
+  &.is-current {
+    border-left-color: var(--text);
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  &.is-current {
+    font-weight: 600;
+  }
+}
+
+.sidebar__right .stmts-rail__kind {
+  display: block;
+  color: var(--text-faint);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* Skim mode: only the statements
+   ========================================================================== */
+
+// Set on .page__content by assets/js/statements.js: data-skim="all" or a layer id. Headings
+// stay as signposts; prose, lists, tables and the rest give way to the typed blocks, and,
+// for a layer, only blocks of that layer remain.
+.page__content[data-skim] {
+  > :is(p, ul, ol, dl, table, pre, .highlight, .katex-display, .latex-like-table, details.qa, .margin, .note-context, .references) {
+    display: none;
+  }
+
+  > blockquote:not([data-kind]) {
+    display: none;
+  }
+
+  > blockquote[data-kind="proof"],
+  > blockquote[data-kind="derive"] {
+    display: none;
+  }
+
+  @each $layer in (define, claim, justify, interpret, use, caution) {
+    &[data-skim="#{$layer}"] > blockquote[data-layer]:not([data-layer="#{$layer}"]) {
+      display: none;
+    }
+  }
+
+  > blockquote[data-kind] {
+    margin-block: 0.8rem;
+  }
+}
+
+/* Course page rows
+   ========================================================================== */
+
+// What a note defines, as one quiet line under its summary.
+.row .row__defs {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--text-faint);
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Concept sheets and the course formulary
+   ========================================================================== */
+
+// A concept is the unit a reader looks up: one definition, the results about it, what they
+// mean, where it is used and where it goes wrong. The sheet is /concepts/<id>/; the same
+// rows, folded, make the course formulary.
+
+.cs, .cf, .audit, .review { font-family: var(--font-sans); }
+
+.cs__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin: 0 0 1.4rem;
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+.cs__meta a { color: inherit; text-decoration-color: var(--border-strong); }
+
+.cs__needs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.4rem;
+  margin: -0.6rem 0 1.4rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.chip {
+  display: inline-block;
+  padding: 0.08rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text);
+  text-decoration: none;
+}
+
+a.chip:hover { border-color: var(--lc, var(--hue-1)); }
+
+.cs__section { margin-top: 2rem; }
+
+.cs__h {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin: 0 0 0.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lc, var(--text-muted));
+}
+
+.cs__h small {
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-muted);
+}
+
+// A statement on a concept page or in the course formulary: the same quiet form as in a
+// note. A thin rule, a bold run-in label, the source on the right in small grey.
+.st {
+  margin: 0 0 1rem;
+  padding: 0.05rem 0 0.05rem 1rem;
+  border: 0;
+  border-left: 1px solid var(--border-strong);
+  background: none;
+  font-family: var(--font-serif);
+}
+
+.st > :first-child { margin-top: 0; }
+.st > :last-child { margin-bottom: 0; }
+
+.st__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.1rem 0.5rem;
+  margin-bottom: 0.15rem;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+}
+
+.st__kind { font-weight: 700; color: var(--text); }
+.st__kind::after { content: "."; }
+.st__title { font-weight: 600; color: var(--text); }
+.st__title::before { content: "("; font-weight: 400; }
+.st__title::after { content: ")"; font-weight: 400; }
+.st__src { margin-left: auto; font-size: 0.74rem; color: var(--text-faint); text-decoration: none; }
+.st__src:hover { color: var(--accent); text-decoration: underline; }
+
+.st__proof { margin-top: 0.4rem; font-size: 0.95em; }
+.st__proof > summary { cursor: pointer; font-family: var(--font-sans); font-size: 0.78rem; font-weight: 600; color: var(--text-muted); }
+
+.st--main { font-size: 1.04em; }
+.st[data-kind="theorem"], .st[data-kind="law"] { font-style: italic; }
+.st[data-kind="theorem"] .st__head, .st[data-kind="law"] .st__head { font-style: normal; }
+.st[data-kind="theorem"] .st__proof, .st[data-kind="law"] .st__proof { font-style: normal; }
+
+.gap {
+  padding: 0.6rem 0.9rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  font-size: 0.84rem;
+  color: var(--text-muted);
+}
+
+.gap code { font-size: 0.8rem; }
+
+.cs__cols { display: grid; gap: 0.2rem 2rem; }
+@media (min-width: 48em) { .cs__cols--2 { grid-template-columns: 1fr 1fr; } }
+
+.cs__used { margin: 0; padding: 0; list-style: none; columns: 2 16rem; font-size: 0.9rem; }
+.cs__used li { margin: 0 0 0.3rem; break-inside: avoid; }
+
+/* Course formulary */
+
+.cf { margin-top: 3rem; }
+.cf__title { color: var(--text); }
+.cf__lede { margin: 0 0 1rem; color: var(--text-muted); font-size: 0.9rem; }
+
+.cf__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.8rem;
+  margin-bottom: 0.9rem;
+}
+
+.cf__tools input[type="search"] {
+  flex: 1 1 14rem;
+  max-width: 24rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.cf__toggle { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.84rem; color: var(--text-muted); cursor: pointer; }
+
+.cf__rows { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--border); }
+.cf__row { border-bottom: 1px solid var(--border); }
+.cf__row[hidden] { display: none; }
+
+.cf__sum {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.8rem;
+  padding: 0.55rem 0.3rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.cf__sum::-webkit-details-marker { display: none; }
+.cf__sum::before { content: "\25B8"; position: absolute; left: 0.3rem; color: var(--text-muted); transition: transform 0.12s; }
+details[open] > .cf__sum::before { transform: rotate(90deg); }
+.cf__sum:hover .cf__name { color: var(--hue-1); }
+
+.cf__name { font-weight: 600; font-size: 0.98rem; }
+.cf__part { font-size: 0.8rem; color: var(--text-muted); }
+
+.cf__body { padding: 0.2rem 0.3rem 1rem 1.8rem; }
+.cf__body .st { margin-bottom: 0.6rem; }
+.cf__more { font-size: 0.84rem; }
+.cf__loose { margin-top: 2rem; }
+.cf__loose ul { margin: 0; padding: 0; list-style: none; columns: 2 18rem; font-size: 0.9rem; }
+.cf__loose li { margin: 0 0 0.35rem; break-inside: avoid; }
+.cf__loose .st__kind { margin-right: 0.4rem; font-size: 0.78rem; }
+.cf__loose .st__kind::after { content: ""; }
+
+/* Audit */
+
+.audit table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+.audit th, .audit td { padding: 0.35rem 0.6rem; border-bottom: 1px solid var(--border); text-align: left; }
+.audit th { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+.audit td.n { text-align: right; font-variant-numeric: tabular-nums; }
+.audit .no { color: var(--hue-4); font-weight: 600; }
+.audit th.m, .audit td.m { width: 2.6rem; text-align: center; padding-left: 0.2rem; padding-right: 0.2rem; }
+.audit .dot { display: inline-block; width: 0.7rem; height: 0.7rem; box-sizing: border-box; border: 1.5px solid var(--border-strong); border-radius: 50%; vertical-align: middle; }
+.audit .dot.is-on { border-color: var(--hue-3); background: var(--hue-3); }
+.audit a.dot:hover { border-color: var(--accent); }
+.audit .yes { color: var(--hue-3); }
+.audit tr[hidden] { display: none; }
+.audit .bar { display: inline-block; width: 5rem; height: 0.45rem; border-radius: 3px; background: var(--surface-sunken); vertical-align: middle; overflow: hidden; }
+.audit .bar > i { display: block; height: 100%; background: var(--hue-3); }
+
+/* Review */
+
+.review__card {
+  max-width: 40rem;
+  margin: 1rem auto;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  min-height: 11rem;
+}
+
+.review__q { font-size: 1.15rem; font-weight: 600; margin: 0 0 0.4rem; }
+.review__meta { font-size: 0.8rem; color: var(--text-muted); }
+.review__a { margin-top: 1rem; padding-top: 0.9rem; border-top: 1px solid var(--border); font-family: var(--font-serif); }
+.review__a[hidden] { display: none; }
+.review__bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin: 0.8rem 0; }
+.review__bar button, .review__pick button {
+  padding: 0.35rem 0.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+.review__bar button:hover, .review__pick button:hover { border-color: var(--hue-1); }
+.review__bar button[hidden] { display: none; }
+.review__pick { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin: 0.6rem 0; }
+.review__pick button[aria-pressed="true"] { background: var(--hue-1); border-color: var(--hue-1); color: var(--surface); }
+.review__count { text-align: center; font-size: 0.82rem; color: var(--text-muted); }
+
+
+/* Course formulary rows and the "still to write" list
+   ========================================================================== */
+
+// A row is a glossary entry: name, the part of the course it comes from, and a quiet count
+// of what the concept carries. Nothing here says what is missing; that is the audit page's job.
+.cf__sum {
+  position: relative;
+  padding-left: 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas: "name have go" "part part part";
+  gap: 0.05rem 1rem;
+  align-items: baseline;
+
+  @media (min-width: 40em) {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto 4.2rem;
+    grid-template-areas: "name part have go";
+  }
+}
+
+.cf__name { grid-area: name; }
+.cf__part { grid-area: part; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cf__go { grid-area: go; justify-self: end; color: var(--accent); font-size: 0.78rem; text-decoration: none; }
+.cf__go:hover { text-decoration: underline; }
+.cf__have { grid-area: have; color: var(--text-faint); font-size: 0.78rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+// On a concept page the gaps close the page, folded, so they never interrupt the reading.
+.cs__todo {
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+
+  > summary {
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    list-style: none;
+
+    &::-webkit-details-marker { display: none; }
+    &::before { content: "\25B8"; display: inline-block; width: 1rem; transition: transform 0.12s; }
+    small { margin-left: 0.4rem; font-weight: 400; letter-spacing: 0; }
+  }
+
+  &[open] > summary::before { transform: rotate(90deg); }
+
+  ul {
+    margin: 0.8rem 0 0.6rem;
+    padding: 0;
+    list-style: none;
+
+    li {
+      margin: 0 0 0.3rem;
+      padding: 0 0 0 1rem;
+      border-left: 1px dashed var(--border-strong);
+      color: var(--text-muted);
+      font-size: 0.88rem;
+
+      b { color: var(--text); font-weight: 600; }
+    }
+  }
+}
+
+.cs__hint { color: var(--text-faint); font-size: 0.8rem; }

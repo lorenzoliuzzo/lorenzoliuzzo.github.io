@@ -1,0 +1,20 @@
+{% comment %}
+  A numbered table from Markdown, with a caption. The number comes from a CSS counter and
+  [](#id) elsewhere renders as "Table N", as for the CSV tables (table.html).
+
+  id      — anchor (required for cross-references)
+  caption — what to look at in the table (markdown ok; required)
+  body    — the table as Markdown, captured first (required):
+
+    {% capture t %}
+    | Method | Accuracy |
+    |---|---:|
+    | k-NN | 0.91 |
+    {: .booktabs}
+    {% endcapture %}
+    {% include tab.html id="tab-accuracy" caption="Mean accuracy over 5x2 CV." body=t %}
+{% endcomment %}
+<figure class="latex-like-table" id="{{ include.id }}">
+  <div class="table-wrapper">{{ include.body | markdownify }}</div>
+  <figcaption>{{ include.caption | markdownify | remove: "<p>" | remove: "</p>" | strip }}</figcaption>
+</figure>

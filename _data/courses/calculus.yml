@@ -1,0 +1,18 @@
+domain: mathematics
+title: "Calculus"
+summary: "Limits, derivatives and integrals of one variable, then of several, up to the theorems of vector calculus that electromagnetism uses."
+parts:
+  - title: "One variable"
+    blurb: "Limits, derivatives, integrals and series: the tools every later course assumes."
+    notes:
+      - mathematics/calculus/limits-and-continuity
+      - mathematics/calculus/derivatives
+      - mathematics/calculus/integrals
+      - mathematics/calculus/series-and-taylor-expansion
+  - title: "Several variables"
+    blurb: "Differentiation and integration in two or more dimensions, ending in the theorems of vector calculus."
+    notes:
+      - mathematics/calculus/partial-derivatives-and-gradient
+      - mathematics/calculus/multiple-integrals
+      - mathematics/calculus/line-and-surface-integrals
+      - mathematics/calculus/divergence-curl-and-stokes

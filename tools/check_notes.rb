@@ -10,6 +10,11 @@
 # structural checks only: its files exist, every note is listed once, its domain is known.
 # Drop the flag when its notes have been brought up to standard and the full checks start.
 #
+# Front matter may also carry `cites` (paper ids from _data/papers.yml) and `relates`
+# (project ids, the file names in _projects/); unknown ids are errors. So is an unknown id in a
+# {% cite %} or {% citet %} tag in the text (see _plugins/citations.rb). A note that follows the
+# standard and cites nothing gets a warning, and so does a paper that no note cites.
+#
 # Errors fail the run (exit 1); warnings are printed and do not. The same mistakes in
 # front matter also show up as warnings in _plugins/concept_index.rb at build time.
 require "yaml"
@@ -18,7 +23,9 @@ require "date"
 Encoding.default_external = Encoding::UTF_8
 
 ROOT = File.expand_path("..", __dir__)
-CALLOUTS = %w[idea trap rule derive try margin spec keyed].freeze
+KNOWLEDGE = YAML.load_file(File.join(ROOT, "_data/knowledge.yml"))
+# Classes that are not a kind of knowledge, plus every kind in _data/knowledge.yml.
+CALLOUTS = (%w[margin spec keyed booktabs] + KNOWLEDGE["kinds"].map { |k| k["id"] }).freeze
 MAX_WORDS = 1500
 
 def front_matter(path)
@@ -40,6 +47,13 @@ def heading_ids(body)
 end
 
 domains = YAML.load_file(File.join(ROOT, "_data/domains.yml")).map { |d| d["id"] }
+
+# The research layer: `cites` in a note names papers in _data/papers.yml, `relates` names
+# projects (the file names in _projects/, without .md).
+papers_path = File.join(ROOT, "_data/papers.yml")
+papers = File.exist?(papers_path) ? Array(YAML.load_file(papers_path)) : []
+paper_ids = papers.map { |p| p.is_a?(Hash) ? p["id"].to_s : "" }
+project_ids = Dir[File.join(ROOT, "_projects/*.md")].map { |f| File.basename(f, ".md") }
 courses = Dir[File.join(ROOT, "_data/courses/*.yml")].sort.map do |path|
   YAML.load_file(path).merge("slug" => File.basename(path, ".yml"), "file" => path.sub("#{ROOT}/", ""))
 end
@@ -74,8 +88,56 @@ end
 
 errors = duplicate_ids
 warnings = 0
+used_papers = {}
+papers.each_with_index do |paper, i|
+  where = "_data/papers.yml entry #{i + 1}"
+  unless paper.is_a?(Hash) && paper["id"].to_s.match?(/\A[a-z0-9]+(-[a-z0-9]+)*\z/)
+    puts "ERROR #{where}: needs a lower-case hyphenated `id`"
+    errors += 1
+    next
+  end
+  where = "_data/papers.yml #{paper['id']}"
+  %w[title authors year].each do |k|
+    next unless paper[k].nil? || paper[k].to_s.strip.empty?
+
+    puts "ERROR #{where}: lacks `#{k}`"
+    errors += 1
+  end
+  if paper["type"] && !%w[article book preprint thesis report software dataset].include?(paper["type"].to_s)
+    puts "ERROR #{where}: type `#{paper['type']}` should be article, book, preprint, thesis, report, software or dataset"
+    errors += 1
+  end
+  if paper["unverified"]
+    puts "warn  #{where}: bibliographic details not yet checked against the source (drop `unverified` once they are)"
+    warnings += 1
+  end
+  if paper["doi"] && !paper["doi"].to_s.match?(%r{\A10\.\d{4,9}/\S+\z})
+    puts "ERROR #{where}: `doi` should be bare, like 10.1073/pnas.79.8.2554"
+    errors += 1
+  end
+  if paper["arxiv"] && !paper["arxiv"].to_s.match?(%r{\A(\d{4}\.\d{4,5}|[a-z-]+(\.[A-Z]{2})?/\d{7})(v\d+)?\z})
+    puts "ERROR #{where}: `arxiv` should be a bare id like 1706.03762"
+    errors += 1
+  end
+  next unless paper_ids.count(paper["id"].to_s) > 1
+
+  puts "ERROR #{where}: id is used more than once"
+  errors += 1
+end
 err = ->(n, msg) { puts "ERROR #{n[:path]}: #{msg}"; errors += 1 }
 warn_ = ->(n, msg) { puts "warn  #{n[:path]}: #{msg}"; warnings += 1 }
+# The vocabulary in _data/knowledge.yml must match the stylesheets that draw it.
+styles = %w[_sass/_context.scss _sass/_blocks.scss].map { |f| File.read(File.join(ROOT, f)) }.join
+layer_ids = KNOWLEDGE["layers"].map { |l| l["id"] }
+KNOWLEDGE["kinds"].each do |k|
+  where = "_data/knowledge.yml #{k['id']}"
+  (puts "ERROR #{where}: layer `#{k['layer']}` is not in `layers`"; errors += 1) unless layer_ids.include?(k["layer"])
+  (puts "ERROR #{where}: form must be box or aside"; errors += 1) unless %w[box aside].include?(k["form"])
+  (puts "ERROR #{where}: no `blockquote.#{k['id']}` rule in _sass/_context.scss or _blocks.scss"; errors += 1) unless styles.include?("blockquote.#{k['id']}")
+end
+dup_slugs = KNOWLEDGE["kinds"].group_by { |k| k["slug"] }.select { |_, v| v.size > 1 }.keys
+dup_slugs.each { |sl| puts "ERROR _data/knowledge.yml: slug `#{sl}` is used by more than one kind"; errors += 1 }
+
 course_err = lambda do |course, msg|
   puts "ERROR #{course['file']}: #{msg}"
   errors += 1
@@ -88,6 +150,12 @@ courses.each do |course|
   %w[title summary domain].each { |k| course_err.(course, "lacks `#{k}`") if course[k].to_s.strip.empty? }
   course_err.(course, "domain `#{course['domain']}` is not in _data/domains.yml (#{domains.join(', ')})") unless domains.include?(course["domain"])
   course_err.(course, "`parts` is empty") if Array(course["parts"]).empty?
+  Array(course["parts"]).each do |part|
+    Array(part["reading"]).each do |id|
+      course_err.(course, "part `#{part['title']}` lists unknown reading `#{id}` (add it to _data/papers.yml)") unless paper_ids.include?(id.to_s)
+      used_papers[id.to_s] = true
+    end
+  end
   if course["reference"] && !File.exist?(File.join(ROOT, course["reference"]))
     course_err.(course, "reference #{course['reference']} does not exist")
   end
@@ -119,6 +187,21 @@ courses.each do |course|
       next unless n[:written]
       next if course["legacy"]
 
+      # Citations. Unknown ids matter for every written note; the rest of the citation
+      # standard only for notes that follow it.
+      cited_here = n[:body].scan(/\{%-?\s*cite[t]?\s+(.*?)\s*-?%\}/m).flatten.flat_map do |markup|
+        markup.split(/[\s,]+/).reject { |t| t.empty? || t.include?("=") }.map(&:downcase)
+      end
+      (cited_here + Array(n[:data]["cites"]).map { |c| c.to_s.downcase }).uniq.each do |id|
+        used_papers[id] = true
+        err.(n, "cites unknown paper `#{id}` (add it to _data/papers.yml)") unless paper_ids.include?(id)
+      end
+      if n[:body].include?("bibliography.html")
+        msg = "uses the retired bibliography include; cite with {% cite id %} and the list is added by the layout"
+        course["legacy"] ? warn_.(n, msg) : err.(n, msg)
+      end
+      next if course["legacy"]
+
       d, body = n[:data], n[:body]
 
       %w[title date excerpt hook goals tags].each { |k| err.(n, "front matter lacks `#{k}`") if d[k].nil? || d[k].to_s.strip.empty? }
@@ -129,7 +212,10 @@ courses.each do |course|
       defines = Array(d["defines"])
       err.(n, "`defines` is empty: a note must introduce at least one concept") if defines.empty?
 
-      ids = heading_ids(body)
+      # A concept's anchor may be a heading or the id of a typed block (a definition, say).
+      block_ids = body.scan(/^\{:[^}]*?#([A-Za-z][\w:-]*)/).flatten
+      block_ids.group_by { |i| i }.select { |_, v| v.size > 1 }.each_key { |i| err.(n, "block id `#{i}` is used more than once") }
+      ids = heading_ids(body) + block_ids
       defines.each do |c|
         err.(n, "`defines` entry needs id, name and anchor: #{c.inspect}") unless c.is_a?(Hash) && c["id"] && c["name"] && c["anchor"]
         next unless c.is_a?(Hash) && c["anchor"]
@@ -137,6 +223,34 @@ courses.each do |course|
         err.(n, "concept #{c['id']}: no heading with id `#{c['anchor']}`") unless ids.include?(c["anchor"])
         err.(n, "concept id `#{c['id']}` should be lower-case and hyphenated") unless c["id"].to_s.match?(/\A[a-z0-9]+(-[a-z0-9]+)*\z/)
       end
+
+      # Typed blocks (see _data/knowledge.yml): statements need a title to be findable out of
+      # context, and a concept should be introduced by a .definition rather than bold text.
+      titled = %w[definition assumption theorem lemma proposition property corollary law hypothesis]
+      body.scan(/^\{:([^}]*)\}$/).flatten.each do |attrs|
+        kind = attrs[/(?<![\w"])\.(#{titled.join('|')})(?![\w-])/, 1]
+        warn_.(n, "`.#{kind}` block has no title=\"...\"; the statements index lists it by title") if kind && attrs !~ /title="[^"]+"/
+      end
+      # Justify slot: a theorem, lemma, proposition or corollary is followed, in its section, by a
+      # .proof or .derive block, or cites its source in the statement itself.
+      lines = body.lines
+      lines.each_with_index do |line, i|
+        next unless line =~ /\A\{:[^}]*(?<![\w"])\.(theorem|lemma|proposition|corollary)(?![\w-])[^}]*\}\s*\z/
+
+        title = line[/title="([^"]*)"/, 1] || line[/#([\w-]+)/, 1] || "(untitled)"
+        j = i - 1
+        j -= 1 while j >= 0 && lines[j].start_with?(">")
+        statement = lines[(j + 1)...i].join
+        section = lines[(i + 1)..].take_while { |l| l !~ /\A\#+ / }.join
+        next if statement.include?("cite ") || section =~ /^\{:[^}]*(?<![\w"])\.(proof|derive)(?![\w-])/
+
+        warn_.(n, "`#{title}` is a claim with no .proof or .derive block after it and no citation in the statement (justify slot)")
+      end
+      body.scan(/^\{:[^}]*?about="([^"]*)"/).flatten.flat_map(&:split).uniq.each do |id|
+        warn_.(n, "a block says about=\"#{id}\", which is not a concept id") unless concepts.key?(id)
+      end
+      untyped = defines.select { |c| c.is_a?(Hash) && c["anchor"] && !block_ids.include?(c["anchor"]) }
+      warn_.(n, "#{untyped.size} of #{defines.size} concepts are not introduced by a .definition block (#{untyped.first(3).map { |c| c['id'] }.join(', ')}#{untyped.size > 3 ? ', ...' : ''})") unless untyped.empty?
 
       Array(d["requires"]).each do |r|
         id = r.is_a?(Hash) ? r["concept"].to_s : r.to_s
@@ -150,6 +264,30 @@ courses.each do |course|
         end
       end
       err.(n, "`requires` lists more than 8 concepts; a note should lean on few earlier ideas") if Array(d["requires"]).size > 8
+
+      warn_.(n, "cites no sources; add {% cite id %} for each result, dataset and named method (works go in _data/papers.yml)") if cited_here.empty? && Array(d["cites"]).empty?
+      Array(d["relates"]).each do |id|
+        err.(n, "relates unknown project `#{id}` (no _projects/#{id}.md)") unless project_ids.include?(id.to_s)
+      end
+
+      ctx = d["context"]
+      if ctx
+        if !ctx.is_a?(Hash)
+          err.(n, "`context` should be a mapping with origin, timeline and next")
+        else
+          err.(n, "`context.origin` is empty; say who posed the problem, when and why") if ctx["origin"].to_s.strip.empty?
+          Array(ctx["timeline"]).each do |step|
+            unless step.is_a?(Hash) && step["year"] && !step["text"].to_s.strip.empty?
+              err.(n, "`context.timeline` entries need a year and a text: #{step.inspect}")
+              next
+            end
+            err.(n, "`context.timeline` cites unknown paper `#{step['cite']}`") if step["cite"] && !paper_ids.include?(step["cite"].to_s)
+            used_papers[step["cite"].to_s] = true if step["cite"]
+          end
+          years = Array(ctx["timeline"]).map { |t| t.is_a?(Hash) ? t["year"].to_i : 0 }
+          warn_.(n, "`context.timeline` should run oldest first") unless years == years.sort
+        end
+      end
 
       intro = body.split(/^\#{1,6} /, 2).first.to_s.strip
       err.(n, "no introduction before the first heading") if intro.empty?
@@ -173,7 +311,10 @@ courses.each do |course|
 
       # Callouts: known classes, at most one .idea per level-1 section.
       body.scan(/^\{: ([^}]+)\}$/).flatten.each do |attrs|
-        attrs.split.each do |tok|
+        # `#id` and key="value" attributes (ids for cross-references, titles for theorem-like blocks).
+        attrs.gsub(/\w+="[^"]*"/, "").split.each do |tok|
+          next if tok.start_with?("#")
+
           cls = tok.sub(/\A\./, "")
           warn_.(n, "unknown class `#{tok}` in #{attrs}") unless tok.start_with?(".") && CALLOUTS.include?(cls)
         end
@@ -200,7 +341,7 @@ courses.each do |course|
         t = notes[target]
         if t.nil?
           err.(n, "links to /notes/#{target}/, which does not exist")
-        elsif anchor && t[:written] && !heading_ids(t[:body]).include?(anchor)
+        elsif anchor && t[:written] && !(heading_ids(t[:body]) + t[:body].scan(/^\{:[^}]*?#([A-Za-z][\w:-]*)/).flatten).include?(anchor)
           err.(n, "link to #{target}##{anchor}: no such heading")
         end
       end
@@ -221,6 +362,46 @@ courses.each do |course|
         end
       end
     end
+  end
+end
+
+# Threads: essays that route through notes of several courses (_threads/<slug>.md).
+Dir[File.join(ROOT, "_threads/*.md")].sort.each do |path|
+  rel = path.sub("#{ROOT}/", "")
+  data, body = front_matter(path)
+  t = { path: rel }
+  next if body.strip.empty? && data["route"].nil?
+
+  %w[title date excerpt].each { |k| err.(t, "front matter lacks `#{k}`") if data[k].to_s.strip.empty? }
+  route = Array(data["route"])
+  err.(t, "`route` should list at least 3 notes; a thread connects things") if route.size < 3
+  courses_hit = []
+  route.each do |stop|
+    key = stop.is_a?(Hash) ? stop["note"].to_s : ""
+    if key.empty?
+      err.(t, "route entry needs `note`: #{stop.inspect}")
+      next
+    end
+    err.(t, "route note `#{key}` does not exist (no _notes/#{key}.md)") unless notes.key?(key)
+    err.(t, "route stop `#{key}` has no `why`") if stop["why"].to_s.strip.empty?
+    courses_hit << (listed[key] || key.split("/")[0..1].join("/"))
+  end
+  warn_.(t, "route stays inside one course; a thread should cross courses") if route.size >= 3 && courses_hit.uniq.size < 2
+  cited = body.scan(/\{%-?\s*cite[t]?\s+(.*?)\s*-?%\}/m).flatten.flat_map { |m| m.split(/[\s,]+/).reject { |x| x.empty? || x.include?("=") }.map(&:downcase) }
+  (cited + Array(data["cites"]).map { |c| c.to_s.downcase }).uniq.each do |id|
+    used_papers[id] = true
+    err.(t, "cites unknown paper `#{id}` (add it to _data/papers.yml)") unless paper_ids.include?(id)
+  end
+  warn_.(t, "cites no sources") if cited.empty? && Array(data["cites"]).empty?
+  err.(t, "body has an em dash; rewrite the sentence") if body.include?("—")
+end
+
+if filter.nil?
+  paper_ids.each do |id|
+    next if id.empty? || used_papers[id]
+
+    puts "warn  _data/papers.yml #{id}: no note cites it yet"
+    warnings += 1
   end
 end
 

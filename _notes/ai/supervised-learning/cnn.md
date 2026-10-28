@@ -6,7 +6,7 @@ excerpt: "From the multi-layer perceptron to convolutional networks: filters and
 tags:
   - Supervised Learning
   - Convolutional networks
-defines:
-  - {id: convolutional-layer, name: convolutional layer, anchor: convolution}
-  - {id: pooling, name: pooling, anchor: pooling}
+requires:
+  - convolutional-layer
+  - pooling
 ---

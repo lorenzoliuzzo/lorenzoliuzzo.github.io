@@ -11,10 +11,12 @@
 <div class="course" data-course="{{ c.slug }}" data-total="{{ c.total }}">
 
   <p class="course-lede">{{ c.summary }}</p>
+  {% if c.origin %}<p class="course-origin"><span class="note-head__label">Where this comes from</span>{{ c.origin | markdownify | remove: "<p>" | remove: "</p>" | strip }}</p>{% endif %}
   <p class="course-meta">
     <a href="{{ '/notes/' | relative_url }}#{{ c.domain }}">{{ c.domain_title }}</a>
     <span>{{ c.written }} of {{ c.total }} notes written</span>
     {% if c.reference %}<a href="{{ c.reference | relative_url }}">Technical reference (PDF)</a>{% endif %}
+    {% if c.statement_total > 0 %}<a href="{{ '/notes/knowledge/' | relative_url }}#course={{ c.slug }}">{{ c.statement_total }} statements</a>{% endif %}
     <span id="course-read" hidden>you have opened <span data-read>0</span></span>
   </p>
   {% if c.first_url %}
@@ -26,6 +28,11 @@
     <section class="part" id="{{ part.slug }}">
       <h2 class="part__title">{{ part.title }}{% if c.parts.size > 1 %}<span class="part__count">{{ part.written }} of {{ part.items.size }}</span>{% endif %}</h2>
       {% if part.blurb %}<p class="part__blurb">{{ part.blurb }}</p>{% endif %}
+      {% if part.reading.size > 0 %}
+        <p class="part__reading"><span class="part__reading-label">Primary reading</span>
+          {%- for id in part.reading %}{% assign paper = site.data.paper_by_id[id] %}{% if paper %} <a href="{{ '/references/' | relative_url }}#ref-{{ paper.id }}" title="{{ paper.title_text | escape }}">{{ paper.short }}</a>{% unless forloop.last %};{% endunless %}{% endif %}{% endfor -%}
+        </p>
+      {% endif %}
       <ol class="rows">
         {% for item in part.items %}
           {% assign pos = pos | plus: 1 %}
@@ -70,6 +77,8 @@
       {% endif %}
     </div>
   {% endif %}
+
+  {% include course-knowledge.html course=c %}
 
   {% if c.concepts.size > 0 %}
     <details class="course-concepts">

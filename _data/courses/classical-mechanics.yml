@@ -1,0 +1,18 @@
+domain: physics
+title: "Classical Mechanics"
+summary: "Newton's mechanics, then its reformulation by Lagrange and Hamilton, where symmetries and conservation laws become the organizing idea."
+parts:
+  - title: "Newtonian mechanics"
+    blurb: "Forces, energy and the standard problems of motion."
+    notes:
+      - physics/classical-mechanics/newtons-laws
+      - physics/classical-mechanics/work-and-energy
+      - physics/classical-mechanics/oscillations
+      - physics/classical-mechanics/central-forces
+      - physics/classical-mechanics/non-inertial-frames
+  - title: "Analytical mechanics"
+    blurb: "The same physics from a variational principle."
+    notes:
+      - physics/classical-mechanics/lagrangian-mechanics
+      - physics/classical-mechanics/symmetries-and-noether
+      - physics/classical-mechanics/hamiltonian-mechanics

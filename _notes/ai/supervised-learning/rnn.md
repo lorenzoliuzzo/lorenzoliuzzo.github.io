@@ -7,6 +7,7 @@ tags:
   - Supervised Learning
   - Sequences and attention
 defines:
-  - {id: recurrent-neural-network, name: recurrent neural network, anchor: the-computational-graph}
   - {id: long-short-term-memory, name: LSTM, anchor: lstm-and-gru}
+requires:
+  - recurrent-neural-network
 ---

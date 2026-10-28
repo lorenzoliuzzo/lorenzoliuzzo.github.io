@@ -80,6 +80,7 @@ Rules for the file:
 | `hook` | One sentence, at most 35 words, one claim, concrete. Best form is a contrast: "X, not Y", "the 95% belongs to the procedure, not the interval". Markdown and `$math$` allowed. Shown as **The idea** in the header card. |
 | `goals` | 2 to 4 items, each a verb phrase that completes "After this note you can ...": *derive*, *choose*, *explain why*, *compute*, *size*. No "understand" or "know about". |
 | `requires` | Concept ids (not note names) this note uses beyond common maths. At most 8. Each must be defined by a **strictly earlier** note in the same course (or another course). The header card builds the "You need" table from this, grouped by source note, with links. Never list background maths. |
+| `cites` | Optional. Ids from `_data/papers.yml` worth reading that the text does not cite. They are listed under *Further reading*; works cited with `{% cite %}` need no entry here. |
 | `defines` | The concepts this note introduces, each `{id, name, anchor}`. At least 1, usually 3 to 8. `anchor` must be the auto-generated id of a heading in this note (kramdown: lower-case, punctuation dropped, spaces to hyphens). |
 
 ### Concept ids (the knowledge graph)
@@ -123,6 +124,16 @@ The note is for **studying**, not only lookup. It should read as if the author e
 - A formula is displayed (`$$ ... $$`) only if it is one the reader will use again; otherwise it stays inline.
 - Every figure is introduced by the sentence before it and answers "what should I look at" in its caption.
 
+### Sources
+
+A note that states a theorem, a named method, a dataset, a number from the literature or a historical claim says where it comes from. Teaching from sources is what lets the reader check the note and go deeper.
+
+- Every work lives once in `_data/papers.yml` (`id`, `title`, `authors`, `year`, and `venue`, `doi` or `arxiv`, `url`, plus a one-sentence `why` for a reader of the notes). Add the entry first, with the identifier copied from the paper itself, never from memory.
+- Cite in the text with `{% cite id %}` (numbered), `{% cite id p=12 %}` (with a page), `{% cite a b %}` (several) or `{% citet id %}` (author and year, then the number, for sentences like "Hopfield (1982) [1] showed ..."). Place the tag at the end of the sentence it supports, before the full stop.
+- Do not write a reference list: the layout builds *References* (cited works, numbered in order of first appearance) and *Further reading* (front-matter `cites`) by itself, and each entry lists the other notes that cite the same work.
+- Cite the primary source for a result (the paper that proved it), and a textbook or survey for the standard treatment. A claim that no source in the bibliography supports is either common knowledge in the field or is removed.
+- A standard note cites at least one source; the linter warns when it cites none, and fails on an id that is not in `papers.yml`.
+
 ## 6. What makes it stick
 
 - **One hook per note**, in front matter, repeated nowhere else in the same words.
@@ -150,6 +161,24 @@ All components are plain Markdown plus a class, so the file stays readable. Styl
 | `.rule` | Rule of thumb | a practical threshold or heuristic, with its caveat | 0 to 2 |
 | `.derive` | Why it works | a short derivation or intuition, at most 5 lines; long proofs go to the reference | 0 to 2 |
 | `.try` | Try it | one micro-exercise | 0 to 1 |
+
+**Kinds of knowledge.** Beyond the five callouts, every statement in a note has a kind, listed in `_data/knowledge.yml` and grouped into layers: *define* (definition, assumption, notation), *claim* (theorem, lemma, proposition, property, corollary, law, hypothesis), *justify* (proof, derive), *interpret* (idea, implication, remark), *use* (example, application, algorithm, exercise, try) and *caution* (trap, rule). Write each as a blockquote with an attribute line; `title` and `#id` are optional, and a block without an id gets one at build time:
+
+```markdown
+> A **group** is a set $G$ with an operation ... such that ...
+{: .definition #def-group title="Group"}
+
+> In every group the identity is unique ...
+{: .property title="Uniqueness of the identity"}
+```
+
+- **Every concept in `defines` is introduced by a `.definition`** (a defined term in bold alone is not enough), and its `anchor` is the block's `#id`. The glossary then links to the box.
+- Say what holds with `.property` (always true of the objects), `.theorem`/`.lemma`/`.corollary` (needs a proof or a citation), `.law` (from experiment, not derived here) or `.hypothesis` (not established: a conjecture, a model, a null).
+- State what follows with `.implication`; show where it is used with `.application` (outside the course) or `.example` (a worked instance). A short proof goes in `.proof` under its statement; a long one goes to the reference.
+- One block, one claim. If a box holds two claims, split it. Prose between blocks says why they matter.
+- Do not wrap ordinary sentences: a block is for what a reader would come back to. Aim for one or two typed statements per section, not every paragraph.
+- All typed blocks are listed on `/notes/knowledge/`, so write each so it makes sense out of context: define symbols inside it.
+- `ruby tools/check_notes.rb` rejects an unknown kind, a duplicate block id and a `defines` anchor that is neither a heading nor a block id.
 
 **Margin note and spec card** (shown beside the text on wide screens, inline on narrow ones). Place it *just before* the paragraph it annotates.
 
@@ -207,6 +236,7 @@ Then read the note once as the reader: Is the hook true and memorable? Does each
 
 - Copy textbook definitions of common maths, or pad with "where it is used".
 - Put a proof longer than five lines in a note: it goes to the reference.
+- Paste a reference list or a `.bib` by hand, or use the retired `bibliography.html` include.
 - Add more than three figures, or a figure that decorates instead of arguing.
 - Repeat the header card's content (prerequisites, goals) in the body.
 - Edit another note's `defines` ids, or reorder a course file, without being asked.

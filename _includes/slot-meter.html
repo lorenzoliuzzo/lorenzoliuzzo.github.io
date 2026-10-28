@@ -1,0 +1,11 @@
+{% comment %}
+  The six slots of a concept as a row of cells, filled when the slot has content:
+  define, claim, justify (why), instance (example), boundary (pitfall), practice.
+  Parameter: c (a concept sheet from site.data.knowledge_concepts). Optional: labels=true
+  prints the name under each cell.
+{% endcomment %}
+{% assign names = "define,claim,why,example,pitfall,practice" | split: "," %}
+{% assign keys = "define,claim,justify,instance,boundary,practice" | split: "," %}
+<span class="meter" role="img" aria-label="{{ include.c.score }} of 6 parts present">
+  {% for k in keys %}{% assign on = include.c.slots[k] %}<span class="meter__cell{% if on %} is-on{% endif %}" data-slot="{{ k }}" title="{{ names[forloop.index0] | capitalize }}: {% if on %}present{% else %}missing{% endif %}">{% if include.labels %}<i>{{ names[forloop.index0] }}</i>{% endif %}</span>{% endfor %}
+</span>

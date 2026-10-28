@@ -1,4 +1,3 @@
-legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
 domain: ai
 order: 1
 title: "Neural Networks"

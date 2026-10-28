@@ -1,0 +1,98 @@
+---
+title: Backlog
+permalink: /notes/backlog/
+layout: single
+classes: wide
+author_profile: true
+---
+
+{% comment %}
+  What to write and what to read next. The data is _data/backlog.json, written by
+  `ruby tools/backlog.rb --write`; this page only lays it out. Rerun the script after
+  adding notes or changing `requires`, and commit the file with the change.
+
+  Ranking: a planned note's "unblocks" is the number of notes downstream of it through
+  `requires`, followed transitively. Ties go to the courses in _data/study.yml.
+{% endcomment %}
+
+{% assign b = site.data.backlog %}
+
+<p>{{ b.summary.planned }} notes planned, {{ b.summary.ready }} of them ready to write now. {{ b.summary.written }} written, {{ b.summary.unread }} not yet signed off. Updated {{ b.generated }}. <a href="{{ '/notes/status/' | relative_url }}">Coverage by course</a>.</p>
+
+{% if b.current.size > 0 %}
+<p>Studying now: {{ b.current | join: ", " }}.</p>
+{% endif %}
+
+<h2 id="write-next">Write next</h2>
+<p>Planned notes whose prerequisites are all written, ranked by how much they unblock. A note that unblocks more is worth writing sooner.</p>
+<table class="coverage">
+  <thead><tr><th>#</th><th>Note</th><th>Course</th><th>Unblocks</th><th>Leads to</th><th>Plan</th></tr></thead>
+  <tbody>
+  {% for r in b.ready limit: 25 %}
+    <tr>
+      <td>{{ forloop.index }}</td>
+      <td><strong>{{ r.title }}</strong><br><span class="coverage__legend">{{ r.hook }}</span></td>
+      <td>{{ r.course_title }}{% if r.studying %} <span class="coverage__legend">(studying)</span>{% endif %}</td>
+      <td>{{ r.unblocks }}</td>
+      <td>{{ r.leads_to | join: ", " }}</td>
+      <td>{% if r.has_plan %}{% if r.sources.size > 0 %}{{ r.sources.size }} sources{% else %}needs sources{% endif %}{% if r.figures.size > 0 %}, {{ r.figures.size }} figures{% endif %}{% if r.verify.size > 0 %}, {{ r.verify.size }} to verify{% endif %}{% else %}no plan yet{% endif %}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% if b.ready.size > 25 %}<p>{{ b.ready.size | minus: 25 }} more ready notes in <code>_data/backlog.json</code>.</p>{% endif %}
+
+<h2 id="blocked">Blocked</h2>
+<p>These wait for a planned prerequisite. Writing the prerequisite, shown in the last column, is what unlocks them.</p>
+<details>
+<summary>{{ b.blocked.size }} blocked notes</summary>
+<table class="coverage">
+  <thead><tr><th>Note</th><th>Course</th><th>Unblocks</th><th>Waiting for</th></tr></thead>
+  <tbody>
+  {% for r in b.blocked %}
+    <tr>
+      <td>{{ r.title }}</td>
+      <td>{{ r.course_title }}</td>
+      <td>{{ r.unblocks }}</td>
+      <td>{% for w in r.waiting %}{{ w.title }}{% unless forloop.last %}, {% endunless %}{% endfor %}{% if r.missing.size > 0 %}{% if r.waiting.size > 0 %}, {% endif %}undefined: {{ r.missing | join: ", " }}{% endif %}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</details>
+
+<h2 id="to-read">Waiting for your read</h2>
+<p>Written notes without a human sign-off, oldest first. Reading one end to end and verifying it in the drawer takes it off this list.</p>
+<table class="coverage">
+  <thead><tr><th>Note</th><th>Course</th><th>Written</th><th>Words</th><th>Figures</th><th>Citations</th></tr></thead>
+  <tbody>
+  {% for n in b.unread limit: 20 %}
+    <tr>
+      <td><a href="{{ n.url | relative_url }}">{{ n.title }}</a></td>
+      <td>{{ n.course_title }}</td>
+      <td>{{ n.date }}</td>
+      <td>{{ n.words }}</td>
+      <td>{{ n.figures }}</td>
+      <td>{{ n.cites }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% if b.unread.size > 20 %}<p>{{ b.unread.size | minus: 20 }} more.</p>{% endif %}
+
+<h2 id="thin">Too thin to count</h2>
+<p>Written notes under 300 words: placeholders or outlines that publish but do not teach yet.</p>
+<ul>
+{% for n in b.thin %}
+  <li><a href="{{ n.url | relative_url }}">{{ n.title }}</a> ({{ n.words }} words)</li>
+{% endfor %}
+{% if b.thin.size == 0 %}<li>None.</li>{% endif %}
+</ul>
+
+<h2 id="papers">Unverified references</h2>
+<p>Bibliography entries added without checking the source. Open the link, compare the details, and drop <code>unverified</code> from the entry in <code>_data/papers.yml</code>. The most cited come first.</p>
+<ol>
+{% for p in b.unverified_papers %}
+  <li>{% if p.link != "" %}<a href="{{ p.link }}">{{ p.id }}</a>{% else %}{{ p.id }}{% endif %}: {{ p.authors }}, {{ p.title }} ({{ p.year }}). Cited by {{ p.cited_by }}.</li>
+{% endfor %}
+</ol>

@@ -4,13 +4,16 @@ title: "Robust Statistical Comparison of Classifiers Using the Friedman Test"
 date: 2026-03-21
 excerpt: "Applying the non-parametric Friedman-Nemenyi pipeline to rigorously evaluate machine learning models across multiple datasets."
 
+cites:
+   - pedregosa-2011
+   - virtanen-2020
 tags: 
    - Artificial Intelligence
    - Supervised Learning
 ---
 
 # Introduction
-The objective of this assignment is to perform a robust statistical comparison of multiple machine learning classifiers across several independent datasets. When evaluating more than two models over multiple datasets, traditional parametric tests such as the Analysis of Variance (*ANOVA*) are often unsuitable. This is because the assumptions of a normal distribution and homogeneity of variance are frequently violated by classification accuracy scores. To address this, we employ the Friedman test, a non-parametric (distribution-free) alternative, which rather than analyzing raw performance scores, operates on the relative ranks of the algorithms. 
+The objective of this assignment is to perform a robust statistical comparison of multiple machine learning classifiers across several independent datasets. When evaluating more than two models over multiple datasets, traditional parametric tests such as the Analysis of Variance (*ANOVA*) are often unsuitable. This is because the assumptions of a normal distribution and homogeneity of variance are frequently violated by classification accuracy scores. To address this, we employ the Friedman test, a non-parametric (distribution-free) alternative, which rather than analyzing raw performance scores, operates on the relative ranks of the algorithms {% cite demsar-2006 %}. 
 
 {% include float-index.html %}
 
@@ -30,7 +33,7 @@ If the p-value associated with the test statistic falls below the chosen signifi
 However, the Friedman test only indicates the presence of a significant difference globally; it does not identify which specific algorithms differ. To pinpoint these exact pairwise differences, we must proceed with a post-hoc procedure.
 
 ## Nemenyi Post-Hoc Test
-Once the Friedman test has rejected the null hypothesis, the Nemenyi test is widely used to compare all classifiers against each other. The Nemenyi test states that the performance of two classifiers $i$ and $j$ is significantly different if the absolute difference $|R_i - R_j|$ between their average ranks is equal to or strictly greater than a threshold known as the Critical Difference:
+Once the Friedman test has rejected the null hypothesis, the Nemenyi test is widely used to compare all classifiers against each other {% cite nemenyi-1963 demsar-2006 %}. The Nemenyi test states that the performance of two classifiers $i$ and $j$ is significantly different if the absolute difference $|R_i - R_j|$ between their average ranks is equal to or strictly greater than a threshold known as the Critical Difference:
 
 $$ C D = q_{\alpha} \sqrt{\frac{k(k+1)}{6N}} $$
 
@@ -38,10 +41,7 @@ Here, $q_{\alpha}$ represents the critical value based on the Studentized range 
 
 ## Motivation for the Resampling Strategy
 Before we can calculate the aforementioned ranks and apply the Friedman and Nemenyi tests, we must first obtain accurate and unbiased performance estimates for each classifier on every dataset. While the non-parametric tests dictate how we compare scores across datasets, we also need a reliable evaluation protocol to measure the models' performance within each dataset.
-A standard 10-fold cross-validation often suffers from overlapping training sets, which violates the assumption of independence required for rigorous statistical testing and inflates the probability of false positives. Therefore, we perform a 2-fold cross-validation repeated 5 times, which ensures that the training and test sets in any single iteration are completely independent, and the repetitions provide a safer, more robust estimate of the algorithm's true variance before feeding those scores into our ranking and testing pipeline.
-
-The objective of this assignment is to perform a robust statistical comparison of multiple machine learning classifiers across several independent datasets. When evaluating more than two models over multiple datasets, traditional parametric tests such as the Analysis of Variance (*ANOVA*) are often unsuitable. This is because the assumptions of a normal distribution and homogeneity of variance are frequently violated by classification accuracy scores. To address this, we employ the Friedman test, a non-parametric (distribution-free) alternative, which rather than analyzing raw performance scores, operates on the relative ranks of the algorithms. 
-
+A standard 10-fold cross-validation often suffers from overlapping training sets, which violates the assumption of independence required for rigorous statistical testing and inflates the probability of false positives. Therefore, we perform a 2-fold cross-validation repeated 5 times, which ensures that the training and test sets in any single iteration are completely independent, and the repetitions provide a safer, more robust estimate of the algorithm's true variance before feeding those scores into our ranking and testing pipeline (a survey of these resampling choices is {% citet raschka-2020 %}).
 
 # Evaluation Protocol
 ## Datasets
@@ -69,7 +69,7 @@ We selected three distinct classifiers to evaluate varying approaches to the cla
    caption="Mean classification accuracy scores for different classifiers..." 
 %}
 
-Upon aggregating the cross-validation accuracies and converting them to ranks, the Friedman test yielded a p-value of #strong[0.0224]. 
+Upon aggregating the cross-validation accuracies and converting them to ranks, the Friedman test yielded a p-value of **0.0224**. 
 Since this value falls below our predefined significance level of $\alpha = 0.05$, we initially reject the null hypothesis, 
 confirming that the performance differences among the classifiers are statistically significant on this specific data split.
 
@@ -88,7 +88,7 @@ In this diagram, classifiers are positioned on an axis according to their averag
 Algorithms that do not perform significantly differently from one another are connected by a thick horizontal line representing the CD threshold.
 
 Operating under our primary split to determine exactly where the initial rank differences lie, 
-we applied the Nemenyi post-hoc test, which yielded a Critical Difference threshold of #strong[1.66]. 
+we applied the Nemenyi post-hoc test, which yielded a Critical Difference threshold of **1.66**. 
 The pairwise comparisons are visualized in [](#CD).
 
 {% include figure.html 
@@ -115,6 +115,3 @@ Both the RBF SVM and KNN excel at drawing smooth, continuous, and highly non-lin
 The Decision Tree, however, is constrained by its mechanism of making orthogonal, axis-aligned splits. 
 This limitation forces the tree to approximate smooth curves with rigid, step-like boundaries,
 ultimately leading to higher misclassification rates and its statistically lower rank in this evaluation.
-
-
-{% include bibliography.html url="/assets/notes/supervised-learning/friedman-test/bibliography.bib" %}

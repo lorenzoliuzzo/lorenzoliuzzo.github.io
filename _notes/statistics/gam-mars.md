@@ -16,9 +16,9 @@ requires:
   - linear-smoother
   - effective-degrees-of-freedom
 defines:
-  - {id: additive-model, name: additive model, anchor: additive-models}
-  - {id: backfitting, name: backfitting, anchor: additive-models}
-  - {id: hinge-function, name: hinge function, anchor: mars}
+  - {id: additive-model, name: additive model, anchor: def-additive-model}
+  - {id: backfitting, name: backfitting, anchor: def-backfitting}
+  - {id: hinge-function, name: hinge function, anchor: def-hinge-function}
   - {id: mars, name: MARS, anchor: mars}
 read_time: true
 tags:
@@ -30,7 +30,10 @@ One smooth curve fits one predictor. With several predictors the question is how
 
 # Additive models
 
-A fully flexible function of $p$ predictors is out of reach: in high dimensions every neighbourhood of a point is almost empty, so there is nothing local to average. The way out is to assume structure, and the **additive model** assumes the simplest one,
+A fully flexible function of $p$ predictors is out of reach: in high dimensions every neighbourhood of a point is almost empty, so there is nothing local to average.
+
+> The way out is to assume structure, and the **additive model** assumes the simplest one,
+{: .definition #def-additive-model title="Additive model"}
 
 $$ \mathbb{E}[Y\mid x]=\alpha+f_1(x_1)+\dots+f_p(x_p), $$
 
@@ -41,7 +44,10 @@ The cost is in the word additive: the effect of $x_1$ is the same curve at every
 > **An additive model has no interactions.** It cannot represent "this predictor matters only when that one is large". If the data have such structure, the fit is biased however flexible each curve is.
 {: .trap}
 
-The curves are fitted by **backfitting**, which turns many smoothing problems into repeated one-dimensional ones. Start from $\hat\alpha=\bar y$ and $f_j\equiv0$, then repeat until the curves stop changing:
+> The curves are fitted by **backfitting**, which turns many smoothing problems into repeated one-dimensional ones.
+{: .definition #def-backfitting title="Backfitting"}
+
+Start from $\hat\alpha=\bar y$ and $f_j\equiv0$, then repeat until the curves stop changing:
 
 1. for each $j$, form the partial residuals $y-\hat\alpha-\sum_{k\ne j}f_k(x_k)$;
 2. smooth them against $x_j$ to get a new $f_j$;
@@ -54,7 +60,10 @@ Each step is the fit of a linear smoother, and for symmetric smoothers such as s
 
 # MARS
 
-Multivariate adaptive regression splines take the opposite route. Instead of smooth curves they use the simplest possible bend, a **hinge function**: for a knot $t$ the pair $(x-t)_+$ and $(t-x)_+$, each zero on one side of the knot and linear on the other.
+Multivariate adaptive regression splines take the opposite route.
+
+> Instead of smooth curves they use the simplest possible bend, a **hinge function**: for a knot $t$ the pair $(x-t)_+$ and $(t-x)_+$, each zero on one side of the knot and linear on the other.
+{: .definition #def-hinge-function title="Hinge function"}
 
 {% include fig.html src="statistics/hinge-basis" id="fig-hinge" alt="Left: noisy data with a piecewise linear fit in solid blue after pruning and a dashed orange fit with more terms before pruning, with the two retained knots marked below the axis. Right: a hinge pair at knot 4, one rising to the right of the knot and one rising to the left." caption="MARS in one variable. Right: the pair of hinge functions at knot $t=4$. Left: the forward pass overgrows a sum of hinges (dashed, nine terms) and the backward pass prunes it to three terms, keeping knots near the two bends of the data." %}
 

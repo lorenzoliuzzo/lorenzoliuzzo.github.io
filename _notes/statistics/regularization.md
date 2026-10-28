@@ -16,12 +16,12 @@ requires:
   - bias-and-mse
   - multicollinearity
 defines:
-  - {id: bias-variance-tradeoff, name: bias–variance trade-off, anchor: bias-and-variance}
-  - {id: ridge-regression, name: ridge regression, anchor: ridge-shrinks-everything}
-  - {id: effective-degrees-of-freedom, name: effective degrees of freedom, anchor: ridge-shrinks-everything}
-  - {id: lasso, name: lasso, anchor: lasso-shrinks-and-selects}
-  - {id: soft-thresholding, name: soft-thresholding, anchor: lasso-shrinks-and-selects}
-  - {id: elastic-net, name: elastic net, anchor: lasso-shrinks-and-selects}
+  - {id: bias-variance-tradeoff, name: bias–variance trade-off, anchor: def-bias-variance-tradeoff}
+  - {id: ridge-regression, name: ridge regression, anchor: def-ridge-regression}
+  - {id: effective-degrees-of-freedom, name: effective degrees of freedom, anchor: def-effective-degrees-of-freedom}
+  - {id: lasso, name: lasso, anchor: def-lasso}
+  - {id: soft-thresholding, name: soft-thresholding, anchor: def-soft-thresholding}
+  - {id: elastic-net, name: elastic net, anchor: def-elastic-net}
 read_time: true
 tags:
   - Statistics
@@ -36,7 +36,12 @@ Take a new observation $y_0=f(x_0)+\varepsilon_0$ and a fit $\hat f$ made from t
 
 $$ \mathbb{E}\big[(y_0-\hat f(x_0))^2\big]=\sigma^2+\big(\mathbb{E}\hat f(x_0)-f(x_0)\big)^2+\operatorname{Var}\hat f(x_0). $$
 
-The first is the noise that no method can remove. The other two are the squared bias and the variance of the fit, and the **bias–variance trade-off** is that a method flexible enough to have little bias usually has a lot of variance, and the other way round. Least squares sits at the zero-bias end, and Gauss–Markov says nothing against moving away from it. The earlier example of a biased variance estimator with smaller mean squared error, in [Point estimation]({{ '/notes/statistics/point-estimation/' | relative_url }}#judging-an-estimator), was the one-dimensional version of this.
+The first is the noise that no method can remove.
+
+> The other two are the squared bias and the variance of the fit, and the **bias–variance trade-off** is that a method flexible enough to have little bias usually has a lot of variance, and the other way round.
+{: .definition #def-bias-variance-tradeoff title="Bias–variance trade-off"}
+
+Least squares sits at the zero-bias end, and Gauss–Markov says nothing against moving away from it. The earlier example of a biased variance estimator with smaller mean squared error, in [Point estimation]({{ '/notes/statistics/point-estimation/' | relative_url }}#judging-an-estimator), was the one-dimensional version of this.
 
 > Only the last two terms can be traded against each other. Shrinking the coefficients adds a little bias and removes a lot of variance, and it pays whenever the variance of least squares is the larger problem, which it is with many predictors, few cases or collinear columns.
 {: .idea}
@@ -45,7 +50,8 @@ The tool is a penalty on the size of the coefficients, added to the residual sum
 
 # Ridge shrinks everything
 
-**Ridge regression** minimizes $\lVert y-X\beta\rVert^2+\lambda\lVert\beta\rVert^2$, which has the closed form
+> **Ridge regression** minimizes $\lVert y-X\beta\rVert^2+\lambda\lVert\beta\rVert^2$, which has the closed form
+{: .definition #def-ridge-regression title="Ridge regression"}
 
 $$ \hat\beta_\lambda=(X^\top X+\lambda I)^{-1}X^\top y. $$
 
@@ -61,11 +67,22 @@ $$ \frac{d_j^2}{d_j^2+\lambda}\in(0,1), $$
 
 and the directions with a small singular value $d_j$ are exactly the poorly determined ones, so they are shrunk hardest. Variance falls and bias appears. The derivative of the mean squared error at $\lambda=0$ is negative in every direction, so for any true $\beta$ some $\lambda>0$ beats least squares.
 
-The fit is still linear in $y$, with matrix $H_\lambda=X(X^\top X+\lambda I)^{-1}X^\top$, which is no longer a projection. Its trace $\sum_jd_j^2/(d_j^2+\lambda)$ takes the place of $p$ and is called the **effective degrees of freedom**: it runs from $p$ at $\lambda=0$ down to $0$, and it is the number to quote when comparing penalized fits. Ridge also has a Bayesian reading: it is the posterior mean when the coefficients get independent normal priors, with $\lambda=\sigma^2/\tau^2$ the ratio of noise variance to prior variance.
+The fit is still linear in $y$, with matrix $H_\lambda=X(X^\top X+\lambda I)^{-1}X^\top$, which is no longer a projection.
+
+> Its trace $\sum_jd_j^2/(d_j^2+\lambda)$ takes the place of $p$ and is called the **effective degrees of freedom**: it runs from $p$ at $\lambda=0$ down to $0$, and it is the number to quote when comparing penalized fits.
+{: .definition #def-effective-degrees-of-freedom title="Effective degrees of freedom"}
+
+Ridge also has a Bayesian reading: it is the posterior mean when the coefficients get independent normal priors, with $\lambda=\sigma^2/\tau^2$ the ratio of noise variance to prior variance.
 
 # Lasso shrinks and selects
 
-The **lasso** replaces the squared penalty by the absolute one, minimizing $\tfrac12\lVert y-X\beta\rVert^2+\lambda\lVert\beta\rVert_1$. It has no closed form in general, but it is convex and is solved efficiently one coordinate at a time. Its optimality conditions say that a predictor with a nonzero coefficient has inner product exactly $\pm\lambda$ with the residual, and a predictor with a zero coefficient at most $\lambda$ in absolute value; so $\hat\beta=0$ exactly when $\lambda\ge\lVert X^\top y\rVert_\infty$. For orthonormal predictors, with $b_j$ the least squares coefficients, the solution is **soft-thresholding**, and the three penalties can be compared directly.
+> The **lasso** replaces the squared penalty by the absolute one, minimizing $\tfrac12\lVert y-X\beta\rVert^2+\lambda\lVert\beta\rVert_1$.
+{: .definition #def-lasso title="Lasso"}
+
+It has no closed form in general, but it is convex and is solved efficiently one coordinate at a time. Its optimality conditions say that a predictor with a nonzero coefficient has inner product exactly $\pm\lambda$ with the residual, and a predictor with a zero coefficient at most $\lambda$ in absolute value; so $\hat\beta=0$ exactly when $\lambda\ge\lVert X^\top y\rVert_\infty$.
+
+> For orthonormal predictors, with $b_j$ the least squares coefficients, the solution is **soft-thresholding**, and the three penalties can be compared directly.
+{: .definition #def-soft-thresholding title="Soft-thresholding"}
 
 | Rule | Penalty | Estimate |
 |---|---|---|
@@ -84,7 +101,10 @@ The flat piece of the lasso curve is the selection: any coefficient with least s
 > **Selected does not mean significant.** The set of predictors the lasso keeps was chosen with the same data, so the usual standard errors, intervals and $p$-values computed afterwards on those predictors are too optimistic.
 {: .trap}
 
-With correlated predictors the lasso tends to keep one of them and drop the others, and with $p>n$ it keeps at most $n$. The **elastic net** adds the ridge penalty to the lasso penalty, keeping the sparsity while sharing weight among correlated predictors.
+With correlated predictors the lasso tends to keep one of them and drop the others, and with $p>n$ it keeps at most $n$.
+
+> The **elastic net** adds the ridge penalty to the lasso penalty, keeping the sparsity while sharing weight among correlated predictors.
+{: .definition #def-elastic-net title="Elastic net"}
 
 > The penalty weight $\lambda$ is chosen by cross-validation, that is, by held-out error. Taking the $\lambda$ with the smallest error is the default; the largest $\lambda$ within one standard error of it gives a simpler model of almost the same accuracy.
 {: .rule}

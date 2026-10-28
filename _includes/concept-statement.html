@@ -1,0 +1,11 @@
+{% comment %}One statement of a concept sheet: kind, title, the text, a folded proof, and a link back to where it stands in its note. Parameter: s (an entry of site.data.knowledge_concepts[..].results etc.), main (true for the definition).{% endcomment %}
+{% assign s = include.s %}
+<div class="st{% if include.main %} st--main{% endif %}" data-layer="{{ s.layer }}" data-kind="{{ s.kind }}">
+  <div class="st__head">
+    <span class="st__kind">{{ s.label }}</span>
+    {% if s.title != "" %}<span class="st__title">{{ s.title }}</span>{% endif %}
+    <a class="st__src" href="{{ s.url | relative_url }}">{{ s.note }} &rarr;</a>
+  </div>
+  {{ s.full | markdownify }}
+  {% if s.proof %}<details class="st__proof"><summary>Proof</summary>{{ s.proof | markdownify }}</details>{% endif %}
+</div>

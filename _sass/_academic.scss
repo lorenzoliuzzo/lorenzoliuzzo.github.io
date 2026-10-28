@@ -151,39 +151,86 @@
   }
 }
 
-/* Bibliography (rendered by _includes/footer/custom.html)
+/* References and citations (built by _plugins/citations.rb)
    ========================================================================== */
 
-// This is the only place the reference list is styled. The include used to
-// carry its own <style> block with hardcoded colours, which fought these rules
-// and stayed light blue on a dark background.
+// The in-text mark is a bracketed number; each number links to its entry and carries the full
+// reference as a title. The list at the end of a note is an ordered list, so the numbers are
+// the browser's own and cannot drift from the order the tags appear in.
 
-.latex-like-bibliography {
-  margin-top: 3rem;
+.cite {
+  white-space: nowrap;
+}
 
-  h2 {
-    margin-top: 0;
+.cite-link {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  cursor: help;
+
+  &:hover {
+    text-decoration: underline;
   }
 }
 
-.bib-entry {
-  display: flex;
-  gap: 0.75rem;
-  margin-bottom: 0.85rem;
+// An id that is not in _data/papers.yml. Loud on purpose: it is an authoring mistake, and
+// tools/check_notes.rb fails on it.
+.cite-missing {
+  color: #c0392b;
+  font-family: var(--font-sans);
+  font-size: 0.85em;
+}
+
+.references {
+  margin-top: 3rem;
+
+  h2 {
+    margin-top: 1.5rem;
+  }
+}
+
+.references__list {
+  padding-left: 2.25rem;
   font-size: 0.9em;
   line-height: 1.55;
+  list-style: none;
+  counter-reset: reference;
+
+  > li {
+    position: relative;
+    margin-bottom: 0.85rem;
+    text-align: left;
+    hyphens: auto;
+    counter-increment: reference;
+  }
+
+  // The bracketed number the in-text marks use. A counter rather than ::marker content,
+  // which Safari does not honour.
+  &:not(.references__list--further) > li::before {
+    content: "[" counter(reference) "]";
+    position: absolute;
+    left: -2.25rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
 }
 
-.bib-number {
-  flex: 0 0 2.25rem;
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
+.references__list--further {
+  padding-left: 0;
 }
 
-.bib-text {
-  flex: 1;
-  text-align: justify;
-  hyphens: auto;
+// An entry's own anchor lands under the sticky masthead otherwise.
+.reference {
+  scroll-margin-top: 5rem;
+
+  &:target {
+    background: var(--surface-tint, rgba(127, 127, 127, 0.12));
+    border-radius: 3px;
+  }
+}
+
+.reference__authors {
+  font-weight: 600;
 }
 
 .bib-link {
@@ -197,27 +244,26 @@
   }
 }
 
-// Also the "loading" and "nothing cited yet" line.
-.bib-empty {
+// Why a reader of the notes should care, and where else the work is used: secondary
+// information, so it sits on its own line in the muted sans face.
+.reference__why,
+.reference__also {
+  display: block;
+  margin-top: 0.15rem;
   color: var(--text-muted);
-  font-style: italic;
-}
-
-// A missing or unparseable .bib is an authoring mistake, so it stays loud
-// rather than muted like .bib-empty.
-.bib-error {
-  color: #c0392b;
   font-family: var(--font-sans);
   font-size: 0.85em;
 }
 
-// The bracketed number a citation carries in the text. cursor: help advertises
-// the title tooltip holding the full reference.
-.cite-link {
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-  text-decoration: none;
-  cursor: help;
+.reference__also--none {
+  font-style: italic;
+}
+
+// Used by the CSV table include when the file is missing.
+.bib-error {
+  color: #c0392b;
+  font-family: var(--font-sans);
+  font-size: 0.85em;
 }
 
 /* Figure and table index (built by _includes/float-index.html)

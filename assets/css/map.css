@@ -1,0 +1,46 @@
+/* Course map (/notes/map/). Colours come from the site tokens, so it follows the theme. */
+.map { --h1: var(--hue-1); --h2: var(--hue-2); --h3: var(--hue-3); --h4: var(--hue-4); --h5: var(--hue-5); --h6: var(--hue-6); }
+.map-lede { max-width: 42rem; color: var(--text-muted); }
+.map-bar { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; margin: .8rem 0; font-family: var(--font-sans); font-size: .85rem; }
+.map-bar[hidden], #map-back[hidden] { display: none; }
+.map-crumb { font-weight: 600; }
+.map-key { margin-left: auto; color: var(--text-muted); }
+.map-key i { display: inline-block; width: .9em; height: .6em; margin: 0 .25em 0 .8em; border: 1.5px solid var(--text-muted); border-radius: 2px; }
+.map-key .k-done { background: var(--text-muted); }
+.map-key .k-plan { border-style: dashed; }
+.map-stage { position: relative; font-family: var(--font-sans); overflow-x: auto; padding-bottom: .5rem; }
+.map-stage svg { display: block; max-width: none; }
+
+/* overview */
+.mc { cursor: pointer; outline: none; }
+.mc rect.box { fill: var(--surface-raised); stroke: var(--c); stroke-width: 1.5; }
+.mc text { fill: var(--text); font-size: 12.5px; font-weight: 600; pointer-events: none; }
+.mc text.sub { fill: var(--text-muted); font-weight: 400; font-size: 11px; }
+.mc rect.bar-bg { fill: var(--border); }
+.mc rect.bar { fill: var(--c); }
+.mc:hover rect.box, .mc:focus-visible rect.box { stroke-width: 3; }
+.mc.dim { opacity: .25; }
+.me { fill: none; stroke: var(--text-faint); opacity: .45; }
+.me.hot { stroke: var(--accent); opacity: .95; }
+.me.dim { opacity: .08; }
+.mh { fill: var(--text-faint); } .mh.hot { fill: var(--accent); }
+.col-label { fill: var(--text-faint); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+
+/* focus view */
+.fv { position: relative; display: grid; grid-template-columns: minmax(12rem, 1fr) minmax(16rem, 1.4fr) minmax(12rem, 1fr); gap: 4.5rem; min-width: 62rem; }
+.fv svg.links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.fv h3, .fv h4 { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--text-faint); margin: 1.1rem 0 .4rem; }
+.fv h3:first-child { margin-top: 0; }
+.fv h4 a { color: var(--c); }
+.fv ul { list-style: none; margin: 0; padding: 0; }
+.fn { display: block; margin: 0 0 .3rem; padding: .28rem .55rem; border: 1.5px solid var(--c); border-radius: var(--radius); background: var(--surface-raised); color: var(--text); font-size: .82rem; line-height: 1.3; text-decoration: none; }
+.fn.plan { border-style: dashed; color: var(--text-muted); background: none; }
+.fn.mine { border-left-width: 5px; }
+a.fn:hover, a.fn:focus-visible, .fn.sel { outline: 2px solid var(--accent); outline-offset: 1px; }
+.fn.dim { opacity: .3; }
+.fn small { display: block; color: var(--text-muted); font-size: .72rem; }
+.fl { stroke: var(--text-faint); fill: none; opacity: .3; }
+.fl.hot { stroke: var(--accent); opacity: .95; stroke-width: 1.8; }
+.fl.dim { opacity: .05; }
+.fv-empty { color: var(--text-faint); font-size: .85rem; font-style: italic; }
+@media (max-width: 40em) { .map-key { margin-left: 0; } }

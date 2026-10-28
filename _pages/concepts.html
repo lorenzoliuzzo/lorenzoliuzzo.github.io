@@ -37,7 +37,7 @@ description: Every concept the notes introduce, A to Z, with where it is defined
           {% for c in g.items %}
             <li class="term" data-find="{{ c.name | downcase }} {{ c.course | downcase }}">
               <div class="term__line">
-                {% if c.url and c.planned == false %}<a class="term__name" href="{{ c.url | relative_url }}">{{ c.name }}</a>{% else %}<span class="term__name is-planned">{{ c.name }}</span>{% endif %}
+                {% if c.url and c.planned == false %}<a class="term__name" href="{{ '/concepts/' | append: c.id | append: '/' | relative_url }}">{{ c.name }}</a>{% else %}<span class="term__name is-planned">{{ c.name }}</span>{% endif %}
                 {% if c.course %}<a class="term__course" href="{{ c.course_url | relative_url }}">{{ c.course }}</a>{% endif %}
               </div>
               <p class="term__meta">

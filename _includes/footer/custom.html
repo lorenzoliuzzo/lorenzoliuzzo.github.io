@@ -1,19 +1,9 @@
 {% comment %}
-  Bibliography and cross-reference numbering. Only notes carry figures, tables,
-  equations or a .bib, so every other page skips the parser download and the
-  site-wide MutationObserver that academic.js installs.
-
-  bibtexParse is pinned to a commit rather than @master: an unpinned CDN path
-  means whatever that repo's default branch holds today executes on this site.
-  The integrity hash is of that exact commit, so a changed file fails to load
-  instead of running. To move it, fetch the new URL and recompute with
-    openssl dgst -sha256 -binary bibtexParse.js | openssl base64 -A
+  Cross-reference numbering and the contents highlight. Only notes carry figures, tables or
+  equations, so every other page skips the script and the site-wide MutationObserver it
+  installs. Citations need no script: _plugins/citations.rb renders them at build time.
 {% endcomment %}
 {% if page.collection == "notes" %}
-  <script defer
-          src="https://cdn.jsdelivr.net/gh/ORCID/bibtexParseJs@b55dc9e4015f9dec67921f56f8f23dadb71697ad/bibtexParse.js"
-          integrity="sha256-ngpvI80/dUM6ShmsB8Ko+PA42yq14ozW7vJvsgMn1Ks="
-          crossorigin="anonymous"></script>
   <script defer src="{{ '/assets/js/academic.js' | relative_url }}"></script>
 {% endif %}
 

@@ -1,16 +1,6 @@
 {% comment %}
-  Reference list for a note.
-
-  url — path to the note's .bib file (required)
-
-  The entries are fetched, parsed and rendered by the bibliography block in
-  _includes/footer/custom.html; styling lives in _sass/_academic.scss. Only the
-  works the note actually cites are listed, numbered by first appearance.
+  Retired. References are now built from {% cite id %} tags and _data/papers.yml, and the
+  note layout appends the list by itself (see _includes/references.html and
+  _plugins/citations.rb). This file stays so an old `{% include bibliography.html %}` does
+  not break the build; it renders nothing, and tools/check_notes.rb flags the call.
 {% endcomment %}
-<section class="latex-like-bibliography" id="bibliography">
-  <hr>
-  <h2>References</h2>
-  <div id="bib-container" data-src="{{ include.url | relative_url }}">
-    <p class="bib-empty">Loading bibliography&hellip;</p>
-  </div>
-</section>

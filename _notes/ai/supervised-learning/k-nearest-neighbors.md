@@ -9,12 +9,12 @@ goals:
   - choose k on validation data and say what small and large k do
   - explain why k-NN weakens as the number of features grows
 requires:
+  - curse-of-dimensionality
   - overfitting
   - validation-set
 defines:
   - {id: k-nearest-neighbors, name: k-nearest neighbors, anchor: the-method}
   - {id: lazy-learning, name: lazy learning, anchor: the-method}
-  - {id: curse-of-dimensionality, name: curse of dimensionality, anchor: when-nearest-stops-meaning-anything}
 read_time: true
 tags:
   - Supervised Learning

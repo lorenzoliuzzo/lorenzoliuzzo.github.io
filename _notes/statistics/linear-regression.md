@@ -19,10 +19,10 @@ requires:
   - f-distribution
   - maximum-likelihood-estimator
 defines:
-  - {id: linear-model, name: linear model, anchor: least-squares}
-  - {id: least-squares, name: least squares, anchor: least-squares}
-  - {id: hat-matrix, name: hat matrix, anchor: least-squares}
-  - {id: gauss-markov, name: Gauss–Markov theorem, anchor: what-the-estimates-are}
+  - {id: linear-model, name: linear model, anchor: def-linear-model}
+  - {id: least-squares, name: least squares, anchor: def-least-squares}
+  - {id: hat-matrix, name: hat matrix, anchor: def-hat-matrix}
+  - {id: gauss-markov, name: Gauss–Markov theorem, anchor: def-gauss-markov}
   - {id: coefficient-inference, name: inference on coefficients, anchor: what-the-estimates-are}
   - {id: r-squared, name: "R squared", anchor: is-the-model-worth-anything}
   - {id: anova-f-test, name: "ANOVA and the F-test", anchor: is-the-model-worth-anything}
@@ -36,7 +36,13 @@ A regression predicts a number from other numbers, and the linear model is the b
 
 # Least squares
 
-We observe a response $y_i$ and $p$ predictors for $n$ cases and assume the **linear model** $y=X\beta+\varepsilon$, where $X$ is the fixed $n\times p$ matrix of predictors (with a column of ones for the intercept), $\mathbb{E}\varepsilon=0$ and $\operatorname{Var}\varepsilon=\sigma^2I$. In words, the conditional expectation of $Y$ given the predictors is a linear function of them, and the noise around it has constant size. **Least squares** chooses the $\beta$ that makes the residual sum of squares $\lVert y-X\beta\rVert^2$ as small as possible, and setting the gradient to zero gives the normal equations.
+> We observe a response $y_i$ and $p$ predictors for $n$ cases and assume the **linear model** $y=X\beta+\varepsilon$, where $X$ is the fixed $n\times p$ matrix of predictors (with a column of ones for the intercept), $\mathbb{E}\varepsilon=0$ and $\operatorname{Var}\varepsilon=\sigma^2I$.
+{: .definition #def-linear-model title="Linear model"}
+
+In words, the conditional expectation of $Y$ given the predictors is a linear function of them, and the noise around it has constant size.
+
+> **Least squares** chooses the $\beta$ that makes the residual sum of squares $\lVert y-X\beta\rVert^2$ as small as possible, and setting the gradient to zero gives the normal equations.
+{: .definition #def-least-squares title="Least squares"}
 
 > **Estimate** $\hat\beta=(X^\top X)^{-1}X^\top y$  
 > **Fitted** $\hat y=Hy$, with $H=X(X^\top X)^{-1}X^\top$  
@@ -44,7 +50,10 @@ We observe a response $y_i$ and $p$ predictors for $n$ cases and assume the **li
 > **Noise** $s^2=\lVert e\rVert^2/(n-p)$
 {: .margin .spec}
 
-The picture behind the algebra is the one in the figure. The columns of $X$ span a $p$-dimensional plane inside $\mathbb{R}^n$, and the fitted vector $\hat y$ is the point of that plane closest to $y$, which is its perpendicular projection. The matrix $H$ that does the projecting is called the **hat matrix**, since it puts the hat on $y$.
+The picture behind the algebra is the one in the figure. The columns of $X$ span a $p$-dimensional plane inside $\mathbb{R}^n$, and the fitted vector $\hat y$ is the point of that plane closest to $y$, which is its perpendicular projection.
+
+> The matrix $H$ that does the projecting is called the **hat matrix**, since it puts the hat on $y$.
+{: .definition #def-hat-matrix title="Hat matrix"}
 
 {% include fig.html src="statistics/ols-geometry" id="fig-ols" alt="A plane representing the span of the columns of X, a vector y rising above it, its projection onto the plane and a dashed perpendicular residual joining the two, with a right-angle mark at the foot." caption="Least squares as a projection. The residual $e$ is perpendicular to the plane, so $X^\\top e=0$; the coefficients are the coordinates of $\\hat y$ in the columns of $X$." %}
 
@@ -62,7 +71,10 @@ Because $\hat\beta$ is a linear function of $y$, its moments follow from the rul
 | $s^2$ | $\sigma^2$ | |
 {: .keyed}
 
-So the estimate is unbiased, and its variance is small when the predictors are widely spread and not nearly collinear. The **Gauss–Markov theorem** says that no other linear unbiased estimator has a smaller variance, for any linear combination of the coefficients.
+So the estimate is unbiased, and its variance is small when the predictors are widely spread and not nearly collinear.
+
+> The **Gauss–Markov theorem** says that no other linear unbiased estimator has a smaller variance, for any linear combination of the coefficients.
+{: .definition #def-gauss-markov title="Gauss–Markov theorem"}
 
 > **"Best" is a narrow claim.** Gauss–Markov compares only estimators that are linear in $y$ and unbiased. It says nothing about biased estimators, and these can have a much smaller mean squared error: that is the whole point of the next notes on regularization.
 {: .trap}

@@ -1,0 +1,42 @@
+---
+title: Knowledge audit
+permalink: /notes/audit/
+layout: single
+classes: wide shelf-page
+author_profile: false
+breadcrumbs: false
+sitemap: false
+description: For the curator. Which concepts have a definition, a result and an example, and which to write next.
+---
+{% comment %}
+  The curator's table. One row per written concept, most used first, so the top of the
+  "only gaps" view is the next thing worth writing. The same numbers are on the command
+  line: ruby tools/knowledge.rb, --gaps, --suggest, --apply. Data: knowledge_concept_list.
+{% endcomment %}
+{% assign list = site.data.knowledge_concept_list %}
+<div class="audit shelf">
+  <p class="shelf-lede">Each row is a concept. A concept is complete when it has all six parts: a <strong>definition</strong>, a <strong>result</strong>, a <strong>reason</strong> (proof, derivation or citation), an <strong>example</strong>, a <strong>pitfall</strong> and <strong>practice</strong>. Rows are ordered by how many notes rely on them, so the top of the gaps view is what is worth writing next.</p>
+  <div class="cf__tools" hidden id="audit-tools">
+    <input type="search" id="audit-q" placeholder="Filter {{ list.size }} concepts" aria-label="Filter concepts" autocomplete="off">
+    <label class="cf__toggle"><input type="checkbox" id="audit-gaps" checked> Only those with something missing</label>
+    <select id="audit-course" aria-label="Course"><option value="">All courses</option>
+      {% assign by_course = list | group_by: "course" %}{% for g in by_course %}{% if g.name != "" %}<option value="{{ g.name }}">{{ g.items[0].course_title }} ({{ g.items.size }})</option>{% endif %}{% endfor %}
+    </select>
+    <span id="audit-count" class="review__meta"></span>
+  </div>
+  <table>
+    <thead><tr><th>Concept</th><th>Course</th><th class="m" title="Define">Def</th><th class="m" title="Claim">Res</th><th class="m" title="Why it holds">Why</th><th class="m" title="Example">Ex</th><th class="m" title="Pitfall">Trap</th><th class="m" title="Practice">Prac</th><th class="n">Used in</th></tr></thead>
+    <tbody>
+      {% for c in list %}
+      <tr data-find="{{ c.name | downcase }}" data-course="{{ c.course }}" data-gaps="{{ c.missing | join: ' ' }}">
+        <td><a href="{{ c.sheet_url | relative_url }}">{{ c.name }}</a></td>
+        <td>{% if c.course %}<a href="{{ '/notes/' | append: c.course | append: '/' | relative_url }}#c-{{ c.id }}">{{ c.course_title }}</a>{% endif %}</td>
+        {% assign keys = "define,claim,justify,instance,boundary,practice" | split: "," %}
+        {% for k in keys %}<td class="m">{% if c.slots[k] %}<span class="dot is-on" title="present"></span>{% else %}{% if k == "define" %}<a class="dot" href="{{ c.url | append: '#' | append: c.anchor | relative_url }}" title="missing: open the note"></a>{% else %}<span class="dot" title="missing"></span>{% endif %}{% endif %}</td>{% endfor %}
+        <td class="n">{{ c.used_by.size }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script src="{{ '/assets/js/audit.js' | relative_url }}" defer></script>

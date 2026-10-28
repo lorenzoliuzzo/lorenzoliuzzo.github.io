@@ -1,0 +1,62 @@
+# The kinds of knowledge a note can state, and how each one looks and is found.
+#
+# A kind is written in a note as a blockquote with a class, like the callouts:
+#
+#   > A **group** is a set $G$ with an operation such that ...
+#   {: .definition #def-group title="Group"}
+#
+# `title` and `#id` are optional. A block without an id gets one from _plugins/knowledge.rb
+# (kind prefix + title slug, or kind prefix + number), so every block can be linked and
+# listed on /notes/knowledge/. Give an id yourself when other notes should link to it.
+#
+# layer    which question the block answers (see `layers`)
+# form     box     numbered, tinted card; label above the text
+#          aside   a rule in the margin; the label runs in before the first line
+# count    statement shares one number (as in a paper); the others count on their own;
+#          none is unnumbered
+# index    listed on /notes/knowledge/
+# The colours and counters live in _sass/_context.scss and _sass/_blocks.scss; keep the
+# two files in step with this one (tools/check_notes.rb reports a kind the stylesheet lacks).
+layers:
+  - id: define
+    title: Define
+    ask: What do the words mean, and what is assumed?
+  - id: claim
+    title: Claim
+    ask: What is true, or believed to be?
+  - id: justify
+    title: Justify
+    ask: Why is it true?
+  - id: interpret
+    title: Interpret
+    ask: What does it mean, and what follows?
+  - id: use
+    title: Use
+    ask: Where does it show up, and how do I practise it?
+  - id: caution
+    title: Caution
+    ask: Where does it go wrong?
+
+kinds:
+  - { id: definition,  label: Definition,  layer: define,    form: box,   count: statement, index: true,  slug: def,   about: "Fixes the meaning of a term or the objects a theory is about." }
+  - { id: assumption,  label: Assumption,  layer: define,    form: box,   count: statement, index: true,  slug: asm,   about: "A condition taken as given: an axiom, a model assumption, a regularity condition." }
+  - { id: notation,    label: Notation,    layer: define,    form: aside, count: none,      index: false, slug: not,   about: "A convention for writing something, so the reader can decode later formulas." }
+  - { id: theorem,     label: Theorem,     layer: claim,     form: box,   count: statement, index: true,  slug: thm,   about: "A main result with a proof." }
+  - { id: lemma,       label: Lemma,       layer: claim,     form: box,   count: statement, index: true,  slug: lem,   about: "A result used on the way to a theorem." }
+  - { id: proposition, label: Proposition, layer: claim,     form: box,   count: statement, index: true,  slug: prop,  about: "A smaller result worth stating." }
+  - { id: property,    label: Property,    layer: claim,     form: box,   count: statement, index: true,  slug: prp,   about: "A fact that holds for every object of a kind: what you may always use." }
+  - { id: corollary,   label: Corollary,   layer: claim,     form: box,   count: statement, index: true,  slug: cor,   about: "A result that follows at once from the one before." }
+  - { id: law,         label: Law,         layer: claim,     form: box,   count: statement, index: true,  slug: law,   about: "A physical law or principle, taken from experiment, not derived here." }
+  - { id: hypothesis,  label: Hypothesis,  layer: claim,     form: box,   count: statement, index: true,  slug: hyp,   about: "A claim not established: a conjecture, a working model, or a null hypothesis." }
+  - { id: proof,       label: Proof,       layer: justify,   form: box,   count: none,      index: false, slug: prf,   about: "The argument for the statement above it; closes with a square." }
+  - { id: derive,      label: Why it works, layer: justify,  form: aside, count: none,      index: false, slug: why,   about: "A short derivation or reason, in the margin of the text." }
+  - { id: idea,        label: Key idea,    layer: interpret, form: aside, count: none,      index: false, slug: idea,  about: "The takeaway of a section. At most one per section." }
+  - { id: implication, label: Implication, layer: interpret, form: aside, count: none,      index: true,  slug: imp,   about: "What a result means or changes in practice, one step past the statement." }
+  - { id: remark,      label: Remark,      layer: interpret, form: box,   count: none,      index: false, slug: rem,   about: "A side comment: a generalisation, a link, a historical note." }
+  - { id: example,     label: Example,     layer: use,       form: box,   count: example,   index: true,  slug: ex,    about: "A worked instance that makes the definition or result concrete." }
+  - { id: application, label: Application, layer: use,       form: box,   count: application, index: true, slug: app,  about: "Where the idea is used outside its own course: a method, a device, a field." }
+  - { id: algorithm,   label: Algorithm,   layer: use,       form: box,   count: algorithm, index: true,  slug: alg,   about: "A procedure, as numbered steps." }
+  - { id: exercise,    label: Exercise,    layer: use,       form: box,   count: exercise,  index: true,  slug: exr,   about: "Something to do yourself." }
+  - { id: try,         label: Try it,      layer: use,       form: aside, count: none,      index: false, slug: try,   about: "One small thing to compute or simulate." }
+  - { id: trap,        label: Watch out,   layer: caution,   form: aside, count: none,      index: true,  slug: trap,  about: "A real misreading and why it is one." }
+  - { id: rule,        label: Rule of thumb, layer: caution, form: aside, count: none,      index: true,  slug: rule,  about: "A practical threshold or heuristic, with its caveat." }
