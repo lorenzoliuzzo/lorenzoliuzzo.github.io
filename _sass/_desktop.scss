@@ -1,0 +1,188 @@
+// Large-screen reading. Notes are read on a monitor, laptop or tablet, so the design starts
+// from a wide viewport and gives the text a comfortable line, the wide things (figures,
+// tables, equations) the room they need, and the contents rail something to do.
+//
+// This file only overrides what _note.scss and _blocks.scss set up for wide screens. Phones
+// still get the theme's single column; nothing here applies below 48em.
+
+// Tablets in portrait (and small laptop windows): one column, but larger touch targets and
+// a text size that does not shrink to phone proportions.
+@media (min-width: 48em) {
+  [data-note] .page__content {
+    font-size: 1.04em;
+  }
+
+  [data-note] details.qa > summary {
+    padding-block: 0.7rem;
+    min-height: 2.75rem; // finger-sized
+  }
+}
+
+@media (min-width: 64em) {
+  // The text line. 960px is right for a table or a figure and too long for a paragraph
+  // (over a hundred characters). Prose, lists and callouts take about 72 characters;
+  // everything wide keeps --measure.
+  [data-note] .page__inner-wrap > header,
+  [data-note] .page__content > p,
+  [data-note] .page__content > ul,
+  [data-note] .page__content > ol,
+  [data-note] .page__content > dl,
+  [data-note] .page__content > blockquote,
+  [data-note] .page__content > details.qa {
+    max-width: min(var(--measure), 72ch);
+  }
+
+  // Display equations may use the full width instead of wrapping or scrolling.
+  [data-note] .page__content > .katex-display,
+  [data-note] .page__content > p > .katex-display,
+  [data-note] .page__content > .MathJax_Display {
+    max-width: var(--measure);
+    margin-inline: auto;
+  }
+
+  // Tables and figures sit slightly wider than the text, centred on it.
+  [data-note] .page__content > table,
+  [data-note] .page__content > .fig,
+  [data-note] .page__content > .latex-like-table {
+    width: min(100%, calc(var(--measure) + 4rem));
+    max-width: none;
+    margin-inline: auto;
+  }
+
+  // Contents rail: stays in view while reading. It only scrolls on its own when it is
+  // taller than the window, and a wheel over it never traps the page: no
+  // overscroll-behavior: contain, which makes the page stop dead under the pointer
+  // whenever the rail reaches its end.
+  [data-note] .sidebar__right,
+  [data-note] .sidebar__right.sticky {
+    position: sticky;
+    top: 4.25rem; // below the sticky masthead
+    align-self: start;
+    max-height: calc(100vh - 5.5rem);
+    overflow-y: auto;
+    overscroll-behavior: auto;
+    scrollbar-width: thin;
+  }
+
+  // Anything that scrolls sideways (wide equations, tables, code) must not also scroll
+  // vertically: overflow-x: auto turns overflow-y into auto as well, so a fraction a
+  // pixel taller than its box gave the block a vertical scrollbar that swallowed the
+  // mouse wheel and froze the page while the pointer was over it.
+  [data-note] .page__content :is(pre, .highlight, .latex-like-equation, .table-wrapper, .katex-display, table) {
+    overflow-y: hidden;
+  }
+
+  [data-note] .latex-like-equation {
+    padding-block: 0.4rem;
+  }
+
+  // One column, one left edge. Everything in a note (title block, headings, prose, callouts,
+  // figures, tables, the next-step card, tags and pager) starts at the same x. Prose and
+  // cards stop at --text-w; figures, tables and code may run on to --wide-w. Before this,
+  // each kind of block was centred on its own width, so their left edges all differed.
+  [data-note] {
+    --text-w: min(var(--measure), 41rem); // not ch: ch follows each element's own font size
+    --wide-w: min(var(--measure), calc(var(--text-w) + 8rem));
+    --col-left: max(0px, calc((100% - var(--measure)) / 2));
+  }
+
+  [data-note] .page__inner-wrap > header,
+  [data-note] .page__content > :is(p, ul, ol, dl, blockquote, details, h1, h2, h3, h4, h5, h6, .katex-display, .note-head, .stmts, .note-context, .next-step, .references, .float-index),
+  [data-note] .page__inner-wrap > :is(.page__meta, .page__share, .pagination, .pagination--pager-nav) {
+    max-width: var(--text-w);
+    margin-inline: var(--col-left) auto;
+  }
+
+  [data-note] .page__content > :is(table, pre, .highlight, .latex-like-equation, .latex-like-table, .fig:not(.margin)) {
+    width: min(100%, var(--wide-w));
+    max-width: none;
+    margin-inline: var(--col-left) auto;
+  }
+
+  // Left-aligned like the text above and below, not centred in their own box.
+  [data-note] .latex-like-table,
+  [data-note] .latex-like-figure:not(.margin) {
+    text-align: left;
+  }
+
+  [data-note] .latex-like-table .table-wrapper table {
+    margin-inline: 0;
+  }
+
+  [data-note] .latex-like-figure:not(.margin) svg {
+    width: 100%;
+    height: auto;
+  }
+}
+
+// Sideways overflow from one wide element must never give the whole page a horizontal
+// scrollbar. `clip`, unlike `hidden`, does not make a scroll container, so the sticky
+// rail keeps working.
+[data-note] #main {
+  overflow-x: clip;
+}
+
+// Jumps to a heading, figure or footnote land below the sticky masthead.
+html {
+  scroll-padding-top: 5rem;
+}
+
+// Laptop windows: the rail takes the right gutter, but the empty left gutter that
+// centres the text would leave a column of about 500px. Give the width to the text.
+@media (min-width: 64em) and (max-width: 79.99em) {
+  [data-note] .page {
+    padding-inline-start: 1.5rem;
+  }
+
+  [data-note] .breadcrumbs {
+    padding-inline-start: calc(1.5rem + 1em);
+  }
+}
+
+// Monitors: keep the line length and let the page breathe.
+@media (min-width: 90em) {
+  [data-note] .page__content {
+    font-size: 1.08em;
+  }
+}
+
+// Bigger monitors get a wider page, not just more empty margin: the text column grows a
+// little, and the right-hand margin takes most of the extra width.
+@media (min-width: 100em) {
+  [data-note] {
+    --measure: 1080px;
+    --prose-col: 680px;
+  }
+}
+
+@media (min-width: 120em) {
+  [data-note] {
+    --toc-width: 300px;
+    --measure: 1200px;
+    --prose-col: 720px;
+  }
+
+  [data-note] .page__content {
+    font-size: 1.14em;
+  }
+}
+
+// Printing a note to paper or PDF: no rail, no chrome, full width.
+@media print {
+  [data-note] .sidebar__right,
+  [data-note] .breadcrumbs,
+  [data-note] .page__related,
+  [data-note] .pager {
+    display: none !important;
+  }
+
+  [data-note] .page,
+  [data-note] .page__content > * {
+    max-width: none !important;
+    padding-inline: 0 !important;
+  }
+
+  [data-note] details.qa {
+    break-inside: avoid;
+  }
+}

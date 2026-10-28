@@ -1,0 +1,36 @@
+{% comment %}
+  "Where this comes from": the history of a note's topic, under the header card.
+
+  Front matter it reads (all optional; the strip disappears without `context`):
+
+    context:
+      origin: "Who posed the problem, when, and why it mattered (markdown ok)."
+      timeline:                       # a few dated steps, oldest first
+        - {year: 1925, text: "Ising solves the one-dimensional chain and finds no transition.", cite: ising-1925}
+      next: "What the idea led to, and where this site picks it up (markdown ok)."
+
+  A timeline `cite` is an id from _data/papers.yml; the entry gets an author-year link to
+  the note's reference list, and the work is added to it under Further reading
+  (_plugins/citations.rb). No heading tags in here, like the header card.
+{% endcomment %}
+{% assign ctx = page.context %}
+{% if ctx %}
+<aside class="note-context" aria-label="Where this comes from">
+  <span class="note-head__label">Where this comes from</span>
+  {% if ctx.origin %}<p class="note-context__origin">{{ ctx.origin | markdownify | remove: "<p>" | remove: "</p>" | strip }}</p>{% endif %}
+  {% if ctx.timeline.size > 0 %}
+    <ol class="note-context__timeline">
+      {% for step in ctx.timeline %}
+        {% assign paper = site.data.paper_by_id[step.cite] %}
+        <li>
+          <span class="note-context__year">{{ step.year }}</span>
+          <span class="note-context__text">{{ step.text | markdownify | remove: "<p>" | remove: "</p>" | strip }}
+            {%- if paper %} <a class="cite-link" href="#ref-{{ paper.id }}" title="{{ paper.title_text | escape }}">{{ paper.short }}</a>{% endif -%}
+          </span>
+        </li>
+      {% endfor %}
+    </ol>
+  {% endif %}
+  {% if ctx.next %}<p class="note-context__next"><strong>What came next.</strong> {{ ctx.next | markdownify | remove: "<p>" | remove: "</p>" | strip }}</p>{% endif %}
+</aside>
+{% endif %}

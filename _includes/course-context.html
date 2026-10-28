@@ -2,13 +2,13 @@
   Where this note sits in its course. Renders nothing; sets variables for the caller:
 
     this_course, this_part, part_index   the course and part (part_index counts from 1)
-    course_url                           the course's section of the archive
+    course_url                           the course's page, /notes/<slug>/
     course_pos, course_total             position in the whole course, planned notes included
     course_prev, course_next             neighbouring written notes, for the pager
     course_next_planned                  the stub that comes next in the course order, when
                                          that next entry is not written yet
 
-  Courses are _data/courses.yml. A note belongs to a course when its path is listed in the
+  Courses are _data/courses/<slug>.yml, normalised by _plugins/courses.rb. A note belongs to a course when its path is listed in the
   course's `parts`; the first course that lists it wins. Reading order is the order of
   `parts`. Liquid has no arrays to build, so the ordered path lists go through
   "|"-joined strings.
@@ -39,8 +39,7 @@
 {% endfor %}
 
 {% if this_course %}
-  {% assign course_slug = this_course.title | slugify %}
-  {% assign course_url = "/notes/#" | append: course_slug %}
+  {% assign course_url = this_course.url %}
   {% assign flat = "" %}
   {% assign full = "" %}
   {% for part in this_course.parts %}

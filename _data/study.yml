@@ -1,0 +1,3 @@
+# Courses you are working through now. tools/backlog.rb ranks planned notes by how much
+# they unblock, and uses this list to break ties. Use the course file names in _data/courses/.
+current: []

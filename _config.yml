@@ -78,6 +78,8 @@ exclude:
   - vendor
   - .venv
   - LICENSE
+  - CLAUDE.md
+  - plans
   # Local authoring tool: holds the Anthropic API key and can write to _notes/.
   # It must never be served.
   - tools
@@ -96,6 +98,13 @@ collections:
   library:
     output: true
     path: "_library"
+    permalink: /:collection/:path/
+
+  # Essays that follow one idea through several courses (_layouts/thread.html). A thread
+  # names the notes it passes through in front matter `route`; the notes stay where they are.
+  threads:
+    output: true
+    path: "_threads"
     permalink: /:collection/:path/
 
   travel:
@@ -119,7 +128,7 @@ defaults:
       type: notes
     values:
       # The note layout wraps `single` and adds a strip saying where the note sits
-      # in its course (_data/courses.yml).
+      # in its course (_data/courses/<slug>.yml).
       layout: note
       author_profile: false
       show_date: true
@@ -138,6 +147,22 @@ defaults:
       # honest default; what the reader needs to know is whether a human has since
       # read it end to end, which is `human_verified` and is never assumed.
       # Overridden per note by the MyThingsLab drawer (tools/mythingslab).
+      ai_generated: true
+      human_verified: false
+
+  - scope:
+      path: "_threads"
+      type: threads
+    values:
+      layout: thread
+      author_profile: false
+      show_date: true
+      read_time: true
+      back_to_top: true
+      toc: true
+      toc_sticky: true
+      related: false
+      breadcrumbs: true
       ai_generated: true
       human_verified: false
 

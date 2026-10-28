@@ -1,0 +1,28 @@
+# The postulate-based path through quantum theory; qubit-level circuits are in Quantum Computing, the historical route in Quantum Mechanics.
+domain: physics
+order: 3.5
+title: Quantum Theory and Information
+summary: 'Quantum theory from its postulates, with a qubit and an oscillator as the running examples, and the information-theoretic consequences: entanglement, nonlocality, no-cloning, noisy channels and entropy.'
+parts:
+- title: Postulates
+  blurb: States, observables, uncertainty and the dynamics.
+  notes:
+  - physics/quantum-theory/hilbert-space-and-states
+  - physics/quantum-theory/observables-and-operators
+  - physics/quantum-theory/commutators-and-uncertainty
+  - physics/quantum-theory/time-evolution
+- title: Particles and spin
+  blurb: Wavefunctions, wells, the oscillator and angular momentum.
+  notes:
+  - physics/quantum-theory/position-and-momentum
+  - physics/quantum-theory/potential-wells-and-tunnelling
+  - physics/quantum-theory/ladder-operators
+  - physics/quantum-theory/angular-momentum-and-spin
+- title: Composite systems and information
+  blurb: Entanglement, nonlocality, cloning, noise and entropy.
+  notes:
+  - physics/quantum-theory/composite-systems-and-schmidt
+  - physics/quantum-theory/bell-inequality
+  - physics/quantum-theory/no-cloning-and-teleportation
+  - physics/quantum-theory/quantum-channels
+  - physics/quantum-theory/von-neumann-entropy

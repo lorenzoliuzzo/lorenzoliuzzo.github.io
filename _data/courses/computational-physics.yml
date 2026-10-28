@@ -1,0 +1,16 @@
+domain: physics
+title: "Computational Physics"
+summary: "Numerical integration of motion, linear algebra and PDEs, and Monte Carlo methods, with the error analysis that makes the numbers believable."
+parts:
+  - title: "Deterministic methods"
+    blurb: "Turning equations into algorithms."
+    notes:
+      - physics/computational-physics/numerical-integration-of-odes
+      - physics/computational-physics/numerical-linear-algebra
+      - physics/computational-physics/finite-differences
+  - title: "Stochastic methods"
+    blurb: "Sampling instead of solving."
+    notes:
+      - physics/computational-physics/random-sampling
+      - physics/computational-physics/monte-carlo-integration
+      - physics/computational-physics/markov-chain-monte-carlo

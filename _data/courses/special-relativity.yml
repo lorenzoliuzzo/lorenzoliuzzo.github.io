@@ -1,0 +1,10 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+domain: physics
+order: 2
+title: "Special Relativity"
+summary: "Spacetime without absolute time: Minkowski spacetime and its consequences."
+parts:
+  - title: "Spacetime"
+    blurb: "From Galilean relativity to Minkowski spacetime."
+    notes:
+      - physics/special-relativity

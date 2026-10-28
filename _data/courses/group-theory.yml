@@ -1,0 +1,20 @@
+domain: mathematics
+title: Group Theory
+summary: Groups, homomorphisms and actions, the symmetric and dihedral groups, matrix groups and their Lie algebras, and representations.
+parts:
+- title: Groups
+  blurb: The axioms, subgroups and the maps between groups.
+  notes:
+  - mathematics/group-theory/groups-and-subgroups
+  - mathematics/group-theory/homomorphisms-and-quotients
+- title: Symmetry in action
+  blurb: Groups acting on sets, and the groups of permutations and polygons.
+  notes:
+  - mathematics/group-theory/group-actions
+  - mathematics/group-theory/symmetric-and-dihedral-groups
+  - mathematics/group-theory/sylow-theory
+- title: Continuous symmetry
+  blurb: Matrix groups, Lie algebras and representations, as used in physics.
+  notes:
+  - mathematics/group-theory/matrix-groups-and-lie-algebras
+  - mathematics/group-theory/representations

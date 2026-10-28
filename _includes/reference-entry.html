@@ -1,0 +1,19 @@
+{% comment %}
+  One bibliography entry. Argument: paper (a hash from _data/papers.yml).
+  Used by references.html (end of a note) and _pages/references.md (the whole list).
+{% endcomment %}
+{%- assign paper = include.paper -%}
+<span class="reference__authors">{{ paper.authors }}</span>
+<span class="reference__year">({{ paper.year }}).</span>
+<span class="reference__title">{% if paper.type == "book" or paper.type == "thesis" %}<em>{{ paper.title }}</em>{% else %}{{ paper.title }}{% endif %}.</span>
+{%- if paper.venue %} <span class="reference__venue">{% if paper.type == "article" or paper.type == nil %}<em>{{ paper.venue }}</em>{% else %}{{ paper.venue }}{% endif %}{% if paper.pages %}, {{ paper.pages }}{% endif %}.</span>{% endif -%}
+{%- if paper.arxiv and paper.venue == nil %} <span class="reference__venue">arXiv:{{ paper.arxiv }}.</span>{% endif %}
+{%- if paper.doi %} <a class="bib-link" href="https://doi.org/{{ paper.doi }}" rel="noopener">doi:{{ paper.doi }}</a>
+{%- elsif paper.arxiv %} <a class="bib-link" href="https://arxiv.org/abs/{{ paper.arxiv }}" rel="noopener">arXiv</a>
+{%- elsif paper.url %} <a class="bib-link" href="{{ paper.url }}" rel="noopener">link</a>{% endif %}
+{%- if paper.why %}
+<span class="reference__why">{{ paper.why }}</span>{% endif %}
+{%- assign others = site.data.citation_index[paper.id] | where_exp: "n", "n.url != page.url" %}
+{%- if include.also != false and others.size > 0 %}
+<span class="reference__also">Also cited in
+  {%- for n in others %} <a href="{{ n.url | relative_url }}">{{ n.title }}</a>{% unless forloop.last %},{% endunless %}{% endfor %}.</span>{% endif %}

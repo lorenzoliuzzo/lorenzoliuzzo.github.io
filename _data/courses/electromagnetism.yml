@@ -1,0 +1,42 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+domain: physics
+order: 1
+title: "Electromagnetism"
+summary: "From Coulomb's law to Maxwell's equations and light, and on to the field tensor that pointed to relativity."
+parts:
+  - title: "Electrostatics"
+    blurb: "Charges, their fields and their potential: how to get a field from a distribution, by integration or by symmetry."
+    notes:
+      - physics/electromagnetism/coulomb-law
+      - physics/electromagnetism/electric-field
+      - physics/electromagnetism/gauss-law
+      - physics/electromagnetism/electric-potential
+  - title: "Matter"
+    blurb: "Conductors, capacitors and dielectrics: what material does to a field and how it stores energy."
+    notes:
+      - physics/electromagnetism/conductors-and-capacitors
+      - physics/electromagnetism/dielectrics
+  - title: "Magnetism"
+    blurb: "The force on moving charge, the field of currents, and the circulation law that mirrors Gauss."
+    notes:
+      - physics/electromagnetism/lorentz-force
+      - physics/electromagnetism/magnetic-field
+      - physics/electromagnetism/amperes-law
+  - title: "Induction"
+    blurb: "A changing field makes a field: Faraday's law, inductance and circuits that store and release energy."
+    notes:
+      - physics/electromagnetism/faraday-law
+      - physics/electromagnetism/inductance
+      - physics/electromagnetism/circuits
+  - title: "Maxwell and waves"
+    blurb: "The missing term, the four equations, and the waves and energy flow they predict."
+    notes:
+      - physics/electromagnetism/displacement-current
+      - physics/electromagnetism/maxwell-equations
+      - physics/electromagnetism/em-waves
+      - physics/electromagnetism/poynting-energy
+  - title: "Unification"
+    blurb: "Potentials and gauge freedom, and the fields as components of one object that relativity explains."
+    notes:
+      - physics/electromagnetism/potentials-and-gauge
+      - physics/electromagnetism/em-and-relativity

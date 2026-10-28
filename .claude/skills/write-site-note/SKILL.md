@@ -18,13 +18,13 @@ Reference examples, in the order to read them: `_notes/statistics/sampling-distr
 
 ## 1. Before writing anything
 
-1. Open `_data/courses.yml`. Find the note (or add it, see `plan-course-notes`). Read its neighbours: the note before it, the note after it, and the stub titles in the same part. Everything a note *requires* must be defined by an earlier note in that file.
+1. Open the course's data file, `_data/courses/<slug>.yml`. Find the note (or add it, see `plan-course-notes`). Read its neighbours: the note before it, the note after it, and the stub titles in the same part. Everything a note *requires* must be defined by an earlier note in that file.
 2. Read the material the user points at (slides, book chapter). Decide, in writing, before drafting:
    - **the hook**: the single claim worth remembering if all else is forgotten;
    - **2 to 4 goals**: what the reader can *do* afterwards;
    - **the concepts it defines** (ids, section 3) and **the concepts it requires**;
    - **the anchor figure**: the one picture the note will be remembered by.
-3. Size check. A note is about **700 to 1,300 words**, formulas and tables included (the linter warns above 1,500). If the plan has more than two big ideas or will not fit, split it and update `courses.yml`. A note that cannot state its hook in one sentence is two notes.
+3. Size check. A note is about **700 to 1,300 words**, formulas and tables included (the linter warns above 1,500). If the plan has more than two big ideas or will not fit, split it and update the course file. A note that cannot state its hook in one sentence is two notes.
 4. Order of work for new material: outline (hook, goals, concepts) → reference chapter in Typst → figure scripts → the note → checks. The note is a digest of the reference, never the other way round.
 
 ## 2. File anatomy
@@ -69,7 +69,7 @@ The answer.
 Rules for the file:
 
 - **Never** set `layout` or `permalink` (the collection defaults apply) and **never** set `human_verified`, `verified_at` or `verified_hash`: those are the author's sign-off, recorded by the MyThingsLab drawer, and a note stays "AI-drafted" until they give it.
-- The tags are `[Course area, Part]`, e.g. `Statistics`, `Inference`. They only matter for the archive's fallback grouping; the course order comes from `courses.yml`.
+- The tags are `[Course area, Part]`, e.g. `Statistics`, `Inference`. They only matter for notes outside any course; the course order comes from the course file.
 - A stub is a note with front matter and an **empty body**. The build keeps it out of the site and lists it as planned. A stub may already carry `defines`, so later notes can require its concepts.
 
 ## 3. Front matter, field by field
@@ -80,6 +80,7 @@ Rules for the file:
 | `hook` | One sentence, at most 35 words, one claim, concrete. Best form is a contrast: "X, not Y", "the 95% belongs to the procedure, not the interval". Markdown and `$math$` allowed. Shown as **The idea** in the header card. |
 | `goals` | 2 to 4 items, each a verb phrase that completes "After this note you can ...": *derive*, *choose*, *explain why*, *compute*, *size*. No "understand" or "know about". |
 | `requires` | Concept ids (not note names) this note uses beyond common maths. At most 8. Each must be defined by a **strictly earlier** note in the same course (or another course). The header card builds the "You need" table from this, grouped by source note, with links. Never list background maths. |
+| `cites` | Optional. Ids from `_data/papers.yml` worth reading that the text does not cite. They are listed under *Further reading*; works cited with `{% cite %}` need no entry here. |
 | `defines` | The concepts this note introduces, each `{id, name, anchor}`. At least 1, usually 3 to 8. `anchor` must be the auto-generated id of a heading in this note (kramdown: lower-case, punctuation dropped, spaces to hyphens). |
 
 ### Concept ids (the knowledge graph)
@@ -99,7 +100,7 @@ Every `defines` entry becomes a node of `/graph.json`; every `requires` entry an
    `Proofs are in the [reference (PDF)]({{ '/assets/notes/<course>/<course>-reference/<course>-reference.pdf' | relative_url }}).`
 2. **`#` sections**, 2 to 6 of them, each with a job (a step in the argument), 100 to 300 words. `##` only for parallel items (the distributions of a catalogue) or a genuine sub-step. No `###`.
 3. **`# Recap`**: 2 to 4 recall cards (section 7).
-4. **`# Where this goes next`**: only for links the course order does not give (other courses, later topics that reuse the note). The previous/next pager and the Next-step card come from `courses.yml`; do not repeat them.
+4. **`# Where this goes next`**: only for links the course order does not give (other courses, later topics that reuse the note). The previous/next pager and the Next-step card come from the course file; do not repeat them.
 5. A `# Vocabulary` section only when the note introduces many terms that need a one-line gloss. Usually omitted. **Never** a `# Before you start` section: the header card builds it.
 
 Cross-links inside the course: `[Random variables]({{ '/notes/statistics/random-variables/' | relative_url }}#limit-theorems)`. The target note must exist and the anchor must be one of its headings (the linter checks).
@@ -122,6 +123,16 @@ The note is for **studying**, not only lookup. It should read as if the author e
 - No more than **two paragraphs in a row** without a display element: a formula, a table, a figure, a callout, a margin card.
 - A formula is displayed (`$$ ... $$`) only if it is one the reader will use again; otherwise it stays inline.
 - Every figure is introduced by the sentence before it and answers "what should I look at" in its caption.
+
+### Sources
+
+A note that states a theorem, a named method, a dataset, a number from the literature or a historical claim says where it comes from. Teaching from sources is what lets the reader check the note and go deeper.
+
+- Every work lives once in `_data/papers.yml` (`id`, `title`, `authors`, `year`, and `venue`, `doi` or `arxiv`, `url`, plus a one-sentence `why` for a reader of the notes). Add the entry first, with the identifier copied from the paper itself, never from memory.
+- Cite in the text with `{% cite id %}` (numbered), `{% cite id p=12 %}` (with a page), `{% cite a b %}` (several) or `{% citet id %}` (author and year, then the number, for sentences like "Hopfield (1982) [1] showed ..."). Place the tag at the end of the sentence it supports, before the full stop.
+- Do not write a reference list: the layout builds *References* (cited works, numbered in order of first appearance) and *Further reading* (front-matter `cites`) by itself, and each entry lists the other notes that cite the same work.
+- Cite the primary source for a result (the paper that proved it), and a textbook or survey for the standard treatment. A claim that no source in the bibliography supports is either common knowledge in the field or is removed.
+- A standard note cites at least one source; the linter warns when it cites none, and fails on an id that is not in `papers.yml`.
 
 ## 6. What makes it stick
 
@@ -150,6 +161,24 @@ All components are plain Markdown plus a class, so the file stays readable. Styl
 | `.rule` | Rule of thumb | a practical threshold or heuristic, with its caveat | 0 to 2 |
 | `.derive` | Why it works | a short derivation or intuition, at most 5 lines; long proofs go to the reference | 0 to 2 |
 | `.try` | Try it | one micro-exercise | 0 to 1 |
+
+**Kinds of knowledge.** Beyond the five callouts, every statement in a note has a kind, listed in `_data/knowledge.yml` and grouped into layers: *define* (definition, assumption, notation), *claim* (theorem, lemma, proposition, property, corollary, law, hypothesis), *justify* (proof, derive), *interpret* (idea, implication, remark), *use* (example, application, algorithm, exercise, try) and *caution* (trap, rule). Write each as a blockquote with an attribute line; `title` and `#id` are optional, and a block without an id gets one at build time:
+
+```markdown
+> A **group** is a set $G$ with an operation ... such that ...
+{: .definition #def-group title="Group"}
+
+> In every group the identity is unique ...
+{: .property title="Uniqueness of the identity"}
+```
+
+- **Every concept in `defines` is introduced by a `.definition`** (a defined term in bold alone is not enough), and its `anchor` is the block's `#id`. The glossary then links to the box.
+- Say what holds with `.property` (always true of the objects), `.theorem`/`.lemma`/`.corollary` (needs a proof or a citation), `.law` (from experiment, not derived here) or `.hypothesis` (not established: a conjecture, a model, a null).
+- State what follows with `.implication`; show where it is used with `.application` (outside the course) or `.example` (a worked instance). A short proof goes in `.proof` under its statement; a long one goes to the reference.
+- One block, one claim. If a box holds two claims, split it. Prose between blocks says why they matter.
+- Do not wrap ordinary sentences: a block is for what a reader would come back to. Aim for one or two typed statements per section, not every paragraph.
+- All typed blocks are listed on `/notes/knowledge/`, so write each so it makes sense out of context: define symbols inside it.
+- `ruby tools/check_notes.rb` rejects an unknown kind, a duplicate block id and a `defines` anchor that is neither a heading nor a block id.
 
 **Margin note and spec card** (shown beside the text on wide screens, inline on narrow ones). Place it *just before* the paragraph it annotates.
 
@@ -188,7 +217,7 @@ It is tied to the boundary of the support, so it is skewed and biased.
 
 ## 8. Layout and colour: what you do *not* control
 
-The part colour, header card ("The idea", goals, prerequisites, path dots), "Next step" card, section numbering, contents rail, breadcrumbs and pager are generated from front matter and `courses.yml`. Do not recreate them in Markdown, do not add inline styles or HTML other than the recall-card `<details>`, and do not number headings by hand.
+The part colour, header card ("The idea", goals, prerequisites, path dots), "Next step" card, section numbering, contents rail, breadcrumbs and pager are generated from front matter and the course file (`_data/courses/<slug>.yml`). Do not recreate them in Markdown, do not add inline styles or HTML other than the recall-card `<details>`, and do not number headings by hand.
 
 ## 9. Checks (run all, fix everything)
 
@@ -207,7 +236,8 @@ Then read the note once as the reader: Is the hook true and memorable? Does each
 
 - Copy textbook definitions of common maths, or pad with "where it is used".
 - Put a proof longer than five lines in a note: it goes to the reference.
+- Paste a reference list or a `.bib` by hand, or use the retired `bibliography.html` include.
 - Add more than three figures, or a figure that decorates instead of arguing.
 - Repeat the header card's content (prerequisites, goals) in the body.
-- Edit another note's `defines` ids, or reorder `courses.yml`, without being asked.
+- Edit another note's `defines` ids, or reorder a course file, without being asked.
 - Leave a stub's `defines` pointing at anchors that will not exist: the anchor is checked only once the note has a body.

@@ -66,12 +66,12 @@ def mark(s):
     for part in re.split(r"(_\{[^}]*\}|\^\{[^}]*\}|\*[^*]+\*)", s):
         if not part:
             continue
-        pre = f' dy="{-rise}"' if rise else ""
+        pre = f' dy="{rise}"' if rise else ""
         if part.startswith("_{"):
-            out.append(f'<tspan font-size="75%" dy="{4 - rise}">{_esc(part[2:-1])}</tspan>')
+            out.append(f'<tspan font-size="75%" dy="{4 + rise}">{_esc(part[2:-1])}</tspan>')
             rise = -4
         elif part.startswith("^{"):
-            out.append(f'<tspan font-size="75%" dy="{-5 - rise}">{_esc(part[2:-1])}</tspan>')
+            out.append(f'<tspan font-size="75%" dy="{rise - 5}">{_esc(part[2:-1])}</tspan>')
             rise = 5
         elif part.startswith("*"):
             out.append(f'<tspan class="f-i"{pre}>{_esc(part[1:-1])}</tspan>')
@@ -154,8 +154,8 @@ class Axes:
 
     def frame(self, xticks=(), yticks=(), xlabel=None, ylabel=None, grid=True, xfmt=None, yfmt=None, yaxis=True):
         f = self.fig
-        xfmt = xfmt or (lambda v: f"{v:g}")
-        yfmt = yfmt or (lambda v: f"{v:g}")
+        xfmt = xfmt or (lambda v: f"{v:g}".replace("-", "−"))
+        yfmt = yfmt or (lambda v: f"{v:g}".replace("-", "−"))
         yb = self.Y(self.ylim[0])
         if grid:
             for v in yticks:

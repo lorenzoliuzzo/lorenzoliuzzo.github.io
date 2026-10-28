@@ -118,17 +118,22 @@ module MyThingsLab
         groups.values
       end
 
-      # Nodes: course, part, note (written or planned), concept. Edges: contains
-      # (course > part > note), next (reading order), defines, requires.
+      # Nodes: domain, course, part, note (written or planned), concept. Edges: contains
+      # (domain > course > part > note), next (reading order), defines, requires.
       def graph(site, docs, concepts)
         nodes = []
         edges = []
         by_key = docs.each_with_object({}) { |doc, h| h[Concepts.note_key(doc.relative_path)] = doc }
         stubs = Array(site.data["planned_notes"]).each_with_object({}) { |s, h| h[Concepts.note_key(s["path"])] = s }
 
+        Array(site.data["domains"]).each do |domain|
+          nodes << { "id" => "domain:#{domain['id']}", "type" => "domain", "title" => domain["title"] }
+        end
         Array(site.data["courses"]).each do |course|
-          cid = "course:#{Jekyll::Utils.slugify(course['title'])}"
-          nodes << { "id" => cid, "type" => "course", "title" => course["title"], "summary" => course["summary"] }
+          cid = "course:#{course['slug'] || Jekyll::Utils.slugify(course['title'])}"
+          nodes << { "id" => cid, "type" => "course", "title" => course["title"], "summary" => course["summary"],
+                     "domain" => course["domain"], "url" => course["url"] }
+          edges << { "from" => "domain:#{course['domain']}", "to" => cid, "type" => "contains" } if course["domain"]
           previous = nil
           Array(course["parts"]).each_with_index do |part, pi|
             pid = "#{cid}/part:#{Jekyll::Utils.slugify(part['title'])}"

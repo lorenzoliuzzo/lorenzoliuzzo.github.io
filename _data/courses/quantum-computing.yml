@@ -1,0 +1,158 @@
+# legacy: introduction is imported; the other notes are planned stubs.
+# `labs` is planning data: the layout does not render it yet.
+legacy: true
+domain: physics
+order: 4
+title: Quantum Computing
+summary: 'Computation with qubits: the circuit model, the algorithms that exploit it, variational methods, a neutral-atom hardware platform, and a full study of the transverse-field Ising model.'
+parts:
+- title: Qubits and gates
+  blurb: States, rotations, measurement and mixed states.
+  notes:
+  - physics/quantum-computing/introduction
+  - physics/quantum-computing/qubit-and-bloch-sphere
+  - physics/quantum-computing/single-qubit-gates
+  - physics/quantum-computing/measurement
+  - physics/quantum-computing/density-matrix
+- title: Entanglement and circuits
+  blurb: Several qubits and what it takes to build a gate.
+  notes:
+  - physics/quantum-computing/circuits
+  - physics/quantum-computing/multi-qubit-states
+  - physics/quantum-computing/bell-states-and-entanglement
+  - physics/quantum-computing/ghz-and-w-states
+  - physics/quantum-computing/controlled-unitaries-and-scaling
+- title: Algorithms
+  blurb: Search and the Fourier transform.
+  notes:
+  - physics/quantum-computing/algorithms
+  - physics/quantum-computing/oracles-and-phase-kickback
+  - physics/quantum-computing/grover-search
+  - physics/quantum-computing/quantum-fourier-transform
+- title: Variational circuits
+  blurb: Circuits with parameters that a classical optimizer tunes.
+  notes:
+  - physics/quantum-computing/parameterized-circuits
+  - physics/quantum-computing/parameter-shift-rule
+  - physics/quantum-computing/vqe
+  - physics/quantum-computing/barren-plateaus
+- title: Neutral atoms
+  blurb: A hardware platform, and optimization problems posed on it.
+  notes:
+  - physics/quantum-computing/architectures
+  - physics/quantum-computing/neutral-atom-qubits
+  - physics/quantum-computing/rydberg-blockade
+  - physics/quantum-computing/qubo-and-qaoa
+- title: 'Project: the transverse-field Ising model'
+  blurb: A complete study of one model with exact, variational and sampled methods.
+  notes:
+  - physics/quantum-computing/tfim-exact
+  - physics/quantum-computing/finite-size-scaling
+  - physics/quantum-computing/entanglement-entropy
+  - physics/quantum-computing/hea-versus-hva
+  - physics/quantum-computing/classical-shadows
+labs:
+- id: single-qubit-rotations
+  title: Single-qubit rotations
+  tool: qiskit
+  source: labs/Introduction_to_single_qubit_rotations_in_qiskit_lab.ipynb
+  exercises: 5
+  notes:
+  - qubit-and-bloch-sphere
+  - single-qubit-gates
+  - measurement
+  - density-matrix
+  covers: initialise and rotate a qubit, statevector against measured counts, Pauli exponentials, mixed states inside the Bloch ball
+- id: multiple-qubits-and-entanglement
+  title: Multiple qubits and entanglement
+  tool: qiskit
+  source: labs/Multiple_qubits_and_entanglement_in_qiskit_lab.ipynb
+  exercises: 6
+  notes:
+  - multi-qubit-states
+  - bell-states-and-entanglement
+  - ghz-and-w-states
+  covers: Bell states and their density matrices, measuring in the + and - basis, GHZ and W circuits
+- id: multicontrolled-unitaries
+  title: Multicontrolled unitaries and scaling
+  tool: qiskit
+  source: labs/Multicontrolled_unitaries_and_scaling_lab.ipynb
+  exercises: 4
+  notes:
+  - controlled-unitaries-and-scaling
+  covers: Toffoli decomposition, depth against controls for 4 to 14 controls, SWAP from three CNOTs
+- id: lab01-pennylane
+  title: 'Lab 01: Introduction to PennyLane'
+  tool: pennylane
+  source: labs/Lab01_Introduction_to_Pennylane.ipynb
+  exercises: 3
+  notes:
+  - single-qubit-gates
+  - measurement
+  - multi-qubit-states
+  - parameterized-circuits
+  covers: qubits, gates and measurements in PennyLane, observables, an entangling circuit
+- id: lab02-gradients
+  title: 'Lab 02: Differentiable circuits'
+  tool: pennylane
+  source: labs/Lab02_Pennylane_gradients_and_optimization.ipynb
+  exercises: 4
+  notes:
+  - parameterized-circuits
+  - parameter-shift-rule
+  - vqe
+  covers: simulator and hardware-compatible gradients, the parameter-shift rule, optimizing a parameterized circuit
+- id: lab03-grover
+  title: 'Lab 03: Grover search'
+  tool: pennylane
+  source: labs/Lab03_Quantum_search_algorithm.ipynb
+  exercises: 5
+  notes:
+  - oracles-and-phase-kickback
+  - grover-search
+  covers: oracle, diffusion operator, iteration count, multiple solutions
+- id: grover-tutorial
+  title: Grover tutorial (notebook)
+  tool: pennylane
+  source: notebooks/tutorial_grovers_algorithm.ipynb
+  exercises: 0
+  notes:
+  - grover-search
+  covers: a worked Grover example with a larger list; a tutorial, not an exercise sheet
+- id: qft-lab
+  title: The Quantum Fourier Transform
+  tool: pennylane
+  source: labs/The_Quantum_Fourier_Tranform_lab.ipynb
+  exercises: 4
+  notes:
+  - quantum-fourier-transform
+  covers: classical DFT, hand-built QFT circuit, comparison at 4 and 10 qubits, the controlled rotation from CNOTs
+- id: lab04-neutral-atoms
+  title: 'Lab 04: Neutral-atom quantum computing'
+  tool: pennylane+jax
+  source: labs/Lab04_Neutral_atom_1.ipynb
+  exercises: 6
+  notes:
+  - neutral-atom-qubits
+  - rydberg-blockade
+  covers: trapping, qubit encoding, driving pulses, single-qubit gates, the Rydberg blockade
+- id: lab05-qubo
+  title: 'Lab 05: QUBO, QAOA and QAA'
+  tool: pulser
+  source: labs/Lab05_Neutral_atom_2.ipynb
+  exercises: 5
+  notes:
+  - qubo-and-qaoa
+  covers: QUBO, embedding onto an atom register, QAOA, the quantum adiabatic algorithm
+- id: tfim-project
+  title: TFIM project
+  tool: pennylane
+  source: project/main.ipynb
+  exercises: 0
+  notes:
+  - tfim-exact
+  - finite-size-scaling
+  - entanglement-entropy
+  - hea-versus-hva
+  - classical-shadows
+  covers: the notebook and repository behind the course project

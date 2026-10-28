@@ -1,0 +1,11 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+domain: mathematics
+order: 2
+title: "Logic"
+summary: "Classical Boolean logic and its many-valued extension, fuzzy logic."
+parts:
+  - title: "Logic"
+    blurb: "From true and false to degrees of truth."
+    notes:
+      - logic/boolean
+      - logic/fuzzy

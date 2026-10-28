@@ -1,0 +1,20 @@
+domain: mathematics
+title: "Linear Algebra"
+summary: "Vector spaces, linear maps and matrices, eigenvalues, and the geometry of inner products up to the spectral theorem and the SVD."
+parts:
+  - title: "Structure"
+    blurb: "Vector spaces and the maps between them."
+    notes:
+      - mathematics/linear-algebra/vector-spaces
+      - mathematics/linear-algebra/linear-maps-and-matrices
+      - mathematics/linear-algebra/determinants
+  - title: "Eigenvalues"
+    blurb: "What a map does along special directions."
+    notes:
+      - mathematics/linear-algebra/eigenvalues-and-diagonalization
+  - title: "Geometry"
+    blurb: "Inner products, orthogonality and the decompositions built on them."
+    notes:
+      - mathematics/linear-algebra/inner-product-spaces
+      - mathematics/linear-algebra/spectral-theorem
+      - mathematics/linear-algebra/singular-value-decomposition

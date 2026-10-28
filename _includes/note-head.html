@@ -45,6 +45,15 @@
               {% endfor %}
             </tbody>
           </table>
+          {% comment %}A readiness check built from `requires`: say each in a sentence, or follow the link first.{% endcomment %}
+          <details class="note-head__check">
+            <summary>Check you are ready</summary>
+            <ul>
+              {% for group in page.needs %}{% for item in group.items %}
+                <li><label><input type="checkbox"> Can you say what <strong>{{ item.name }}</strong> is in one sentence?{% if item.href %} <a href="{{ item.href | relative_url }}">Review</a>{% endif %}</label></li>
+              {% endfor %}{% endfor %}
+            </ul>
+          </details>
         </div>
       {% endif %}
     </div>

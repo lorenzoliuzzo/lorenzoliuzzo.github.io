@@ -8,6 +8,15 @@ toc_sticky: true
 tags:
   - Physics
   - Electromagnetism
+excerpt: "The four equations in integral and differential form, with the potentials and the covariant formulation."
+hook: "Gauss, Gauss for magnetism, Faraday and Ampère with Maxwell's correction are the whole of classical electromagnetism: four equations and the Lorentz force."
+requires:
+  - gauss-law
+  - no-monopoles
+  - faraday-law
+  - displacement-current
+defines:
+  - {id: maxwell-equations, name: Maxwell's equations, anchor: the-principia}
 ---
 
 Maxwell's equations are the foundational postulates of classical electrodynamics, optics, and electric circuits. At a high level, they do not just describe electric and magnetic fields in isolation, but reveal them as unified manifestations of a single underlying electromagnetic field, intimately connected to the geometry of spacetime.

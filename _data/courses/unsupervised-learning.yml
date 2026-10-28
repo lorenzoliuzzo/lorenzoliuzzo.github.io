@@ -1,0 +1,20 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+domain: ai
+order: 4
+title: "Unsupervised Learning"
+summary: "Finding structure without labels: measures of proximity, cluster analysis and how to validate it, and anomaly detection."
+parts:
+  - title: "Proximity"
+    blurb: "What it means for two objects to be close."
+    notes:
+      - ai/unsupervised-learning/proximity-measures
+  - title: "Cluster analysis"
+    blurb: "Grouping objects, and judging whether the groups mean anything."
+    notes:
+      - ai/unsupervised-learning/cluster-analysis/introduction
+      - ai/unsupervised-learning/cluster-analysis/algorithms
+      - ai/unsupervised-learning/cluster-analysis/validation
+  - title: "Anomaly detection"
+    blurb: "Finding the objects that do not belong."
+    notes:
+      - ai/unsupervised-learning/anomaly-detection/introduction

@@ -1,0 +1,21 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+domain: ai
+order: 3
+title: "Supervised Learning"
+summary: "Core learning algorithms, ensembles and how to compare classifiers, and the deep models used for supervised tasks."
+parts:
+  - title: "Fundamentals"
+    blurb: "The problem setting and the standard algorithms every other method is compared against."
+    notes:
+      - ai/supervised-learning/common-algorithms
+  - title: "Ensembles and comparison"
+    blurb: "Stacking models together, and testing whether one classifier really beats another."
+    notes:
+      - ai/supervised-learning/ensemble-methods
+      - ai/supervised-learning/friedman-test
+  - title: "Deep models"
+    blurb: "Attention, detection and learning from the data itself."
+    notes:
+      - ai/supervised-learning/transformers
+      - ai/supervised-learning/object-detection
+      - ai/supervised-learning/self-supervised-learning

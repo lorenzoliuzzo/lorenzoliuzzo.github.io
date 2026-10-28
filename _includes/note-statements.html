@@ -1,0 +1,27 @@
+{% comment %}
+  "In this note": the statements the note makes (definitions, properties, theorems,
+  implications, applications, pitfalls), as a row of links to their boxes, and a switch
+  that shows only the statements ("skim"), or only one layer of them. The list is built
+  by _plugins/knowledge.rb from the typed blocks (see _data/knowledge.yml); the switch is
+  assets/js/statements.js. Without JavaScript the row of links still works. No headings
+  in here: the contents rail would pick them up.
+{% endcomment %}
+{% assign stmts = page.statement_list %}
+{% if stmts.size > 0 %}
+<nav class="stmts" id="stmts" aria-label="Statements in this note">
+  <div class="stmts__head">
+    <span class="note-head__label">In this note</span>
+    <div class="stmts__modes" role="group" aria-label="What to show" hidden>
+      <button type="button" data-mode="" aria-pressed="true">Everything</button>
+      <button type="button" data-mode="all" aria-pressed="false">Statements only</button>
+      {% for l in site.data.knowledge.layers %}{% assign n = stmts | where: "layer", l.id | size %}{% if n > 0 and l.id != "justify" %}<button type="button" data-mode="{{ l.id }}" data-layer="{{ l.id }}" aria-pressed="false" title="{{ l.ask }}">{{ l.title }} {{ n }}</button>{% endif %}{% endfor %}
+    </div>
+  </div>
+  <ul class="stmts__list">
+    {% for s in stmts %}
+      <li><a class="stmts__item" href="#{{ s.id }}" data-layer="{{ s.layer }}" data-kind="{{ s.kind }}"><span class="stmts__kind">{{ s.label }}</span>{% if s.title != "" %}<span>{{ s.title }}</span>{% endif %}</a></li>
+    {% endfor %}
+  </ul>
+</nav>
+<script src="{{ '/assets/js/statements.js' | relative_url }}" defer></script>
+{% endif %}

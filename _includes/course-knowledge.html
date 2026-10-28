@@ -1,0 +1,56 @@
+{% comment %}
+  The course formulary: every concept of the course, in reading order, folded. Opening a row
+  shows its definition and its results; the row links to the concept's own page. Rows that
+  lack a definition, a result or an example are flagged, so the curator sees the gaps and the
+  reader sees what is solid. Statements that belong to no concept follow below. Data:
+  course.sheet_ids, course.sheet_loose and site.data.knowledge_concepts from
+  _plugins/knowledge.rb; behaviour in assets/js/course-knowledge.js (search, gaps only).
+{% endcomment %}
+{% assign ids = include.course.sheet_ids %}
+{% if ids.size > 0 %}
+{% assign all = site.data.knowledge_concepts %}
+<section class="cf" id="knowledge" data-cf>
+  <h2 class="cf__title">Concepts and results <span class="part__count">{{ ids.size }}</span></h2>
+  <p class="cf__lede">Every concept this course introduces, with its definition and the results that hold for it.</p>
+  <div class="cf__tools" hidden>
+    <input type="search" placeholder="Filter {{ ids.size }} concepts" aria-label="Filter concepts" autocomplete="off" spellcheck="false">
+    <button type="button" class="chip" data-open>Open all</button>
+  </div>
+  <ul class="cf__rows">
+    {% for id in ids %}
+      {% assign c = all[id] %}
+      <li class="cf__row" id="c-{{ id }}" data-find="{{ c.name | downcase }}" data-gaps="">
+        <details>
+          <summary class="cf__sum">
+            <span class="cf__name">{{ c.name }}</span>
+            <span class="cf__part">{{ c.title }}</span>
+            <span class="cf__have">{% if c.results.size > 0 %}{{ c.results.size }} result{% if c.results.size > 1 %}s{% endif %}{% endif %}{% if c.results.size > 0 and c.use.size > 0 %} &middot; {% endif %}{% if c.use.size > 0 %}{{ c.use.size }} example{% if c.use.size > 1 %}s{% endif %}{% endif %}</span>
+            <a class="cf__go" href="{{ c.sheet_url | relative_url }}" title="Open the concept page" aria-label="Open the page for {{ c.name }}">page &rarr;</a>
+          </summary>
+          <div class="cf__body">
+            {% if c.definition %}{% include concept-statement.html s=c.definition main=true %}
+            {% else %}<p class="gap">Defined in <a href="{{ c.url | append: '#' | append: c.anchor | relative_url }}">{{ c.title }}</a>, not yet as a definition block.</p>{% endif %}
+            {% for e in c.results limit: 3 %}{% include concept-statement.html s=e %}{% endfor %}
+            <p class="cf__more">
+              {% if c.results.size > 3 %}{{ c.results.size | minus: 3 }} more results. {% endif %}
+              <a href="{{ c.sheet_url | relative_url }}">Open the concept page &rarr;</a>
+              {% if c.used_by.size > 0 %}<span class="cs__meta" style="display:inline"> Used in {{ c.used_by.size }} note{% if c.used_by.size > 1 %}s{% endif %}.</span>{% endif %}
+            </p>
+          </div>
+        </details>
+      </li>
+    {% endfor %}
+  </ul>
+  {% assign loose = include.course.sheet_loose %}
+  {% if loose.size > 0 %}
+  <div class="cf__loose">
+    <h3 class="cs__h">Other statements <small>{{ loose.size }}, not attached to a concept</small></h3>
+    <ul>
+      {% for b in loose %}<li data-layer="{{ b.layer }}"><a href="{{ b.url | relative_url }}"><span class="st__kind">{{ b.label }}</span>{% if b.title != "" %}{{ b.title }}{% else %}{{ b.text | markdownify | strip_html | strip | truncate: 70 }}{% endif %}</a></li>{% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  <p class="cf__more"><a href="{{ '/notes/knowledge/' | relative_url }}#course={{ include.course.slug }}">Search every statement of this course in the explorer &rarr;</a></p>
+</section>
+<script src="{{ '/assets/js/course-knowledge.js' | relative_url }}" defer></script>
+{% endif %}

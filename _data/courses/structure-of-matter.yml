@@ -1,0 +1,17 @@
+domain: physics
+title: "Structure of Matter"
+summary: "From atoms and molecules to crystals: what quantum mechanics predicts for many electrons, bonds and lattices."
+parts:
+  - title: "Atoms and molecules"
+    blurb: "Many-electron atoms and the chemical bond."
+    notes:
+      - physics/structure-of-matter/multi-electron-atoms
+      - physics/structure-of-matter/atomic-spectra
+      - physics/structure-of-matter/molecules
+  - title: "Solids"
+    blurb: "Electrons in a periodic lattice."
+    notes:
+      - physics/structure-of-matter/crystals
+      - physics/structure-of-matter/free-electron-model
+      - physics/structure-of-matter/band-theory
+      - physics/structure-of-matter/semiconductors

@@ -1,0 +1,94 @@
+{% comment %}
+  The body of a course page: what the course is, how to start it, then its parts, each
+  with its notes in reading order. A line at the end says how the course connects to the
+  others, once any note requires a concept another course defines. Everything comes from
+  the course hash that _plugins/courses.rb builds; nothing here changes when a course is
+  added.
+
+  The only headings in here are the h2s of the parts, so the page stays a flat outline.
+{% endcomment %}
+{% assign c = include.course %}
+<div class="course" data-course="{{ c.slug }}" data-total="{{ c.total }}">
+
+  <p class="course-lede">{{ c.summary }}</p>
+  {% if c.origin %}<p class="course-origin"><span class="note-head__label">Where this comes from</span>{{ c.origin | markdownify | remove: "<p>" | remove: "</p>" | strip }}</p>{% endif %}
+  <p class="course-meta">
+    <a href="{{ '/notes/' | relative_url }}#{{ c.domain }}">{{ c.domain_title }}</a>
+    <span>{{ c.written }} of {{ c.total }} notes written</span>
+    {% if c.reference %}<a href="{{ c.reference | relative_url }}">Technical reference (PDF)</a>{% endif %}
+    {% if c.statement_total > 0 %}<a href="{{ '/notes/knowledge/' | relative_url }}#course={{ c.slug }}">{{ c.statement_total }} statements</a>{% endif %}
+    <span id="course-read" hidden>you have opened <span data-read>0</span></span>
+  </p>
+  {% if c.first_url %}
+    <p class="course-start"><a id="course-go" href="{{ c.first_url | relative_url }}">Start with {{ c.first_title }} <span aria-hidden="true">&rarr;</span></a></p>
+  {% endif %}
+
+  {% assign pos = 0 %}
+  {% for part in c.parts %}
+    <section class="part" id="{{ part.slug }}">
+      <h2 class="part__title">{{ part.title }}{% if c.parts.size > 1 %}<span class="part__count">{{ part.written }} of {{ part.items.size }}</span>{% endif %}</h2>
+      {% if part.blurb %}<p class="part__blurb">{{ part.blurb }}</p>{% endif %}
+      {% if part.reading.size > 0 %}
+        <p class="part__reading"><span class="part__reading-label">Primary reading</span>
+          {%- for id in part.reading %}{% assign paper = site.data.paper_by_id[id] %}{% if paper %} <a href="{{ '/references/' | relative_url }}#ref-{{ paper.id }}" title="{{ paper.title_text | escape }}">{{ paper.short }}</a>{% unless forloop.last %};{% endunless %}{% endif %}{% endfor -%}
+        </p>
+      {% endif %}
+      <ol class="rows">
+        {% for item in part.items %}
+          {% assign pos = pos | plus: 1 %}
+          {% if item.written %}
+            <li class="row" data-url="{{ item.url | relative_url }}">
+              <a class="row__link" href="{{ item.url | relative_url }}">
+                <span class="row__no">{{ pos }}</span>
+                <span class="row__body">
+                  <span class="row__title">{{ item.title | markdownify | strip_html | strip }}{% case item.state %}
+                    {% when "verified" %}<i class="fas fa-circle-check row__state" title="Human-verified" aria-label="Human-verified"></i>
+                    {% when "stale" %}<i class="fas fa-triangle-exclamation row__state row__state--warn" title="Edited since it was verified" aria-label="Edited since verification"></i>
+                    {% when "unlocked" %}<i class="fas fa-lock-open row__state row__state--warn" title="Marked verified without a checksum" aria-label="Verified, unlocked"></i>
+                  {% endcase %}</span>
+                  {% if item.summary != "" %}<span class="row__summary">{{ item.summary }}</span>{% endif %}
+                </span>
+              </a>
+            </li>
+          {% else %}
+            <li class="row row--planned">
+              <span class="row__link">
+                <span class="row__no">{{ pos }}</span>
+                <span class="row__body"><span class="row__title">{{ item.title }}</span> <span class="row__badge">planned</span></span>
+              </span>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ol>
+    </section>
+  {% endfor %}
+
+  {% if c.reads_from.size > 0 or c.feeds.size > 0 %}
+    <div class="course-links">
+      {% if c.reads_from.size > 0 %}
+        <p><strong>Builds on</strong>
+          {% for l in c.reads_from %}<a href="{{ l.url | relative_url }}">{{ l.title }}</a> <span>({{ l.names | join: ", " }}{% if l.count > 5 %} and {{ l.count | minus: 5 }} more{% endif %})</span>{% unless forloop.last %}; {% endunless %}{% endfor %}
+        </p>
+      {% endif %}
+      {% if c.feeds.size > 0 %}
+        <p><strong>Leads to</strong>
+          {% for l in c.feeds %}<a href="{{ l.url | relative_url }}">{{ l.title }}</a> <span>({{ l.names | join: ", " }}{% if l.count > 5 %} and {{ l.count | minus: 5 }} more{% endif %})</span>{% unless forloop.last %}; {% endunless %}{% endfor %}
+        </p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% include course-knowledge.html course=c %}
+
+  {% if c.concepts.size > 0 %}
+    <details class="course-concepts">
+      <summary>Concepts in this course ({{ c.concepts.size }})</summary>
+      <ul>
+        {% for concept in c.concepts %}
+          <li>{% if concept.href %}<a href="{{ concept.href | relative_url }}">{{ concept.name }}</a>{% else %}<span class="is-planned">{{ concept.name }}</span>{% endif %}</li>
+        {% endfor %}
+      </ul>
+      <p><a href="{{ '/concepts/' | relative_url }}">All concepts, A to Z &rarr;</a></p>
+    </details>
+  {% endif %}
+</div>
