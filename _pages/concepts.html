@@ -1,0 +1,57 @@
+---
+title: Concepts
+permalink: /concepts/
+layout: single
+classes: wide shelf-page
+author_profile: false
+breadcrumbs: false
+description: Every concept the notes introduce, A to Z, with where it is defined and which notes use it.
+---
+{% comment %}
+  The glossary: every `defines` entry of every note, from _plugins/courses.rb, with the
+  course it belongs to and the notes whose `requires` name it. Concepts of notes that are
+  planned but not written show dimmed and without a link.
+{% endcomment %}
+{% assign list = site.data.concept_list %}
+{% assign groups = list | group_by: "letter" %}
+
+<div class="shelf glossary">
+  <p class="shelf-lede">Every concept the notes introduce, with the note that defines it and the notes that rely on it. This is the same data that links each note to what it needs.</p>
+
+  <div class="shelf-tools">
+    <input type="search" id="glossary-search" placeholder="Filter {{ list.size }} concepts" autocomplete="off" spellcheck="false" aria-label="Filter concepts">
+    <div class="shelf-chips"><a class="shelf-link" href="{{ '/notes/' | relative_url }}">&larr; All courses</a></div>
+  </div>
+
+  <nav class="letters" aria-label="Jump to a letter" id="glossary-letters">
+    {% for g in groups %}<a href="#letter-{{ g.name | replace: '#', 'other' }}">{{ g.name }}</a>{% endfor %}
+  </nav>
+
+  <p class="shelf-results__head" id="glossary-empty" hidden>No concept matches.</p>
+
+  <div id="glossary-list">
+    {% for g in groups %}
+      <section class="letter" id="letter-{{ g.name | replace: '#', 'other' }}">
+        <h2 class="letter__title">{{ g.name }}</h2>
+        <ul class="terms">
+          {% for c in g.items %}
+            <li class="term" data-find="{{ c.name | downcase }} {{ c.course | downcase }}">
+              <div class="term__line">
+                {% if c.url and c.planned == false %}<a class="term__name" href="{{ '/concepts/' | append: c.id | append: '/' | relative_url }}">{{ c.name }}</a>{% else %}<span class="term__name is-planned">{{ c.name }}</span>{% endif %}
+                {% if c.course %}<a class="term__course" href="{{ c.course_url | relative_url }}">{{ c.course }}</a>{% endif %}
+              </div>
+              <p class="term__meta">
+                Defined in {% if c.note_url %}<a href="{{ c.note_url | relative_url }}">{{ c.note_title }}</a>{% else %}{{ c.note_title }}{% endif %}.
+                {% if c.used_by.size > 0 %}Used in
+                  {% for u in c.used_by limit: 4 %}<a href="{{ u.url | relative_url }}">{{ u.title }}</a>{% unless forloop.last %}, {% endunless %}{% endfor %}{% if c.used_by.size > 4 %} and {{ c.used_by.size | minus: 4 }} more{% endif %}.
+                {% endif %}
+              </p>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endfor %}
+  </div>
+</div>
+
+{% include glossary-script.html %}

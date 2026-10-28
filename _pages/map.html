@@ -1,0 +1,27 @@
+---
+title: Course map
+permalink: /notes/map/
+layout: single
+classes: wide map-page
+author_profile: false
+breadcrumbs: false
+description: How the courses lean on each other, drawn from what each note requires. An overview of every course, and a focus view for one.
+---
+{% comment %}
+  The course map. All data comes from assets/data/graph.json, written by
+  `ruby tools/graph.rb --write`; assets/js/map.js draws it. Without JavaScript the
+  course list below stays usable, so this page never depends on the script to be useful.
+{% endcomment %}
+<link rel="stylesheet" href="{{ '/assets/css/map.css' | relative_url }}">
+
+<div class="map" id="map" data-graph="{{ '/assets/data/graph.json' | relative_url }}" data-base="{{ '/' | relative_url }}">
+  <p class="map-lede">Each course is a box; an arrow runs from a course to the courses that use its concepts. Select a course to see its own notes, what it draws on, and what depends on it.</p>
+  <div class="map-bar" id="map-bar" hidden>
+    <button type="button" class="chip--btn" id="map-back" hidden>&larr; All courses</button>
+    <span class="map-crumb" id="map-crumb" aria-live="polite"></span>
+    <span class="map-key" aria-hidden="true"><i class="k-done"></i> written <i class="k-plan"></i> planned</span>
+  </div>
+  <div class="map-stage" id="map-stage" aria-label="Course map"></div>
+  <noscript><p>The map needs JavaScript. The <a href="{{ '/notes/' | relative_url }}">notes shelf</a> lists every course with what it reads from and what it feeds.</p></noscript>
+</div>
+<script src="{{ '/assets/js/map.js' | relative_url }}" defer></script>

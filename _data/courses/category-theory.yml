@@ -1,0 +1,19 @@
+domain: mathematics
+title: Category Theory
+summary: Categories, functors and natural transformations, universal properties, adjunctions and monoidal categories.
+parts:
+- title: Categories and functors
+  blurb: Objects, arrows, and the maps between categories.
+  notes:
+  - mathematics/category-theory/categories-and-morphisms
+  - mathematics/category-theory/functors
+  - mathematics/category-theory/natural-transformations
+- title: Universal constructions
+  blurb: Defining things by the maps they admit.
+  notes:
+  - mathematics/category-theory/universal-properties-and-limits
+  - mathematics/category-theory/adjunctions
+- title: Diagrams
+  blurb: Monoidal structure and calculating with string diagrams.
+  notes:
+  - mathematics/category-theory/monoidal-categories

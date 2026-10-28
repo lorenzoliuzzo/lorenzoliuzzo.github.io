@@ -1,0 +1,68 @@
+---
+title: Notes
+permalink: /notes/
+layout: single
+classes: wide shelf-page
+author_profile: false
+breadcrumbs: false
+description: Study notes organised as courses, each a path with what you need first and what comes next.
+---
+{% comment %}
+  The notes shelf: every course as a line, grouped by domain. A course's notes live on
+  its own page (/notes/<slug>/). Courses, domains and counts come from
+  _plugins/courses.rb; this page only lays them out. It is an .html page on purpose:
+  kramdown would otherwise treat indented markup as code.
+{% endcomment %}
+{% assign stats = site.data.notes_stats %}
+{% assign groups = site.data.domain_groups %}
+
+<div class="shelf">
+  <p class="shelf-lede">Study notes from my physics and AI degrees, one course at a time. Each course is a path: the notes in reading order, what you need before each one, and what it opens up.</p>
+
+  <div class="shelf-tools">
+    <input type="search" id="shelf-search" placeholder="Search notes and concepts" autocomplete="off" spellcheck="false" aria-label="Search notes and concepts" aria-controls="shelf-results">
+    <div class="shelf-chips" role="group" aria-label="Show one domain">
+      <button type="button" class="chip--btn" data-domain="all" aria-pressed="true">All</button>
+      {% for d in groups %}<button type="button" class="chip--btn" data-domain="{{ d.id }}" aria-pressed="false">{{ d.title }}</button>{% endfor %}
+      <a class="shelf-link" href="{{ '/concepts/' | relative_url }}">Concepts A&ndash;Z</a>
+      <a class="shelf-link" href="{{ '/notes/map/' | relative_url }}">Course map</a>
+      <a class="shelf-link" href="{{ '/notes/knowledge/' | relative_url }}">Statements</a>
+      <a class="shelf-link" href="{{ '/concepts/' | relative_url }}">Concepts</a>
+      <a class="shelf-link" href="{{ '/notes/review/' | relative_url }}">Review</a>
+    </div>
+  </div>
+
+  <section class="shelf-continue" id="shelf-continue" aria-label="Continue reading" hidden></section>
+
+  <div class="shelf-results" id="shelf-results" aria-live="polite" hidden></div>
+
+  <div id="shelf-courses">
+    {% for d in groups %}
+      <section class="domain" id="{{ d.id }}" data-domain="{{ d.id }}">
+        <h2 class="domain__title">{{ d.title }}</h2>
+        {% if d.blurb and d.blurb != "" %}<p class="domain__blurb">{{ d.blurb }}</p>{% endif %}
+        <ul class="courses">
+          {% for c in d.courses %}
+            <li class="course-item course-item--{{ c.status }}">
+              <a class="course-item__title" href="{{ c.url | relative_url }}">{{ c.title }}</a>
+              <span class="course-item__meta">{% if c.written == 0 %}planned{% elsif c.written == c.total %}{{ c.total }} note{% if c.total != 1 %}s{% endif %}{% else %}{{ c.written }} of {{ c.total }}{% endif %}</span>
+              <span class="course-item__summary">{{ c.summary }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endfor %}
+
+    {% if site.data.loose_notes.size > 0 %}
+      <section class="domain" id="more" data-domain="more">
+        <h2 class="domain__title">More notes</h2>
+        <p class="domain__blurb">Notes that no course lists yet. Add them to a course in <code>_data/courses/</code> and they move onto its path.</p>
+        <ul class="loose">
+          {% for n in site.data.loose_notes %}<li><a href="{{ n.url | relative_url }}">{{ n.title }}</a></li>{% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+  </div>
+</div>
+
+{% include shelf-script.html %}

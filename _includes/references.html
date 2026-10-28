@@ -1,0 +1,39 @@
+{% comment %}
+  The reference list at the end of a note, added by _layouts/note.html. Nothing to write by hand.
+
+  Numbered list: the works the text cites with {% cite %} or {% citet %}, in order of
+  first appearance, so the numbers match the ones in the text. "Further reading": works
+  listed in front matter `cites` that the text does not cite. Both come from
+  _plugins/citations.rb; the entries come from _data/papers.yml.
+
+  Each entry says which other notes cite the same work, which is how the notes
+  connect through their sources.
+{% endcomment %}
+{% assign cited = page.cited %}
+{% assign further = page.further_reading %}
+{% if cited.size > 0 or further.size > 0 %}
+<section class="references" id="references">
+  <hr>
+  {% if cited.size > 0 %}
+  <h2 class="references__title">References</h2>
+  <ol class="references__list">
+    {% for paper in cited %}
+      <li id="ref-{{ paper.id }}" class="reference">
+        {% include reference-entry.html paper=paper %}
+      </li>
+    {% endfor %}
+  </ol>
+  {% endif %}
+
+  {% if further.size > 0 %}
+  <h2 class="references__title">Further reading</h2>
+  <ul class="references__list references__list--further">
+    {% for paper in further %}
+      <li id="ref-{{ paper.id }}" class="reference">
+        {% include reference-entry.html paper=paper %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</section>
+{% endif %}

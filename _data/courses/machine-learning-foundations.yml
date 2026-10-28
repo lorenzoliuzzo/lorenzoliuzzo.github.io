@@ -1,0 +1,16 @@
+domain: ai
+title: "Machine Learning Foundations"
+summary: "The pieces of a machine learning course that the other courses here do not cover: local and kernel methods, support vector machines, optimization and backpropagation."
+parts:
+  - title: "Local and kernel methods"
+    blurb: "Prediction from similarity."
+    notes:
+      - ai/machine-learning-foundations/nearest-neighbours-and-dimensionality
+      - ai/machine-learning-foundations/kernel-methods
+      - ai/machine-learning-foundations/support-vector-machines
+  - title: "Optimization and networks"
+    blurb: "Training models by gradient."
+    notes:
+      - ai/machine-learning-foundations/gradient-descent
+      - ai/machine-learning-foundations/natural-gradient
+      - ai/machine-learning-foundations/backpropagation

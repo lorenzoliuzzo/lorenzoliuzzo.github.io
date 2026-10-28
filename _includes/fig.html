@@ -1,0 +1,17 @@
+{% comment %}
+  A numbered figure from an SVG that tools/figures/build.py wrote into _includes/fig/.
+  The SVG is inlined, so its colours follow the light and dark themes.
+
+  src     — path under _includes/fig/ without extension, e.g. statistics/t-vs-normal (required)
+  caption — one or two sentences saying what to look at (markdown ok; required)
+  alt     — what the figure shows, for screen readers (required)
+  id      — anchor, so [](#id) elsewhere can point at it
+  place   — "wide" (default, whole column) or "margin" (small, beside the text)
+
+  Numbering and the figure index reuse the .latex-like-figure counter.
+{% endcomment %}
+{% assign fig_path = "fig/" | append: include.src | append: ".svg" %}
+<figure class="latex-like-figure fig fig--{{ include.place | default: 'wide' }}{% if include.place == 'margin' %} margin{% endif %}"{% if include.id %} id="{{ include.id }}"{% endif %}>
+  <div role="img" aria-label="{{ include.alt | escape }}">{% include {{ fig_path }} %}</div>
+  <figcaption>{{ include.caption | markdownify | remove: "<p>" | remove: "</p>" | strip }}</figcaption>
+</figure>

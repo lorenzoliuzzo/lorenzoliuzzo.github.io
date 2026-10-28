@@ -1,0 +1,6398 @@
+{
+  "generated": "2026-10-27",
+  "summary": {
+    "planned": 120,
+    "ready": 60,
+    "blocked": 60,
+    "written": 138,
+    "unread": 138,
+    "thin": 6,
+    "unverified_papers": 66
+  },
+  "current": [
+
+  ],
+  "ready": [
+    {
+      "key": "physics/quantum-computing/multi-qubit-states",
+      "url": "/notes/physics/quantum-computing/multi-qubit-states/",
+      "title": "Multi-Qubit States and Gates",
+      "hook": "The state of n qubits has 2^n amplitudes, and a two-qubit gate is what lets them stop being independent.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 1,
+      "pos": 6,
+      "unblocks": 13,
+      "leads_to": [
+        "Bell States and Entanglement",
+        "Multi-Controlled Gates and Circuit Depth",
+        "The Quantum Fourier Transform"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/general-relativity/tensors-and-manifolds",
+      "url": "/notes/physics/general-relativity/tensors-and-manifolds/",
+      "title": "Manifolds and Tensors",
+      "hook": "A tensor is an object whose components change in a prescribed way with the coordinates, so that equations built from tensors hold in every coordinate system.",
+      "course": "general-relativity",
+      "course_title": "General Relativity",
+      "part": 0,
+      "pos": 1,
+      "unblocks": 9,
+      "leads_to": [
+        "The Metric and Causal Structure"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/parameterized-circuits",
+      "url": "/notes/physics/quantum-computing/parameterized-circuits/",
+      "title": "Parameterized Circuits",
+      "hook": "A parameterized circuit is a function from angles to an expectation value, which turns quantum computation into an optimization problem for a classical computer.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 3,
+      "pos": 14,
+      "unblocks": 9,
+      "leads_to": [
+        "Gradients and the Parameter-Shift Rule"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/thermodynamics/phase-transitions-thermodynamics",
+      "url": "/notes/physics/thermodynamics/phase-transitions-thermodynamics/",
+      "title": "Phase Transitions",
+      "hook": "A phase transition is a point where a thermodynamic potential stops being smooth, and the critical point is where the two phases become one.",
+      "course": "thermodynamics",
+      "course_title": "Thermodynamics",
+      "part": 1,
+      "pos": 5,
+      "unblocks": 9,
+      "leads_to": [
+        "Classifying Transitions: Range and Dimension",
+        "Critical Exponents and Universality",
+        "Interacting Gases and the van der Waals Equation"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/calculus/line-and-surface-integrals",
+      "url": "/notes/mathematics/calculus/line-and-surface-integrals/",
+      "title": "Line and Surface Integrals",
+      "hook": "Work is a line integral and flux is a surface integral; both measure a field against a geometry.",
+      "course": "calculus",
+      "course_title": "Calculus",
+      "part": 1,
+      "pos": 6,
+      "unblocks": 8,
+      "leads_to": [
+        "Divergence, Curl and the Integral Theorems",
+        "Radiometry and the Rendering Equation"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/electromagnetism/displacement-current",
+      "url": "/notes/physics/electromagnetism/displacement-current/",
+      "title": "The Displacement Current",
+      "hook": "Ampère's law as stated fails for a charging capacitor; adding a term for the changing electric field repairs it and is the step that makes waves possible.",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "part": 4,
+      "pos": 12,
+      "unblocks": 6,
+      "leads_to": [
+        "Electromagnetic Waves",
+        "Maxwell's Equations"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/mathematical-methods/fourier-transform",
+      "url": "/notes/mathematics/mathematical-methods/fourier-transform/",
+      "title": "The Fourier Transform",
+      "hook": "The transform trades a function of position for a function of frequency, and a narrow signal is broad in the other variable.",
+      "course": "mathematical-methods",
+      "course_title": "Mathematical Methods for Physics",
+      "part": 2,
+      "pos": 5,
+      "unblocks": 6,
+      "leads_to": [
+        "Convolutional Networks for Lattices",
+        "Convolutional Neural Networks",
+        "Distributions and Green's Functions"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/category-theory/categories-and-morphisms",
+      "url": "/notes/mathematics/category-theory/categories-and-morphisms/",
+      "title": "Categories and Morphisms",
+      "hook": "A category forgets what the objects are made of and keeps only the arrows between them and how they compose.",
+      "course": "category-theory",
+      "course_title": "Category Theory",
+      "part": 0,
+      "pos": 0,
+      "unblocks": 5,
+      "leads_to": [
+        "Adjunctions",
+        "Functors",
+        "Monoidal Categories and Diagrams"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+        "commuting triangle and the category of a poset as a diagram"
+      ],
+      "verify": [
+        "identities and composition are unique",
+        "an isomorphism has a unique inverse"
+      ],
+      "lab": "",
+      "has_plan": true
+    },
+    {
+      "key": "physics/structure-of-matter/multi-electron-atoms",
+      "url": "/notes/physics/structure-of-matter/multi-electron-atoms/",
+      "title": "Multi-Electron Atoms",
+      "hook": "Electrons are indistinguishable fermions, and filling shells under the Pauli principle explains the periodic table.",
+      "course": "structure-of-matter",
+      "course_title": "Structure of Matter",
+      "part": 0,
+      "pos": 0,
+      "unblocks": 5,
+      "leads_to": [
+        "Atomic Spectra and Selection Rules",
+        "The Free Electron Model",
+        "Molecules and Bonding"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/computational-physics/markov-chain-monte-carlo",
+      "url": "/notes/physics/computational-physics/markov-chain-monte-carlo/",
+      "title": "Markov Chain Monte Carlo",
+      "hook": "A random walk built to satisfy detailed balance visits states with their Boltzmann weights, so one can simulate a magnet on a laptop.",
+      "course": "computational-physics",
+      "course_title": "Computational Physics",
+      "part": 1,
+      "pos": 5,
+      "unblocks": 4,
+      "leads_to": [
+        "Gibbs Sampling",
+        "Random Walks and the Metropolis Algorithm"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/group-theory/homomorphisms-and-quotients",
+      "url": "/notes/mathematics/group-theory/homomorphisms-and-quotients/",
+      "title": "Homomorphisms and Quotients",
+      "hook": "A homomorphism is a map that respects the operation, and its kernel is exactly what a quotient group divides out.",
+      "course": "group-theory",
+      "course_title": "Group Theory",
+      "part": 0,
+      "pos": 1,
+      "unblocks": 4,
+      "leads_to": [
+        "Group Actions",
+        "Representations and Characters",
+        "Structure of Finite Groups"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+        "cosets of a subgroup of Z_12 coloured on a clock face"
+      ],
+      "verify": [
+        "the kernel of a homomorphism is a normal subgroup",
+        "G/ker f is isomorphic to the image of f"
+      ],
+      "lab": "",
+      "has_plan": true
+    },
+    {
+      "key": "physics/photorealistic-rendering/transformations-and-quaternions",
+      "url": "/notes/physics/photorealistic-rendering/transformations-and-quaternions/",
+      "title": "Transformations and Quaternions",
+      "hook": "Rotation, translation and scaling become a single matrix product in homogeneous coordinates, and quaternions give rotations that compose and interpolate cleanly.",
+      "course": "photorealistic-rendering",
+      "course_title": "Photorealistic Rendering",
+      "part": 1,
+      "pos": 4,
+      "unblocks": 4,
+      "leads_to": [
+        "Shapes and Intersections"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/linear-algebra/singular-value-decomposition",
+      "url": "/notes/mathematics/linear-algebra/singular-value-decomposition/",
+      "title": "Singular Value Decomposition",
+      "hook": "Every matrix is a rotation, a stretch along perpendicular axes and another rotation; the stretches say how much of the matrix is worth keeping.",
+      "course": "linear-algebra",
+      "course_title": "Linear Algebra",
+      "part": 2,
+      "pos": 6,
+      "unblocks": 3,
+      "leads_to": [
+        "Auto-Encoder Networks",
+        "Composite Systems and the Schmidt Decomposition"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/structure-of-matter/crystals",
+      "url": "/notes/physics/structure-of-matter/crystals/",
+      "title": "Crystal Structure",
+      "hook": "A crystal is a lattice with a motif, and diffraction measures its reciprocal lattice.",
+      "course": "structure-of-matter",
+      "course_title": "Structure of Matter",
+      "part": 1,
+      "pos": 3,
+      "unblocks": 3,
+      "leads_to": [
+        "Band Theory",
+        "The Free Electron Model"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/electromagnetism/inductance",
+      "url": "/notes/physics/electromagnetism/inductance/",
+      "title": "Inductance and Magnetic Energy",
+      "hook": "A coil resists changes in its own current because the field it makes links its own turns; that resistance, inductance, is the magnetic counterpart of capacitance.",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "part": 3,
+      "pos": 10,
+      "unblocks": 2,
+      "leads_to": [
+        "Circuits: RC, RLC, LC",
+        "Energy and Momentum in the Field"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "ai/machine-learning-foundations/kernel-methods",
+      "url": "/notes/ai/machine-learning-foundations/kernel-methods/",
+      "title": "Kernel Methods",
+      "hook": "A kernel computes the inner product of two examples in a huge feature space without building that space, so linear methods become nonlinear for free.",
+      "course": "machine-learning-foundations",
+      "course_title": "Machine Learning Foundations",
+      "part": 0,
+      "pos": 1,
+      "unblocks": 2,
+      "leads_to": [
+        "Support Vector Machines",
+        "Radial Basis Function Network"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/mathematical-methods/pdes-and-separation-of-variables",
+      "url": "/notes/mathematics/mathematical-methods/pdes-and-separation-of-variables/",
+      "title": "Partial Differential Equations",
+      "hook": "Three equations, one for diffusion, one for waves and one for equilibrium, cover most of mathematical physics, and separating variables reduces each to ordinary ones.",
+      "course": "mathematical-methods",
+      "course_title": "Mathematical Methods for Physics",
+      "part": 3,
+      "pos": 7,
+      "unblocks": 2,
+      "leads_to": [
+        "Physics-Informed Neural Networks",
+        "Special Functions"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/neutral-atom-qubits",
+      "url": "/notes/physics/quantum-computing/neutral-atom-qubits/",
+      "title": "Neutral-Atom Qubits and Pulses",
+      "hook": "A laser pulse of the right area and phase is a rotation of the Bloch sphere, so the pulse sequence is the circuit.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 4,
+      "pos": 19,
+      "unblocks": 2,
+      "leads_to": [
+        "The Rydberg Blockade"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/computational-physics/numerical-linear-algebra",
+      "url": "/notes/physics/computational-physics/numerical-linear-algebra/",
+      "title": "Numerical Linear Algebra",
+      "hook": "The cost and the accuracy of a linear solve are set by the structure and conditioning of the matrix.",
+      "course": "computational-physics",
+      "course_title": "Computational Physics",
+      "part": 0,
+      "pos": 1,
+      "unblocks": 1,
+      "leads_to": [
+        "Finite Differences for PDEs"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/electromagnetism/potentials-and-gauge",
+      "url": "/notes/physics/electromagnetism/potentials-and-gauge/",
+      "title": "Potentials and Gauge Freedom",
+      "hook": "Two of Maxwell's equations are solved at once by writing the fields as derivatives of potentials, and the potentials are not unique: that freedom is the first example of a gauge symmetry.",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "part": 5,
+      "pos": 16,
+      "unblocks": 1,
+      "leads_to": [
+        "Electromagnetism and Relativity"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "ai/machine-learning-foundations/nearest-neighbours-and-dimensionality",
+      "url": "/notes/ai/machine-learning-foundations/nearest-neighbours-and-dimensionality/",
+      "title": "Nearest Neighbours and the Curse of Dimensionality",
+      "hook": "The simplest predictor averages the closest examples, and it works until the space is so large that nothing is close.",
+      "course": "machine-learning-foundations",
+      "course_title": "Machine Learning Foundations",
+      "part": 0,
+      "pos": 0,
+      "unblocks": 1,
+      "leads_to": [
+        "Learning Vector Quantization"
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/classical-mechanics/non-inertial-frames",
+      "url": "/notes/physics/classical-mechanics/non-inertial-frames/",
+      "title": "Non-Inertial Frames and Rigid Bodies",
+      "hook": "Accelerating observers see extra forces, and a spinning body has an inertia that depends on direction.",
+      "course": "classical-mechanics",
+      "course_title": "Classical Mechanics",
+      "part": 0,
+      "pos": 4,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/electromagnetism/dielectrics",
+      "url": "/notes/physics/electromagnetism/dielectrics/",
+      "title": "Dielectrics",
+      "hook": "An insulator in a field has its charges nudged into dipoles, which weakens the field inside; the displacement field bookkeeps only the charges you control.",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "part": 1,
+      "pos": 5,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/group-theory/matrix-groups-and-lie-algebras",
+      "url": "/notes/mathematics/group-theory/matrix-groups-and-lie-algebras/",
+      "title": "Matrix Groups and Lie Algebras",
+      "hook": "Continuous symmetries are groups of matrices, and differentiating at the identity gives a vector space that remembers the group.",
+      "course": "group-theory",
+      "course_title": "Group Theory",
+      "part": 2,
+      "pos": 5,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+        "rotation group SO(2) as a circle and the exponential map"
+      ],
+      "verify": [
+        "so(3) is spanned by three antisymmetric generators with [Lx, Ly] = Lz",
+        "exp of an antisymmetric matrix is a rotation"
+      ],
+      "lab": "",
+      "has_plan": true
+    },
+    {
+      "key": "logic/boolean",
+      "url": "/notes/logic/boolean/",
+      "title": "Boolean Logic",
+      "hook": "",
+      "course": "logic",
+      "course_title": "Logic",
+      "part": 0,
+      "pos": 0,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "logic/fuzzy",
+      "url": "/notes/logic/fuzzy/",
+      "title": "Fuzzy Logic",
+      "hook": "",
+      "course": "logic",
+      "course_title": "Logic",
+      "part": 0,
+      "pos": 1,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "ai/machine-learning-foundations/natural-gradient",
+      "url": "/notes/ai/machine-learning-foundations/natural-gradient/",
+      "title": "Natural Gradient",
+      "hook": "Plain gradient descent depends on how the parameters are written, and the natural gradient removes that by measuring steps with the Fisher information.",
+      "course": "machine-learning-foundations",
+      "course_title": "Machine Learning Foundations",
+      "part": 1,
+      "pos": 4,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/mathematical-methods/residues",
+      "url": "/notes/mathematics/mathematical-methods/residues/",
+      "title": "Laurent Series and Residues",
+      "hook": "A contour integral is fixed by the singularities it encloses, which turns hard real integrals into bookkeeping.",
+      "course": "mathematical-methods",
+      "course_title": "Mathematical Methods for Physics",
+      "part": 1,
+      "pos": 3,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/optics/principles",
+      "url": "/notes/physics/optics/principles/",
+      "title": "Principles of Optics",
+      "hook": "",
+      "course": "optics",
+      "course_title": "Optics",
+      "part": 0,
+      "pos": 0,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/optics/fenomena",
+      "url": "/notes/physics/optics/fenomena/",
+      "title": "Optical Phenomena",
+      "hook": "",
+      "course": "optics",
+      "course_title": "Optics",
+      "part": 0,
+      "pos": 1,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/particles/rutherford-experiment",
+      "url": "/notes/physics/particles/rutherford-experiment/",
+      "title": "Rutherford's Experiment",
+      "hook": "",
+      "course": "particles",
+      "course_title": "Particle Physics",
+      "part": 0,
+      "pos": 0,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/particles/cross-section",
+      "url": "/notes/physics/particles/cross-section/",
+      "title": "Cross Section",
+      "hook": "",
+      "course": "particles",
+      "course_title": "Particle Physics",
+      "part": 0,
+      "pos": 1,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/particles/detectors",
+      "url": "/notes/physics/particles/detectors/",
+      "title": "Particle Detectors",
+      "hook": "",
+      "course": "particles",
+      "course_title": "Particle Physics",
+      "part": 0,
+      "pos": 2,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/particles/radioactive-decays",
+      "url": "/notes/physics/particles/radioactive-decays/",
+      "title": "Radioactive Decays",
+      "hook": "",
+      "course": "particles",
+      "course_title": "Particle Physics",
+      "part": 1,
+      "pos": 3,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/particles/strong-force",
+      "url": "/notes/physics/particles/strong-force/",
+      "title": "Strong Force",
+      "hook": "",
+      "course": "particles",
+      "course_title": "Particle Physics",
+      "part": 1,
+      "pos": 4,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/particles/weak-force",
+      "url": "/notes/physics/particles/weak-force/",
+      "title": "Weak Force",
+      "hook": "",
+      "course": "particles",
+      "course_title": "Particle Physics",
+      "part": 1,
+      "pos": 5,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/particles/standard-model",
+      "url": "/notes/physics/particles/standard-model/",
+      "title": "Standard Model",
+      "hook": "",
+      "course": "particles",
+      "course_title": "Particle Physics",
+      "part": 2,
+      "pos": 6,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/photorealistic-rendering/testing-and-performance",
+      "url": "/notes/physics/photorealistic-rendering/testing-and-performance/",
+      "title": "Testing and Performance",
+      "hook": "A renderer has no right answer to compare against, so correctness comes from tests against cases with known results and from measuring where the time goes.",
+      "course": "photorealistic-rendering",
+      "course_title": "Photorealistic Rendering",
+      "part": 3,
+      "pos": 9,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/circuits",
+      "url": "/notes/physics/quantum-computing/circuits/",
+      "title": "Circuital Quantum Computing",
+      "hook": "",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 1,
+      "pos": 5,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/algorithms",
+      "url": "/notes/physics/quantum-computing/algorithms/",
+      "title": "Quantum Algorithms",
+      "hook": "",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 2,
+      "pos": 10,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/architectures",
+      "url": "/notes/physics/quantum-computing/architectures/",
+      "title": "Quantum Computing Architectures",
+      "hook": "",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 4,
+      "pos": 18,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-mechanics/photoelectric-effect",
+      "url": "/notes/physics/quantum-mechanics/photoelectric-effect/",
+      "title": "Photoelectric Effect",
+      "hook": "",
+      "course": "quantum-mechanics",
+      "course_title": "Quantum Mechanics",
+      "part": 0,
+      "pos": 0,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-mechanics/bohr-model",
+      "url": "/notes/physics/quantum-mechanics/bohr-model/",
+      "title": "Bohr Model",
+      "hook": "",
+      "course": "quantum-mechanics",
+      "course_title": "Quantum Mechanics",
+      "part": 0,
+      "pos": 1,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-mechanics/uncertainty-principle",
+      "url": "/notes/physics/quantum-mechanics/uncertainty-principle/",
+      "title": "Uncertainty Principle",
+      "hook": "",
+      "course": "quantum-mechanics",
+      "course_title": "Quantum Mechanics",
+      "part": 1,
+      "pos": 3,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-mechanics/harmonic-oscillator",
+      "url": "/notes/physics/quantum-mechanics/harmonic-oscillator/",
+      "title": "Harmonic Oscillator",
+      "hook": "",
+      "course": "quantum-mechanics",
+      "course_title": "Quantum Mechanics",
+      "part": 1,
+      "pos": 4,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-mechanics/hydrogen-atom",
+      "url": "/notes/physics/quantum-mechanics/hydrogen-atom/",
+      "title": "Hydrogen Atom",
+      "hook": "",
+      "course": "quantum-mechanics",
+      "course_title": "Quantum Mechanics",
+      "part": 1,
+      "pos": 5,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "statistics/linear-classification",
+      "url": "/notes/statistics/linear-classification/",
+      "title": "Linear Models for Classification",
+      "hook": "",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "part": 3,
+      "pos": 13,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "statistics/decision-trees",
+      "url": "/notes/statistics/decision-trees/",
+      "title": "Decision Trees",
+      "hook": "",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "part": 3,
+      "pos": 14,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "statistics/bagging-random-forests",
+      "url": "/notes/statistics/bagging-random-forests/",
+      "title": "Bagging and Random Forests",
+      "hook": "",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "part": 3,
+      "pos": 15,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "statistics/boosting",
+      "url": "/notes/statistics/boosting/",
+      "title": "Boosting and Gradient Boosting",
+      "hook": "",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "part": 3,
+      "pos": 16,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "statistics/model-assessment",
+      "url": "/notes/statistics/model-assessment/",
+      "title": "Model Assessment and Selection",
+      "hook": "",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "part": 4,
+      "pos": 17,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "statistics/conformal-prediction",
+      "url": "/notes/statistics/conformal-prediction/",
+      "title": "Conformal Prediction",
+      "hook": "",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "part": 4,
+      "pos": 18,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "statistics/pca-factor-analysis",
+      "url": "/notes/statistics/pca-factor-analysis/",
+      "title": "PCA and Factor Analysis",
+      "hook": "",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "part": 5,
+      "pos": 19,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "statistics/mixture-models",
+      "url": "/notes/statistics/mixture-models/",
+      "title": "Mixture Models and Model-Based Clustering",
+      "hook": "",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "part": 5,
+      "pos": 20,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "ai/supervised-learning/self-supervised-learning",
+      "url": "/notes/ai/supervised-learning/self-supervised-learning/",
+      "title": "Self-Supervised Learning",
+      "hook": "",
+      "course": "supervised-learning",
+      "course_title": "Supervised Learning",
+      "part": 2,
+      "pos": 5,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/thermodynamics/heat-engines",
+      "url": "/notes/physics/thermodynamics/heat-engines/",
+      "title": "Heat Engines and Refrigerators",
+      "hook": "No engine between two temperatures beats the Carnot engine, and the bound depends only on the two temperatures.",
+      "course": "thermodynamics",
+      "course_title": "Thermodynamics",
+      "part": 0,
+      "pos": 3,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "ai/unsupervised-learning/proximity-measures",
+      "url": "/notes/ai/unsupervised-learning/proximity-measures/",
+      "title": "Proximity Measures",
+      "hook": "",
+      "course": "unsupervised-learning",
+      "course_title": "Unsupervised Learning",
+      "part": 0,
+      "pos": 0,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "ai/unsupervised-learning/cluster-analysis/introduction",
+      "url": "/notes/ai/unsupervised-learning/cluster-analysis/introduction/",
+      "title": "Introduction to Cluster Analysis",
+      "hook": "",
+      "course": "unsupervised-learning",
+      "course_title": "Unsupervised Learning",
+      "part": 1,
+      "pos": 1,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "ai/unsupervised-learning/cluster-analysis/validation",
+      "url": "/notes/ai/unsupervised-learning/cluster-analysis/validation/",
+      "title": "Clustering Validation",
+      "hook": "",
+      "course": "unsupervised-learning",
+      "course_title": "Unsupervised Learning",
+      "part": 1,
+      "pos": 3,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "ai/unsupervised-learning/anomaly-detection/introduction",
+      "url": "/notes/ai/unsupervised-learning/anomaly-detection/introduction/",
+      "title": "Introduction to Anomaly Detection",
+      "hook": "",
+      "course": "unsupervised-learning",
+      "course_title": "Unsupervised Learning",
+      "part": 2,
+      "pos": 4,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": true,
+      "waiting": [
+
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    }
+  ],
+  "blocked": [
+    {
+      "key": "physics/general-relativity/metric-and-spacetime",
+      "url": "/notes/physics/general-relativity/metric-and-spacetime/",
+      "title": "The Metric and Causal Structure",
+      "hook": "The metric turns coordinates into measured intervals, and its signature divides spacetime into what can and cannot influence a point.",
+      "course": "general-relativity",
+      "course_title": "General Relativity",
+      "part": 0,
+      "pos": 2,
+      "unblocks": 8,
+      "leads_to": [
+        "Black Holes",
+        "Covariant Derivative and Geodesics"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/general-relativity/tensors-and-manifolds",
+          "title": "Manifolds and Tensors"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/parameter-shift-rule",
+      "url": "/notes/physics/quantum-computing/parameter-shift-rule/",
+      "title": "Gradients and the Parameter-Shift Rule",
+      "hook": "On hardware the gradient of a rotation parameter is an exact difference of two circuit runs at shifted angles, with no finite-difference error.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 3,
+      "pos": 15,
+      "unblocks": 8,
+      "leads_to": [
+        "The Variational Quantum Eigensolver"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/parameterized-circuits",
+          "title": "Parameterized Circuits"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/general-relativity/geodesics",
+      "url": "/notes/physics/general-relativity/geodesics/",
+      "title": "Covariant Derivative and Geodesics",
+      "hook": "Free fall is motion along the straightest possible path in curved spacetime, and the Christoffel symbols are what Newton called the gravitational field.",
+      "course": "general-relativity",
+      "course_title": "General Relativity",
+      "part": 1,
+      "pos": 3,
+      "unblocks": 7,
+      "leads_to": [
+        "Curvature",
+        "Classical Tests"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/general-relativity/metric-and-spacetime",
+          "title": "The Metric and Causal Structure"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/vqe",
+      "url": "/notes/physics/quantum-computing/vqe/",
+      "title": "The Variational Quantum Eigensolver",
+      "hook": "The energy of any trial state bounds the ground energy from above, so minimising it over circuit parameters approaches the ground state from above.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 3,
+      "pos": 16,
+      "unblocks": 7,
+      "leads_to": [
+        "Trainability and Barren Plateaus",
+        "QUBO, QAOA and Adiabatic Algorithms",
+        "The Transverse-Field Ising Model"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/parameter-shift-rule",
+          "title": "Gradients and the Parameter-Shift Rule"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/general-relativity/curvature",
+      "url": "/notes/physics/general-relativity/curvature/",
+      "title": "Curvature",
+      "hook": "Curvature is what remains when you try to move a vector around a loop and it fails to return, and geodesic deviation turns it into tidal forces.",
+      "course": "general-relativity",
+      "course_title": "General Relativity",
+      "part": 1,
+      "pos": 4,
+      "unblocks": 6,
+      "leads_to": [
+        "The Einstein Equations"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/general-relativity/geodesics",
+          "title": "Covariant Derivative and Geodesics"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/photorealistic-rendering/rendering-equation",
+      "url": "/notes/physics/photorealistic-rendering/rendering-equation/",
+      "title": "Radiometry and the Rendering Equation",
+      "hook": "The light leaving a point is what it emits plus what it reflects of the light arriving from everywhere else, which is an integral equation whose solution is the image.",
+      "course": "photorealistic-rendering",
+      "course_title": "Photorealistic Rendering",
+      "part": 0,
+      "pos": 0,
+      "unblocks": 6,
+      "leads_to": [
+        "Colour and Colour Spaces",
+        "Materials, BRDFs and Shading",
+        "Monte Carlo Path Tracing"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "mathematics/calculus/line-and-surface-integrals",
+          "title": "Line and Surface Integrals"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/bell-states-and-entanglement",
+      "url": "/notes/physics/quantum-computing/bell-states-and-entanglement/",
+      "title": "Bell States and Entanglement",
+      "hook": "A Bell state has a pure joint state and a maximally mixed part, and the same correlations appear in every basis, which no product state can do.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 1,
+      "pos": 7,
+      "unblocks": 6,
+      "leads_to": [
+        "GHZ and W States",
+        "Bell and CHSH Inequalities",
+        "Composite Systems and the Schmidt Decomposition"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/multi-qubit-states",
+          "title": "Multi-Qubit States and Gates"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/general-relativity/einstein-equations",
+      "url": "/notes/physics/general-relativity/einstein-equations/",
+      "title": "The Einstein Equations",
+      "hook": "Spacetime tells matter how to move and matter tells spacetime how to curve: the Einstein tensor is set equal to the stress-energy tensor.",
+      "course": "general-relativity",
+      "course_title": "General Relativity",
+      "part": 2,
+      "pos": 5,
+      "unblocks": 5,
+      "leads_to": [
+        "Cosmology",
+        "Gravitational Waves",
+        "The Schwarzschild Solution"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/general-relativity/curvature",
+          "title": "Curvature"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/category-theory/functors",
+      "url": "/notes/mathematics/category-theory/functors/",
+      "title": "Functors",
+      "hook": "A functor maps one category into another and keeps composition, which is why it carries structure across.",
+      "course": "category-theory",
+      "course_title": "Category Theory",
+      "part": 0,
+      "pos": 1,
+      "unblocks": 4,
+      "leads_to": [
+        "Adjunctions",
+        "Monoidal Categories and Diagrams",
+        "Natural Transformations"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "mathematics/category-theory/categories-and-morphisms",
+          "title": "Categories and Morphisms"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+        "a functor sending a commuting square to a commuting square"
+      ],
+      "verify": [
+        "a functor sends isomorphisms to isomorphisms",
+        "the composite of functors is a functor"
+      ],
+      "lab": "",
+      "has_plan": true
+    },
+    {
+      "key": "physics/quantum-computing/tfim-exact",
+      "url": "/notes/physics/quantum-computing/tfim-exact/",
+      "title": "The Transverse-Field Ising Model",
+      "hook": "The model has an exact free-fermion solution, which is why it serves as the ground truth against which circuits are measured.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 5,
+      "pos": 22,
+      "unblocks": 4,
+      "leads_to": [
+        "Classical Shadows",
+        "Entanglement Entropy and Central Charge",
+        "Finite-Size Scaling and Criticality"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/vqe",
+          "title": "The Variational Quantum Eigensolver"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/photorealistic-rendering/materials-and-brdf",
+      "url": "/notes/physics/photorealistic-rendering/materials-and-brdf/",
+      "title": "Materials, BRDFs and Shading",
+      "hook": "A material is a function that says how light arriving from one direction leaves towards another, and a plausible one must conserve energy.",
+      "course": "photorealistic-rendering",
+      "course_title": "Photorealistic Rendering",
+      "part": 0,
+      "pos": 1,
+      "unblocks": 3,
+      "leads_to": [
+        "Ray Tracing"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/photorealistic-rendering/rendering-equation",
+          "title": "Radiometry and the Rendering Equation"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/photorealistic-rendering/shapes-and-intersections",
+      "url": "/notes/physics/photorealistic-rendering/shapes-and-intersections/",
+      "title": "Shapes and Intersections",
+      "hook": "Everything a renderer does asks one question, where does this ray first hit the scene, and the answer depends on how the objects are described.",
+      "course": "photorealistic-rendering",
+      "course_title": "Photorealistic Rendering",
+      "part": 1,
+      "pos": 5,
+      "unblocks": 3,
+      "leads_to": [
+        "Ray Tracing"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/photorealistic-rendering/transformations-and-quaternions",
+          "title": "Transformations and Quaternions"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/category-theory/natural-transformations",
+      "url": "/notes/mathematics/category-theory/natural-transformations/",
+      "title": "Natural Transformations",
+      "hook": "A natural transformation is a family of arrows that commutes with everything, and Yoneda says an object is its arrows.",
+      "course": "category-theory",
+      "course_title": "Category Theory",
+      "part": 0,
+      "pos": 2,
+      "unblocks": 2,
+      "leads_to": [
+        "Adjunctions",
+        "Monoidal Categories and Diagrams"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "mathematics/category-theory/categories-and-morphisms",
+          "title": "Categories and Morphisms"
+        },
+        {
+          "key": "mathematics/category-theory/functors",
+          "title": "Functors"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+        "naturality square for double dual of a vector space"
+      ],
+      "verify": [
+        "the evaluation map V to V** is natural",
+        "Nat(Hom(A,-), F) is isomorphic to F(A)"
+      ],
+      "lab": "",
+      "has_plan": true
+    },
+    {
+      "key": "physics/electromagnetism/em-waves",
+      "url": "/notes/physics/electromagnetism/em-waves/",
+      "title": "Electromagnetic Waves",
+      "hook": "In empty space the four equations combine into a wave equation whose speed is fixed by two constants measured on a bench, and that speed is the speed of light.",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "part": 4,
+      "pos": 14,
+      "unblocks": 2,
+      "leads_to": [
+        "Energy and Momentum in the Field",
+        "Gravitational Waves"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/electromagnetism/displacement-current",
+          "title": "The Displacement Current"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/general-relativity/schwarzschild-solution",
+      "url": "/notes/physics/general-relativity/schwarzschild-solution/",
+      "title": "The Schwarzschild Solution",
+      "hook": "Outside any spherical mass the geometry is fixed, and its orbits differ from Kepler's in ways that can be measured.",
+      "course": "general-relativity",
+      "course_title": "General Relativity",
+      "part": 2,
+      "pos": 6,
+      "unblocks": 2,
+      "leads_to": [
+        "Black Holes",
+        "Classical Tests"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/general-relativity/einstein-equations",
+          "title": "The Einstein Equations"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/group-theory/group-actions",
+      "url": "/notes/mathematics/group-theory/group-actions/",
+      "title": "Group Actions",
+      "hook": "A group action turns abstract symmetries into permutations of something you can see, and counting orbits becomes a formula.",
+      "course": "group-theory",
+      "course_title": "Group Theory",
+      "part": 1,
+      "pos": 2,
+      "unblocks": 2,
+      "leads_to": [
+        "Structure of Finite Groups",
+        "Symmetric and Dihedral Groups"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "mathematics/group-theory/homomorphisms-and-quotients",
+          "title": "Homomorphisms and Quotients"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+        "orbits of the dihedral group on the vertices and edges of a square"
+      ],
+      "verify": [
+        "|G| = |orbit| times |stabiliser|",
+        "Burnside: the number of orbits is the average number of fixed points"
+      ],
+      "lab": "",
+      "has_plan": true
+    },
+    {
+      "key": "physics/photorealistic-rendering/ray-tracing",
+      "url": "/notes/physics/photorealistic-rendering/ray-tracing/",
+      "title": "Ray Tracing",
+      "hook": "Following rays backwards from the eye finds what is visible, and spawning more rays at each hit adds shadows, mirrors and glass.",
+      "course": "photorealistic-rendering",
+      "course_title": "Photorealistic Rendering",
+      "part": 2,
+      "pos": 6,
+      "unblocks": 2,
+      "leads_to": [
+        "Monte Carlo Path Tracing"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/photorealistic-rendering/shapes-and-intersections",
+          "title": "Shapes and Intersections"
+        },
+        {
+          "key": "physics/photorealistic-rendering/materials-and-brdf",
+          "title": "Materials, BRDFs and Shading"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/controlled-unitaries-and-scaling",
+      "url": "/notes/physics/quantum-computing/controlled-unitaries-and-scaling/",
+      "title": "Multi-Controlled Gates and Circuit Depth",
+      "hook": "A gate with n controls cannot be built from a few elementary gates, and the measured depth is what makes the cost of a decomposition concrete.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 1,
+      "pos": 9,
+      "unblocks": 2,
+      "leads_to": [
+        "Oracles and Phase Kickback"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/multi-qubit-states",
+          "title": "Multi-Qubit States and Gates"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/structure-of-matter/free-electron-model",
+      "url": "/notes/physics/structure-of-matter/free-electron-model/",
+      "title": "The Free Electron Model",
+      "hook": "Metals behave as a gas of electrons that fill states up to the Fermi energy, and only electrons near that energy matter.",
+      "course": "structure-of-matter",
+      "course_title": "Structure of Matter",
+      "part": 1,
+      "pos": 4,
+      "unblocks": 2,
+      "leads_to": [
+        "Band Theory",
+        "Semiconductors"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/structure-of-matter/multi-electron-atoms",
+          "title": "Multi-Electron Atoms"
+        },
+        {
+          "key": "physics/structure-of-matter/crystals",
+          "title": "Crystal Structure"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/category-theory/universal-properties-and-limits",
+      "url": "/notes/mathematics/category-theory/universal-properties-and-limits/",
+      "title": "Universal Properties and Limits",
+      "hook": "A product, a quotient or a free object is defined not by its elements but by the unique map it admits.",
+      "course": "category-theory",
+      "course_title": "Category Theory",
+      "part": 1,
+      "pos": 3,
+      "unblocks": 1,
+      "leads_to": [
+        "Adjunctions"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "mathematics/category-theory/categories-and-morphisms",
+          "title": "Categories and Morphisms"
+        },
+        {
+          "key": "mathematics/category-theory/functors",
+          "title": "Functors"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+        "product diagram with its unique mediating arrow"
+      ],
+      "verify": [
+        "products in sets are cartesian products",
+        "a universal object is unique up to unique isomorphism"
+      ],
+      "lab": "",
+      "has_plan": true
+    },
+    {
+      "key": "physics/photorealistic-rendering/color-spaces",
+      "url": "/notes/physics/photorealistic-rendering/color-spaces/",
+      "title": "Colour and Colour Spaces",
+      "hook": "Colour is how a spectrum is seen by three kinds of receptor, so a renderer can work in three numbers when it treats them with care.",
+      "course": "photorealistic-rendering",
+      "course_title": "Photorealistic Rendering",
+      "part": 0,
+      "pos": 2,
+      "unblocks": 1,
+      "leads_to": [
+        "Encoding Images"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/photorealistic-rendering/rendering-equation",
+          "title": "Radiometry and the Rendering Equation"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/photorealistic-rendering/path-tracing",
+      "url": "/notes/physics/photorealistic-rendering/path-tracing/",
+      "title": "Monte Carlo Path Tracing",
+      "hook": "The rendering equation is an integral over paths of light, and a random walk through the scene estimates it without bias at the cost of noise.",
+      "course": "photorealistic-rendering",
+      "course_title": "Photorealistic Rendering",
+      "part": 2,
+      "pos": 7,
+      "unblocks": 1,
+      "leads_to": [
+        "Filtering and Antialiasing"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/photorealistic-rendering/rendering-equation",
+          "title": "Radiometry and the Rendering Equation"
+        },
+        {
+          "key": "physics/photorealistic-rendering/ray-tracing",
+          "title": "Ray Tracing"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/oracles-and-phase-kickback",
+      "url": "/notes/physics/quantum-computing/oracles-and-phase-kickback/",
+      "title": "Oracles and Phase Kickback",
+      "hook": "An oracle is a black box, and phase kickback is the trick that moves its answer from a register into a relative phase that interference can use.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 2,
+      "pos": 11,
+      "unblocks": 1,
+      "leads_to": [
+        "Grover Search"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/controlled-unitaries-and-scaling",
+          "title": "Multi-Controlled Gates and Circuit Depth"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/barren-plateaus",
+      "url": "/notes/physics/quantum-computing/barren-plateaus/",
+      "title": "Trainability and Barren Plateaus",
+      "hook": "For generic deep circuits the gradient is exponentially small in the number of qubits, so structure in the ansatz is a requirement and not a refinement.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 3,
+      "pos": 17,
+      "unblocks": 1,
+      "leads_to": [
+        "Ansatz Comparison: HEA versus HVA"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/vqe",
+          "title": "The Variational Quantum Eigensolver"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/rydberg-blockade",
+      "url": "/notes/physics/quantum-computing/rydberg-blockade/",
+      "title": "The Rydberg Blockade",
+      "hook": "Two atoms close together cannot both be excited, which is a conditional operation that comes directly from the physics instead of from a gate decomposition.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 4,
+      "pos": 20,
+      "unblocks": 1,
+      "leads_to": [
+        "QUBO, QAOA and Adiabatic Algorithms"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/neutral-atom-qubits",
+          "title": "Neutral-Atom Qubits and Pulses"
+        },
+        {
+          "key": "physics/quantum-computing/multi-qubit-states",
+          "title": "Multi-Qubit States and Gates"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-theory/composite-systems-and-schmidt",
+      "url": "/notes/physics/quantum-theory/composite-systems-and-schmidt/",
+      "title": "Composite Systems and the Schmidt Decomposition",
+      "hook": "Any pure state of two systems can be written with a single sum over paired basis vectors, and the number of terms and their weights decide how entangled it is.",
+      "course": "quantum-theory",
+      "course_title": "Quantum Theory and Information",
+      "part": 2,
+      "pos": 8,
+      "unblocks": 1,
+      "leads_to": [
+        "Von Neumann Entropy"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/multi-qubit-states",
+          "title": "Multi-Qubit States and Gates"
+        },
+        {
+          "key": "physics/quantum-computing/bell-states-and-entanglement",
+          "title": "Bell States and Entanglement"
+        },
+        {
+          "key": "mathematics/linear-algebra/singular-value-decomposition",
+          "title": "Singular Value Decomposition"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/structure-of-matter/band-theory",
+      "url": "/notes/physics/structure-of-matter/band-theory/",
+      "title": "Band Theory",
+      "hook": "A periodic potential opens gaps in the energy spectrum, and whether the top band is full decides whether the solid conducts.",
+      "course": "structure-of-matter",
+      "course_title": "Structure of Matter",
+      "part": 1,
+      "pos": 5,
+      "unblocks": 1,
+      "leads_to": [
+        "Semiconductors"
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/structure-of-matter/crystals",
+          "title": "Crystal Structure"
+        },
+        {
+          "key": "physics/structure-of-matter/free-electron-model",
+          "title": "The Free Electron Model"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/calculus/divergence-curl-and-stokes",
+      "url": "/notes/mathematics/calculus/divergence-curl-and-stokes/",
+      "title": "Divergence, Curl and the Integral Theorems",
+      "hook": "Divergence measures how much a field spreads out and curl how much it circulates; the theorems say that totals over a region are fixed by what happens on its boundary.",
+      "course": "calculus",
+      "course_title": "Calculus",
+      "part": 1,
+      "pos": 7,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "mathematics/calculus/line-and-surface-integrals",
+          "title": "Line and Surface Integrals"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/category-theory/adjunctions",
+      "url": "/notes/mathematics/category-theory/adjunctions/",
+      "title": "Adjunctions",
+      "hook": "Adjoint functors are the best possible approximate inverses, and they turn up wherever something is free or a quotient.",
+      "course": "category-theory",
+      "course_title": "Category Theory",
+      "part": 1,
+      "pos": 4,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "mathematics/category-theory/categories-and-morphisms",
+          "title": "Categories and Morphisms"
+        },
+        {
+          "key": "mathematics/category-theory/functors",
+          "title": "Functors"
+        },
+        {
+          "key": "mathematics/category-theory/natural-transformations",
+          "title": "Natural Transformations"
+        },
+        {
+          "key": "mathematics/category-theory/universal-properties-and-limits",
+          "title": "Universal Properties and Limits"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+        "free-forgetful adjunction between sets and vector spaces"
+      ],
+      "verify": [
+        "hom(F A, B) is naturally isomorphic to hom(A, G B)",
+        "right adjoints preserve limits"
+      ],
+      "lab": "",
+      "has_plan": true
+    },
+    {
+      "key": "mathematics/category-theory/monoidal-categories",
+      "url": "/notes/mathematics/category-theory/monoidal-categories/",
+      "title": "Monoidal Categories and Diagrams",
+      "hook": "A monoidal category adds a way to put objects side by side, and string diagrams then compute with pictures.",
+      "course": "category-theory",
+      "course_title": "Category Theory",
+      "part": 2,
+      "pos": 5,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "mathematics/category-theory/categories-and-morphisms",
+          "title": "Categories and Morphisms"
+        },
+        {
+          "key": "mathematics/category-theory/functors",
+          "title": "Functors"
+        },
+        {
+          "key": "mathematics/category-theory/natural-transformations",
+          "title": "Natural Transformations"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+        "string diagram of a quantum circuit"
+      ],
+      "verify": [
+        "the tensor product of vector spaces is associative up to natural isomorphism"
+      ],
+      "lab": "",
+      "has_plan": true
+    },
+    {
+      "key": "physics/computational-physics/finite-differences",
+      "url": "/notes/physics/computational-physics/finite-differences/",
+      "title": "Finite Differences for PDEs",
+      "hook": "Replacing derivatives by differences turns a field equation into a recurrence, and its stability decides whether it is usable.",
+      "course": "computational-physics",
+      "course_title": "Computational Physics",
+      "part": 0,
+      "pos": 2,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/computational-physics/numerical-linear-algebra",
+          "title": "Numerical Linear Algebra"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/electromagnetism/poynting-energy",
+      "url": "/notes/physics/electromagnetism/poynting-energy/",
+      "title": "Energy and Momentum in the Field",
+      "hook": "The energy in the field flows, and the Poynting vector says where; a wave carries energy and momentum with it.",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "part": 4,
+      "pos": 15,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/electromagnetism/em-waves",
+          "title": "Electromagnetic Waves"
+        },
+        {
+          "key": "physics/electromagnetism/inductance",
+          "title": "Inductance and Magnetic Energy"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/electromagnetism/em-and-relativity",
+      "url": "/notes/physics/electromagnetism/em-and-relativity/",
+      "title": "Electromagnetism and Relativity",
+      "hook": "A magnetic field in one frame is partly an electric field in another, so the two are components of one object whose equations are the same in every inertial frame.",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "part": 5,
+      "pos": 17,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/electromagnetism/potentials-and-gauge",
+          "title": "Potentials and Gauge Freedom"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/general-relativity/tests-of-general-relativity",
+      "url": "/notes/physics/general-relativity/tests-of-general-relativity/",
+      "title": "Classical Tests",
+      "hook": "Four measurable effects, each a few lines from the Schwarzschild geodesics, are what first made the theory credible.",
+      "course": "general-relativity",
+      "course_title": "General Relativity",
+      "part": 2,
+      "pos": 7,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/general-relativity/schwarzschild-solution",
+          "title": "The Schwarzschild Solution"
+        },
+        {
+          "key": "physics/general-relativity/geodesics",
+          "title": "Covariant Derivative and Geodesics"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/general-relativity/black-holes",
+      "url": "/notes/physics/general-relativity/black-holes/",
+      "title": "Black Holes",
+      "hook": "A black hole is a region from which nothing returns, and the horizon is a feature of the geometry rather than a place where anything special happens locally.",
+      "course": "general-relativity",
+      "course_title": "General Relativity",
+      "part": 2,
+      "pos": 8,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/general-relativity/schwarzschild-solution",
+          "title": "The Schwarzschild Solution"
+        },
+        {
+          "key": "physics/general-relativity/metric-and-spacetime",
+          "title": "The Metric and Causal Structure"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/general-relativity/gravitational-waves",
+      "url": "/notes/physics/general-relativity/gravitational-waves/",
+      "title": "Gravitational Waves",
+      "hook": "Small ripples of the metric obey a wave equation, travel at the speed of light and carry energy away from accelerating masses.",
+      "course": "general-relativity",
+      "course_title": "General Relativity",
+      "part": 3,
+      "pos": 9,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/general-relativity/einstein-equations",
+          "title": "The Einstein Equations"
+        },
+        {
+          "key": "physics/electromagnetism/em-waves",
+          "title": "Electromagnetic Waves"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/general-relativity/cosmology",
+      "url": "/notes/physics/general-relativity/cosmology/",
+      "title": "Cosmology",
+      "hook": "If the universe is the same everywhere on large scales, the field equations reduce to two equations for a single scale factor.",
+      "course": "general-relativity",
+      "course_title": "General Relativity",
+      "part": 3,
+      "pos": 10,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/general-relativity/einstein-equations",
+          "title": "The Einstein Equations"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/group-theory/symmetric-and-dihedral-groups",
+      "url": "/notes/mathematics/group-theory/symmetric-and-dihedral-groups/",
+      "title": "Symmetric and Dihedral Groups",
+      "hook": "Every finite group sits inside a symmetric group, and the dihedral groups are the symmetries of a regular polygon.",
+      "course": "group-theory",
+      "course_title": "Group Theory",
+      "part": 1,
+      "pos": 3,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "mathematics/group-theory/group-actions",
+          "title": "Group Actions"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+        "the six symmetries of a triangle"
+      ],
+      "verify": [
+        "the symmetric group S_n has n! elements",
+        "the dihedral group D_n has 2n elements"
+      ],
+      "lab": "",
+      "has_plan": true
+    },
+    {
+      "key": "mathematics/group-theory/sylow-theory",
+      "url": "/notes/mathematics/group-theory/sylow-theory/",
+      "title": "Structure of Finite Groups",
+      "hook": "A finite group is assembled from simple pieces, and Sylow theory says which subgroups must exist.",
+      "course": "group-theory",
+      "course_title": "Group Theory",
+      "part": 1,
+      "pos": 4,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "mathematics/group-theory/homomorphisms-and-quotients",
+          "title": "Homomorphisms and Quotients"
+        },
+        {
+          "key": "mathematics/group-theory/group-actions",
+          "title": "Group Actions"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+        "subgroup lattice of S_3"
+      ],
+      "verify": [
+        "the number of Sylow p-subgroups is 1 mod p and divides the index"
+      ],
+      "lab": "",
+      "has_plan": true
+    },
+    {
+      "key": "mathematics/group-theory/representations",
+      "url": "/notes/mathematics/group-theory/representations/",
+      "title": "Representations and Characters",
+      "hook": "A representation lets a group act on a vector space, and its character is the number that tells irreducible pieces apart.",
+      "course": "group-theory",
+      "course_title": "Group Theory",
+      "part": 2,
+      "pos": 6,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "mathematics/group-theory/homomorphisms-and-quotients",
+          "title": "Homomorphisms and Quotients"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+        "character table of the symmetric group S_3 as a coloured grid"
+      ],
+      "verify": [
+        "sum of squared dimensions of irreducibles equals the group order",
+        "characters of distinct irreducibles are orthogonal"
+      ],
+      "lab": "",
+      "has_plan": true
+    },
+    {
+      "key": "ai/machine-learning-foundations/support-vector-machines",
+      "url": "/notes/ai/machine-learning-foundations/support-vector-machines/",
+      "title": "Support Vector Machines",
+      "hook": "Among all separating hyperplanes the one farthest from the data generalizes best, and only the points on the margin decide it.",
+      "course": "machine-learning-foundations",
+      "course_title": "Machine Learning Foundations",
+      "part": 0,
+      "pos": 2,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "ai/machine-learning-foundations/kernel-methods",
+          "title": "Kernel Methods"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/mathematical-methods/distributions-and-greens-functions",
+      "url": "/notes/mathematics/mathematical-methods/distributions-and-greens-functions/",
+      "title": "Distributions and Green's Functions",
+      "hook": "The response to a point source solves the problem for every source, which is the idea behind propagators and the potential of a point charge.",
+      "course": "mathematical-methods",
+      "course_title": "Mathematical Methods for Physics",
+      "part": 2,
+      "pos": 6,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "mathematics/mathematical-methods/fourier-transform",
+          "title": "The Fourier Transform"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "mathematics/mathematical-methods/special-functions",
+      "url": "/notes/mathematics/mathematical-methods/special-functions/",
+      "title": "Special Functions",
+      "hook": "The angular and radial parts of the Laplacian in spherical and cylindrical coordinates give polynomials and functions that reappear in electrostatics and in the hydrogen atom.",
+      "course": "mathematical-methods",
+      "course_title": "Mathematical Methods for Physics",
+      "part": 3,
+      "pos": 8,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "mathematics/mathematical-methods/pdes-and-separation-of-variables",
+          "title": "Partial Differential Equations"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/photorealistic-rendering/image-encoding",
+      "url": "/notes/physics/photorealistic-rendering/image-encoding/",
+      "title": "Encoding Images",
+      "hook": "A display shows a few hundred levels while a scene spans many orders of magnitude, so the numbers have to be mapped and encoded before they are shown.",
+      "course": "photorealistic-rendering",
+      "course_title": "Photorealistic Rendering",
+      "part": 0,
+      "pos": 3,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/photorealistic-rendering/color-spaces",
+          "title": "Colour and Colour Spaces"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/photorealistic-rendering/filtering-and-antialiasing",
+      "url": "/notes/physics/photorealistic-rendering/filtering-and-antialiasing/",
+      "title": "Filtering and Antialiasing",
+      "hook": "A pixel is an average over an area, and sampling it badly gives jagged edges that no later processing can repair.",
+      "course": "photorealistic-rendering",
+      "course_title": "Photorealistic Rendering",
+      "part": 2,
+      "pos": 8,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/photorealistic-rendering/path-tracing",
+          "title": "Monte Carlo Path Tracing"
+        },
+        {
+          "key": "mathematics/mathematical-methods/fourier-transform",
+          "title": "The Fourier Transform"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/ghz-and-w-states",
+      "url": "/notes/physics/quantum-computing/ghz-and-w-states/",
+      "title": "GHZ and W States",
+      "hook": "With three qubits there are two kinds of genuine entanglement that no local operations can convert into each other, and GHZ and W are their representatives.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 1,
+      "pos": 8,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/bell-states-and-entanglement",
+          "title": "Bell States and Entanglement"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/grover-search",
+      "url": "/notes/physics/quantum-computing/grover-search/",
+      "title": "Grover Search",
+      "hook": "Grover rotates the state by a fixed angle toward the marked item at each step, so sqrt(N) steps suffice and more steps overshoot.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 2,
+      "pos": 12,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/oracles-and-phase-kickback",
+          "title": "Oracles and Phase Kickback"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/quantum-fourier-transform",
+      "url": "/notes/physics/quantum-computing/quantum-fourier-transform/",
+      "title": "The Quantum Fourier Transform",
+      "hook": "The QFT applies the discrete Fourier transform to the amplitudes with about n squared gates instead of N log N, but the output cannot be read out in full.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 2,
+      "pos": 13,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/multi-qubit-states",
+          "title": "Multi-Qubit States and Gates"
+        },
+        {
+          "key": "mathematics/mathematical-methods/fourier-transform",
+          "title": "The Fourier Transform"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/qubo-and-qaoa",
+      "url": "/notes/physics/quantum-computing/qubo-and-qaoa/",
+      "title": "QUBO, QAOA and Adiabatic Algorithms",
+      "hook": "A binary optimization problem is the ground-state search of an Ising Hamiltonian, which an atom register realises with its own interaction.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 4,
+      "pos": 21,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/rydberg-blockade",
+          "title": "The Rydberg Blockade"
+        },
+        {
+          "key": "physics/quantum-computing/vqe",
+          "title": "The Variational Quantum Eigensolver"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/finite-size-scaling",
+      "url": "/notes/physics/quantum-computing/finite-size-scaling/",
+      "title": "Finite-Size Scaling and Criticality",
+      "hook": "On a finite chain the transition is rounded, and the way it sharpens with size gives the critical field and the exponents.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 5,
+      "pos": 23,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/tfim-exact",
+          "title": "The Transverse-Field Ising Model"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/entanglement-entropy",
+      "url": "/notes/physics/quantum-computing/entanglement-entropy/",
+      "title": "Entanglement Entropy and Central Charge",
+      "hook": "Away from criticality the entropy saturates, at criticality it grows as a logarithm whose coefficient is the central charge, and an open boundary biases the fit.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 5,
+      "pos": 24,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/tfim-exact",
+          "title": "The Transverse-Field Ising Model"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/hea-versus-hva",
+      "url": "/notes/physics/quantum-computing/hea-versus-hva/",
+      "title": "Ansatz Comparison: HEA versus HVA",
+      "hook": "An ansatz shaped like the Hamiltonian reaches a lower energy error and stays trainable as the chain grows, where a generic one does not.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 5,
+      "pos": 25,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/barren-plateaus",
+          "title": "Trainability and Barren Plateaus"
+        },
+        {
+          "key": "physics/quantum-computing/tfim-exact",
+          "title": "The Transverse-Field Ising Model"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-computing/classical-shadows",
+      "url": "/notes/physics/quantum-computing/classical-shadows/",
+      "title": "Classical Shadows",
+      "hook": "Random single-qubit measurements are enough to estimate many observables later, with a variance that depends on the observable and not on the number of qubits.",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "part": 5,
+      "pos": 26,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/tfim-exact",
+          "title": "The Transverse-Field Ising Model"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-theory/bell-inequality",
+      "url": "/notes/physics/quantum-theory/bell-inequality/",
+      "title": "Bell and CHSH Inequalities",
+      "hook": "No theory in which measurement results are fixed in advance and independent of distant choices can reproduce the correlations of an entangled pair.",
+      "course": "quantum-theory",
+      "course_title": "Quantum Theory and Information",
+      "part": 2,
+      "pos": 9,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/bell-states-and-entanglement",
+          "title": "Bell States and Entanglement"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-theory/no-cloning-and-teleportation",
+      "url": "/notes/physics/quantum-theory/no-cloning-and-teleportation/",
+      "title": "No-Cloning and Teleportation",
+      "hook": "An unknown quantum state cannot be copied, but it can be moved, using a shared Bell pair and two classical bits.",
+      "course": "quantum-theory",
+      "course_title": "Quantum Theory and Information",
+      "part": 2,
+      "pos": 10,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/bell-states-and-entanglement",
+          "title": "Bell States and Entanglement"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-theory/quantum-channels",
+      "url": "/notes/physics/quantum-theory/quantum-channels/",
+      "title": "Quantum Channels and Kraus Operators",
+      "hook": "Noise is what happens when a system interacts with an environment it is not watching, and the result is a map on density matrices of a fixed form.",
+      "course": "quantum-theory",
+      "course_title": "Quantum Theory and Information",
+      "part": 2,
+      "pos": 11,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-computing/bell-states-and-entanglement",
+          "title": "Bell States and Entanglement"
+        }
+      ],
+      "missing": [
+        "composite-systems-and-schmidt"
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/quantum-theory/von-neumann-entropy",
+      "url": "/notes/physics/quantum-theory/von-neumann-entropy/",
+      "title": "Von Neumann Entropy",
+      "hook": "Entropy of a quantum state is the Shannon entropy of its eigenvalues, and for a pure state of two systems it measures their entanglement.",
+      "course": "quantum-theory",
+      "course_title": "Quantum Theory and Information",
+      "part": 2,
+      "pos": 12,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/quantum-theory/composite-systems-and-schmidt",
+          "title": "Composite Systems and the Schmidt Decomposition"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/structure-of-matter/atomic-spectra",
+      "url": "/notes/physics/structure-of-matter/atomic-spectra/",
+      "title": "Atomic Spectra and Selection Rules",
+      "hook": "Spin-orbit coupling splits the hydrogen lines, and symmetry decides which transitions are allowed.",
+      "course": "structure-of-matter",
+      "course_title": "Structure of Matter",
+      "part": 0,
+      "pos": 1,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/structure-of-matter/multi-electron-atoms",
+          "title": "Multi-Electron Atoms"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/structure-of-matter/molecules",
+      "url": "/notes/physics/structure-of-matter/molecules/",
+      "title": "Molecules and Bonding",
+      "hook": "A bond is the lowering of energy when electrons are shared, and the motion of the nuclei gives a ladder of rotational and vibrational levels.",
+      "course": "structure-of-matter",
+      "course_title": "Structure of Matter",
+      "part": 0,
+      "pos": 2,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/structure-of-matter/multi-electron-atoms",
+          "title": "Multi-Electron Atoms"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    },
+    {
+      "key": "physics/structure-of-matter/semiconductors",
+      "url": "/notes/physics/structure-of-matter/semiconductors/",
+      "title": "Semiconductors",
+      "hook": "Doping puts carriers in a band that would otherwise be empty, and the p-n junction is where that becomes a diode.",
+      "course": "structure-of-matter",
+      "course_title": "Structure of Matter",
+      "part": 1,
+      "pos": 6,
+      "unblocks": 0,
+      "leads_to": [
+
+      ],
+      "studying": false,
+      "ready": false,
+      "waiting": [
+        {
+          "key": "physics/structure-of-matter/band-theory",
+          "title": "Band Theory"
+        },
+        {
+          "key": "physics/structure-of-matter/free-electron-model",
+          "title": "The Free Electron Model"
+        }
+      ],
+      "missing": [
+
+      ],
+      "sources": [
+
+      ],
+      "figures": [
+
+      ],
+      "verify": [
+
+      ],
+      "lab": "",
+      "has_plan": false
+    }
+  ],
+  "unread": [
+    {
+      "key": "ai/supervised-learning/friedman-test",
+      "url": "/notes/ai/supervised-learning/friedman-test/",
+      "title": "Robust Statistical Comparison of Classifiers Using the Friedman Test",
+      "course": "supervised-learning",
+      "course_title": "Supervised Learning",
+      "date": "2026-03-21",
+      "words": 1162,
+      "figures": 0,
+      "cites": 3
+    },
+    {
+      "key": "ai/ai-models-for-physics/physics-informed-nn",
+      "url": "/notes/ai/ai-models-for-physics/physics-informed-nn/",
+      "title": "Physics-Informed Neural Networks",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-07-31",
+      "words": 1014,
+      "figures": 1,
+      "cites": 3
+    },
+    {
+      "key": "physics/electromagnetism/circuits",
+      "url": "/notes/physics/electromagnetism/circuits/",
+      "title": "Circuits: RC, RLC, LC",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "date": "2026-07-31",
+      "words": 20,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "physics/electromagnetism/electric-field",
+      "url": "/notes/physics/electromagnetism/electric-field/",
+      "title": "Electric Field",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "date": "2026-07-31",
+      "words": 28,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "physics/electromagnetism/maxwell-equations",
+      "url": "/notes/physics/electromagnetism/maxwell-equations/",
+      "title": "Maxwell's Equations",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "date": "2026-07-31",
+      "words": 745,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "ai/evolutionary-computing/EA",
+      "url": "/notes/ai/evolutionary-computing/EA/",
+      "title": "Evolutionary Algorithms",
+      "course": "evolutionary-computing",
+      "course_title": "Evolutionary Computing",
+      "date": "2026-07-31",
+      "words": 3324,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "ai/evolutionary-computing/elements-of-ea",
+      "url": "/notes/ai/evolutionary-computing/elements-of-ea/",
+      "title": "Elements of Evolutionary Algorithms",
+      "course": "evolutionary-computing",
+      "course_title": "Evolutionary Computing",
+      "date": "2026-07-31",
+      "words": 2528,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "ai/evolutionary-computing/genetic-programming",
+      "url": "/notes/ai/evolutionary-computing/genetic-programming/",
+      "title": "Genetic Programming",
+      "course": "evolutionary-computing",
+      "course_title": "Evolutionary Computing",
+      "date": "2026-07-31",
+      "words": 713,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "ai/evolutionary-computing/introduction",
+      "url": "/notes/ai/evolutionary-computing/introduction/",
+      "title": "Introduction to Evolutionary Computing",
+      "course": "evolutionary-computing",
+      "course_title": "Evolutionary Computing",
+      "date": "2026-07-31",
+      "words": 827,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "ai/evolutionary-computing/meta-heuristics",
+      "url": "/notes/ai/evolutionary-computing/meta-heuristics/",
+      "title": "Meta-Heuristics",
+      "course": "evolutionary-computing",
+      "course_title": "Evolutionary Computing",
+      "date": "2026-07-31",
+      "words": 823,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "ai/evolutionary-computing/population-based-ea",
+      "url": "/notes/ai/evolutionary-computing/population-based-ea/",
+      "title": "Swarm and Population-Based Optimization",
+      "course": "evolutionary-computing",
+      "course_title": "Evolutionary Computing",
+      "date": "2026-07-31",
+      "words": 932,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "ai/evolutionary-computing/theoretical-foundations",
+      "url": "/notes/ai/evolutionary-computing/theoretical-foundations/",
+      "title": "Theoretical Foundations",
+      "course": "evolutionary-computing",
+      "course_title": "Evolutionary Computing",
+      "date": "2026-07-31",
+      "words": 643,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "physics/quantum-computing/introduction",
+      "url": "/notes/physics/quantum-computing/introduction/",
+      "title": "Introduction to Quantum Computing",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "date": "2026-07-31",
+      "words": 937,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "physics/quantum-mechanics/schrodinger-equation",
+      "url": "/notes/physics/quantum-mechanics/schrodinger-equation/",
+      "title": "Schrodinger's Equation",
+      "course": "quantum-mechanics",
+      "course_title": "Quantum Mechanics",
+      "date": "2026-07-31",
+      "words": 582,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "physics/special-relativity",
+      "url": "/notes/physics/special-relativity/",
+      "title": "Special Relativity",
+      "course": "special-relativity",
+      "course_title": "Special Relativity",
+      "date": "2026-07-31",
+      "words": 733,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "ai/unsupervised-learning/cluster-analysis/algorithms",
+      "url": "/notes/ai/unsupervised-learning/cluster-analysis/algorithms/",
+      "title": "Clustering Algorithms: Partitional, Hierarchical, and Density-Based",
+      "course": "unsupervised-learning",
+      "course_title": "Unsupervised Learning",
+      "date": "2026-07-31",
+      "words": 1264,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "ai/ai-models-for-physics/boltzmann-machines",
+      "url": "/notes/ai/ai-models-for-physics/boltzmann-machines/",
+      "title": "Restricted Boltzmann Machines",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-08-24",
+      "words": 612,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "ai/ai-models-for-physics/reservoir-computing",
+      "url": "/notes/ai/ai-models-for-physics/reservoir-computing/",
+      "title": "Reservoir Computing",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-08-24",
+      "words": 931,
+      "figures": 1,
+      "cites": 2
+    },
+    {
+      "key": "ai/supervised-learning/common-algorithms",
+      "url": "/notes/ai/supervised-learning/common-algorithms/",
+      "title": "Fundamentals & Core Learning Algorithms",
+      "course": "supervised-learning",
+      "course_title": "Supervised Learning",
+      "date": "2026-08-24",
+      "words": 266,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "ai/supervised-learning/ensemble-methods",
+      "url": "/notes/ai/supervised-learning/ensemble-methods/",
+      "title": "Ensemble Methods & Stacking",
+      "course": "supervised-learning",
+      "course_title": "Supervised Learning",
+      "date": "2026-08-24",
+      "words": 178,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "ai/supervised-learning/object-detection",
+      "url": "/notes/ai/supervised-learning/object-detection/",
+      "title": "Object Recognition and Detection",
+      "course": "supervised-learning",
+      "course_title": "Supervised Learning",
+      "date": "2026-08-24",
+      "words": 222,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "ai/supervised-learning/transformers",
+      "url": "/notes/ai/supervised-learning/transformers/",
+      "title": "Transformers & Attention Mechanisms",
+      "course": "supervised-learning",
+      "course_title": "Supervised Learning",
+      "date": "2026-08-24",
+      "words": 118,
+      "figures": 0,
+      "cites": 0
+    },
+    {
+      "key": "statistics/common-random-variables",
+      "url": "/notes/statistics/common-random-variables/",
+      "title": "Common Random Variables",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "date": "2026-10-03",
+      "words": 963,
+      "figures": 2,
+      "cites": 0
+    },
+    {
+      "key": "statistics/confidence-intervals",
+      "url": "/notes/statistics/confidence-intervals/",
+      "title": "Confidence Intervals",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "date": "2026-10-03",
+      "words": 575,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "statistics/hypothesis-tests",
+      "url": "/notes/statistics/hypothesis-tests/",
+      "title": "Hypothesis Tests",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "date": "2026-10-03",
+      "words": 878,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "statistics/point-estimation",
+      "url": "/notes/statistics/point-estimation/",
+      "title": "Point Estimation and Maximum Likelihood",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "date": "2026-10-03",
+      "words": 830,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "statistics/probability-foundations",
+      "url": "/notes/statistics/probability-foundations/",
+      "title": "Probability Foundations",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "date": "2026-10-03",
+      "words": 903,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "statistics/random-variables",
+      "url": "/notes/statistics/random-variables/",
+      "title": "Random Variables, Expectation and Variance",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "date": "2026-10-03",
+      "words": 1035,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "statistics/sampling-distributions",
+      "url": "/notes/statistics/sampling-distributions/",
+      "title": "Sampling Distributions",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "date": "2026-10-03",
+      "words": 950,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "statistics/gam-mars",
+      "url": "/notes/statistics/gam-mars/",
+      "title": "GAMs and MARS",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "date": "2026-10-04",
+      "words": 970,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "statistics/linear-regression",
+      "url": "/notes/statistics/linear-regression/",
+      "title": "Linear Regression",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "date": "2026-10-04",
+      "words": 1101,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "statistics/regression-diagnostics",
+      "url": "/notes/statistics/regression-diagnostics/",
+      "title": "Regression Diagnostics and Leverage",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "date": "2026-10-04",
+      "words": 1078,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "statistics/regularization",
+      "url": "/notes/statistics/regularization/",
+      "title": "Regularization: Ridge and Lasso",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "date": "2026-10-04",
+      "words": 1161,
+      "figures": 2,
+      "cites": 0
+    },
+    {
+      "key": "statistics/robust-statistics",
+      "url": "/notes/statistics/robust-statistics/",
+      "title": "Robust Statistics",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "date": "2026-10-04",
+      "words": 1120,
+      "figures": 2,
+      "cites": 0
+    },
+    {
+      "key": "statistics/splines",
+      "url": "/notes/statistics/splines/",
+      "title": "Regression and Smoothing Splines",
+      "course": "statistics",
+      "course_title": "Statistics",
+      "date": "2026-10-04",
+      "words": 994,
+      "figures": 2,
+      "cites": 0
+    },
+    {
+      "key": "ai/ai-models-for-physics/adjoint-sensitivity-method",
+      "url": "/notes/ai/ai-models-for-physics/adjoint-sensitivity-method/",
+      "title": "The Adjoint Sensitivity Method",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 1099,
+      "figures": 1,
+      "cites": 3
+    },
+    {
+      "key": "ai/ai-models-for-physics/contrastive-divergence",
+      "url": "/notes/ai/ai-models-for-physics/contrastive-divergence/",
+      "title": "Training a Boltzmann Machine",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 722,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "ai/ai-models-for-physics/convolutional-nn",
+      "url": "/notes/ai/ai-models-for-physics/convolutional-nn/",
+      "title": "Convolutional Networks for Lattices",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 957,
+      "figures": 1,
+      "cites": 3
+    },
+    {
+      "key": "ai/ai-models-for-physics/ensembles-and-partition-function",
+      "url": "/notes/ai/ai-models-for-physics/ensembles-and-partition-function/",
+      "title": "Ensembles and the Partition Function",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 643,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "ai/ai-models-for-physics/explicit-model-representations",
+      "url": "/notes/ai/ai-models-for-physics/explicit-model-representations/",
+      "title": "Models Written as Energy Functions",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 590,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "ai/ai-models-for-physics/gibbs-sampling",
+      "url": "/notes/ai/ai-models-for-physics/gibbs-sampling/",
+      "title": "Gibbs Sampling",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 610,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "ai/ai-models-for-physics/graph-embedding",
+      "url": "/notes/ai/ai-models-for-physics/graph-embedding/",
+      "title": "Graph Embedding and Similarity",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 591,
+      "figures": 1,
+      "cites": 2
+    },
+    {
+      "key": "ai/ai-models-for-physics/graph-nn",
+      "url": "/notes/ai/ai-models-for-physics/graph-nn/",
+      "title": "Graph Neural Networks and Message Passing",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 688,
+      "figures": 1,
+      "cites": 2
+    },
+    {
+      "key": "ai/ai-models-for-physics/graphs-and-adjacency",
+      "url": "/notes/ai/ai-models-for-physics/graphs-and-adjacency/",
+      "title": "Graphs and Their Representation",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 674,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "ai/ai-models-for-physics/hamiltonian-nn",
+      "url": "/notes/ai/ai-models-for-physics/hamiltonian-nn/",
+      "title": "Hamiltonian Neural Networks",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 976,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "ai/ai-models-for-physics/hopfield-as-spin-glass",
+      "url": "/notes/ai/ai-models-for-physics/hopfield-as-spin-glass/",
+      "title": "The Hopfield Network as a Spin Glass",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 731,
+      "figures": 1,
+      "cites": 2
+    },
+    {
+      "key": "ai/ai-models-for-physics/ising-lenz-model",
+      "url": "/notes/ai/ai-models-for-physics/ising-lenz-model/",
+      "title": "The Ising-Lenz Model",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 684,
+      "figures": 1,
+      "cites": 4
+    },
+    {
+      "key": "ai/ai-models-for-physics/lagrangian-nn",
+      "url": "/notes/ai/ai-models-for-physics/lagrangian-nn/",
+      "title": "Lagrangian Neural Networks",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 831,
+      "figures": 0,
+      "cites": 2
+    },
+    {
+      "key": "ai/ai-models-for-physics/markov-decision-process",
+      "url": "/notes/ai/ai-models-for-physics/markov-decision-process/",
+      "title": "Markov Decision Processes",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 851,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "ai/ai-models-for-physics/markov-processes",
+      "url": "/notes/ai/ai-models-for-physics/markov-processes/",
+      "title": "Stochastic and Markov Processes",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 564,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "ai/ai-models-for-physics/mean-field-ising",
+      "url": "/notes/ai/ai-models-for-physics/mean-field-ising/",
+      "title": "Mean-Field Theory of the Ising Model",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 624,
+      "figures": 1,
+      "cites": 2
+    },
+    {
+      "key": "ai/ai-models-for-physics/neural-odes",
+      "url": "/notes/ai/ai-models-for-physics/neural-odes/",
+      "title": "Neural ODEs",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 980,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "ai/ai-models-for-physics/random-walk-and-metropolis",
+      "url": "/notes/ai/ai-models-for-physics/random-walk-and-metropolis/",
+      "title": "Random Walks and the Metropolis Algorithm",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 535,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "ai/ai-models-for-physics/reinforcement-learning",
+      "url": "/notes/ai/ai-models-for-physics/reinforcement-learning/",
+      "title": "Reinforcement Learning",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 977,
+      "figures": 2,
+      "cites": 2
+    },
+    {
+      "key": "ai/ai-models-for-physics/spectral-graph-analysis",
+      "url": "/notes/ai/ai-models-for-physics/spectral-graph-analysis/",
+      "title": "Spectral Analysis of Graphs",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 675,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "ai/ai-models-for-physics/wolff-and-cluster-updates",
+      "url": "/notes/ai/ai-models-for-physics/wolff-and-cluster-updates/",
+      "title": "Cluster Updates and Critical Slowing Down",
+      "course": "ai-models-for-physics",
+      "course_title": "AI Models for Physics",
+      "date": "2026-10-27",
+      "words": 647,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "mathematics/calculus/derivatives",
+      "url": "/notes/mathematics/calculus/derivatives/",
+      "title": "Derivatives",
+      "course": "calculus",
+      "course_title": "Calculus",
+      "date": "2026-10-27",
+      "words": 631,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/calculus/integrals",
+      "url": "/notes/mathematics/calculus/integrals/",
+      "title": "Integrals",
+      "course": "calculus",
+      "course_title": "Calculus",
+      "date": "2026-10-27",
+      "words": 589,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/calculus/limits-and-continuity",
+      "url": "/notes/mathematics/calculus/limits-and-continuity/",
+      "title": "Limits and Continuity",
+      "course": "calculus",
+      "course_title": "Calculus",
+      "date": "2026-10-27",
+      "words": 770,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/calculus/multiple-integrals",
+      "url": "/notes/mathematics/calculus/multiple-integrals/",
+      "title": "Multiple Integrals",
+      "course": "calculus",
+      "course_title": "Calculus",
+      "date": "2026-10-27",
+      "words": 850,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/calculus/partial-derivatives-and-gradient",
+      "url": "/notes/mathematics/calculus/partial-derivatives-and-gradient/",
+      "title": "Partial Derivatives and the Gradient",
+      "course": "calculus",
+      "course_title": "Calculus",
+      "date": "2026-10-27",
+      "words": 1056,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/calculus/series-and-taylor-expansion",
+      "url": "/notes/mathematics/calculus/series-and-taylor-expansion/",
+      "title": "Series and Taylor Expansion",
+      "course": "calculus",
+      "course_title": "Calculus",
+      "date": "2026-10-27",
+      "words": 1081,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/classical-mechanics/central-forces",
+      "url": "/notes/physics/classical-mechanics/central-forces/",
+      "title": "Central Forces and Kepler",
+      "course": "classical-mechanics",
+      "course_title": "Classical Mechanics",
+      "date": "2026-10-27",
+      "words": 667,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/classical-mechanics/hamiltonian-mechanics",
+      "url": "/notes/physics/classical-mechanics/hamiltonian-mechanics/",
+      "title": "Hamiltonian Mechanics",
+      "course": "classical-mechanics",
+      "course_title": "Classical Mechanics",
+      "date": "2026-10-27",
+      "words": 995,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/classical-mechanics/lagrangian-mechanics",
+      "url": "/notes/physics/classical-mechanics/lagrangian-mechanics/",
+      "title": "Lagrangian Mechanics",
+      "course": "classical-mechanics",
+      "course_title": "Classical Mechanics",
+      "date": "2026-10-27",
+      "words": 782,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/classical-mechanics/newtons-laws",
+      "url": "/notes/physics/classical-mechanics/newtons-laws/",
+      "title": "Newton's Laws and Kinematics",
+      "course": "classical-mechanics",
+      "course_title": "Classical Mechanics",
+      "date": "2026-10-27",
+      "words": 817,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/classical-mechanics/oscillations",
+      "url": "/notes/physics/classical-mechanics/oscillations/",
+      "title": "Oscillations",
+      "course": "classical-mechanics",
+      "course_title": "Classical Mechanics",
+      "date": "2026-10-27",
+      "words": 959,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/classical-mechanics/symmetries-and-noether",
+      "url": "/notes/physics/classical-mechanics/symmetries-and-noether/",
+      "title": "Symmetries and Noether's Theorem",
+      "course": "classical-mechanics",
+      "course_title": "Classical Mechanics",
+      "date": "2026-10-27",
+      "words": 926,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/classical-mechanics/work-and-energy",
+      "url": "/notes/physics/classical-mechanics/work-and-energy/",
+      "title": "Work, Energy and Conservation Laws",
+      "course": "classical-mechanics",
+      "course_title": "Classical Mechanics",
+      "date": "2026-10-27",
+      "words": 851,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/computational-physics/monte-carlo-integration",
+      "url": "/notes/physics/computational-physics/monte-carlo-integration/",
+      "title": "Monte Carlo Integration",
+      "course": "computational-physics",
+      "course_title": "Computational Physics",
+      "date": "2026-10-27",
+      "words": 913,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/computational-physics/numerical-integration-of-odes",
+      "url": "/notes/physics/computational-physics/numerical-integration-of-odes/",
+      "title": "Integrating Equations of Motion",
+      "course": "computational-physics",
+      "course_title": "Computational Physics",
+      "date": "2026-10-27",
+      "words": 804,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/computational-physics/random-sampling",
+      "url": "/notes/physics/computational-physics/random-sampling/",
+      "title": "Random Numbers and Sampling",
+      "course": "computational-physics",
+      "course_title": "Computational Physics",
+      "date": "2026-10-27",
+      "words": 723,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/electromagnetism/amperes-law",
+      "url": "/notes/physics/electromagnetism/amperes-law/",
+      "title": "Ampère's Law",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "date": "2026-10-27",
+      "words": 1024,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/electromagnetism/conductors-and-capacitors",
+      "url": "/notes/physics/electromagnetism/conductors-and-capacitors/",
+      "title": "Conductors and Capacitors",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "date": "2026-10-27",
+      "words": 820,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/electromagnetism/coulomb-law",
+      "url": "/notes/physics/electromagnetism/coulomb-law/",
+      "title": "Coulomb's Law and Superposition",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "date": "2026-10-27",
+      "words": 884,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/electromagnetism/electric-potential",
+      "url": "/notes/physics/electromagnetism/electric-potential/",
+      "title": "Electric Potential",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "date": "2026-10-27",
+      "words": 999,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/electromagnetism/faraday-law",
+      "url": "/notes/physics/electromagnetism/faraday-law/",
+      "title": "Faraday's Law of Induction",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "date": "2026-10-27",
+      "words": 769,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/electromagnetism/gauss-law",
+      "url": "/notes/physics/electromagnetism/gauss-law/",
+      "title": "Gauss's Law",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "date": "2026-10-27",
+      "words": 724,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/electromagnetism/lorentz-force",
+      "url": "/notes/physics/electromagnetism/lorentz-force/",
+      "title": "The Lorentz Force",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "date": "2026-10-27",
+      "words": 795,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/electromagnetism/magnetic-field",
+      "url": "/notes/physics/electromagnetism/magnetic-field/",
+      "title": "The Magnetic Field of Currents",
+      "course": "electromagnetism",
+      "course_title": "Electromagnetism",
+      "date": "2026-10-27",
+      "words": 994,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/general-relativity/equivalence-principle",
+      "url": "/notes/physics/general-relativity/equivalence-principle/",
+      "title": "The Equivalence Principle",
+      "course": "general-relativity",
+      "course_title": "General Relativity",
+      "date": "2026-10-27",
+      "words": 877,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/group-theory/groups-and-subgroups",
+      "url": "/notes/mathematics/group-theory/groups-and-subgroups/",
+      "title": "Groups and Subgroups",
+      "course": "group-theory",
+      "course_title": "Group Theory",
+      "date": "2026-10-27",
+      "words": 901,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/linear-algebra/determinants",
+      "url": "/notes/mathematics/linear-algebra/determinants/",
+      "title": "Determinants",
+      "course": "linear-algebra",
+      "course_title": "Linear Algebra",
+      "date": "2026-10-27",
+      "words": 751,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/linear-algebra/eigenvalues-and-diagonalization",
+      "url": "/notes/mathematics/linear-algebra/eigenvalues-and-diagonalization/",
+      "title": "Eigenvalues and Diagonalization",
+      "course": "linear-algebra",
+      "course_title": "Linear Algebra",
+      "date": "2026-10-27",
+      "words": 1015,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/linear-algebra/inner-product-spaces",
+      "url": "/notes/mathematics/linear-algebra/inner-product-spaces/",
+      "title": "Inner Product Spaces",
+      "course": "linear-algebra",
+      "course_title": "Linear Algebra",
+      "date": "2026-10-27",
+      "words": 650,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/linear-algebra/linear-maps-and-matrices",
+      "url": "/notes/mathematics/linear-algebra/linear-maps-and-matrices/",
+      "title": "Linear Maps and Matrices",
+      "course": "linear-algebra",
+      "course_title": "Linear Algebra",
+      "date": "2026-10-27",
+      "words": 875,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/linear-algebra/spectral-theorem",
+      "url": "/notes/mathematics/linear-algebra/spectral-theorem/",
+      "title": "The Spectral Theorem",
+      "course": "linear-algebra",
+      "course_title": "Linear Algebra",
+      "date": "2026-10-27",
+      "words": 834,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/linear-algebra/vector-spaces",
+      "url": "/notes/mathematics/linear-algebra/vector-spaces/",
+      "title": "Vector Spaces",
+      "course": "linear-algebra",
+      "course_title": "Linear Algebra",
+      "date": "2026-10-27",
+      "words": 889,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "ai/machine-learning-foundations/backpropagation",
+      "url": "/notes/ai/machine-learning-foundations/backpropagation/",
+      "title": "Backpropagation and Universal Approximation",
+      "course": "machine-learning-foundations",
+      "course_title": "Machine Learning Foundations",
+      "date": "2026-10-27",
+      "words": 888,
+      "figures": 1,
+      "cites": 2
+    },
+    {
+      "key": "ai/machine-learning-foundations/gradient-descent",
+      "url": "/notes/ai/machine-learning-foundations/gradient-descent/",
+      "title": "Gradient Descent and Its Variants",
+      "course": "machine-learning-foundations",
+      "course_title": "Machine Learning Foundations",
+      "date": "2026-10-27",
+      "words": 1170,
+      "figures": 1,
+      "cites": 3
+    },
+    {
+      "key": "mathematics/mathematical-methods/complex-functions",
+      "url": "/notes/mathematics/mathematical-methods/complex-functions/",
+      "title": "Complex Functions",
+      "course": "mathematical-methods",
+      "course_title": "Mathematical Methods for Physics",
+      "date": "2026-10-27",
+      "words": 698,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/mathematical-methods/fourier-series",
+      "url": "/notes/mathematics/mathematical-methods/fourier-series/",
+      "title": "Fourier Series",
+      "course": "mathematical-methods",
+      "course_title": "Mathematical Methods for Physics",
+      "date": "2026-10-27",
+      "words": 933,
+      "figures": 1,
+      "cites": 2
+    },
+    {
+      "key": "mathematics/mathematical-methods/linear-odes",
+      "url": "/notes/mathematics/mathematical-methods/linear-odes/",
+      "title": "Linear Differential Equations",
+      "course": "mathematical-methods",
+      "course_title": "Mathematical Methods for Physics",
+      "date": "2026-10-27",
+      "words": 1061,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "mathematics/mathematical-methods/ordinary-differential-equations",
+      "url": "/notes/mathematics/mathematical-methods/ordinary-differential-equations/",
+      "title": "Ordinary Differential Equations",
+      "course": "mathematical-methods",
+      "course_title": "Mathematical Methods for Physics",
+      "date": "2026-10-27",
+      "words": 688,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "ai/neural-networks/activation-functions",
+      "url": "/notes/ai/neural-networks/activation-functions/",
+      "title": "Activation Functions",
+      "course": "neural-networks",
+      "course_title": "Neural Networks",
+      "date": "2026-10-27",
+      "words": 906,
+      "figures": 1,
+      "cites": 3
+    },
+    {
+      "key": "ai/neural-networks/autoencoder",
+      "url": "/notes/ai/neural-networks/autoencoder/",
+      "title": "Auto-Encoder Networks",
+      "course": "neural-networks",
+      "course_title": "Neural Networks",
+      "date": "2026-10-27",
+      "words": 808,
+      "figures": 1,
+      "cites": 2
+    },
+    {
+      "key": "ai/neural-networks/convolutional-nn",
+      "url": "/notes/ai/neural-networks/convolutional-nn/",
+      "title": "Convolutional Neural Networks",
+      "course": "neural-networks",
+      "course_title": "Neural Networks",
+      "date": "2026-10-27",
+      "words": 883,
+      "figures": 1,
+      "cites": 4
+    },
+    {
+      "key": "ai/neural-networks/hopfield-network",
+      "url": "/notes/ai/neural-networks/hopfield-network/",
+      "title": "Hopfield Network",
+      "course": "neural-networks",
+      "course_title": "Neural Networks",
+      "date": "2026-10-27",
+      "words": 819,
+      "figures": 1,
+      "cites": 2
+    },
+    {
+      "key": "ai/neural-networks/introduction",
+      "url": "/notes/ai/neural-networks/introduction/",
+      "title": "Introduction to Neural Networks",
+      "course": "neural-networks",
+      "course_title": "Neural Networks",
+      "date": "2026-10-27",
+      "words": 964,
+      "figures": 1,
+      "cites": 4
+    },
+    {
+      "key": "ai/neural-networks/learning-vector-quantization",
+      "url": "/notes/ai/neural-networks/learning-vector-quantization/",
+      "title": "Learning Vector Quantization",
+      "course": "neural-networks",
+      "course_title": "Neural Networks",
+      "date": "2026-10-27",
+      "words": 733,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "ai/neural-networks/multi-layer-perceptron",
+      "url": "/notes/ai/neural-networks/multi-layer-perceptron/",
+      "title": "Multi-Layer Perceptron",
+      "course": "neural-networks",
+      "course_title": "Neural Networks",
+      "date": "2026-10-27",
+      "words": 893,
+      "figures": 1,
+      "cites": 2
+    },
+    {
+      "key": "ai/neural-networks/radial-basis-function-network",
+      "url": "/notes/ai/neural-networks/radial-basis-function-network/",
+      "title": "Radial Basis Function Network",
+      "course": "neural-networks",
+      "course_title": "Neural Networks",
+      "date": "2026-10-27",
+      "words": 800,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "ai/neural-networks/recurrent-nn",
+      "url": "/notes/ai/neural-networks/recurrent-nn/",
+      "title": "Recurrent Neural Networks",
+      "course": "neural-networks",
+      "course_title": "Neural Networks",
+      "date": "2026-10-27",
+      "words": 834,
+      "figures": 1,
+      "cites": 4
+    },
+    {
+      "key": "ai/neural-networks/self-organizing-map",
+      "url": "/notes/ai/neural-networks/self-organizing-map/",
+      "title": "Self-Organizing Maps",
+      "course": "neural-networks",
+      "course_title": "Neural Networks",
+      "date": "2026-10-27",
+      "words": 771,
+      "figures": 1,
+      "cites": 2
+    },
+    {
+      "key": "physics/quantum-computing/density-matrix",
+      "url": "/notes/physics/quantum-computing/density-matrix/",
+      "title": "The Density Matrix",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "date": "2026-10-27",
+      "words": 710,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/quantum-computing/measurement",
+      "url": "/notes/physics/quantum-computing/measurement/",
+      "title": "Measurement and the Born Rule",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "date": "2026-10-27",
+      "words": 793,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/quantum-computing/qubit-and-bloch-sphere",
+      "url": "/notes/physics/quantum-computing/qubit-and-bloch-sphere/",
+      "title": "The Qubit and the Bloch Sphere",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "date": "2026-10-27",
+      "words": 890,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/quantum-computing/single-qubit-gates",
+      "url": "/notes/physics/quantum-computing/single-qubit-gates/",
+      "title": "Single-Qubit Gates and Rotations",
+      "course": "quantum-computing",
+      "course_title": "Quantum Computing",
+      "date": "2026-10-27",
+      "words": 912,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/quantum-theory/angular-momentum-and-spin",
+      "url": "/notes/physics/quantum-theory/angular-momentum-and-spin/",
+      "title": "Angular Momentum and Spin",
+      "course": "quantum-theory",
+      "course_title": "Quantum Theory and Information",
+      "date": "2026-10-27",
+      "words": 770,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/quantum-theory/commutators-and-uncertainty",
+      "url": "/notes/physics/quantum-theory/commutators-and-uncertainty/",
+      "title": "Commutators and Uncertainty",
+      "course": "quantum-theory",
+      "course_title": "Quantum Theory and Information",
+      "date": "2026-10-27",
+      "words": 606,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/quantum-theory/hilbert-space-and-states",
+      "url": "/notes/physics/quantum-theory/hilbert-space-and-states/",
+      "title": "States, Kets and the Hilbert Space",
+      "course": "quantum-theory",
+      "course_title": "Quantum Theory and Information",
+      "date": "2026-10-27",
+      "words": 695,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/quantum-theory/ladder-operators",
+      "url": "/notes/physics/quantum-theory/ladder-operators/",
+      "title": "The Oscillator by Ladder Operators",
+      "course": "quantum-theory",
+      "course_title": "Quantum Theory and Information",
+      "date": "2026-10-27",
+      "words": 603,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/quantum-theory/observables-and-operators",
+      "url": "/notes/physics/quantum-theory/observables-and-operators/",
+      "title": "Observables and Hermitian Operators",
+      "course": "quantum-theory",
+      "course_title": "Quantum Theory and Information",
+      "date": "2026-10-27",
+      "words": 613,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/quantum-theory/position-and-momentum",
+      "url": "/notes/physics/quantum-theory/position-and-momentum/",
+      "title": "Position, Momentum and the Wavefunction",
+      "course": "quantum-theory",
+      "course_title": "Quantum Theory and Information",
+      "date": "2026-10-27",
+      "words": 603,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/quantum-theory/potential-wells-and-tunnelling",
+      "url": "/notes/physics/quantum-theory/potential-wells-and-tunnelling/",
+      "title": "Potential Wells and Tunnelling",
+      "course": "quantum-theory",
+      "course_title": "Quantum Theory and Information",
+      "date": "2026-10-27",
+      "words": 687,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/quantum-theory/time-evolution",
+      "url": "/notes/physics/quantum-theory/time-evolution/",
+      "title": "Time Evolution and the Schrödinger Equation",
+      "course": "quantum-theory",
+      "course_title": "Quantum Theory and Information",
+      "date": "2026-10-27",
+      "words": 664,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/statistical-mechanics/broken-symmetry-and-order-parameter",
+      "url": "/notes/physics/statistical-mechanics/broken-symmetry-and-order-parameter/",
+      "title": "Broken Symmetry and the Order Parameter",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 832,
+      "figures": 0,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/classification-and-dimensionality",
+      "url": "/notes/physics/statistical-mechanics/classification-and-dimensionality/",
+      "title": "Classifying Transitions: Range and Dimension",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 766,
+      "figures": 0,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/critical-point-and-universality",
+      "url": "/notes/physics/statistical-mechanics/critical-point-and-universality/",
+      "title": "Critical Exponents and Universality",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 704,
+      "figures": 0,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/ergodicity-and-paradoxes",
+      "url": "/notes/physics/statistical-mechanics/ergodicity-and-paradoxes/",
+      "title": "Ergodicity and Two Paradoxes",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 822,
+      "figures": 0,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/fluctuations-and-ensemble-equivalence",
+      "url": "/notes/physics/statistical-mechanics/fluctuations-and-ensemble-equivalence/",
+      "title": "Fluctuations and the Thermodynamic Limit",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 701,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/ginzburg-landau-theory",
+      "url": "/notes/physics/statistical-mechanics/ginzburg-landau-theory/",
+      "title": "Landau and Ginzburg-Landau Theory",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 768,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/goldstone-modes",
+      "url": "/notes/physics/statistical-mechanics/goldstone-modes/",
+      "title": "Goldstone Modes",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 757,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/ideal-gas-canonical",
+      "url": "/notes/physics/statistical-mechanics/ideal-gas-canonical/",
+      "title": "The Ideal Gas in the Canonical Ensemble",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 637,
+      "figures": 0,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/information-entropy",
+      "url": "/notes/physics/statistical-mechanics/information-entropy/",
+      "title": "Information and Entropy",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 710,
+      "figures": 1,
+      "cites": 2
+    },
+    {
+      "key": "physics/statistical-mechanics/interacting-gases-and-van-der-waals",
+      "url": "/notes/physics/statistical-mechanics/interacting-gases-and-van-der-waals/",
+      "title": "Interacting Gases and the van der Waals Equation",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 736,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/ising-1d",
+      "url": "/notes/physics/statistical-mechanics/ising-1d/",
+      "title": "The One-Dimensional Ising Model",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 640,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/ising-2d",
+      "url": "/notes/physics/statistical-mechanics/ising-2d/",
+      "title": "The Two-Dimensional Ising Model",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 731,
+      "figures": 2,
+      "cites": 2
+    },
+    {
+      "key": "physics/statistical-mechanics/maximum-entropy-ensembles",
+      "url": "/notes/physics/statistical-mechanics/maximum-entropy-ensembles/",
+      "title": "Ensembles from Maximum Entropy",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 696,
+      "figures": 0,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/mean-field-exponents",
+      "url": "/notes/physics/statistical-mechanics/mean-field-exponents/",
+      "title": "Mean-Field Critical Exponents",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 654,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/mermin-wagner",
+      "url": "/notes/physics/statistical-mechanics/mermin-wagner/",
+      "title": "The Mermin-Wagner Theorem",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 662,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/spin-models",
+      "url": "/notes/physics/statistical-mechanics/spin-models/",
+      "title": "Spin Models and Their Symmetries",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 684,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "physics/statistical-mechanics/topological-defects-and-rigidity",
+      "url": "/notes/physics/statistical-mechanics/topological-defects-and-rigidity/",
+      "title": "Topological Defects, Rigidity and Metastability",
+      "course": "statistical-mechanics",
+      "course_title": "Statistical Mechanics",
+      "date": "2026-10-27",
+      "words": 943,
+      "figures": 1,
+      "cites": 1
+    },
+    {
+      "key": "physics/thermodynamics/first-law",
+      "url": "/notes/physics/thermodynamics/first-law/",
+      "title": "The First Law",
+      "course": "thermodynamics",
+      "course_title": "Thermodynamics",
+      "date": "2026-10-27",
+      "words": 752,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/thermodynamics/kinetic-theory",
+      "url": "/notes/physics/thermodynamics/kinetic-theory/",
+      "title": "Kinetic Theory",
+      "course": "thermodynamics",
+      "course_title": "Thermodynamics",
+      "date": "2026-10-27",
+      "words": 640,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/thermodynamics/second-law-and-entropy",
+      "url": "/notes/physics/thermodynamics/second-law-and-entropy/",
+      "title": "The Second Law and Entropy",
+      "course": "thermodynamics",
+      "course_title": "Thermodynamics",
+      "date": "2026-10-27",
+      "words": 1106,
+      "figures": 1,
+      "cites": 0
+    },
+    {
+      "key": "physics/thermodynamics/temperature-and-ideal-gas",
+      "url": "/notes/physics/thermodynamics/temperature-and-ideal-gas/",
+      "title": "Temperature and the Ideal Gas",
+      "course": "thermodynamics",
+      "course_title": "Thermodynamics",
+      "date": "2026-10-27",
+      "words": 862,
+      "figures": 2,
+      "cites": 0
+    },
+    {
+      "key": "physics/thermodynamics/thermodynamic-potentials",
+      "url": "/notes/physics/thermodynamics/thermodynamic-potentials/",
+      "title": "Thermodynamic Potentials",
+      "course": "thermodynamics",
+      "course_title": "Thermodynamics",
+      "date": "2026-10-27",
+      "words": 1013,
+      "figures": 1,
+      "cites": 0
+    }
+  ],
+  "thin": [
+    {
+      "key": "physics/electromagnetism/circuits",
+      "url": "/notes/physics/electromagnetism/circuits/",
+      "title": "Circuits: RC, RLC, LC",
+      "words": 20,
+      "course": "electromagnetism"
+    },
+    {
+      "key": "physics/electromagnetism/electric-field",
+      "url": "/notes/physics/electromagnetism/electric-field/",
+      "title": "Electric Field",
+      "words": 28,
+      "course": "electromagnetism"
+    },
+    {
+      "key": "ai/supervised-learning/transformers",
+      "url": "/notes/ai/supervised-learning/transformers/",
+      "title": "Transformers & Attention Mechanisms",
+      "words": 118,
+      "course": "supervised-learning"
+    },
+    {
+      "key": "ai/supervised-learning/ensemble-methods",
+      "url": "/notes/ai/supervised-learning/ensemble-methods/",
+      "title": "Ensemble Methods & Stacking",
+      "words": 178,
+      "course": "supervised-learning"
+    },
+    {
+      "key": "ai/supervised-learning/object-detection",
+      "url": "/notes/ai/supervised-learning/object-detection/",
+      "title": "Object Recognition and Detection",
+      "words": 222,
+      "course": "supervised-learning"
+    },
+    {
+      "key": "ai/supervised-learning/common-algorithms",
+      "url": "/notes/ai/supervised-learning/common-algorithms/",
+      "title": "Fundamentals & Core Learning Algorithms",
+      "words": 266,
+      "course": "supervised-learning"
+    }
+  ],
+  "unverified_papers": [
+    {
+      "id": "kardar-2007",
+      "title": "Statistical physics of particles",
+      "authors": "M. Kardar",
+      "year": 2007,
+      "link": "",
+      "cited_by": 10
+    },
+    {
+      "id": "ising-1925",
+      "title": "Beitrag zur Theorie des Ferromagnetismus",
+      "authors": "E. Ising",
+      "year": 1925,
+      "link": "https://doi.org/10.1007/BF02980577",
+      "cited_by": 4
+    },
+    {
+      "id": "lecun-1998",
+      "title": "Gradient-based learning applied to document recognition",
+      "authors": "Y. LeCun, L. Bottou, Y. Bengio, P. Haffner",
+      "year": 1998,
+      "link": "https://doi.org/10.1109/5.726791",
+      "cited_by": 3
+    },
+    {
+      "id": "onsager-1944",
+      "title": "Crystal statistics. I. A two-dimensional model with an order-disorder transition",
+      "authors": "L. Onsager",
+      "year": 1944,
+      "link": "https://doi.org/10.1103/PhysRev.65.117",
+      "cited_by": 3
+    },
+    {
+      "id": "amit-1985",
+      "title": "Storing infinite numbers of patterns in a spin-glass model of neural networks",
+      "authors": "D. J. Amit, H. Gutfreund, H. Sompolinsky",
+      "year": 1985,
+      "link": "https://doi.org/10.1103/PhysRevLett.55.1530",
+      "cited_by": 2
+    },
+    {
+      "id": "chen-2018",
+      "title": "Neural ordinary differential equations",
+      "authors": "R. T. Q. Chen, Y. Rubanova, J. Bettencourt, D. Duvenaud",
+      "year": 2018,
+      "link": "https://arxiv.org/abs/1806.07366",
+      "cited_by": 2
+    },
+    {
+      "id": "hochreiter-1991",
+      "title": "Untersuchungen zu dynamischen neuronalen Netzen",
+      "authors": "S. Hochreiter",
+      "year": 1991,
+      "link": "",
+      "cited_by": 2
+    },
+    {
+      "id": "jaynes-1957",
+      "title": "Information theory and statistical mechanics",
+      "authors": "E. T. Jaynes",
+      "year": 1957,
+      "link": "",
+      "cited_by": 2
+    },
+    {
+      "id": "kohonen-1990",
+      "title": "The self-organizing map",
+      "authors": "T. Kohonen",
+      "year": 1990,
+      "link": "https://doi.org/10.1109/5.58325",
+      "cited_by": 2
+    },
+    {
+      "id": "rumelhart-1986",
+      "title": "Learning representations by back-propagating errors",
+      "authors": "D. E. Rumelhart, G. E. Hinton, R. J. Williams",
+      "year": 1986,
+      "link": "https://doi.org/10.1038/323533a0",
+      "cited_by": 2
+    },
+    {
+      "id": "stein-shakarchi-2003",
+      "title": "Fourier Analysis: An Introduction",
+      "authors": "E. M. Stein, R. Shakarchi",
+      "year": 2003,
+      "link": "",
+      "cited_by": 2
+    },
+    {
+      "id": "sutton-2018",
+      "title": "Reinforcement learning: an introduction",
+      "authors": "R. S. Sutton, A. G. Barto",
+      "year": 2018,
+      "link": "",
+      "cited_by": 2
+    },
+    {
+      "id": "ackley-1985",
+      "title": "A learning algorithm for Boltzmann machines",
+      "authors": "D. H. Ackley, G. E. Hinton, T. J. Sejnowski",
+      "year": 1985,
+      "link": "https://doi.org/10.1207/s15516709cog0901_7",
+      "cited_by": 1
+    },
+    {
+      "id": "broomhead-lowe-1988",
+      "title": "Multivariable functional interpolation and adaptive networks",
+      "authors": "D. S. Broomhead, D. Lowe",
+      "year": 1988,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "cao-2003",
+      "title": "Adjoint sensitivity analysis for differential-algebraic equations: the adjoint DAE system and its numerical solution",
+      "authors": "Y. Cao, S. Li, L. Petzold, R. Serban",
+      "year": 2003,
+      "link": "https://doi.org/10.1137/S1064827501380630",
+      "cited_by": 1
+    },
+    {
+      "id": "carrasquilla-2017",
+      "title": "Machine learning phases of matter",
+      "authors": "J. Carrasquilla, R. G. Melko",
+      "year": 2017,
+      "link": "https://arxiv.org/abs/1605.01735",
+      "cited_by": 1
+    },
+    {
+      "id": "cho-2014",
+      "title": "Learning phrase representations using RNN encoder-decoder for statistical machine translation",
+      "authors": "K. Cho, B. van Merrienboer, C. Gulcehre, D. Bahdanau, F. Bougares, H. Schwenk, Y. Bengio",
+      "year": 2014,
+      "link": "https://arxiv.org/abs/1406.1078",
+      "cited_by": 1
+    },
+    {
+      "id": "cohen-2016",
+      "title": "Group equivariant convolutional networks",
+      "authors": "T. S. Cohen, M. Welling",
+      "year": 2016,
+      "link": "https://arxiv.org/abs/1602.07576",
+      "cited_by": 1
+    },
+    {
+      "id": "cranmer-2020",
+      "title": "Lagrangian neural networks",
+      "authors": "M. Cranmer, S. Greydanus, S. Hoyer, P. Battaglia, D. Spergel, S. Ho",
+      "year": 2020,
+      "link": "https://arxiv.org/abs/2003.04630",
+      "cited_by": 1
+    },
+    {
+      "id": "cybenko-1989",
+      "title": "Approximation by superpositions of a sigmoidal function",
+      "authors": "G. Cybenko",
+      "year": 1989,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "elman-1990",
+      "title": "Finding structure in time",
+      "authors": "J. L. Elman",
+      "year": 1990,
+      "link": "https://doi.org/10.1207/s15516709cog1402_1",
+      "cited_by": 1
+    },
+    {
+      "id": "fukushima-1980",
+      "title": "Neocognitron: a self-organizing neural network model for a mechanism of pattern recognition unaffected by shift in position",
+      "authors": "K. Fukushima",
+      "year": 1980,
+      "link": "https://doi.org/10.1007/BF00344251",
+      "cited_by": 1
+    },
+    {
+      "id": "glorot-bengio-2010",
+      "title": "Understanding the difficulty of training deep feedforward neural networks",
+      "authors": "X. Glorot, Y. Bengio",
+      "year": 2010,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "greydanus-2019",
+      "title": "Hamiltonian neural networks",
+      "authors": "S. Greydanus, M. Dzamba, J. Yosinski",
+      "year": 2019,
+      "link": "https://arxiv.org/abs/1906.01563",
+      "cited_by": 1
+    },
+    {
+      "id": "grover-2016",
+      "title": "node2vec: scalable feature learning for networks",
+      "authors": "A. Grover, J. Leskovec",
+      "year": 2016,
+      "link": "https://arxiv.org/abs/1607.00653",
+      "cited_by": 1
+    },
+    {
+      "id": "hamilton-2017",
+      "title": "Inductive representation learning on large graphs",
+      "authors": "W. L. Hamilton, R. Ying, J. Leskovec",
+      "year": 2017,
+      "link": "https://arxiv.org/abs/1706.02216",
+      "cited_by": 1
+    },
+    {
+      "id": "hinton-2002",
+      "title": "Training products of experts by minimizing contrastive divergence",
+      "authors": "G. E. Hinton",
+      "year": 2002,
+      "link": "https://doi.org/10.1162/089976602760128018",
+      "cited_by": 1
+    },
+    {
+      "id": "hinton-salakhutdinov-2006",
+      "title": "Reducing the dimensionality of data with neural networks",
+      "authors": "G. E. Hinton, R. R. Salakhutdinov",
+      "year": 2006,
+      "link": "https://doi.org/10.1126/science.1127647",
+      "cited_by": 1
+    },
+    {
+      "id": "hochreiter-schmidhuber-1997",
+      "title": "Long short-term memory",
+      "authors": "S. Hochreiter, J. Schmidhuber",
+      "year": 1997,
+      "link": "https://doi.org/10.1162/neco.1997.9.8.1735",
+      "cited_by": 1
+    },
+    {
+      "id": "jaeger-2004",
+      "title": "Harnessing nonlinearity: predicting chaotic systems and saving energy in wireless communication",
+      "authors": "H. Jaeger, H. Haas",
+      "year": 2004,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "kingma-ba-2015",
+      "title": "Adam: A method for stochastic optimization",
+      "authors": "D. P. Kingma, J. Ba",
+      "year": 2015,
+      "link": "https://arxiv.org/abs/1412.6980",
+      "cited_by": 1
+    },
+    {
+      "id": "kipf-2017",
+      "title": "Semi-supervised classification with graph convolutional networks",
+      "authors": "T. N. Kipf, M. Welling",
+      "year": 2017,
+      "link": "https://arxiv.org/abs/1609.02907",
+      "cited_by": 1
+    },
+    {
+      "id": "kohonen-1982",
+      "title": "Self-organized formation of topologically correct feature maps",
+      "authors": "T. Kohonen",
+      "year": 1982,
+      "link": "https://doi.org/10.1007/BF00337288",
+      "cited_by": 1
+    },
+    {
+      "id": "kosterlitz-1973",
+      "title": "Ordering, metastability and phase transitions in two-dimensional systems",
+      "authors": "J. M. Kosterlitz, D. J. Thouless",
+      "year": 1973,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "krizhevsky-2012",
+      "title": "ImageNet classification with deep convolutional neural networks",
+      "authors": "A. Krizhevsky, I. Sutskever, G. E. Hinton",
+      "year": 2012,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "krogh-hertz-1991",
+      "title": "A simple weight decay can improve generalization",
+      "authors": "A. Krogh, J. A. Hertz",
+      "year": 1991,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "lagaris-1998",
+      "title": "Artificial neural networks for solving ordinary and partial differential equations",
+      "authors": "I. E. Lagaris, A. Likas, D. I. Fotiadis",
+      "year": 1998,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "landauer-1961",
+      "title": "Irreversibility and heat generation in the computing process",
+      "authors": "R. Landauer",
+      "year": 1961,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "lenz-1920",
+      "title": "Beitrag zum Verständnis der magnetischen Erscheinungen in festen Körpern",
+      "authors": "W. Lenz",
+      "year": 1920,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "lutter-2019",
+      "title": "Deep Lagrangian networks: using physics as model prior for deep learning",
+      "authors": "M. Lutter, C. Ritter, J. Peters",
+      "year": 2019,
+      "link": "https://arxiv.org/abs/1907.04490",
+      "cited_by": 1
+    },
+    {
+      "id": "matsubara-2021",
+      "title": "Symplectic adjoint method for exact gradient of neural ODE with minimal memory",
+      "authors": "T. Matsubara, Y. Miyatake, T. Yaguchi",
+      "year": 2021,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "mcculloch-pitts-1943",
+      "title": "A logical calculus of the ideas immanent in nervous activity",
+      "authors": "W. S. McCulloch, W. Pitts",
+      "year": 1943,
+      "link": "https://doi.org/10.1007/BF02478259",
+      "cited_by": 1
+    },
+    {
+      "id": "mermin-1966",
+      "title": "Absence of ferromagnetism or antiferromagnetism in one- or two-dimensional isotropic Heisenberg models",
+      "authors": "N. D. Mermin, H. Wagner",
+      "year": 1966,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "minsky-papert-1969",
+      "title": "Perceptrons: An Introduction to Computational Geometry",
+      "authors": "M. Minsky, S. Papert",
+      "year": 1969,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "nair-hinton-2010",
+      "title": "Rectified linear units improve restricted Boltzmann machines",
+      "authors": "V. Nair, G. E. Hinton",
+      "year": 2010,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "novikoff-1962",
+      "title": "On convergence proofs on perceptrons",
+      "authors": "A. B. J. Novikoff",
+      "year": 1962,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "pathak-2018",
+      "title": "Model-free prediction of large spatiotemporally chaotic systems from data: a reservoir computing approach",
+      "authors": "J. Pathak, B. Hunt, M. Girvan, Z. Lu, E. Ott",
+      "year": 2018,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "peierls-1936",
+      "title": "On Ising's model of ferromagnetism",
+      "authors": "R. Peierls",
+      "year": 1936,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "perozzi-2014",
+      "title": "DeepWalk: online learning of social representations",
+      "authors": "B. Perozzi, R. Al-Rfou, S. Skiena",
+      "year": 2014,
+      "link": "https://arxiv.org/abs/1403.6652",
+      "cited_by": 1
+    },
+    {
+      "id": "polyak-1964",
+      "title": "Some methods of speeding up the convergence of iteration methods",
+      "authors": "B. T. Polyak",
+      "year": 1964,
+      "link": "https://doi.org/10.1016/0041-5553(64)90137-5",
+      "cited_by": 1
+    },
+    {
+      "id": "raissi-2019",
+      "title": "Physics-informed neural networks: a deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations",
+      "authors": "M. Raissi, P. Perdikaris, G. E. Karniadakis",
+      "year": 2019,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "robbins-monro-1951",
+      "title": "A stochastic approximation method",
+      "authors": "H. Robbins, S. Monro",
+      "year": 1951,
+      "link": "https://doi.org/10.1214/aoms/1177729586",
+      "cited_by": 1
+    },
+    {
+      "id": "rosenblatt-1958",
+      "title": "The perceptron: a probabilistic model for information storage and organization in the brain",
+      "authors": "F. Rosenblatt",
+      "year": 1958,
+      "link": "https://doi.org/10.1037/h0042519",
+      "cited_by": 1
+    },
+    {
+      "id": "shannon-1948",
+      "title": "A mathematical theory of communication",
+      "authors": "C. E. Shannon",
+      "year": 1948,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "vincent-2008",
+      "title": "Extracting and composing robust features with denoising autoencoders",
+      "authors": "P. Vincent, H. Larochelle, Y. Bengio, P.-A. Manzagol",
+      "year": 2008,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "wang-2021",
+      "title": "Understanding and mitigating gradient flow pathologies in physics-informed neural networks",
+      "authors": "S. Wang, Y. Teng, P. Perdikaris",
+      "year": 2021,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "watkins-1992",
+      "title": "Q-learning",
+      "authors": "C. J. C. H. Watkins, P. Dayan",
+      "year": 1992,
+      "link": "",
+      "cited_by": 1
+    },
+    {
+      "id": "wolff-1989",
+      "title": "Collective Monte Carlo updating for spin systems",
+      "authors": "U. Wolff",
+      "year": 1989,
+      "link": "https://doi.org/10.1103/PhysRevLett.62.361",
+      "cited_by": 1
+    },
+    {
+      "id": "benjamini-hochberg-1995",
+      "title": "Controlling the false discovery rate: a practical and powerful approach to multiple testing",
+      "authors": "Y. Benjamini, Y. Hochberg",
+      "year": 1995,
+      "link": "",
+      "cited_by": 0
+    },
+    {
+      "id": "dietterich-1998",
+      "title": "Approximate statistical tests for comparing supervised classification learning algorithms",
+      "authors": "T. G. Dietterich",
+      "year": 1998,
+      "link": "",
+      "cited_by": 0
+    },
+    {
+      "id": "hoerl-kennard-1970",
+      "title": "Ridge regression: biased estimation for nonorthogonal problems",
+      "authors": "A. E. Hoerl, R. W. Kennard",
+      "year": 1970,
+      "link": "",
+      "cited_by": 0
+    },
+    {
+      "id": "hornik-1991",
+      "title": "Approximation capabilities of multilayer feedforward networks",
+      "authors": "K. Hornik",
+      "year": 1991,
+      "link": "",
+      "cited_by": 0
+    },
+    {
+      "id": "nobel-physics-2024",
+      "title": "Scientific background to the Nobel Prize in Physics 2024: for foundational discoveries and inventions that enable machine learning with artificial neural networks",
+      "authors": "The Nobel Committee for Physics",
+      "year": 2024,
+      "link": "https://www.nobelprize.org/prizes/physics/2024/advanced-information/",
+      "cited_by": 0
+    },
+    {
+      "id": "tibshirani-1996",
+      "title": "Regression shrinkage and selection via the lasso",
+      "authors": "R. Tibshirani",
+      "year": 1996,
+      "link": "",
+      "cited_by": 0
+    },
+    {
+      "id": "vovk-2005",
+      "title": "Algorithmic Learning in a Random World",
+      "authors": "V. Vovk, A. Gammerman, G. Shafer",
+      "year": 2005,
+      "link": "",
+      "cited_by": 0
+    },
+    {
+      "id": "wahba-1990",
+      "title": "Spline Models for Observational Data",
+      "authors": "G. Wahba",
+      "year": 1990,
+      "link": "",
+      "cited_by": 0
+    }
+  ]
+}

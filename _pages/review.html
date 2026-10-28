@@ -1,0 +1,43 @@
+---
+title: Review
+permalink: /notes/review/
+layout: single
+classes: wide shelf-page
+author_profile: false
+breadcrumbs: false
+sitemap: false
+description: Test yourself on the definitions and results in the notes.
+---
+{% comment %}
+  Study mode. A card is a concept with a definition block: the front names the concept, the
+  back is the definition and its first result. "Known" cards are remembered in this browser
+  only (localStorage, wrapped in try/catch); nothing leaves the page. Data:
+  knowledge_concept_list. Behaviour: assets/js/review.js.
+{% endcomment %}
+{% assign list = site.data.knowledge_concept_list %}
+<div class="review" data-review>
+  <p class="shelf-lede">Pick a course, try to say the definition, then flip the card.</p>
+  <div class="review__pick" id="review-pick" hidden></div>
+  <p class="review__count" id="review-count"></p>
+  <div class="review__card" id="review-card" aria-live="polite">
+    <p class="review__meta" id="review-meta"></p>
+    <p class="review__q" id="review-q"></p>
+    <div class="review__a" id="review-a" hidden></div>
+  </div>
+  <div class="review__bar">
+    <button type="button" id="review-flip">Show answer</button>
+    <button type="button" id="review-again" hidden>Again</button>
+    <button type="button" id="review-known" hidden>Known</button>
+    <button type="button" id="review-reset">Reset known</button>
+  </div>
+  <noscript><p>This page needs JavaScript. The same definitions are listed on each <a href="{{ '/concepts/' | relative_url }}">concept page</a>.</p></noscript>
+  <div hidden>
+    {% for c in list %}{% if c.definition %}
+    <div class="rc" data-id="{{ c.id }}" data-course="{{ c.course }}" data-course-title="{{ c.course_title }}" data-name="{{ c.name | escape }}" data-url="{{ c.sheet_url | relative_url }}">
+      {% include concept-statement.html s=c.definition main=true %}
+      {% if c.results.size > 0 %}{% assign first_result = c.results | first %}{% include concept-statement.html s=first_result %}{% endif %}
+    </div>
+    {% endif %}{% endfor %}
+  </div>
+</div>
+<script src="{{ '/assets/js/review.js' | relative_url }}" defer></script>

@@ -1,0 +1,569 @@
+// The notes shelf (/notes/), a course's page (/notes/<slug>/) and the glossary
+// (/concepts/).
+//
+// These pages are lists, not dashboards: one reading column, the theme's own serif for
+// titles, grey for everything that is only information, and no boxes. Colour is the
+// accent on links and nothing else, so both themes follow from the tokens.
+
+.shelf,
+.course {
+  max-width: 44rem;
+  font-family: var(--font-sans);
+  color: var(--text);
+
+  a {
+    text-decoration: none;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.shelf-page .page__inner-wrap > header,
+.course-page .page__inner-wrap > header {
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.9rem;
+}
+
+// The theme floats the page to the right to clear an author sidebar these pages do not have.
+@media (min-width: 64em) {
+  .shelf-page .page,
+  .course-page .page {
+    float: none;
+    width: 100%;
+    padding-inline: 0;
+  }
+
+  .course-page .breadcrumbs,
+  .course-page .breadcrumbs ol {
+    float: none;
+    width: 100%;
+  }
+}
+
+/* Shelf
+   ========================================================================== */
+
+.shelf .shelf-lede,
+.course .course-lede {
+  margin-bottom: 1.5rem;
+  color: var(--text-muted);
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  line-height: 1.6;
+}
+
+.shelf-tools {
+  margin-bottom: 2rem;
+
+  input[type="search"] {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0 0 0.7rem;
+    padding: 0.55rem 0.1rem;
+    border: 0;
+    border-bottom: 1px solid var(--border-strong);
+    border-radius: 0;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 1rem;
+    box-shadow: none;
+
+    &::placeholder {
+      color: var(--text-faint);
+    }
+
+    &:focus {
+      outline: none;
+      border-bottom-color: var(--accent);
+    }
+  }
+}
+
+.shelf-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.2rem 1.1rem;
+  font-size: 0.9rem;
+
+  .chip--btn {
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    background: none;
+    color: var(--text-muted);
+    font: inherit;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--text);
+    }
+
+    &[aria-pressed="true"] {
+      border-bottom-color: var(--accent);
+      color: var(--text);
+    }
+  }
+}
+
+.shelf-link {
+  margin-left: auto;
+  color: var(--accent);
+
+  &:hover {
+    color: var(--accent-hover);
+  }
+}
+
+// Continue reading: only drawn when this browser remembers a note.
+.shelf-continue {
+  margin: -0.5rem 0 2rem;
+  padding: 0.2rem 0 0.2rem 1rem;
+  border-left: 2px solid var(--border-strong);
+}
+
+.shelf-continue__label {
+  margin-bottom: 0.2rem;
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+.shelf-continue__item {
+  display: block;
+  padding: 0.15rem 0;
+  color: var(--accent);
+
+  &:hover {
+    color: var(--accent-hover);
+  }
+}
+
+.shelf-continue__course {
+  margin-right: 0.6rem;
+  color: var(--text-faint);
+  font-size: 0.82rem;
+}
+
+.shelf-continue__title {
+  font-family: var(--font-serif);
+}
+
+/* Domains and courses
+   ========================================================================== */
+
+.shelf .domain {
+  margin-bottom: 2.4rem;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.shelf .domain__title {
+  margin: 0 0 0.2rem;
+  padding: 0;
+  border: 0;
+  font-size: 1.35rem;
+  line-height: 1.3;
+}
+
+.shelf .domain__blurb {
+  margin-bottom: 0.6rem;
+  color: var(--text-faint);
+  font-size: 0.9rem;
+}
+
+.courses > li,
+.loose > li {
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.course-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.1rem 1rem;
+  align-items: baseline;
+}
+
+.course-item__title {
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text);
+
+  &:hover {
+    color: var(--accent);
+  }
+}
+
+.course-item__meta {
+  color: var(--text-faint);
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.course-item__summary {
+  grid-column: 1 / -1;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.course-item--planned {
+  .course-item__title {
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .course-item__summary {
+    color: var(--text-faint);
+  }
+}
+
+.loose a {
+  color: var(--accent);
+}
+
+/* Search results
+   ========================================================================== */
+
+.shelf-results__head {
+  margin-bottom: 0.4rem;
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}
+
+.shelf-results__list > li {
+  border-top: 1px solid var(--border);
+}
+
+.result {
+  display: block;
+  padding: 0.7rem 0;
+  color: var(--text);
+
+  mark {
+    padding: 0 1px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--accent) 20%, transparent);
+    color: inherit;
+  }
+}
+
+a.result:hover .result__title {
+  color: var(--accent);
+}
+
+.result__kind {
+  margin-right: 0.5rem;
+  color: var(--text-faint);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.result__title {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.result__crumb {
+  display: block;
+  margin-top: 0.1rem;
+  color: var(--text-faint);
+  font-size: 0.82rem;
+}
+
+.result__excerpt {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.result--planned {
+  opacity: 0.6;
+}
+
+/* Course page
+   ========================================================================== */
+
+.course .course-lede {
+  margin-bottom: 0.7rem;
+}
+
+.course-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1.2rem;
+  color: var(--text-faint);
+  font-size: 0.85rem;
+
+  a {
+    color: var(--accent);
+  }
+}
+
+.course-start {
+  margin: 1.1rem 0 0;
+
+  a {
+    font-weight: 600;
+    color: var(--accent);
+
+    &:hover {
+      color: var(--accent-hover);
+    }
+  }
+}
+
+.course .part {
+  margin-top: 2.4rem;
+}
+
+.course .part__title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 0.15rem;
+  padding: 0;
+  border: 0;
+  font-size: 1.35rem;
+  line-height: 1.3;
+}
+
+.part__count {
+  color: var(--text-faint);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 400;
+}
+
+.course .part__blurb {
+  margin-bottom: 0.6rem;
+  color: var(--text-faint);
+  font-size: 0.9rem;
+}
+
+.rows > li {
+  border-top: 1px solid var(--border);
+}
+
+.row__link {
+  display: flex;
+  gap: 0.9rem;
+  padding: 0.7rem 0;
+  color: var(--text);
+}
+
+.row__no {
+  flex: none;
+  width: 1.4rem;
+  color: var(--text-faint);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.7;
+  text-align: right;
+}
+
+.row__body {
+  min-width: 0;
+}
+
+.row__title {
+  font-family: var(--font-serif);
+  font-size: 1.08rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+a.row__link:hover .row__title {
+  color: var(--accent);
+}
+
+.row__summary {
+  display: block;
+  margin-top: 0.1rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.row__state {
+  margin-left: 0.45rem;
+  color: var(--text-faint);
+  font-size: 0.75rem;
+}
+
+.row__state--warn {
+  color: var(--badge-warn-fg);
+}
+
+.row--planned {
+  .row__title {
+    color: var(--text-faint);
+    font-weight: 500;
+  }
+}
+
+.row__badge {
+  margin-left: 0.4rem;
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+// A note opened in this browser (set by course-track.html).
+.row.is-seen .row__no::after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 5px;
+  margin: 0.2rem 0 0 auto;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.course-links {
+  margin-top: 2.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.92rem;
+  line-height: 1.6;
+
+  p + p {
+    margin-top: 0.4rem;
+  }
+
+  strong {
+    margin-right: 0.4rem;
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  span {
+    color: var(--text-faint);
+  }
+}
+
+.course-concepts {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.92rem;
+
+  summary {
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.1rem;
+    margin: 0.8rem 0;
+  }
+
+  a {
+    color: var(--accent);
+  }
+
+  p a {
+    font-size: 0.88rem;
+  }
+}
+
+.is-planned {
+  color: var(--text-faint);
+}
+
+/* Glossary
+   ========================================================================== */
+
+.letters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1rem 0.75rem;
+  margin: 0 0 1.5rem;
+  font-size: 0.9rem;
+
+  a {
+    color: var(--accent);
+  }
+
+  a.is-off {
+    color: var(--text-faint);
+    pointer-events: none;
+  }
+}
+
+.glossary .letter {
+  margin-bottom: 1.6rem;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.glossary .letter__title {
+  margin: 0 0 0.3rem;
+  padding: 0;
+  border: 0;
+  color: var(--text-faint);
+  font-size: 1.1rem;
+}
+
+.term {
+  padding: 0.55rem 0;
+  border-top: 1px solid var(--border);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.term__name {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.term__course {
+  margin-left: 0.6rem;
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+.term__meta {
+  margin-top: 0.1rem;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+
+  a {
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-strong);
+
+    &:hover {
+      color: var(--accent);
+    }
+  }
+}

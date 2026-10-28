@@ -47,3 +47,32 @@ jobs:
 
       - name: Run the MyThingsLab suite
         run: node --test tools/mythingslab/core.test.mjs
+
+      # The course notes follow one structure (front matter, recall cards, concept
+      # graph, figures); see .claude/skills/write-site-note/. Ruby and Node are already
+      # here, so the check needs nothing installed.
+      - name: Check the course notes
+        run: ruby tools/check_notes.rb
+
+      # Citation numbering and rendering (_plugins/citations.rb); needs no Jekyll.
+      - name: Test the citation logic
+        run: ruby tools/test_citations.rb
+
+      # Figures are generated from tools/figures and committed, because the Pages
+      # build has no Python. A script edited without rerunning the build would leave
+      # the page showing the old figure.
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check the figures are up to date
+        run: |
+          python3 tools/figures/build.py
+          # status, not diff: a new figure whose SVG was never committed is untracked
+          # and `git diff` would let it pass.
+          test -z "$(git status --porcelain -- _includes/fig assets/notes)" || {
+            git status --short -- _includes/fig assets/notes
+            echo "Figures are out of date: run python3 tools/figures/build.py and commit the SVGs."
+            exit 1
+          }

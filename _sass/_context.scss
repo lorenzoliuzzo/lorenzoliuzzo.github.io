@@ -1,0 +1,400 @@
+// Context, threads and the academic building blocks.
+//
+//   - the "Where this comes from" strip on notes and courses (note-context.html)
+//   - the route card of a thread (thread-route.html)
+//   - Definition, Theorem, Lemma, Proof, Example, Remark, Algorithm, Exercise blocks,
+//     numbered by CSS counters like figures and tables
+//   - booktabs tables and the readiness check
+//   - the coverage page (_pages/coverage.html)
+//
+// Everything reads the tokens in _tokens.scss; tints come from color-mix().
+
+/* Where this comes from
+   ========================================================================== */
+
+.note-context {
+  margin: -1.25rem auto 2.5rem;
+  padding: 0.9rem 1.35rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-sunken);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  line-height: 1.55;
+
+  p {
+    margin: 0 0 0.5rem;
+    text-align: left;
+    hyphens: none;
+  }
+}
+
+.note-context__timeline {
+  margin: 0.4rem 0 0.6rem;
+  padding: 0;
+  list-style: none;
+  border-left: 2px solid var(--border-strong);
+
+  li {
+    display: flex;
+    gap: 0.9rem;
+    margin: 0;
+    padding: 0.2rem 0 0.2rem 0.9rem;
+  }
+}
+
+.note-context__year {
+  flex: 0 0 2.6rem;
+  color: var(--part);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.note-context__text {
+  flex: 1;
+}
+
+.course-origin {
+  margin: 0.4rem 0 1rem;
+  color: var(--text-muted);
+
+  .note-head__label {
+    color: var(--text-faint);
+  }
+}
+
+.part__reading {
+  margin: -0.2rem 0 0.8rem;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.part__reading-label {
+  margin-right: 0.5rem;
+  color: var(--text-faint);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+/* Thread route
+   ========================================================================== */
+
+.thread-route__stops {
+  margin: 0.3rem 0 0;
+  padding-left: 1.4rem;
+}
+
+.thread-route__stop {
+  margin: 0 0 0.5rem;
+
+  &.is-planned .thread-route__title {
+    color: var(--text-muted);
+  }
+}
+
+.thread-route__title {
+  font-weight: 600;
+}
+
+.thread-route__why {
+  display: block;
+  color: var(--text-muted);
+}
+
+/* Readiness check
+   ========================================================================== */
+
+.note-head__check {
+  margin-top: 0.7rem;
+
+  summary {
+    cursor: pointer;
+    color: var(--accent);
+  }
+
+  ul {
+    margin: 0.4rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    margin: 0 0 0.25rem;
+  }
+
+  input {
+    margin-right: 0.4rem;
+  }
+}
+
+/* Theorem-like blocks
+   ========================================================================== */
+
+// Written as a blockquote with a class, like the callouts. An id makes the block citable
+// with [](#id), a title is shown in brackets after the number:
+//
+//   > Let $X_1, X_2, \dots$ be i.i.d. with mean $\mu$ and finite variance $\sigma^2$. Then ...
+//   {: .theorem #thm-clt title="Central limit theorem"}
+//
+// Definition, theorem, lemma, proposition and corollary share one number, as in a paper;
+// examples, exercises and algorithms count separately. A proof is unnumbered and closes with
+// a square. The counters restart on each page.
+
+.page__content {
+  counter-reset: result-counter example-counter exercise-counter algorithm-counter application-counter;
+}
+
+// Quiet, textbook-like: no box and no tint. A thin neutral rule at the left, and a bold
+// run-in label ("Definition 1.2 (Title).") that floats into the first line of the text.
+// The kind is told by the label, not by colour.
+@mixin result($colour, $label, $counter: result-counter) {
+  --c: #{$colour};
+  margin-block: 1.4rem;
+  padding: 0.05rem 0 0.05rem 1rem;
+  border: 0;
+  border-left: 1px solid var(--border-strong);
+  border-radius: 0;
+  background: none;
+  color: var(--text);
+  font-style: normal;
+  text-align: left;
+  hyphens: none;
+  counter-increment: #{$counter};
+
+  &::before {
+    content: "#{$label} " counter(#{$counter}) ".";
+    float: left;
+    margin-right: 0.5em;
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 0.82em;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: inherit;
+  }
+
+  &[title]::before {
+    content: "#{$label} " counter(#{$counter}) " (" attr(title) ").";
+  }
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  p,
+  li {
+    text-align: left;
+    hyphens: none;
+  }
+}
+
+.page__content {
+  blockquote.definition {
+    @include result(var(--hue-1), "Definition");
+  }
+
+  blockquote.theorem {
+    @include result(var(--hue-2), "Theorem");
+    font-style: italic;
+  }
+
+  blockquote.lemma {
+    @include result(var(--hue-2), "Lemma");
+  }
+
+  blockquote.proposition {
+    @include result(var(--hue-2), "Proposition");
+  }
+
+  blockquote.corollary {
+    @include result(var(--hue-2), "Corollary");
+  }
+
+  // The kinds of knowledge are listed in _data/knowledge.yml; keep the two in step.
+  blockquote.property {
+    @include result(var(--hue-2), "Property");
+  }
+
+  blockquote.law {
+    @include result(var(--hue-2), "Law");
+    font-style: italic;
+  }
+
+  // Not established: dashed rule, the way a planned note is dashed.
+  blockquote.hypothesis {
+    @include result(var(--hue-2), "Hypothesis");
+    border-left-style: dashed;
+  }
+
+  blockquote.assumption {
+    @include result(var(--hue-1), "Assumption");
+  }
+
+  blockquote.application {
+    @include result(var(--hue-3), "Application", application-counter);
+  }
+
+  blockquote.example {
+    @include result(var(--hue-3), "Example", example-counter);
+  }
+
+  blockquote.exercise {
+    @include result(var(--hue-4), "Exercise", exercise-counter);
+  }
+
+  blockquote.algorithm {
+    @include result(var(--hue-5), "Algorithm", algorithm-counter);
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+
+    ol {
+      margin: 0.3rem 0 0;
+      padding-left: 1.6rem;
+    }
+  }
+
+  // A block reached by a link or from /notes/knowledge/ is outlined so it can be found.
+[data-note] .page__content blockquote:target {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+// Unnumbered: a remark and a proof take the quiet colours and close the thought.
+  blockquote.remark {
+    --c: var(--hue-6);
+    margin-block: 1.4rem;
+    padding: 0.2rem 1.1rem 0.2rem 1.2rem;
+    border: 0;
+    border-left: 1px solid var(--border-strong);
+    font-style: normal;
+
+    &::before {
+      content: "Remark.";
+      float: left;
+      margin-right: 0.5em;
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 0.82em;
+      font-weight: 700;
+    }
+  }
+
+  blockquote.proof {
+    --c: var(--border-strong);
+    margin-block: 1.2rem;
+    padding: 0.1rem 0 0.1rem 1rem;
+    border: 0;
+    border-left: 1px solid var(--border);
+    font-style: normal;
+
+    &::before {
+      content: "Proof.";
+      float: left;
+      margin-right: 0.5em;
+      font-family: var(--font-sans);
+      font-size: 0.82em;
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    &::after {
+      content: "\220E";
+      display: block;
+      color: var(--text-muted);
+      text-align: right;
+    }
+  }
+}
+
+/* Booktabs tables
+   ========================================================================== */
+
+// {: .booktabs} after a Markdown table: heavy rule above and below, a light one under the
+// header, no verticals. For a numbered table with a caption, wrap it with tab.html.
+.page__content table.booktabs {
+  border-collapse: collapse;
+  border: 0;
+  border-top: 2px solid var(--text);
+  border-bottom: 2px solid var(--text);
+  font-variant-numeric: tabular-nums;
+
+  th,
+  td {
+    border: 0;
+    background: none;
+    padding: 0.35rem 0.8rem;
+  }
+
+  thead th {
+    border-bottom: 1px solid var(--text);
+    font-weight: 600;
+  }
+
+  tbody tr:nth-child(even) {
+    background: none;
+  }
+}
+
+/* Coverage page
+   ========================================================================== */
+
+.coverage {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+
+  th,
+  td {
+    padding: 0.4rem 0.6rem;
+    text-align: right;
+  }
+
+  th:first-child,
+  td:first-child {
+    text-align: left;
+  }
+}
+
+.coverage__bar {
+  display: flex;
+  min-width: 8rem;
+  height: 0.55rem;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+
+  > span {
+    display: block;
+    height: 100%;
+  }
+
+  .is-verified {
+    background: var(--hue-3);
+  }
+
+  .is-drafted {
+    background: var(--hue-1);
+  }
+}
+
+.coverage__legend {
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+}

@@ -1,0 +1,26 @@
+domain: physics
+title: "Photorealistic Rendering"
+summary: "Solving the rendering equation numerically: light and colour, the geometry of scenes, ray tracing and Monte Carlo path tracing, with the software practice that keeps such code correct."
+parts:
+  - title: "Light"
+    blurb: "The physics of what a pixel measures."
+    notes:
+      - physics/photorealistic-rendering/rendering-equation
+      - physics/photorealistic-rendering/materials-and-brdf
+      - physics/photorealistic-rendering/color-spaces
+      - physics/photorealistic-rendering/image-encoding
+  - title: "Geometry"
+    blurb: "Describing and intersecting objects."
+    notes:
+      - physics/photorealistic-rendering/transformations-and-quaternions
+      - physics/photorealistic-rendering/shapes-and-intersections
+  - title: "Algorithms"
+    blurb: "Computing the solution."
+    notes:
+      - physics/photorealistic-rendering/ray-tracing
+      - physics/photorealistic-rendering/path-tracing
+      - physics/photorealistic-rendering/filtering-and-antialiasing
+  - title: "Practice"
+    blurb: "Making simulation code trustworthy."
+    notes:
+      - physics/photorealistic-rendering/testing-and-performance

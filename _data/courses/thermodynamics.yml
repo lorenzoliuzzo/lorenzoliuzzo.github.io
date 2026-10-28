@@ -1,0 +1,17 @@
+domain: physics
+title: "Thermodynamics"
+summary: "Temperature, heat and work, the two laws that govern them, and the potentials and phase transitions that follow."
+parts:
+  - title: "Laws"
+    blurb: "Temperature, energy and the direction of change."
+    notes:
+      - physics/thermodynamics/temperature-and-ideal-gas
+      - physics/thermodynamics/first-law
+      - physics/thermodynamics/second-law-and-entropy
+      - physics/thermodynamics/heat-engines
+  - title: "Potentials and phases"
+    blurb: "Equilibrium of systems at fixed conditions."
+    notes:
+      - physics/thermodynamics/thermodynamic-potentials
+      - physics/thermodynamics/phase-transitions-thermodynamics
+      - physics/thermodynamics/kinetic-theory

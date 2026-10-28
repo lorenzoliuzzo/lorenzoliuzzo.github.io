@@ -1,0 +1,28 @@
+{% comment %}
+  The dots of the course path, one per note, grouped by part, with a line saying
+  where the current note is. Expects course-context.html to have run (it sets `here`). Filled and
+  linked = written, dashed = planned, ringed = this page; the dots of the current part
+  take the part colour.
+{% endcomment %}
+<div class="path">
+  <p class="path__where">
+    <a href="{{ course_url | relative_url }}">{{ this_course.title }}</a>
+    &middot; {{ this_part.title }}
+    &middot; {{ course_pos }}&thinsp;/&thinsp;{{ course_total }}
+  </p>
+  <ol class="path__dots" aria-label="Notes in this course">
+    {% for part in this_course.parts %}
+      <li class="path__part{% if part.title == this_part.title %} path__part--on{% endif %}">
+        {% for item in part.items %}
+          {% if item.key == here %}
+            <span class="path__dot path__dot--here" title="{{ item.title | escape }} (this note)" aria-current="page"></span>
+          {% elsif item.written %}
+            <a href="{{ item.url | relative_url }}" title="{{ item.title | escape }}"><span class="path__dot"></span></a>
+          {% else %}
+            <span class="path__dot path__dot--planned" title="{{ item.title | escape }} (planned)"></span>
+          {% endif %}
+        {% endfor %}
+      </li>
+    {% endfor %}
+  </ol>
+</div>

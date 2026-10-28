@@ -1,0 +1,14 @@
+legacy: true   # imported notes, not yet brought to the standard in .claude/skills/write-site-note/
+# Two assignment write-ups from the Supervised Learning course. They were the whole of the course
+# file supervised-learning.yml before the lecture notes were added; they are kept apart so that
+# course can be held to the standard while these are rewritten.
+domain: ai
+order: 3
+title: "Supervised Learning: Assignments"
+summary: "Two write-ups from the course assignments: stacking classifiers, and testing whether one classifier really beats another."
+parts:
+  - title: "Ensembles and comparison"
+    blurb: "Stacking models together, and testing whether one classifier really beats another."
+    notes:
+      - ai/supervised-learning/ensemble-stacking
+      - ai/supervised-learning/friedman-test

@@ -1,66 +1,101 @@
 ---
 collection: notes
-title: "Physics-Informed Neural Networks"
+title: Physics-Informed Neural Networks
 date: 2026-07-31
-excerpt: "PINNs represent a paradigm shift in scientific computing, seamlessly bridging the gap between data-driven machine learning and classical physics-based numerical solvers."
-
+excerpt: A network trained on data and on the residual of a differential equation at collocation points, the loss terms and their balance, and hard constraints.
 read_time: true
-
 toc: true
 toc_sticky: true
 tags:
-  - Artificial Intelligence
-  - AI Models For Physics
+- Artificial Intelligence
+- AI Models For Physics
+goals:
+- write the loss of a physics-informed network and name its three terms
+- explain why the residual term constrains the solution where there are no labels
+- say why the loss weights matter and how a hard constraint removes one term
+defines:
+- id: physics-informed-neural-network
+  name: physics-informed neural network
+  anchor: def-physics-informed-neural-network
+- id: collocation-point
+  name: collocation point
+  anchor: the-loss-has-three-terms
+requires:
+- pde
+- ode
+- backpropagation
+- initial-value-problem
+hook: A physics-informed network is fitted to data and also asked to satisfy a differential equation at points where there is no data at all.
 ---
 
-Physics-Informed Neural Networks (*PINN*s) represent a paradigm shift in scientific computing, seamlessly bridging the gap between data-driven machine learning and classical physics-based numerical solvers. By embedding physical laws—typically expressed as Partial Differential Equations (PDEs)—directly into the learning process, PINNs can predict complex system behaviors even in regimes where data is sparse or noisy.
+A network fitted to a handful of measurements of a physical field says nothing reliable between them. If the field obeys a known differential equation, that equation is extra information, and it can enter the loss {% cite raissi-2019 %}.
 
-## 1. Core Concept and Motivation
+# A network as the trial solution
 
-Traditional artificial neural networks are purely data-driven black boxes. They require massive datasets to learn the underlying mappings and often fail to generalize outside their training domain or produce physically nonsensical results.
+> A **physics-informed neural network** (PINN) represents the unknown solution $u(x,t)$ of a differential equation by a network $u_\theta(x,t)$.
+{: .definition #def-physics-informed-neural-network title="Physics-informed neural network"}
 
-PINNs solve this by penalizing the network if its predictions violate the known physical laws governing the system. Instead of relying solely on observational data, a PINN acts as an approximate universal function approximator that is regularized by the underlying PDE itself.
+Because $u_\theta$ is a composition of smooth functions, its derivatives with respect to the inputs, $\partial_tu_\theta$, $\partial_x^2u_\theta$ and so on, are exact and are obtained by automatic differentiation, the same procedure that gives the derivatives with respect to the weights. No mesh and no finite differences are involved. A differential operator $\mathcal{N}$ applied to $u_\theta$ is another function of the inputs, and the equation $\mathcal{N}[u]=0$ becomes a statement that this function should vanish.
 
-## 2. Mathematical Formulation
+> The derivative with respect to the input and the derivative with respect to the weights are two uses of one tool. Training differentiates the equation's residual with respect to $\theta$, so second derivatives in space appear inside a first derivative in the weights.
+{: .idea}
 
-The training of a PINN is cast as an optimization problem where the loss function $\mathcal{L}$ is a weighted sum of multiple competing terms. For a general PDE defined on a domain $\Omega$ with boundary $\partial\Omega$:
-$$ \mathcal{L} = w\_\text{data} \mathcal{L}\_\text{data} + w\_\text{pde} \mathcal{L}\_\text{pde} + w\_\text{bc} \mathcal{L}\_\text{bc} $$
+# The loss has three terms
 
-**The Data Loss** \
-This is the standard Mean Squared Error (MSE) evaluated over the available labeled observations $\\{x_i, u_i\\}\_{i=1}^{N\_\text{data}}$:
-$$ \mathcal{L}\_\text{data} = \frac{1}{N_\text{data}} \sum_{i=1}^{N\_\text{data}} |u_{\theta}(x_i) - u_i|^2 $$
+Let $\mathcal{N}[u]=0$ hold on a domain, with initial or boundary data $u=g$ on its edge, and let measurements $u_i$ be available at some points $x_i$. The loss is a weighted sum,
 
-**The Physics Loss** \
-This term enforces the differential equation. Let the physical system be governed by an operator $\mathcal{N}$ such that $\mathcal{N}[u] = 0$. We sample $N_{pde}$ "collocation points" $\\{x_j\\}\_{j=1}^{N_\text{pde}}$ uniformly or randomly inside the domain $\Omega$, which do not require actual labels or measurements:
-$$\mathcal{L}\_\text{pde} = \frac{1}{N_\text{pde}} \sum_{j=1}^{N_\text{pde}} |\mathcal{N}[u_{\theta}(x_j)]|^2$$
+$$ \mathcal{C}(\theta)=w_{\text{d}}\,\frac1{N_{\text{d}}}\sum_i\big|u_\theta(x_i)-u_i\big|^2 + w_{\text{r}}\,\frac1{N_{\text{r}}}\sum_j\big|\mathcal{N}[u_\theta](x_j)\big|^2 + w_{\text{b}}\,\frac1{N_{\text{b}}}\sum_k\big|u_\theta(x_k)-g(x_k)\big|^2. $$
 
-**The Boundary and Initial Condition Loss** \
-This enforces the known state of the system at the physical boundaries or at $t=0$:
-$$\mathcal{L}\_\text{bc} = \frac{1}{N_\text{bc}} \sum_{k=1}^{N_\text{bc}} |u_{\theta}(x_k) - u_\text{bc}(x_k)|^2$$
+The first term fits the data. The second is the **residual** of the equation, evaluated at **collocation points** $x_j$ scattered through the domain, and these points need no labels because the target is zero. The third enforces the initial and boundary conditions. The residual term is what distinguishes a PINN from a regression: it reaches into regions with no measurements.
 
-## 3. The Engine: Automatic Differentiation
+# What the residual term buys
 
-The most critical mechanism enabling PINNs is Automatic Differentiation (*AD*). Traditional numerical PDE solvers (like Finite Element or Finite Difference methods) rely on discrete meshes to approximate derivatives, which suffer heavily from the curse of dimensionality.
+Take $u''+u=0$ with five noisy measurements of $\sin t$ on $[0,2]$, and ask for the solution on $[0,6]$. A flexible model fitted to the data alone is free to do anything outside $[0,2]$. Adding the residual $u''+u$ at points all the way to $t=6$ removes that freedom: among the functions that match the data, the loss prefers one that obeys the equation. The figure uses a degree-14 polynomial in place of a network so that the minimiser is a single linear solve. The loss, the collocation points and the effect are the ones a PINN has, and with a network only the solver changes.
 
-> **Key Advantage:** PINNs leverage the backpropagation algorithm inherent in deep learning frameworks to compute exact analytical derivatives of the network's output with respect to its inputs (e.g., $\frac{\partial u}{\partial x}$, $\frac{\partial u}{\partial t}$). This makes PINNs inherently mesh-free and highly adaptable to complex, high-dimensional geometries.
+{% include fig.html src="ai-models-for-physics/pinn-fit" id="fig-pinn-fit" alt="A sine curve on the interval zero to six, five noisy points on zero to two, a fit to the data alone that wiggles and flattens beyond two, and a fit with the equation residual that follows the sine to six." caption="The same model fitted to five noisy points (dots), with and without the residual of $u''+u=0$ at 61 collocation points on $[0,6]$. The data alone fix the fit only where the points are; the equation carries it to the end of the interval." %}
 
-## 4. Strengths and Applications
+Two limits of this picture are worth saying. The residual constrains the solution only up to the solutions of the homogeneous problem, here $\sin t$ and $\cos t$, so the data must still fix their two coefficients. And collocation is a finite sample: an equation obeyed at 61 points need not be obeyed between them.
 
-* **Solving Inverse Problems:** PINNs excel at parameter discovery. If a PDE contains unknown physical parameters (like a fluid's viscosity or a material's thermal conductivity), those parameters can be cast as trainable variables alongside the network weights. The PINN can infer these missing properties from just a small amount of observational data.
-* **Data-Efficient Learning:** Because the physics loss acts as a powerful inductive bias, PINNs require drastically less labeled data than standard deep learning models to achieve high accuracy.
-* **Mesh-Free Operation:** They bypass the labor-intensive mesh-generation phase required by traditional solvers, saving significant computational setup time.
+# Why training is hard
 
-**Primary Domains of Application:**
+The terms of the loss compete. Their gradients can differ by orders of magnitude, and a residual term with large derivatives can dominate the boundary term, so that the network satisfies the equation with the wrong solution. Weights chosen by hand sometimes work and sometimes do not. Analysis of the gradients explains the imbalance and proposes weights that adapt during training {% cite wang-2021 %}.
 
-* **Fluid Dynamics:** Solving the Navier-Stokes equations for velocity and pressure fields.
-* **Solid Mechanics:** Modeling linear elasticity, fracture mechanics, and structural deformation.
-* **Heat Transfer:** Analyzing temperature distributions and thermodynamics in complex geometries.
-* **Electromagnetics:** Solving Maxwell's equations for wave propagation and scattering.
+{% capture t %}
+| Symptom | Likely cause | Remedy |
+|---|---|---|
+| Residual small, boundary values wrong | $w_{\text{r}}$ too large against $w_{\text{b}}$ | adaptive weights |
+| Smooth, wrong solution for a multiscale problem | the network learns low frequencies first | Fourier features, domain splitting |
+| Fails far from the data in time | errors accumulate along $t$ | train on successive time windows |
+| Boundary condition never exact | it is only penalised | a hard constraint |
+{: .booktabs}
+{% endcapture %}
+{% include tab.html id="tab-pinn-failures" caption="Common failures of a PINN and the usual remedies." body=t %}
 
-## 5. Current Challenges and State-of-the-Art
+# Hard constraints
 
-Despite their elegance, PINNs are famously difficult to train due to the complex, non-convex loss landscapes generated by competing loss terms.
+The boundary term can be removed. If the initial condition is $u(0)=u_0$, write the trial solution as $u_\theta(t)=u_0+t\,N_\theta(t)$ with $N_\theta$ a free network. The condition holds for every $\theta$, and the loss keeps only the data and residual terms {% cite lagaris-1998 %}. The price is that the construction depends on the geometry and works easily only for simple domains.
 
-* **Loss Balancing:** The gradients of the data loss and the physics loss often point in opposite directions or have vastly different magnitudes (stiffness). State-of-the-art frameworks use dynamic adaptive weighting (e.g., self-adaptive loss balancing via Neural Tangent Kernels) to tune $w_{data}$, $w_{pde}$, and $w_{bc}$ dynamically during training.
-* **Hard vs. Soft Constraints:** In the standard "soft constraint" formulation described above, boundary conditions are merely penalized in the loss function, meaning they are never exactly satisfied. Modern "hard constraint" architectures analytically embed the boundary conditions into the network structure itself, ensuring strict physical compliance by design.
-* **Spectral Bias:** Neural networks naturally struggle to learn high-frequency functions. In multi-scale physical systems (like turbulent flows or sharp phase transitions), PINNs often require specialized architectures, such as Fourier Feature Networks or domain decomposition techniques (XPINNs), to capture high-frequency dynamics.
+> A condition that is only penalised is satisfied approximately, and by an amount that depends on $w_{\text{b}}$. If an exact conservation law or boundary value matters downstream, build it into the trial function.
+{: .rule}
+
+A PINN is not a replacement for a numerical solver on a forward problem with a known equation: a finite-element code is faster and its error is understood. The method pays off for inverse problems, where an unknown coefficient is added to $\theta$ and fitted along with the network, and where data and equation must be combined on one domain.
+
+# Recap
+
+<details class="qa" markdown="1">
+<summary>What are the three terms of a PINN loss?</summary>
+
+A data term comparing the network with measurements, a residual term that squares the differential operator applied to the network at collocation points, and a term enforcing the initial and boundary conditions.
+</details>
+
+<details class="qa" markdown="1">
+<summary>Why can the residual be evaluated at points with no measurements?</summary>
+
+Its target is zero. The equation says the residual vanishes everywhere, so any point of the domain provides a constraint without a label.
+</details>
+
+<details class="qa" markdown="1">
+<summary>How does a hard constraint differ from a penalty?</summary>
+
+A hard constraint builds the condition into the form of the trial solution, so it holds exactly for every weight setting, while a penalty only makes violations costly and satisfies it approximately.
+</details>

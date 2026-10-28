@@ -1,0 +1,32 @@
+{% comment %}
+  The route card of a thread. Front matter it reads:
+
+    route:
+      - {note: physics/statistical-mechanics/03, why: "Where the model and its exact solution live."}
+
+  `note` is a note's path under _notes/ without extension; `why` is one sentence on what
+  this stop contributes to the thread. A note that is written links; a planned one shows
+  as planned. No heading tags in here.
+{% endcomment %}
+{% if page.route.size > 0 %}
+<div class="note-head thread-route">
+  <span class="note-head__label">The route</span>
+  <ol class="thread-route__stops">
+    {% for stop in page.route %}
+      {% assign target = "/notes/" | append: stop.note | append: "/" %}
+      {% assign doc = site.notes | where: "url", target | first %}
+      {% assign planned = site.data.planned_notes | where_exp: "s", "s.path contains stop.note" | first %}
+      <li class="thread-route__stop{% unless doc %} is-planned{% endunless %}">
+        {% if doc %}
+          <a class="thread-route__title" href="{{ doc.url | relative_url }}">{{ doc.title }}</a>
+        {% elsif planned %}
+          <span class="thread-route__title">{{ planned.title }}</span> <span class="row__badge">planned</span>
+        {% else %}
+          <span class="thread-route__title">{{ stop.note }}</span> <span class="row__badge">missing</span>
+        {% endif %}
+        {% if stop.why %}<span class="thread-route__why">{{ stop.why }}</span>{% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+</div>
+{% endif %}

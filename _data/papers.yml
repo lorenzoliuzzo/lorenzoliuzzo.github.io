@@ -1,0 +1,688 @@
+# The site's one bibliography. A note cites a work in the text with {% cite id %} (numbered,
+# in order of first appearance) or {% citet id %} (author and year, then the number), and may
+# list further works in front matter with `cites: [id, ...]`; the reference list at the end of
+# the note is built from both. The back-links on /references/ are built from the same tags.
+#
+# Required: id (lower-case, hyphenated: surname-year, add -b for a second one), title,
+#           authors ("A. B. Surname, C. Surname"; more than five may end "et al."), year.
+# Optional: type (article, book, preprint, thesis, report, software, dataset), venue ("PNAS 79(8)"),
+#           pages, doi (bare, "10.1073/..."), arxiv (bare, "1706.03762"), url,
+#           why (one sentence on why a reader of the notes should care about this work),
+#           unverified (true until the details above have been checked against the source;
+#           tools/check_notes.rb warns while it is set).
+- id: hopfield-1982
+  title: "Neural networks and physical systems with emergent collective computational abilities"
+  authors: "J. J. Hopfield"
+  year: 1982
+  venue: "PNAS 79(8)"
+  pages: "2554-2558"
+  doi: "10.1073/pnas.79.8.2554"
+  url: "https://doi.org/10.1073/pnas.79.8.2554"
+  why: "Reads a network of binary neurons as a spin system with an energy function, so that stored memories are its minima."
+- id: attention-is-all-you-need
+  title: "Attention Is All You Need"
+  authors: "A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, L. Kaiser, I. Polosukhin"
+  year: 2017
+  venue: "NeurIPS"
+  url: "https://arxiv.org/abs/1706.03762"
+- id: egnn
+  title: "E(n) Equivariant Graph Neural Networks"
+  authors: "V. G. Satorras, E. Hoogeboom, M. Welling"
+  year: 2021
+  venue: "ICML"
+  url: "https://arxiv.org/abs/2102.09844"
+- id: demsar-2006
+  type: article
+  title: "Statistical comparisons of classifiers over multiple data sets"
+  authors: "J. Demšar"
+  year: 2006
+  venue: "Journal of Machine Learning Research 7"
+  pages: "1-30"
+  url: "https://jmlr.org/papers/v7/demsar06a.html"
+  why: "Recommends the Friedman test with a Nemenyi post-hoc test, and the critical difference diagram, for comparing classifiers over several data sets."
+- id: nemenyi-1963
+  type: thesis
+  title: "Distribution-free multiple comparisons"
+  authors: "P. B. Nemenyi"
+  year: 1963
+  venue: "PhD thesis, Princeton University"
+  why: "Source of the post-hoc procedure used after a significant Friedman test."
+- id: raschka-2020
+  type: preprint
+  title: "Model evaluation, model selection, and algorithm selection in machine learning"
+  authors: "S. Raschka"
+  year: 2020
+  arxiv: "1811.12808"
+  url: "https://arxiv.org/abs/1811.12808"
+  why: "A survey of resampling and testing choices for evaluating models, including repeated cross-validation."
+- id: pedregosa-2011
+  type: article
+  title: "Scikit-learn: machine learning in Python"
+  authors: "F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, et al."
+  year: 2011
+  venue: "Journal of Machine Learning Research 12"
+  pages: "2825-2830"
+  url: "https://jmlr.org/papers/v12/pedregosa11a.html"
+- id: virtanen-2020
+  type: article
+  title: "SciPy 1.0: fundamental algorithms for scientific computing in Python"
+  authors: "P. Virtanen, R. Gommers, T. E. Oliphant, M. Haberland, T. Reddy, D. Cournapeau, et al."
+  year: 2020
+  venue: "Nature Methods 17"
+  pages: "261-272"
+  doi: "10.1038/s41592-019-0686-2"
+- id: lenz-1920
+  type: article
+  title: "Beitrag zum Verständnis der magnetischen Erscheinungen in festen Körpern"
+  authors: "W. Lenz"
+  year: 1920
+  venue: "Physikalische Zeitschrift 21"
+  pages: "613-615"
+  why: "Proposes the model of interacting two-state magnetic moments that Ising later solved in one dimension."
+  unverified: true
+- id: ising-1925
+  type: article
+  title: "Beitrag zur Theorie des Ferromagnetismus"
+  authors: "E. Ising"
+  year: 1925
+  venue: "Zeitschrift für Physik 31"
+  pages: "253-258"
+  doi: "10.1007/BF02980577"
+  why: "Solves the chain exactly and finds no ordered phase at any non-zero temperature."
+  unverified: true
+- id: onsager-1944
+  type: article
+  title: "Crystal statistics. I. A two-dimensional model with an order-disorder transition"
+  authors: "L. Onsager"
+  year: 1944
+  venue: "Physical Review 65"
+  pages: "117-149"
+  doi: "10.1103/PhysRev.65.117"
+  why: "The exact solution of the square-lattice model, which does have a phase transition."
+  unverified: true
+- id: amit-1985
+  type: article
+  title: "Storing infinite numbers of patterns in a spin-glass model of neural networks"
+  authors: "D. J. Amit, H. Gutfreund, H. Sompolinsky"
+  year: 1985
+  venue: "Physical Review Letters 55"
+  pages: "1530-1533"
+  doi: "10.1103/PhysRevLett.55.1530"
+  why: "Applies the statistical mechanics of spin glasses to the Hopfield network and derives how many patterns it can hold."
+  unverified: true
+- id: ackley-1985
+  type: article
+  title: "A learning algorithm for Boltzmann machines"
+  authors: "D. H. Ackley, G. E. Hinton, T. J. Sejnowski"
+  year: 1985
+  venue: "Cognitive Science 9(1)"
+  pages: "147-169"
+  doi: "10.1207/s15516709cog0901_7"
+  why: "Gives the learning rule for a network whose states follow a Boltzmann distribution."
+  unverified: true
+- id: hinton-2002
+  type: article
+  title: "Training products of experts by minimizing contrastive divergence"
+  authors: "G. E. Hinton"
+  year: 2002
+  venue: "Neural Computation 14(8)"
+  pages: "1771-1800"
+  doi: "10.1162/089976602760128018"
+  why: "The shortcut that made restricted Boltzmann machines practical to train."
+  unverified: true
+- id: nobel-physics-2024
+  type: report
+  title: "Scientific background to the Nobel Prize in Physics 2024: for foundational discoveries and inventions that enable machine learning with artificial neural networks"
+  authors: "The Nobel Committee for Physics"
+  year: 2024
+  url: "https://www.nobelprize.org/prizes/physics/2024/advanced-information/"
+  why: "The prize committee's own account of how Hopfield's and Hinton's work grew out of statistical physics."
+  unverified: true
+- id: benjamini-hochberg-1995
+  type: article
+  title: "Controlling the false discovery rate: a practical and powerful approach to multiple testing"
+  authors: "Y. Benjamini, Y. Hochberg"
+  year: 1995
+  venue: "Journal of the Royal Statistical Society: Series B 57(1)"
+  pages: "289-300"
+  why: "The step-up procedure that controls the share of false discoveries rather than the chance of any."
+  unverified: true
+- id: dietterich-1998
+  type: article
+  title: "Approximate statistical tests for comparing supervised classification learning algorithms"
+  authors: "T. G. Dietterich"
+  year: 1998
+  venue: "Neural Computation 10(7)"
+  pages: "1895-1923"
+  why: "Shows that common tests for comparing two classifiers on one data set misstate their error rates, and proposes the 5x2 cross-validation test."
+  unverified: true
+- id: vovk-2005
+  type: book
+  title: "Algorithmic Learning in a Random World"
+  authors: "V. Vovk, A. Gammerman, G. Shafer"
+  year: 2005
+  venue: "Springer"
+  why: "Where conformal prediction and its distribution-free coverage guarantee were developed."
+  unverified: true
+- id: hoerl-kennard-1970
+  type: article
+  title: "Ridge regression: biased estimation for nonorthogonal problems"
+  authors: "A. E. Hoerl, R. W. Kennard"
+  year: 1970
+  venue: "Technometrics 12(1)"
+  pages: "55-67"
+  why: "Introduces ridge regression as a cure for unstable least squares estimates."
+  unverified: true
+- id: tibshirani-1996
+  type: article
+  title: "Regression shrinkage and selection via the lasso"
+  authors: "R. Tibshirani"
+  year: 1996
+  venue: "Journal of the Royal Statistical Society: Series B 58(1)"
+  pages: "267-288"
+  why: "Introduces the L1 penalty, which shrinks and selects at once."
+  unverified: true
+- id: wahba-1990
+  type: book
+  title: "Spline Models for Observational Data"
+  authors: "G. Wahba"
+  year: 1990
+  venue: "SIAM"
+  why: "The treatment of smoothing splines as posterior means under a prior on functions."
+  unverified: true
+- id: krogh-hertz-1991
+  type: article
+  title: "A simple weight decay can improve generalization"
+  authors: "A. Krogh, J. A. Hertz"
+  year: 1991
+  venue: "Advances in Neural Information Processing Systems 4"
+  pages: "950-957"
+  why: "An early analysis of why shrinking network weights helps."
+  unverified: true
+- id: mcculloch-pitts-1943
+  type: article
+  title: "A logical calculus of the ideas immanent in nervous activity"
+  authors: "W. S. McCulloch, W. Pitts"
+  year: 1943
+  venue: "Bulletin of Mathematical Biophysics 5(4)"
+  pages: "115-133"
+  doi: "10.1007/BF02478259"
+  why: "The first mathematical model of a neuron as a threshold unit, and of networks of them as logic."
+  unverified: true
+- id: rosenblatt-1958
+  type: article
+  title: "The perceptron: a probabilistic model for information storage and organization in the brain"
+  authors: "F. Rosenblatt"
+  year: 1958
+  venue: "Psychological Review 65(6)"
+  pages: "386-408"
+  doi: "10.1037/h0042519"
+  why: "Introduces the perceptron and a rule for learning its weights from examples."
+  unverified: true
+- id: novikoff-1962
+  type: article
+  title: "On convergence proofs on perceptrons"
+  authors: "A. B. J. Novikoff"
+  year: 1962
+  venue: "Symposium on the Mathematical Theory of Automata 12"
+  pages: "615-622"
+  why: "The standard proof that the perceptron rule stops on linearly separable data."
+  unverified: true
+- id: minsky-papert-1969
+  type: book
+  title: "Perceptrons: An Introduction to Computational Geometry"
+  authors: "M. Minsky, S. Papert"
+  year: 1969
+  venue: "MIT Press"
+  why: "Proves what single-layer perceptrons cannot compute, such as parity and XOR."
+  unverified: true
+- id: rumelhart-1986
+  type: article
+  title: "Learning representations by back-propagating errors"
+  authors: "D. E. Rumelhart, G. E. Hinton, R. J. Williams"
+  year: 1986
+  venue: "Nature 323"
+  pages: "533-536"
+  doi: "10.1038/323533a0"
+  why: "Shows that backpropagation lets multi-layer networks learn internal representations."
+  unverified: true
+- id: glorot-bengio-2010
+  type: article
+  title: "Understanding the difficulty of training deep feedforward neural networks"
+  authors: "X. Glorot, Y. Bengio"
+  year: 2010
+  venue: "Proceedings of AISTATS, PMLR 9"
+  pages: "249-256"
+  why: "Analyses how activations and gradients scale with depth and proposes an initialization."
+  unverified: true
+- id: nair-hinton-2010
+  type: article
+  title: "Rectified linear units improve restricted Boltzmann machines"
+  authors: "V. Nair, G. E. Hinton"
+  year: 2010
+  venue: "Proceedings of ICML"
+  pages: "807-814"
+  why: "Early use of rectified linear units as the hidden nonlinearity."
+  unverified: true
+- id: hochreiter-1991
+  type: thesis
+  title: "Untersuchungen zu dynamischen neuronalen Netzen"
+  authors: "S. Hochreiter"
+  year: 1991
+  venue: "Diploma thesis, Technische Universit\u00e4t M\u00fcnchen"
+  why: "The first analysis of why gradients vanish or explode in deep and recurrent networks."
+  unverified: true
+- id: broomhead-lowe-1988
+  type: article
+  title: "Multivariable functional interpolation and adaptive networks"
+  authors: "D. S. Broomhead, D. Lowe"
+  year: 1988
+  venue: "Complex Systems 2(3)"
+  pages: "321-355"
+  why: "Introduces radial basis function networks as interpolators."
+  unverified: true
+- id: fukushima-1980
+  type: article
+  title: "Neocognitron: a self-organizing neural network model for a mechanism of pattern recognition unaffected by shift in position"
+  authors: "K. Fukushima"
+  year: 1980
+  venue: "Biological Cybernetics 36(4)"
+  pages: "193-202"
+  doi: "10.1007/BF00344251"
+  why: "An early hierarchy of local feature detectors and pooling, the ancestor of convolutional networks."
+  unverified: true
+- id: lecun-1998
+  type: article
+  title: "Gradient-based learning applied to document recognition"
+  authors: "Y. LeCun, L. Bottou, Y. Bengio, P. Haffner"
+  year: 1998
+  venue: "Proceedings of the IEEE 86(11)"
+  pages: "2278-2324"
+  doi: "10.1109/5.726791"
+  why: "Trains convolutional networks end to end with backpropagation and describes LeNet-5."
+  unverified: true
+- id: krizhevsky-2012
+  type: article
+  title: "ImageNet classification with deep convolutional neural networks"
+  authors: "A. Krizhevsky, I. Sutskever, G. E. Hinton"
+  year: 2012
+  venue: "Advances in Neural Information Processing Systems 25"
+  pages: "1097-1105"
+  why: "The convolutional network that made deep learning the default for image recognition."
+  unverified: true
+- id: elman-1990
+  type: article
+  title: "Finding structure in time"
+  authors: "J. L. Elman"
+  year: 1990
+  venue: "Cognitive Science 14(2)"
+  pages: "179-211"
+  doi: "10.1207/s15516709cog1402_1"
+  why: "The simple recurrent network, with a hidden state fed back as context."
+  unverified: true
+- id: hochreiter-schmidhuber-1997
+  type: article
+  title: "Long short-term memory"
+  authors: "S. Hochreiter, J. Schmidhuber"
+  year: 1997
+  venue: "Neural Computation 9(8)"
+  pages: "1735-1780"
+  doi: "10.1162/neco.1997.9.8.1735"
+  why: "Introduces gated memory cells that let gradients survive many time steps."
+  unverified: true
+- id: cho-2014
+  type: article
+  title: "Learning phrase representations using RNN encoder-decoder for statistical machine translation"
+  authors: "K. Cho, B. van Merrienboer, C. Gulcehre, D. Bahdanau, F. Bougares, H. Schwenk, Y. Bengio"
+  year: 2014
+  venue: "Proceedings of EMNLP"
+  pages: "1724-1734"
+  arxiv: "1406.1078"
+  why: "Introduces the gated recurrent unit, a lighter alternative to the LSTM."
+  unverified: true
+- id: hinton-salakhutdinov-2006
+  type: article
+  title: "Reducing the dimensionality of data with neural networks"
+  authors: "G. E. Hinton, R. R. Salakhutdinov"
+  year: 2006
+  venue: "Science 313(5786)"
+  pages: "504-507"
+  doi: "10.1126/science.1127647"
+  why: "Shows that deep autoencoders pretrained layer by layer give better codes than PCA."
+  unverified: true
+- id: vincent-2008
+  type: article
+  title: "Extracting and composing robust features with denoising autoencoders"
+  authors: "P. Vincent, H. Larochelle, Y. Bengio, P.-A. Manzagol"
+  year: 2008
+  venue: "Proceedings of ICML"
+  pages: "1096-1103"
+  why: "Trains an autoencoder to undo corruption of its input, which forces it to learn structure."
+  unverified: true
+- id: kohonen-1982
+  type: article
+  title: "Self-organized formation of topologically correct feature maps"
+  authors: "T. Kohonen"
+  year: 1982
+  venue: "Biological Cybernetics 43(1)"
+  pages: "59-69"
+  doi: "10.1007/BF00337288"
+  why: "Introduces the self-organizing map."
+  unverified: true
+- id: kohonen-1990
+  type: article
+  title: "The self-organizing map"
+  authors: "T. Kohonen"
+  year: 1990
+  venue: "Proceedings of the IEEE 78(9)"
+  pages: "1464-1480"
+  doi: "10.1109/5.58325"
+  why: "A review of the self-organizing map and learning vector quantization."
+  unverified: true
+- id: chen-2018
+  type: preprint
+  title: "Neural ordinary differential equations"
+  authors: "R. T. Q. Chen, Y. Rubanova, J. Bettencourt, D. Duvenaud"
+  year: 2018
+  venue: "NeurIPS 31"
+  arxiv: "1806.07366"
+  url: "https://arxiv.org/abs/1806.07366"
+  why: "Defines the neural ODE and the adjoint method for training it with constant memory."
+  unverified: true
+- id: cranmer-2020
+  type: preprint
+  title: "Lagrangian neural networks"
+  authors: "M. Cranmer, S. Greydanus, S. Hoyer, P. Battaglia, D. Spergel, S. Ho"
+  year: 2020
+  arxiv: "2003.04630"
+  url: "https://arxiv.org/abs/2003.04630"
+  why: "Learns a Lagrangian from positions and velocities, without canonical momenta."
+  unverified: true
+- id: greydanus-2019
+  type: preprint
+  title: "Hamiltonian neural networks"
+  authors: "S. Greydanus, M. Dzamba, J. Yosinski"
+  year: 2019
+  venue: "NeurIPS 32"
+  arxiv: "1906.01563"
+  url: "https://arxiv.org/abs/1906.01563"
+  why: "Learns a scalar energy and takes its symplectic gradient, so the flow conserves it."
+  unverified: true
+- id: lutter-2019
+  type: preprint
+  title: "Deep Lagrangian networks: using physics as model prior for deep learning"
+  authors: "M. Lutter, C. Ritter, J. Peters"
+  year: 2019
+  arxiv: "1907.04490"
+  url: "https://arxiv.org/abs/1907.04490"
+  why: "Structures the learned Lagrangian so that the inertia matrix is positive definite."
+  unverified: true
+- id: matsubara-2021
+  type: article
+  title: "Symplectic adjoint method for exact gradient of neural ODE with minimal memory"
+  authors: "T. Matsubara, Y. Miyatake, T. Yaguchi"
+  year: 2021
+  venue: "Advances in Neural Information Processing Systems 34"
+  pages: "20772-20784"
+  why: "A backward integrator whose gradient is exact for the forward scheme, with small memory."
+  unverified: true
+- id: cao-2003
+  type: article
+  title: "Adjoint sensitivity analysis for differential-algebraic equations: the adjoint DAE system and its numerical solution"
+  authors: "Y. Cao, S. Li, L. Petzold, R. Serban"
+  year: 2003
+  venue: "SIAM Journal on Scientific Computing 24(3)"
+  pages: "1076-1089"
+  doi: "10.1137/S1064827501380630"
+  url: "https://doi.org/10.1137/S1064827501380630"
+  why: "The adjoint method for sensitivity analysis of differential equations with algebraic constraints."
+  unverified: true
+- id: wolff-1989
+  type: article
+  title: "Collective Monte Carlo updating for spin systems"
+  authors: "U. Wolff"
+  year: 1989
+  venue: "Physical Review Letters 62(4)"
+  pages: "361-364"
+  doi: "10.1103/PhysRevLett.62.361"
+  url: "https://doi.org/10.1103/PhysRevLett.62.361"
+  why: "Introduces the single-cluster update that removes most of the critical slowing down of the Ising model."
+  unverified: true
+- id: perozzi-2014
+  type: preprint
+  title: "DeepWalk: online learning of social representations"
+  authors: "B. Perozzi, R. Al-Rfou, S. Skiena"
+  year: 2014
+  venue: "KDD 2014"
+  arxiv: "1403.6652"
+  url: "https://arxiv.org/abs/1403.6652"
+  why: "Trains node vectors to predict the neighbours on uniform random walks, as word vectors are trained from text."
+  unverified: true
+- id: grover-2016
+  type: preprint
+  title: "node2vec: scalable feature learning for networks"
+  authors: "A. Grover, J. Leskovec"
+  year: 2016
+  venue: "KDD 2016"
+  arxiv: "1607.00653"
+  url: "https://arxiv.org/abs/1607.00653"
+  why: "Biases the random walk with a return and an in-out parameter to trade local against global structure."
+  unverified: true
+- id: hamilton-2017
+  type: preprint
+  title: "Inductive representation learning on large graphs"
+  authors: "W. L. Hamilton, R. Ying, J. Leskovec"
+  year: 2017
+  venue: "NeurIPS 30"
+  arxiv: "1706.02216"
+  url: "https://arxiv.org/abs/1706.02216"
+  why: "GraphSAGE: learnable neighbourhood aggregators that embed nodes unseen in training."
+  unverified: true
+- id: kipf-2017
+  type: preprint
+  title: "Semi-supervised classification with graph convolutional networks"
+  authors: "T. N. Kipf, M. Welling"
+  year: 2017
+  venue: "ICLR 2017"
+  arxiv: "1609.02907"
+  url: "https://arxiv.org/abs/1609.02907"
+  why: "The normalized-adjacency graph convolution layer."
+  unverified: true
+- id: sutton-2018
+  type: book
+  title: "Reinforcement learning: an introduction"
+  authors: "R. S. Sutton, A. G. Barto"
+  year: 2018
+  venue: "MIT Press, 2nd edition"
+  why: "The standard text on MDPs, value functions, Bellman equations and temporal-difference learning."
+  unverified: true
+- id: watkins-1992
+  type: article
+  title: "Q-learning"
+  authors: "C. J. C. H. Watkins, P. Dayan"
+  year: 1992
+  venue: "Machine Learning 8(3-4)"
+  pages: "279-292"
+  why: "Proves that tabular Q-learning converges to the optimal action values."
+  unverified: true
+- id: jaeger-2004
+  type: article
+  title: "Harnessing nonlinearity: predicting chaotic systems and saving energy in wireless communication"
+  authors: "H. Jaeger, H. Haas"
+  year: 2004
+  venue: "Science 304(5667)"
+  pages: "78-80"
+  why: "Echo state networks: a fixed random recurrent reservoir with a trained linear readout, applied to chaotic series."
+  unverified: true
+- id: pathak-2018
+  type: article
+  title: "Model-free prediction of large spatiotemporally chaotic systems from data: a reservoir computing approach"
+  authors: "J. Pathak, B. Hunt, M. Girvan, Z. Lu, E. Ott"
+  year: 2018
+  venue: "Physical Review Letters 120"
+  pages: "024102"
+  why: "A reservoir forecasts a chaotic PDE for several Lyapunov times from data alone."
+  unverified: true
+- id: carrasquilla-2017
+  type: article
+  title: "Machine learning phases of matter"
+  authors: "J. Carrasquilla, R. G. Melko"
+  year: 2017
+  venue: "Nature Physics 13"
+  pages: "431-434"
+  arxiv: "1605.01735"
+  why: "Neural networks trained on sampled spin configurations classify phases and locate the Ising critical point."
+  unverified: true
+- id: cohen-2016
+  type: preprint
+  title: "Group equivariant convolutional networks"
+  authors: "T. S. Cohen, M. Welling"
+  year: 2016
+  venue: "ICML"
+  arxiv: "1602.07576"
+  why: "Extends convolution from translations to larger symmetry groups."
+  unverified: true
+- id: lagaris-1998
+  type: article
+  title: "Artificial neural networks for solving ordinary and partial differential equations"
+  authors: "I. E. Lagaris, A. Likas, D. I. Fotiadis"
+  year: 1998
+  venue: "IEEE Transactions on Neural Networks 9(5)"
+  pages: "987-1000"
+  why: "A trial solution that satisfies the boundary conditions by construction, with a network fitted to the residual."
+  unverified: true
+- id: raissi-2019
+  type: article
+  title: "Physics-informed neural networks: a deep learning framework for solving forward and inverse problems involving nonlinear partial differential equations"
+  authors: "M. Raissi, P. Perdikaris, G. E. Karniadakis"
+  year: 2019
+  venue: "Journal of Computational Physics 378"
+  pages: "686-707"
+  why: "Introduces PINNs: a network trained on data and on the PDE residual at collocation points."
+  unverified: true
+- id: wang-2021
+  type: article
+  title: "Understanding and mitigating gradient flow pathologies in physics-informed neural networks"
+  authors: "S. Wang, Y. Teng, P. Perdikaris"
+  year: 2021
+  venue: "SIAM Journal on Scientific Computing 43(5)"
+  pages: "A3055-A3081"
+  why: "Shows that the residual and boundary terms of a PINN loss have mismatched gradients and proposes adaptive weights."
+  unverified: true
+- id: shannon-1948
+  type: article
+  title: "A mathematical theory of communication"
+  authors: "C. E. Shannon"
+  year: 1948
+  venue: "Bell System Technical Journal 27"
+  pages: "379-423, 623-656"
+  why: "Defines the entropy of a probability distribution as a measure of information."
+  unverified: true
+- id: jaynes-1957
+  type: article
+  title: "Information theory and statistical mechanics"
+  authors: "E. T. Jaynes"
+  year: 1957
+  venue: "Physical Review 106(4)"
+  pages: "620-630"
+  why: "Derives the ensembles of statistical mechanics from the maximum entropy principle."
+  unverified: true
+- id: landauer-1961
+  type: article
+  title: "Irreversibility and heat generation in the computing process"
+  authors: "R. Landauer"
+  year: 1961
+  venue: "IBM Journal of Research and Development 5(3)"
+  pages: "183-191"
+  why: "Shows that erasing a bit of information dissipates at least kT ln 2 of heat."
+  unverified: true
+- id: kardar-2007
+  type: book
+  title: "Statistical physics of particles"
+  authors: "M. Kardar"
+  year: 2007
+  venue: "Cambridge University Press"
+  why: "Graduate text covering ensembles, fluctuations, phase transitions and critical exponents."
+  unverified: true
+- id: peierls-1936
+  type: article
+  title: "On Ising's model of ferromagnetism"
+  authors: "R. Peierls"
+  year: 1936
+  venue: "Mathematical Proceedings of the Cambridge Philosophical Society 32(3)"
+  pages: "477-481"
+  why: "The domain-wall argument showing that the two-dimensional Ising model orders at low temperature."
+  unverified: true
+- id: mermin-1966
+  type: article
+  title: "Absence of ferromagnetism or antiferromagnetism in one- or two-dimensional isotropic Heisenberg models"
+  authors: "N. D. Mermin, H. Wagner"
+  year: 1966
+  venue: "Physical Review Letters 17(22)"
+  pages: "1133-1136"
+  why: "Proves that a continuous symmetry cannot be spontaneously broken at finite temperature in one or two dimensions."
+  unverified: true
+- id: kosterlitz-1973
+  type: article
+  title: "Ordering, metastability and phase transitions in two-dimensional systems"
+  authors: "J. M. Kosterlitz, D. J. Thouless"
+  year: 1973
+  venue: "Journal of Physics C 6(7)"
+  pages: "1181-1203"
+  why: "Topological defects drive a phase transition in the two-dimensional XY model without a local order parameter."
+  unverified: true
+- id: robbins-monro-1951
+  type: article
+  title: "A stochastic approximation method"
+  authors: "H. Robbins, S. Monro"
+  year: 1951
+  venue: "Annals of Mathematical Statistics 22(3)"
+  pages: "400-407"
+  doi: "10.1214/aoms/1177729586"
+  why: "Introduces stochastic approximation: iterating with noisy gradient estimates and a decreasing step converges, the basis of stochastic gradient descent."
+  unverified: true
+- id: polyak-1964
+  type: article
+  title: "Some methods of speeding up the convergence of iteration methods"
+  authors: "B. T. Polyak"
+  year: 1964
+  venue: "USSR Computational Mathematics and Mathematical Physics 4(5)"
+  pages: "1-17"
+  doi: "10.1016/0041-5553(64)90137-5"
+  why: "The heavy-ball method: adding a fraction of the previous step to the gradient step speeds up descent along narrow valleys."
+  unverified: true
+- id: kingma-ba-2015
+  type: preprint
+  title: "Adam: A method for stochastic optimization"
+  authors: "D. P. Kingma, J. Ba"
+  year: 2015
+  venue: "ICLR"
+  arxiv: "1412.6980"
+  why: "The adaptive-step optimizer that most deep learning code uses by default."
+  unverified: true
+- id: cybenko-1989
+  type: article
+  title: "Approximation by superpositions of a sigmoidal function"
+  authors: "G. Cybenko"
+  year: 1989
+  venue: "Mathematics of Control, Signals and Systems 2"
+  pages: "303-314"
+  why: "Proves that one hidden layer of sigmoidal units is dense in the continuous functions on a compact set."
+  unverified: true
+- id: hornik-1991
+  type: article
+  title: "Approximation capabilities of multilayer feedforward networks"
+  authors: "K. Hornik"
+  year: 1991
+  venue: "Neural Networks 4"
+  pages: "251-257"
+  why: "Extends universal approximation to a wide class of bounded activation functions."
+  unverified: true
+- id: stein-shakarchi-2003
+  type: book
+  title: "Fourier Analysis: An Introduction"
+  authors: "E. M. Stein, R. Shakarchi"
+  year: 2003
+  venue: "Princeton University Press"
+  why: "A textbook treatment of convergence of Fourier series, Dirichlet's theorem and Parseval's identity."
+  unverified: true
