@@ -3,6 +3,8 @@ name: Deploy Jekyll site to GitHub Pages
 on:
   push:
     branches: ["main"]
+  pull_request:
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -10,8 +12,10 @@ permissions:
   pages: write
   id-token: write
 
+# Scoped by ref so a PR build (e.g. from an automerge-notes.yml candidate) never
+# cancels an in-flight deploy from a push to main, or vice versa.
 concurrency:
-  group: "pages"
+  group: "pages-${{ github.ref }}"
   cancel-in-progress: true
 
 jobs:
@@ -37,6 +41,9 @@ jobs:
         uses: actions/upload-pages-artifact@v3
 
   deploy:
+    # Never deploy from a PR build -- this job only runs for an actual push to
+    # main, so a pull_request run stops at "build" and only proves buildability.
+    if: github.event_name == 'push'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
