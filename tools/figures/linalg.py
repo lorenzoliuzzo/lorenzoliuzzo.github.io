@@ -15,7 +15,7 @@ def solve(A, b):
                 M[r][k] -= f * M[c][k]
     x = [0.0] * n
     for r in range(n - 1, -1, -1):
-        x[r] = (M[r][n] - sum(M[r][k] * x[k] for k in range(r + 1, n))) / M[r][r]
+        x[r] = (M[r][n] - math.fsum(M[r][k] * x[k] for k in range(r + 1, n))) / M[r][r]
     return x
 
 
@@ -26,7 +26,7 @@ def inverse(A):
 
 
 def matmul(A, B):
-    return [[sum(a * b for a, b in zip(row, col)) for col in zip(*B)] for row in A]
+    return [[math.fsum(a * b for a, b in zip(row, col)) for col in zip(*B)] for row in A]
 
 
 def transpose(A):
@@ -37,8 +37,8 @@ def lstsq(X, y, w=None):
     """Least squares coefficients via the normal equations (fine for the tiny, well-scaled designs here)."""
     w = w or [1.0] * len(y)
     p = len(X[0])
-    A = [[sum(w[i] * X[i][a] * X[i][b] for i in range(len(y))) for b in range(p)] for a in range(p)]
-    b = [sum(w[i] * X[i][a] * y[i] for i in range(len(y))) for a in range(p)]
+    A = [[math.fsum(w[i] * X[i][a] * X[i][b] for i in range(len(y))) for b in range(p)] for a in range(p)]
+    b = [math.fsum(w[i] * X[i][a] * y[i] for i in range(len(y))) for a in range(p)]
     return solve(A, b)
 
 

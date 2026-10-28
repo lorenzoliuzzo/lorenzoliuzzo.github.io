@@ -83,7 +83,7 @@ module MyThingsLab
         list = raw.is_a?(Hash) ? raw.map { |slug, course| course.merge("slug" => (course["slug"] || slug).to_s) } : Array(raw)
         order = Array(site.data["domains"]).each_with_index.each_with_object({}) { |(d, i), h| h[d["id"]] = i }
         list = list.sort_by do |course|
-          [order.fetch(course["domain"], order.size), course["order"] || 1000, course["title"].to_s.downcase]
+          [order.fetch(course["domain"], order.size), course["order"].is_a?(Numeric) ? course["order"] : 1000, course["title"].to_s.downcase]
         end
         site.data["courses"] = list
       end
@@ -98,6 +98,7 @@ module MyThingsLab
         return if collection.nil?
 
         @site = site
+        @by_note = nil
         docs = collection.docs.each_with_object({}) { |doc, h| h[Courses.note_key(doc.relative_path)] = doc }
         stubs = Array(site.data["planned_notes"]).each_with_object({}) { |s, h| h[Courses.note_key(s["path"])] = s }
         concepts = site.data["concepts"] || {}
@@ -126,11 +127,12 @@ module MyThingsLab
           course["pct"] = course["total"].zero? ? 0 : (course["written"] * 100.0 / course["total"]).round
           course["status"] = course["written"].zero? ? "planned" : (course["planned"].zero? ? "complete" : "in-progress")
           course["status_label"] = { "planned" => "Planned", "in-progress" => "In progress", "complete" => "Written" }[course["status"]]
-          first = course["parts"].flat_map { |p| p["items"] }.find { |i| i["written"] }
+          all_items = Array(course["parts"]).flat_map { |p| p["items"] }
+          first = all_items.find { |i| i["written"] }
           course["first_url"] = first && first["url"]
           course["first_title"] = first && first["title"]
-          course["verified"] = course["parts"].flat_map { |p| p["items"] }.count { |i| i["state"] == "verified" }
-          course["updated"] = course["parts"].flat_map { |p| p["items"] }.map { |i| i["date"] }.compact.max
+          course["verified"] = all_items.count { |i| i["state"] == "verified" }
+          course["updated"] = all_items.map { |i| i["date"] }.compact.max
           course["reads_from"] = []
           course["feeds"] = []
         end
@@ -143,14 +145,15 @@ module MyThingsLab
       private
 
       def item_for(key, doc, stub, course, concepts)
-        defined_here = concepts.values.select { |c| c["note"] == key }
+        @by_note ||= concepts.values.group_by { |c| c["note"] }
+        defined_here = @by_note.fetch(key, [])
         chips = defined_here.map do |c|
           href = c["url"] && (c["anchor"].to_s.empty? ? c["url"] : "#{c['url']}##{c['anchor']}")
           { "id" => c["id"], "name" => c["name"], "href" => href, "planned" => c["planned"] }
         end
         if doc
           { "key" => key, "written" => true, "title" => doc.data["title"].to_s.empty? ? File.basename(key) : doc.data["title"],
-            "url" => doc.url, "summary" => Courses.summary_for(doc), "date" => doc.data["date"] && doc.data["date"].to_time.strftime("%Y-%m-%d"),
+            "url" => doc.url, "summary" => Courses.summary_for(doc), "date" => doc.data["date"].respond_to?(:strftime) ? doc.data["date"].strftime("%Y-%m-%d") : nil,
             "concepts" => chips, "course" => course["slug"], "state" => doc.data["verification_state"].to_s }
         else
           { "key" => key, "written" => false, "title" => (stub && stub["title"]) || File.basename(key),
@@ -245,7 +248,7 @@ module MyThingsLab
 
         index = []
         courses.each do |course|
-          course["parts"].each do |part|
+          Array(course["parts"]).each do |part|
             part["items"].each do |item|
               index << { "k" => "note", "t" => item["title"], "u" => item["url"], "c" => course["title"], "p" => part["title"],
                          "d" => course["domain_title"], "e" => item["summary"], "w" => item["written"] ? 1 : 0,

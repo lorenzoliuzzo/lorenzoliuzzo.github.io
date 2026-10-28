@@ -57,7 +57,18 @@ jobs:
       # Figures are generated from tools/figures and committed, because the Pages
       # build has no Python. A script edited without rerunning the build would leave
       # the page showing the old figure.
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
       - name: Check the figures are up to date
         run: |
           python3 tools/figures/build.py
-          git diff --exit-code -- _includes/fig assets/notes
+          # status, not diff: a new figure whose SVG was never committed is untracked
+          # and `git diff` would let it pass.
+          test -z "$(git status --porcelain -- _includes/fig assets/notes)" || {
+            git status --short -- _includes/fig assets/notes
+            echo "Figures are out of date: run python3 tools/figures/build.py and commit the SVGs."
+            exit 1
+          }

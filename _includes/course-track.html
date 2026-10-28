@@ -27,9 +27,14 @@
     }
 
     var last = progress[slug], go = document.getElementById("course-go");
-    if (last && go && last.url) {
+    // Only same-site paths: the value comes from localStorage, which the page does not control.
+    if (last && go && typeof last.url === "string" && last.url.charAt(0) === "/" && last.url.charAt(1) !== "/") {
       go.setAttribute("href", last.url);
-      go.innerHTML = "Continue with " + last.title.replace(/[<>&]/g, "") + " <span aria-hidden=\"true\">&rarr;</span>";
+      go.textContent = "Continue with " + String(last.title || "") + " ";
+      var arrow = document.createElement("span");
+      arrow.setAttribute("aria-hidden", "true");
+      arrow.textContent = "\u2192";
+      go.appendChild(arrow);
     }
   })();
 </script>

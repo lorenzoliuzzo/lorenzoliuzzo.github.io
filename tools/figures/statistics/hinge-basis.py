@@ -25,7 +25,7 @@ def design(xs, terms):
 def rss_of(xs, ys, terms):
     b = lstsq(design(xs, terms), ys)
     X = design(xs, terms)
-    return sum((y - sum(c * v for c, v in zip(b, row))) ** 2 for y, row in zip(ys, X)), b
+    return math.fsum((y - math.fsum(c * v for c, v in zip(b, row))) ** 2 for y, row in zip(ys, X)), b
 
 
 def forward(xs, ys, pairs):
@@ -52,7 +52,7 @@ def backward(xs, ys, terms, d=2.0):
 
 
 def predict(terms, b):
-    return lambda x: b[0] + sum(c * max(sg * (x - t), 0.0) for c, (t, sg) in zip(b[1:], terms))
+    return lambda x: b[0] + math.fsum(c * max(sg * (x - t), 0.0) for c, (t, sg) in zip(b[1:], terms))
 
 
 def build():

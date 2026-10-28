@@ -170,6 +170,10 @@ module MyThingsLab
           end
         end
 
+        # A note that no course lists has no node; an edge to it would dangle in the viewer.
+        known = nodes.each_with_object({}) { |n, h| h[n["id"]] = true }
+        edges.select! { |e| known[e["from"]] && known[e["to"]] }
+
         { "version" => 1, "nodes" => nodes, "edges" => edges }
       end
     end

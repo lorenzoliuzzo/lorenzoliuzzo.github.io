@@ -7,7 +7,7 @@
     var letters = Array.prototype.slice.call(document.querySelectorAll(".letter"));
     var jumps = Array.prototype.slice.call(document.querySelectorAll("#glossary-letters a"));
     var empty = document.getElementById("glossary-empty");
-    function fold(s) { return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
+    function fold(s) { return String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
     function apply() {
       var words = fold(box.value).split(/\s+/).filter(Boolean), shown = 0;
       terms.forEach(function (t) {

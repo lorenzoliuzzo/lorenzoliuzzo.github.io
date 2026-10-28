@@ -8,11 +8,15 @@
     course_next_planned                  the stub that comes next in the course order, when
                                          that next entry is not written yet
 
-  Courses are _data/courses/<slug>.yml, normalised by _plugins/courses.rb. A note belongs to a course when its path is listed in the
-  course's `parts`; the first course that lists it wins. Reading order is the order of
-  `parts`. Liquid has no arrays to build, so the ordered path lists go through
-  "|"-joined strings.
+  Courses are _data/courses/<slug>.yml, normalised by _plugins/courses.rb, which also gives
+  every part its `items` (key, written, url, title, summary) in reading order. A note belongs
+  to a course when its key is listed in the course's `parts`; the first course that lists it
+  wins. Everything here is a walk over those items: no lookups in site.notes, so the cost per
+  page is the size of one course, not of the whole archive. course_prev, course_next and
+  course_next_planned are items, which have the same url, title and summary a note has.
+  Also sets `here`, the note's key (its path under _notes without the extension).
 {% endcomment %}
+{% assign here = page.path | remove_first: "_notes/" | replace: ".md", "" %}
 {% assign this_course = nil %}
 {% assign this_part = nil %}
 {% assign part_index = 0 %}
@@ -24,14 +28,16 @@
 {% assign course_total = 0 %}
 {% for course in site.data.courses %}
   {% unless this_course %}
+    {% assign counted = 0 %}
     {% for part in course.parts %}
       {% assign pi = forloop.index %}
-      {% for p in part.notes %}
-        {% assign rel = "_notes/" | append: p | append: ".md" %}
-        {% if rel == page.path %}
+      {% for item in part.items %}
+        {% assign counted = counted | plus: 1 %}
+        {% if item.key == here %}
           {% assign this_course = course %}
           {% assign this_part = part %}
           {% assign part_index = pi %}
+          {% assign course_pos = counted %}
         {% endif %}
       {% endfor %}
     {% endfor %}
@@ -40,40 +46,22 @@
 
 {% if this_course %}
   {% assign course_url = this_course.url %}
-  {% assign flat = "" %}
-  {% assign full = "" %}
+  {% assign seen_here = false %}
+  {% assign just_after = false %}
+  {% assign immediate = nil %}
   {% for part in this_course.parts %}
-    {% for p in part.notes %}
-      {% assign rel = "_notes/" | append: p | append: ".md" %}
-      {% assign full = full | append: rel | append: "|" %}
-      {% assign doc = site.notes | where: "relative_path", rel | first %}
-      {% if doc %}{% assign flat = flat | append: rel | append: "|" %}{% endif %}
+    {% for item in part.items %}
+      {% assign course_total = course_total | plus: 1 %}
+      {% if item.key == here %}
+        {% assign seen_here = true %}
+        {% assign just_after = true %}
+      {% elsif seen_here == false %}
+        {% if item.written %}{% assign course_prev = item %}{% endif %}
+      {% else %}
+        {% if just_after %}{% assign immediate = item %}{% assign just_after = false %}{% endif %}
+        {% if item.written and course_next == nil %}{% assign course_next = item %}{% endif %}
+      {% endif %}
     {% endfor %}
   {% endfor %}
-  {% assign ordered = flat | split: "|" %}
-  {% assign everything = full | split: "|" %}
-  {% assign course_total = everything.size %}
-
-  {% assign idx = 0 %}
-  {% for rel in ordered %}
-    {% if rel == page.path %}{% assign idx = forloop.index0 %}{% endif %}
-  {% endfor %}
-  {% assign pos = 0 %}
-  {% for rel in everything %}
-    {% if rel == page.path %}{% assign pos = forloop.index0 %}{% endif %}
-  {% endfor %}
-  {% assign course_pos = pos | plus: 1 %}
-
-  {% assign prev_idx = idx | minus: 1 %}
-  {% assign next_idx = idx | plus: 1 %}
-  {% if idx > 0 %}{% assign course_prev = site.notes | where: "relative_path", ordered[prev_idx] | first %}{% endif %}
-  {% if next_idx < ordered.size %}{% assign course_next = site.notes | where: "relative_path", ordered[next_idx] | first %}{% endif %}
-
-  {% assign after = pos | plus: 1 %}
-  {% if after < everything.size %}
-    {% assign after_path = everything[after] %}
-    {% unless flat contains after_path %}
-      {% assign course_next_planned = site.data.planned_notes | where: "path", after_path | first %}
-    {% endunless %}
-  {% endif %}
+  {% if immediate and immediate.written == false %}{% assign course_next_planned = immediate %}{% endif %}
 {% endif %}

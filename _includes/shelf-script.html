@@ -95,7 +95,7 @@
       }).catch(function () { loading = false; waiting = []; results.hidden = false; results.textContent = "The search index could not be loaded."; });
     }
 
-    function fold(s) { return String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); }
+    function fold(s) { return String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
 
     function score(entry, words) {
       var title = fold(entry.t), crumb = fold((entry.c || "") + " " + (entry.p || "") + " " + (entry.n || "")), rest = fold((entry.e || "") + " " + (entry.x || ""));

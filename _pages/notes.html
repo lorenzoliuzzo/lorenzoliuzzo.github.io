@@ -36,7 +36,7 @@ description: Study notes organised as courses, each a path with what you need fi
     {% for d in groups %}
       <section class="domain" id="{{ d.id }}" data-domain="{{ d.id }}">
         <h2 class="domain__title">{{ d.title }}</h2>
-        {% if d.blurb != "" %}<p class="domain__blurb">{{ d.blurb }}</p>{% endif %}
+        {% if d.blurb and d.blurb != "" %}<p class="domain__blurb">{{ d.blurb }}</p>{% endif %}
         <ul class="courses">
           {% for c in d.courses %}
             <li class="course-item course-item--{{ c.status }}">

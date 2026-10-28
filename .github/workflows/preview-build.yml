@@ -1,0 +1,35 @@
+name: Build preview
+
+# Builds the site the way the deploy does, on every pull request, and keeps the result as a
+# downloadable artifact. Unzip it and run `python3 -m http.server -d _site` to browse it.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@4a9ddd6f338a97768b8006bf671dfbad383215f4
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+          cache-version: 0
+      - name: Build with Jekyll
+        run: bundle exec jekyll build --trace
+        env:
+          JEKYLL_ENV: production
+      - name: Check the generated data files exist
+        run: |
+          for f in _site/notes/index.html _site/graph.json _site/notes-index.json; do
+            test -s "$f" || { echo "missing $f"; exit 1; }
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site-preview
+          path: _site
+          retention-days: 14

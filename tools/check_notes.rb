@@ -30,7 +30,8 @@ end
 # Same ids kramdown gives headings: drop leading non-letters, strip punctuation, hyphenate.
 def heading_ids(body)
   seen = Hash.new(0)
-  body.scan(/^\#{1,6} (.+)$/).flatten.map do |text|
+  prose = body.gsub(/^(`{3,}|~{3,}).*?^\1[ \t]*$/m, "") # a `# comment` in a code block is not a heading
+  prose.scan(/^\#{1,6} (.+)$/).flatten.map do |text|
     id = text.gsub(/^[^a-zA-Z]+/, "").gsub(/[^a-zA-Z0-9 -]/, "").tr(" ", "-").downcase
     id = "section" if id.empty?
     seen[id] += 1
@@ -58,18 +59,20 @@ courses.each_with_index do |course, ci|
 end
 
 concepts = {} # id => note key
+duplicate_ids = 0
 notes.each do |key, n|
   Array(n[:data]["defines"]).each do |c|
     id = c.is_a?(Hash) ? c["id"].to_s : next
     if concepts.key?(id)
       puts "ERROR #{n[:path]}: concept #{id} is also defined in #{concepts[id]}"
-      $failed = true
+      duplicate_ids += 1
+    else
+      concepts[id] = key
     end
-    concepts[id] = key
   end
 end
 
-errors = 0
+errors = duplicate_ids
 warnings = 0
 err = ->(n, msg) { puts "ERROR #{n[:path]}: #{msg}"; errors += 1 }
 warn_ = ->(n, msg) { puts "warn  #{n[:path]}: #{msg}"; warnings += 1 }
@@ -103,8 +106,8 @@ end
 end
 
 courses.each do |course|
-  course["parts"].each do |part|
-    part["notes"].each do |key|
+  Array(course["parts"]).each do |part|
+    Array(part["notes"]).each do |key|
       next if filter && !key.start_with?(filter)
 
       n = notes[key]
@@ -183,7 +186,10 @@ courses.each do |course|
       # Figures
       body.scan(/\{% include fig\.html (.*?) %\}/m).flatten.each do |args|
         src = args[/src="([^"]+)"/, 1]
-        err.(n, "figure without src") && next unless src
+        unless src
+          err.(n, "figure without src")
+          next
+        end
         err.(n, "figure #{src}: missing _includes/fig/#{src}.svg (run tools/figures/build.py)") unless File.exist?(File.join(ROOT, "_includes/fig/#{src}.svg"))
         err.(n, "figure #{src}: no alt text") unless args =~ /alt="[^"]{12,}"/
         err.(n, "figure #{src}: no caption") unless args =~ /caption="[^"]{12,}"/

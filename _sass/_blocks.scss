@@ -115,6 +115,14 @@
   }
 }
 
+// Prerequisite links are the way into the earlier notes, so they read as links.
+.note-head__needs a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
 .note-head__needs table {
   width: 100%;
   display: table;
